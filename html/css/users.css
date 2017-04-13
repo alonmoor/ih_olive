@@ -1,0 +1,49 @@
+ 
+  fieldset{margin-right:25px;} 
+th,td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	color: #000000;
+}
+tr {
+	border: 1px solid gray;
+}
+td {
+	width:100px;
+	padding:3px;
+}
+th {
+	background-color:#D2E0E8;
+	color:#003366
+}
+table {
+    margin-left:50px;
+}
+.clickable {
+	cursor:pointer;
+}
+.hover {
+  text-decoration: underline;
+  background-color: #b0b0ff;
+  color:red;
+}
+ 
+ 
+ th.clickable {
+  
+  background: transparent url(../images/sort-arrows.png) no-repeat 0 0;
+}
+ 
+.stripe1 {
+    background-color:#0f0;
+}
+.stripe2 {
+    background-color:#afa;
+}
+.highlight {
+    background-color: #ffcc00;
+    font-weight:bold;
+} 
+.border_print
+   {border : solid green 5px;} 
+ 

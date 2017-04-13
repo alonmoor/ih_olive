@@ -1,0 +1,159 @@
+<style type="text/css" media="screen">
+    
+      
+      h5 {
+        font-size: 15px;
+        color: #404040;
+        text-shadow: 0 1px 1px #ffffff;
+      }
+
+      
+
+      #content_ {
+        overflow: hidden;
+        
+        /* 
+          The content div will cover the whole page,
+          but leave enough room for the header.
+        */
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50px;
+        bottom: 0;
+        
+        /* The children are horizontally aligned */
+        display: -webkit-box;
+        -webkit-box-orient: horizontal;
+        -webkit-box-align: stretch;
+        -webkit-box-pack: left;
+
+        display: -moz-box;
+        -moz-box-orient: horizontal;
+        -moz-box-align: stretch;
+        -moz-box-pack: left;
+      }
+      
+      #content_ .sidebar_ {
+        background: #EDEDED;
+        width: 150px;
+        
+        /* It's got a fixed width, we don't want it to expand*/
+        -webkit-box-flex: 0;
+        -moz-box-flex: 0;
+        box-flex: 0;
+      }
+      
+      #content_ .sidebar_ h3 {
+        display: block;
+        padding: 7px 7px 7px 15px;
+        border: 1px solid #c5c5c5;
+        border-width: 1px 0 1px 0;
+        margin: 10px 0 0 0;
+        
+        background: #ffffff;
+        background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dedfe0));
+        background: -moz-linear-gradient(top, #ffffff, #dedfe0);
+        background: linear-gradient(top, #ffffff, #dedfe0);
+        
+        -moz-box-shadow: 0 -5px 10px #e4e4e4;
+        -webkit-box-shadow: 0 -5px 10px #e4e4e4;
+        box-shadow: 0 -5px 10px #e4e4e4;
+      }
+
+      #content_ .sidebar_ ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      #content_ .sidebar_ ul li {
+        display: block;
+        padding: 10px 10px 7px 20px;
+        border-bottom: 1px solid #cdcdcc;
+        cursor: pointer;
+
+        -moz-box-shadow: 0 1px 1px #fcfcfc;
+        -webkit-box-shadow: 0 1px 1px #fcfcfc;
+        box-shadow: 0 1px 1px #fcfcfc;
+      }
+
+      #content_ .sidebar_ ul li.active {
+        color: #ffffff;
+        text-shadow: 0 1px 1px #46677f;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+
+        background: #7bb5db;
+        background: -webkit-gradient(linear, left top, left bottom, from(#7bb5db), to(#4775b8));
+        background: -moz-linear-gradient(top, #7bb5db, #4775b8);
+        background: linear-gradient(top, #7bb5db, #4775b8);
+      }
+
+
+
+
+
+
+#content_ .sidebar_  a:link, li a:visited {
+        color: #ffffff;
+        text-shadow: 0 1px 1px #46677f;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+
+        background: #7bb5db;
+        background: -webkit-gradient(linear, left top, left bottom, from(#7bb5db), to(#4775b8));
+        background: -moz-linear-gradient(top, #7bb5db, #4775b8);
+        background: linear-gradient(top, #7bb5db, #4775b8);
+      }
+
+      #content_ .sidebar_ ul li.over {
+        color: #ffffff;
+        text-shadow: 0 1px 1px #46677f;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+
+        background: #7bb5db;
+        background: -webkit-gradient(linear, left top, left bottom, from(#7bb5db), to(#4775b8));
+        background: -moz-linear-gradient(top, #7bb5db, #4775b8);
+        background: linear-gradient(top, #7bb5db, #4775b8);
+      }
+
+
+
+
+
+
+.menuDrop a:link, .menuDrop a:visited {
+    color: #ffffff;
+        text-shadow: 0 1px 1px #46677f;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+
+        background: #7bb5db;
+        background: -webkit-gradient(linear, left top, left bottom, from(#7bb5db), to(#4775b8));
+        background: -moz-linear-gradient(top, #7bb5db, #4775b8);
+        background: linear-gradient(top, #7bb5db, #4775b8);
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </style> 

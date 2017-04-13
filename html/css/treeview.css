@@ -1,0 +1,93 @@
+a { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: blue; text-decoration: underline}
+.treeView{
+ direction:rtl;
+  padding: 0px;
+  margin: 0px;
+}
+
+.treeView .primaryNode{
+    margin-right: 0px;
+}
+
+.treeView .subNode{
+	  margin-right: 16px;
+}
+
+.treeView .nodeText {
+	 	
+	 padding-right: 0.5em;
+}
+
+
+
+a.href_modal_tree:link {  text-decoration: none; color: blue;}
+a.href_modal_tree:visited { text-decoration: none; color: blue;}
+a.href_modal_tree:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_tree:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_tree { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+a.href_modal_tree2:link {  text-decoration: none; color: blue;}
+a.href_modal_tree2:visited { text-decoration: none; color: blue;}
+a.href_modal_tree2:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_tree2:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_tree2 { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: blue; text-decoration: underline;}
+
+.href_modal_tree2{cursor:pointer;}
+
+
+a.href_modal_dec:link {  text-decoration: none; color: blue;}
+a.href_modal_dec:visited { text-decoration: none; color: blue;}
+a.href_modal_dec:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_dec:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_dec { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+
+a.href_modal_forum_dec:link {  text-decoration: none; color: blue;}
+a.href_modal_forum_dec:visited { text-decoration: none; color: blue;}
+a.href_modal_forum_dec:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_forum_dec:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_forum_dec { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+
+a.href_modal_cat_forum:link {  text-decoration: none; color: blue;}
+a.href_modal_cat_forum:visited { text-decoration: none; color: blue;}
+a.href_modal_cat_forum:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_cat_forum:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_cat_forum { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+a.href_modal_manager:link {  text-decoration: none; color: blue;}
+a.href_modal_manager:visited { text-decoration: none; color: blue;}
+a.href_modal_manager:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_manager:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_manager { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+
+
+a.href_modal_managerType:link {  text-decoration: none; color: blue;}
+a.href_modal_managerType:visited { text-decoration: none; color: blue;}
+a.href_modal_managerType:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_managerType:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_managerType { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+
+
+
+a.href_modal_appoint:link {  text-decoration: none; color: blue;}
+a.href_modal_appoint:visited { text-decoration: none; color: blue;}
+a.href_modal_appoint:active { color: #A52A2A; background: #FAEBD7; text-decoration: none;  }
+a.href_modal_appoint:hover { font-family: Arial, Verdana, sans-serif; font-size: 18px;  color: #A52A2A; background: #FAEBD7;}
+a.href_modal_appoint { font-family: Arial, Verdana, sans-serif; font-size: 15px; color: #A52A2A; text-decoration: underline;}
+
+
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+form { 
+width: 45%;
+}
+form legend {
+font-weight: bold;
+color: blue;
+}
+
+.my_fieldset{
+  width: 75% ;
+  margin-right:155px; 
+ }
+  .my_main{
+  margin:10px auto 10px 10px ;
+     margin-right:22px; 
+    
+    margin-left:22px;
+  }
+  .my_tbl{
+   width: 45% ; 
+  
+  }
+
+.my_div{
+ 
+}
+/*************************************************************************************/
+/*
+ 
+ .error, .success {
+ width:82%;
+ 
+	padding: 5px 5px 5px 25px;
+	margin-right: 20px; 
+   overflow:hidden; 
+}
+
+.error {
+	border: 1px solid #ff0000;
+	background: #ffdddd;
+	background-image: url('images/action-error.gif');
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	overflow:hidden; 
+}
+.countList2 {
+	border: 1px solid #ff0000;
+	background: #ffdddd;
+	background-image: url('images/action-error.gif');
+	background-repeat: no-repeat;
+	background-position: 5px center;
+}
+
+.success {
+	position:relative;	
+	border: 1px solid #009900;
+	background: #cfffcf;
+	color: #003300;
+	
+  
+	background-image: url('yes.gif')  0px 3px;	 
+	background-repeat: no-repeat;
+	background-position: 5px center;
+}
+
+.label {float: left; width: 120px; }  
+.infobox {width: 200px; }  
+ 
+
+.clear { margin-left: 125px; margin-top: 10px;}  
+div{padding: 5px; }
+*/
+
+
+
+/*
+.submit { margin-left: 50px; margin-top: 10px;}  
+.loading {
+	background: #ffdddd;
+	font-weight: bold;
+	padding: 6px;
+	font-size: 8pt;
+}
+ */

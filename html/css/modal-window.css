@@ -1,0 +1,50 @@
+﻿.modal-overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #131313;
+	opacity: .35;
+	filter: alpha(opacity=35);
+	z-index: 101;
+  /* overflow:scroll;*/
+}
+.modal-window {
+	position: fixed;
+	
+	top: 50%;
+	left: 50%;
+	margin: 0;
+	padding: 0;
+	z-index: 102;
+	background: #fff;
+	border: solid 4px #000;
+    
+     
+/* cursor: pointer; 	overflow:scroll;width: 1100px; height: 600px; margin-top: -300px; margin-left: -550px; display: block; cursor: pointer;   */
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	background-color:transparent;
+	
+}
+ 
+.close-window {
+	position: absolute;
+	width: 47px;
+	height: 47px;
+	right: -23px;
+	top: -23px;
+    background: transparent url(../../images/close-button.png) no-repeat scroll right top;    
+	text-indent: -99999px;
+	overflow: hidden;
+	 cursor: pointer; 
+}
+ 
+
+
+
