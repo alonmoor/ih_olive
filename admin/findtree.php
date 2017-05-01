@@ -176,7 +176,7 @@ if($decPattern || $decID || ($catID && $catID!='none')||$datePattern  || $datePa
 
 		echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 		echo "<p>חזרה אל ",
-		build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+		build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 
 		return;
 	}else{
@@ -266,7 +266,7 @@ if($decPattern || $decID || ($catID && $catID!='none')||$datePattern  || $datePa
 	show_page_links($page, $pagesize, sizeof($rows), $query);
 	echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 	echo "<p>חזרה אל ",
-	build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+	build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 
 }
 
@@ -280,7 +280,7 @@ elseif($forumPattern || $forum_decID || $forumPattern1 ) {
 		echo "<p>.מצטערים לא נמצא מידע על פורומים</p>\n";
 		echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 		echo "<p>חזרה אל ",
-		build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+		build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 		return;
 	}else{
 		$mysqli=$db->getMysqli();
@@ -364,7 +364,7 @@ elseif($forumPattern || $forum_decID || $forumPattern1 ) {
 	show_page_links($page, $pagesize, sizeof($rows), $query);
 	echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 	echo "<p>חזרה אל ",
-	build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+	build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 
 }
 else {
@@ -374,7 +374,7 @@ else {
 	build_form();
 	// link to input and category forms
 	printf("<p><br />%s </p>\n",
-	build_href("dynamic_5.php", "", "חזרה אל רשימת החלטות"));
+	build_href("dynamic_5_demo.php", "", "חזרה אל רשימת החלטות"));
 	//  build_href("categories.php", "", " ערוך קטגוריות"));
 }
 
@@ -652,12 +652,12 @@ function show_decisions($decisions, $pagesize,$catID) {
 	echo "<h1>תוצאות החיפוש</h1>\n";
 	echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 	echo "<p>חזרה אל ",
-	build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+	build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 	if(!$decisions) {
 		echo "<p> מצטערים,לא נימצאו החלטות </p>\n";
 		//        echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 		//	    echo "<p>חזרה אל ",
-		//		build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+		//		build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 
 		return;
 
@@ -747,7 +747,7 @@ function show_decisions($decisions, $pagesize,$catID) {
 
 			echo td1("החלטה:", "td1head");
 			$html = htmlspecial_utf8($decision->decName) . " " .
-			build_href1("dynamic_5.php","mode=update", "&updateID=$decision->decID", "(עדכן)");
+			build_href1("dynamic_5_demo.php","mode=update", "&updateID=$decision->decID", "(עדכן)");
 			echo td2asis($html, "td2head");
 
 
@@ -852,7 +852,7 @@ function show_forums($forums, $pagesize ,$formdata,$forum_decID) {
 		echo "<p>.מצטערים לא נמצא מידע על פורומים</p>\n";
 		echo '<p><a href="findtree.php">חזרה לטופס החיפוש</a></p>', "\n";
 		echo "<p>חזרה אל ",
-		build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+		build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 		return; }
 
 		// build comma-separated string with authIDs
@@ -1022,7 +1022,7 @@ function show_forums($forums, $pagesize ,$formdata,$forum_decID) {
 /**********************************************************************************************************/
 
 //echo "<p>חזרה אל ",
-//	build_href("dynamic_5.php", "", "רשימת החלטות") . ".\n";
+//	build_href("dynamic_5_demo.php", "", "רשימת החלטות") . ".\n";
 
 
 /*******************************************************************************************/
@@ -1083,7 +1083,7 @@ function td1($txt, $class="td1") {
 				//($forum[0], "findtree.php?forum_decID=$forum[1]");
 				function td2url($txt, $url, $class="td2") {
 					echo "<td class=\"$class\">",
-					//build_href1("dynamic_5.php","mode=update", "&updateID=$decision->decID", "(עדכן)");
+					//build_href1("dynamic_5_demo.php","mode=update", "&updateID=$decision->decID", "(עדכן)");
 						
 					build_href($url, "", $txt), "</td></tr>\n" ; }
 					/*******************************************************************************/

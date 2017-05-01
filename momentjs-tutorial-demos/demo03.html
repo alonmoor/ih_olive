@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Working with JavaScript Dates: Parsing Dates</title>
+<meta name="description" content="A demonstration of parsing date input strings with Moment.js">
+<meta name="author" content="Bradley Holbrook for Six Revisions">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="http://sixrevisions.com/favicon.ico">
+<link href="http://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet" type="text/css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+</head>
+<body>
+<nav>
+  <a class="button" href="http://sixrevisions.com/tutorials/javascript-dates-moment-js/">Read tutorial</a> 
+</nav>
+<div class="container">
+  <h1>Working with JavaScript Dates</h1>
+  <p class="tagline"><strong>Demo 3</strong><br /> A demonstration of parsing date input strings with Moment.js</p>
+
+  <h2>Input Date</h2>
+  <div id="input">July 1, 2014</div>
+
+  <h2>Output Date</h2>
+  <div id="output"></div>
+</div><!-- /.container -->
+<script type="text/javascript">
+( function()
+{
+// get the input date from #input div element
+var input = document.getElementById('input').innerHTML;
+// use moment() with input value and a string format pattern as arguments
+// See: http://momentjs.com/docs/#/parsing/string-format/
+var Date = moment(input, 'MMMM D, YYYY');
+// display the parsed date in a div (#output)
+var eDisplayMoment = document.getElementById('output');
+eDisplayMoment.innerHTML = Date.format("YYYY-M-D");
+})();
+</script>
+</body>
+</html>

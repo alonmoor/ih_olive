@@ -649,21 +649,7 @@ function update_new_category($updateID, $newcatName) {
 
   echo '<ul class="paginated" style=left:100px;  >';
   echo'<fieldset   style="margin-left:80px;margin-bottom:50px;background: #94C5EB url(../images/background-grad.png) repeat-x">';   
-/******************************************************/
-  
-    ?> 
-  <!--   <label for="chart"><strong style="font-weight:bold;color:brown;">גרף סוגי ההחלטות:</strong></label>
-     <a href='#' title='גרף סוגי ההחלטות'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_DEC/Default.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  > 
-            <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
 
-     </a>
-     -->                                                   
-    <?php
-
-	 	  
-  
-/***********************************************************/  
-  
   
   
   $this->print_categories($subcats[NULL], $subcats, $catNames,$parent);

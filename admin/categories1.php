@@ -636,20 +636,7 @@ function update_new_category($updateID, $newcatName) {
   echo '<ul class="paginated" style=left:100px;  >';
   echo'<fieldset   style="margin-left:90px;margin-bottom:50px;background: #94C5EB url(../images/background-grad.png) repeat-x">';
 /******************************************************/
-  
-    ?> 
- <!--     
-    <label for="chart"><strong style="font-weight:bold;color:white;">גרף סוגי הפורומים:</strong></label>
-     <a href='#' title='גרף סוגי הפורומים'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_FORUM/default_ajx2.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  > 
-            <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
 
-     </a>
-  -->                                                      
-    <?php
-
-	 	  
-  
-/***********************************************************/  
   $this->print_categories($subcats[NULL], $subcats, $catNames,$parent);
   
 	  echo'</fieldset>';   

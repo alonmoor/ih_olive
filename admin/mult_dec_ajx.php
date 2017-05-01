@@ -15,7 +15,7 @@ $showform=TRUE;
  
     
 $dec=new decisions();
-$dec->link_div(); 
+//$dec->link_div();
  if( (array_item($_REQUEST,'insertID'))){ 
   $insertID=$_REQUEST['insertID'];
   $formdata['insertID']=$insertID;

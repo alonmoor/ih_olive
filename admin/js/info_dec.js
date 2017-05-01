@@ -58,12 +58,14 @@ function processJson(data) {
  
 }
 /************************************************************************************************/
+
 $('form#find_cat_dec fieldset').append('<div id="targetDiv_dec1"></div>').find('select#category_dec').change(function(){
+    var page_num = $("#num_page").find('select').val();
 $.ajax({
    type: "POST",
 //   url: "../admin/dec_count.php",
    url: "../admin/ajax2.php",
-   data: "category_dec="+this.value,
+   data: "category_dec="+this.value+ "&page_num=" +page_num ,
    success: function(msg){
   
 $('div#targetDiv_dec1').html(' ').append('<p>'+msg+'</p>');

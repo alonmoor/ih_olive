@@ -1,5 +1,21 @@
-$(document).ready(function() { 
-	 
+$(document).ready(function() {
+
+    function getAll(){
+
+        $.ajax
+        ({
+            url: 'getproducts.php',
+            data: 'action=showAll',
+            cache: false,
+            success: function(r)
+            {
+                $("#display").html(r);
+            }
+        });
+    }
+
+    getAll();
+
 // $('#tree_content_target').hide();
 //$('form#forum').append('<div id="targetDiv"></div>').find('select#insert_forumType').change(function(){
 //	 

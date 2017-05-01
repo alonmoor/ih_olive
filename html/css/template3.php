@@ -450,7 +450,7 @@ function html_header($arr_sublinks=""){
 
 
 if($_SESSION['uname']!=null  ){ 
-echo '<h4 style="font-weight:bold;color:yellow;">  מה קורה ?&nbsp;&nbsp;&nbsp;'.$_SESSION['uname'].'</h4>' ;    
+echo '<h4 style="font-weight:bold;color:blue;">  מה קורה ?&nbsp;&nbsp;&nbsp;'.$_SESSION['uname'].'</h4>' ;
 // echo $_SESSION['uname'];
 
 }

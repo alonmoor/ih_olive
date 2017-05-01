@@ -1,4 +1,4 @@
-<?php 
+<?php
  
 require_once ("../config/application3.php");
 
@@ -34,16 +34,12 @@ class MyHandler implements RequestHandler{
 
         while ($line = mysqli_fetch_assoc($result)) {
 			$code = $line["catID"];
-			//$text = "<b>$code</b> : ".$line["catName"];
 			$text ="<b> $line[catName]</b>" ;
-			 
-			
 		 $node = DBTreeView::createTreeNode(
 				$text, array("catID"=>$code));
-				//$text, array($code=>'catName'));
-	    // $node->setURL(sprintf("javascript:alert(\"צפה בהחלטה %s\");", $code));
-	      $node->setURL(sprintf(ROOT_WWW."/admin/find3.php?mode=search_dec&catID=%s", $code));
-		
+          $node->setURL(sprintf(ROOT_WWW."/admin/find3.php?mode=search_dec&catID=%s", $code));
+
+        //------------------------------------------------------
 		//has children
           $query2 = sprintf("SELECT * FROM categories WHERE parentCatID='%s' LIMIT 1",
               mysqli_real_escape_string($link,$code));

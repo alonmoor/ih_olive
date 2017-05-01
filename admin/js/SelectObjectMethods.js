@@ -20,8 +20,6 @@ function add_item_to_select_box(src_cmb, dest_cmb_obj) {
 	        }
 		}
 	}			
-
-
 /****************************************************************************************/
 function remove_item_from_select_box(cmb_obj) {
  
@@ -32,14 +30,12 @@ function remove_item_from_select_box(cmb_obj) {
 	}
 }
 /**************************************************************************************/
-
 function clear_select_box(cmb_obj) {
 	for (j=cmb_obj.length-1; j>=0; j--)
 		cmb_obj.options[j] = null;
 }
 /**************************************************************************************/
-				
-function itemsInSelect(check_me, cmb_obj){		
+function itemsInSelect(check_me, cmb_obj){
 	for ( i=0; i<cmb_obj.length ; i++){
 		if (cmb_obj.options[i].value == check_me ) 
 			return true;	            
@@ -47,7 +43,6 @@ function itemsInSelect(check_me, cmb_obj){
 	return false;
 }
 /**************************************************************************************/
-
 function prepSelObject(oSel){
 	   //alert(oSel);
 	for (j=oSel.length-1; j>=0; j--){		
@@ -55,13 +50,10 @@ function prepSelObject(oSel){
 	}
 }			
 /**************************************************************************************/
-
-
 function add_element_to_select_box(select_box_obj, item_txt, item_value) {
 	var new_item = dest_cmb_obj.length;
 	select_box_obj.options[new_item] = new Option(item_txt, item_value);
 }
- 
 //function add2list(sourceID,targetID){
 //	  source=document.getElementById(sourceID);
 //	 

@@ -51,10 +51,10 @@ class MyHandler implements RequestHandler{
 				//$text, array($code=>'decName'));
  
 		   // $node->setURL(sprintf("ROOT_DIR/admin/find3.php?id=%s", $code));		
-	       $node->setURL(sprintf(ROOT_WWW."/admin/dynamic_5.php?mode=read_data&editID=%s", $code));
+	       $node->setURL(sprintf(ROOT_WWW."/admin/dynamic_5_demo.php?mode=read_data&editID=%s", $code));
 	        // $node->setURL(sprintf("javascript:alert(\"צפה בהחלטה %s\");", $code));
-	 	 // $url=build_href1("dynamic_5.php" ,"mode=read_data","&editID=$code", "צפה בהחלטה %s")  ; 
-	 	  //$node->setURL(sprintf(build_href1("dynamic_5.php" ,"mode=read_data","&editID=$code", "")) );
+	 	 // $url=build_href1("dynamic_5_demo.php" ,"mode=read_data","&editID=$code", "צפה בהחלטה %s")  ;
+	 	  //$node->setURL(sprintf(build_href1("dynamic_5_demo.php" ,"mode=read_data","&editID=$code", "")) );
 	 	   
 	 	  // $node->setURL(sprintf("$url", $code));
 		//has children

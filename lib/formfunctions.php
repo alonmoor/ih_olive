@@ -587,7 +587,7 @@ function mkSelectBox1($name, $arr_name, $arr_id, $selected, $str="") {
 					if( in_array($id, $selected) )
 						$data.=  "<option value='$id' selected>$arr_name[$i]</option>";
 					else
-						$data.=  "<option value='$id'>$arr_name[$i]</option>";
+						$data.=  "<option value='$id'>htmlspecial_utf8($arr_name[$i])</option>";
 				$data.=  "\n";
 			}
 		}
@@ -803,7 +803,7 @@ function form_list111($name, $rows, $selected=-1, $str="") {
   echo '<select class="mycontrol" '.$str.' ',
     html_attribute("name", "form[$name][]"), '>', "\n";
 
-  echo '<option value="none">(בחר אופציה)</option>';
+  //echo '<option value="none">(בחר אופציה)</option>';
   foreach($rows as $row) {
     echo '<option ', html_attribute("value", $row[1]);
     if($selected==$row[1]){
@@ -1340,17 +1340,17 @@ function is_logged_init()
 function is_logged() {
 
 
-    if ($_SESSION["auth_level"]=='admin')
+    if (!empty($_SESSION["auth_level"]) && $_SESSION["auth_level"]=='admin')
  	    echo "היתחברת כ- מנהל אם שם משתמש " .$_SESSION["auth_username"];
 
- 	  elseif($_SESSION["auth_level"]=='user')
+ 	  elseif(!empty($_SESSION["auth_level"]) && $_SESSION["auth_level"]=='user')
       echo "היתחברת כ- משתמש רגיל אם שם משתמש "   .$_SESSION["auth_username"];
 
-	  elseif(($_SESSION["auth_level"])=='suppervizer')
+	  elseif(!empty($_SESSION["auth_level"]) && ($_SESSION["auth_level"])=='suppervizer')
       echo " היתחברת כ- מפקח אם שם משתמש " .$_SESSION["auth_username"];
 
 
-     elseif(($_SESSION["auth_level"])=='user_admin')
+     elseif(!empty($_SESSION["auth_level"]) && ($_SESSION["auth_level"])=='user_admin')
       echo "היתחברת כ-מנהל+משתמש אם שם משתמש " .$_SESSION["auth_username"];
 
 //     elseif(!isset($_SESSION['logged']) || !$_SESSION['logged']) return false;
@@ -2347,7 +2347,18 @@ function _get($param,$defvalue = '')
 }
 
 /************************************************************************************/
-   
+//code by acmol
+function array2ul($array) {
+    $out = "<ul>";
+    foreach($array as $key => $elem){
+        if(!is_array($elem)){
+            $out .= "<li><span>$key:[$elem]</span></li>";
+        }
+        else $out .= "<li><span>$key</span>".array2ul($elem)."</li>";
+    }
+    $out .= "</ul>";
+    return $out;
+}
 
 /************************************************************************************/
 /************************************************************************************/

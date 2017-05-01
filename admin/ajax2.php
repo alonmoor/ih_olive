@@ -5,22 +5,14 @@
   require_once(LIB_DIR.'/model/en.php');
   set_error_handler('myErrorHandler');
   set_exception_handler('myExceptionHandler');
-  
  global $lang;
  global $db;
-   
 
-   
-   
-   
-if( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות	   
+ if( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות
 	$insertID =$_REQUEST['insertID'];
 		$decID =$_REQUEST['decID'];
- 
 
-		
-		
-		$sql  = "SELECT  decName,  decID, parentDecID " .
+ 		$sql  = "SELECT  decName,  decID, parentDecID " .
           " FROM  decisions ORDER BY  decName";
 		$rows = $db->queryObjectArray($sql);
 
@@ -37,8 +29,7 @@ if( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_
 				$dec_ID = $parents[$dec_ID];
 				$parentList[] = $dec_ID; 
 			}
-			
-			
+
             $decisionID = $insertID;
 			while($parents_b[$decisionID]!=NULL && $parents_b[$decisionID]!=$decID) {
 				$decisionID = $parents_b[$decisionID];
@@ -604,7 +595,7 @@ $sql= "select d.*, c.*
              WHERE c.catID = '$safeCat'";
           $rows = $db->queryObjectArray($sql);
             if( (!$rows) ){
-               echo '<h1>לא אותרה אף החלטה חפש קטגוריה אחרת.</h1>';
+               echo '<h1>לא אותרו קבצים בקטגוריה.</h1>';
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';

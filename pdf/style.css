@@ -1,0 +1,173 @@
+body {
+    direction: rtl;
+}
+
+header {
+    padding: 10px;
+}
+
+form {
+    float: right;
+    position: absolute;
+}
+
+h1 {
+    text-align: center;
+}
+
+.doclist {
+    padding: 0;
+    margin: 0 auto;
+    /*width: 90%;*/
+    min-width: 200px;
+    list-style:none;
+    /*overflow: visible;*/
+}
+
+
+@media (max-width: 430px) {
+    .doclist {
+        width: 210px;
+    }
+}
+@media (min-width: 430px) {
+    .doclist {
+        width: 410px;
+    }
+}
+@media (min-width: 800px) {
+    .doclist {
+        width: 630px;
+    }
+}
+@media (min-width: 1000px) {
+    .doclist {
+        width: 830px;
+    }
+}
+@media (min-width: 1100px) {
+    .doclist {
+        width: 1030px;
+    }
+}
+
+.doclist li {
+    float: right;
+    list-style-type: none;
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 175px;
+    height: 255px;
+    cursor: pointer;
+    margin: 15px;
+    transition: .1s ease-in-out;
+    Box-sizing: Border-box;
+}
+
+.doclist li:hover {
+    -webkit-transform: scale(1.07);
+    -moz-transform: scale(1.07);
+    -ms-transform: scale(1.07);
+    -o-transform: scale(1.07);
+    transform: scale(1.07);
+    /*border: 1px solid red;*/
+}
+
+.doclist .pv {
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    max-height: 260px;
+}
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+.doclist .pv a img {
+    text-align: center;
+    width: 100%;
+
+}
+
+.fade-in{
+    -moz-transition: fadein 10s; /* Firefox 4 */
+    -webkit-transition: fadein 10s; /* Safari and Chrome */
+    -o-transition: fadein 10s;
+    transition: fadein 10s;
+}
+
+.doclist li.current .date {
+    background: #fd3f35;
+    color: #fff;
+}
+
+.doclist .date {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    font-family: 'Segoe UI';
+    font-size: 10.5pt;
+    background-color: #000;
+    color: #FFF;
+    text-align: center;
+    opacity: .8;
+    filter: alpha(opacity=80);
+    margin-top: 5px;
+}
+
+.doclist .border {
+    position: absolute;
+    border: solid 1px #ccc;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-shadow: 6px 0 6px #9B9B9B;
+    -webkit-box-shadow: 6px 0 6px #9B9B9B;
+    -o-box-shadow: 6px 0 6px #9B9B9B;
+    box-shadow: 6px 0 6px #9B9B9B;
+}
+
+.form-group {
+    margin-left: 15px;
+}
+
+
+
+
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Working with JavaScript Dates: Adding and Subtracting Dates</title>
+<meta name="description" content="Adding and subtracting dates">
+<meta name="author" content="Bradley Holbrook for Six Revisions">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="http://sixrevisions.com/favicon.ico">
+<link href="http://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet" type="text/css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+</head>
+<body>
+<nav>
+  <a class="button" href="http://sixrevisions.com/tutorials/javascript-dates-moment-js/">Read tutorial</a> 
+</nav>
+<div class="container">
+  <h1>Working with JavaScript Dates</h1>
+  <p class="tagline"><strong>Demo 5</strong><br />Adding and subtracting dates</p>
+  
+  <h2>Current Date</h2>
+  <div id="currDate"></div>
+  <h2>Add 7 Days to Current Date</h2>
+  <div id="currDatePlus7d"></div>
+  <h2>Subtract 8 Hours from Current Date</h2>
+  <div id="currDateSub8h"></div>
+  <h2>Add 5 Years and 3 Months to Current Date</h2>
+  <div id="currDatePlus8h"></div>
+</div><!-- /.container -->
+
+<script type="text/javascript">
+( function()
+{
+var Date = moment();
+// display curent date
+document.getElementById('currDate').innerHTML = Date;
+// add 7 days to current date
+document.getElementById('currDatePlus7d').innerHTML = Date.add('days', 7);
+// subtract 8 hours from current date
+document.getElementById('currDateSub8h').innerHTML = Date.subtract('hours', 8);
+// add 5 years and 3 months to current date
+document.getElementById('currDatePlus8h').innerHTML = Date.add({years: 5, months: 3});
+})();
+</script>
+</body>
+</html>

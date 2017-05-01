@@ -1,4 +1,4 @@
- 
+
  function setupAjaxForm(dec_id, form_validations){
 		 var decID=$('#decID').val();
 			 //document.getElementById('decID').value; 		   
@@ -9,10 +9,6 @@
 			$(form).ajaxSend(function(){
 			   $("#form-message"+decID).removeClass().addClass('loading').html('Loading...').fadeIn();
 		   });
-          
- 
-				 
- 
    var options = { 
 		 
         beforeSubmit:  showRequest, 

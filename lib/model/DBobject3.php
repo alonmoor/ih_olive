@@ -1,6 +1,5 @@
 <?php
-//require_once '../config/application.php';
-//require_once (LIB_DIR . "/formfunctions.php");
+
 	class DBObject3
 	{
 		public    $id;
@@ -14,12 +13,6 @@
  	 
 	function __construct($table_name, $id_name, $columns, $id = '',&$formdata="")
 		{
-// 			if($table_name=='TODOLIST'){
-// 			$this->tableName=$table_name;
-//			$formdata=$this->select2($id,'decID');
-//		    } 
-//		    else{
-		    	
 			if(!$formdata && $formdata==0) {
 		    $this->setFormdata($formdata);
 			}elseif($table_name=='Forum_dec'){	
@@ -184,7 +177,7 @@ function select($id, $column = '')
 		$db->queryArray($sql);
 		// return $row[0];
 		return $db->insertId();
-			
+
 	}
 /**********************************************************************************************/
 	function insert2()
@@ -267,7 +260,7 @@ function select($id, $column = '')
 			$stuff = implode(", ", $arrStuff);
 
 			$id = $db->escape($this->id);
-            $query=('UPDATE ' . $this->tableName . " SET $stuff WHERE " . $this->idName . " = '" . $id . "'"); 
+            $query=('UPDATE ' . $this->tableName . " SET $stuff WHERE " . $this->idName . " = '" . $id . "'");
 			if($db->execute($query))
 			//$mysqli=$db-> getMysqli();
 			//return mysql_affected_rows($db->db); // Not always correct due to mysql update bug/feature
@@ -275,7 +268,7 @@ function select($id, $column = '')
 			return false;
 		}
 
-		
+
 /**********************************************************************************************/
   function delete_all()
   {
@@ -286,20 +279,20 @@ function select($id, $column = '')
     //$db->execute( $sth );
     $db->execute( $query );
   }
-	 
-/**********************************************************************************************/	
-		
+
+/**********************************************************************************************/
+
  function search()
      {
-     	global $db;    
+     	global $db;
 
       $query = "SELECT *  FROM users WHERE
-                uname='".$this->columns['uname']  ."'" ; 
+                uname='".$this->columns['uname']  ."'" ;
             $result = $db->execute_query($query);
             return $result;
-     }     		
-		
-		
+     }
+
+
 		function delete()
 		{
 			global $db;
@@ -539,6 +532,6 @@ function check_date($date) {
 
 		
 	}
-	
+
 
 ?>

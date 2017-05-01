@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ארכיון המהדורה המודפסת</title>
+
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="moment.js" type="text/javascript"></script>
+    <script src="bootstrap.min.js" type="text/javascript"></script>
+    <script src="controller.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label>שנה</label>
+                    <select id="year_picker" onchange="controller.dateChanged()"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>חודש</label>
+                    <select id="month_picker" onchange="controller.dateChanged()"></select>
+                </div>
+            </form>
+
+            <h1>ארכיון המהדורה המודפסת</h1>
+
+        </div>
+    </header>
+
+    <div class="images_container">
+
+        <ul class="doclist" id="doc_list">
+
+            <!--<li class="">-->
+                <!--<div class="pv">-->
+                    <!--<img src="http://digital-edition.israelhayom.co.il/Olive/ODN/Israel/get/ITD-2010-11-14/image.ashx?kind=preview&page=1">-->
+                    <!--<div class="border"></div>-->
+                    <!--<div class="date">17/11/2016</div>-->
+                <!--</div>-->
+            <!--</li>-->
+
+        </ul>
+
+    </div>
+
+</body>
+</html>

@@ -393,7 +393,7 @@ function update_new_category($updateID, $newcatName) {
   echo '</ul class="paginated">'; 
   // link to input and search forms
   printf("<p><br />%s<br />%s</p>\n",
-    build_href("../admin/dynamic_5.php", "", "הוסף החלטה חדשה"),
+    build_href("../admin/dynamic_5_demo.php", "", "הוסף החלטה חדשה"),
     build_href("../admin/find3.php", "", "חפש החלטות"));
    }
  
@@ -410,34 +410,34 @@ function update_new_category($updateID, $newcatName) {
   	if($catID==11){
   		printf("<li><b>%s (%s, %s)</b></li>\n",
       htmlspecial_utf8($catNames[$catID]),
-      build_href1("../admin/dynamic_5.php","mode=insert","&insertID=$catID", "הוסף"),
+      build_href1("../admin/dynamic_5_demo.php","mode=insert","&insertID=$catID", "הוסף"),
       build_href1("dec_edit.php" ,"mode=update","&updateID=$catID", "עדכן"));
     // echo '</ul>'; 
     }elseif($parent[$catID][0]=='11' && !(array_item($subcats,$catID)) ){	 
     
     printf("<li class='li_page'><b>%s (%s, %s, %s,%s,%s)</b></li>\n",
       htmlspecial_utf8($catNames[$catID]),
-      build_href1("../admin/dynamic_5.php","mode=insert","&insertID=$catID", "הוסף"),
-      build_href1("../admin/dynamic_5.php" ,"mode=delete","&deleteID=$catID", "מחק"),
+      build_href1("../admin/dynamic_5_demo.php","mode=insert","&insertID=$catID", "הוסף"),
+      build_href1("../admin/dynamic_5_demo.php" ,"mode=delete","&deleteID=$catID", "מחק"),
       build_href1("dec_edit.php" ,"mode=update","&updateID=$catID", "עדכן"),
-      build_href1("dynamic_5.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
+      build_href1("dynamic_5_demo.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
       build_href("../admin/find3.php", "decID=$catID", "הראה נתונים"));
       
   	}elseif($parent[$catID][0]=='11' &&  array_item($subcats,$catID)  ){
   		printf("<li class='li_page'><b>%s (%s, %s, %s,%s,%s)</b>\n",
       htmlspecial_utf8($catNames[$catID]),
-      build_href1("../admin/dynamic_5.php","mode=insert","&insertID=$catID", "הוסף"),
-      build_href1("../admin/dynamic_5.php" ,"mode=delete","&deleteID=$catID", "מחק"),
+      build_href1("../admin/dynamic_5_demo.php","mode=insert","&insertID=$catID", "הוסף"),
+      build_href1("../admin/dynamic_5_demo.php" ,"mode=delete","&deleteID=$catID", "מחק"),
       build_href1("dec_edit.php" ,"mode=update","&updateID=$catID", "עדכן"),
-      build_href1("dynamic_5.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
+      build_href1("dynamic_5_demo.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
       build_href("../admin/find3.php", "decID=$catID", "הראה נתונים"));
   	}else{ 
   	  printf("<li><b>%s (%s, %s, %s,%s,%s)</b>\n",
       htmlspecial_utf8($catNames[$catID]),
-      build_href1("../admin/dynamic_5.php","mode=insert","&insertID=$catID", "הוסף"),
-      build_href1("../admin/dynamic_5.php" ,"mode=delete","&deleteID=$catID", "מחק"),
+      build_href1("../admin/dynamic_5_demo.php","mode=insert","&insertID=$catID", "הוסף"),
+      build_href1("../admin/dynamic_5_demo.php" ,"mode=delete","&deleteID=$catID", "מחק"),
       build_href1("dec_edit.php" ,"mode=update","&updateID=$catID", "עדכן"),
-      build_href1("dynamic_5.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
+      build_href1("dynamic_5_demo.php" ,"mode=read_data","&editID=$catID", "עידכון מורחב"),
       build_href("../admin/find3.php", "decID=$catID", "הראה נתונים"));
   	}
   	

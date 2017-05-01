@@ -1,9 +1,6 @@
 <?php
-
 include(LIB_DIR.'/model/class.default.php');
 
-//require_once '../config/application_tmp.php';
-//global $lang;
 class Lang extends DefaultLang
 {
 	var $js = array
@@ -153,11 +150,11 @@ $sort = 0;
 
 $sort1 = 0;
  
-$task_id=$_GET['id'];
+$task_id=isset($_GET['id']) ?$_GET['id'] : '';
  echo $task_id;
 
-if($config['duedateformat'] == 2) $duedateformat = 'm/d/yy';
-elseif($config['duedateformat'] == 3) $duedateformat = 'dd.mm.yy';
+if(isset($config['duedateformat']) && $config['duedateformat'] == 2) $duedateformat = 'm/d/yy';
+elseif(isset($config['duedateformat']) && $config['duedateformat'] == 3) $duedateformat = 'dd.mm.yy';
 else $duedateformat = 'yy-mm-dd';
 
 ?> 
@@ -1357,7 +1354,7 @@ $('#content').css('border','3px solid red');
  
 <?php if ($level){?>
  <div id="priopopup<?php echo $decID;echo $forum_decID;?>" style="display:none">
- <span class="prio-neg" onClick="prioClick2(-1,this,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo decID; ?>,<?php echo $forum_decID; ?>)">&minus;1</span> 
+ <span class="prio-neg" onClick="prioClick2(-1,this,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $decID; ?>,<?php echo $forum_decID; ?>)">&minus;1</span>
  <span class="prio-o" onClick="prioClick2(0,this,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $decID; ?>,<?php echo $forum_decID; ?>)">&plusmn;0</span>
  <span class="prio-pos" onClick="prioClick2(1,this,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $decID; ?>,<?php echo $forum_decID; ?>)">+1</span> 
  <span class="prio-pos" onClick="prioClick2(2,this,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $decID; ?>,<?php echo $forum_decID; ?>)">+2</span>
@@ -1972,11 +1969,11 @@ $sort = 0;
 
 $sort1 = 0;
  
-$task_id=$_GET['id'];
+$task_id = isset($_GET['id']) ? $_GET['id'] : '';
  echo $task_id;
 
-if($config['duedateformat'] == 2) $duedateformat = 'm/d/yy';
-elseif($config['duedateformat'] == 3) $duedateformat = 'dd.mm.yy';
+if(isset($config['duedateformat']) && $config['duedateformat'] == 2) $duedateformat = 'm/d/yy';
+elseif(isset($config['duedateformat']) && $config['duedateformat'] == 3) $duedateformat = 'dd.mm.yy';
 else $duedateformat = 'yy-mm-dd';
 
 ?> 

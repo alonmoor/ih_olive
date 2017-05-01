@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Working with JavaScript Dates: Correcting Invalid Dates</title>
+<meta name="description" content="Anticipating and correcting user errors">
+<meta name="author" content="Bradley Holbrook for Six Revisions">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="http://sixrevisions.com/favicon.ico">
+<link href="http://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet" type="text/css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+</head>
+<body>
+<nav>
+  <a class="button" href="http://sixrevisions.com/tutorials/javascript-dates-moment-js/">Read tutorial</a> 
+</nav>
+<div class="container">
+  <h1>Working with JavaScript Dates</h1>
+  <p class="tagline"><strong>Demo 4</strong><br /> Correcting invalid date strings by providing multiple format() arguments</p>
+
+  <h2>Input Dates</h2>
+  <div id="input1">14/1/2014</div>
+  <div id="input2">1/14/2014</div>
+
+  <h2>Output Dates (one format argument)</h2>
+  <div id="output1"></div>
+  <div id="output2"></div>
+
+  <h2>Output (multiple-format argument)</h2>
+  <div id="output3"></div>
+  <div id="output4"></div>
+</div><!-- /.container -->
+
+<script type="text/javascript">
+( function()
+{
+var correct = document.getElementById('input1').innerHTML;
+var incorrect = document.getElementById('input2').innerHTML;
+
+var Date1 = moment(correct, 'D/M/YYYY');
+document.getElementById('output1').innerHTML = Date1.format('MMMM D, YYYY');
+
+var Date2 = moment(incorrect, 'D/M/YYYY');
+// will display 'Invalid date'
+// because input format is incorrect
+document.getElementById('output2').innerHTML = Date2.format('MMMM D, YYYY');
+
+var Date3 = moment(correct, ['D/M/YYYY','M/D/YYYY']);
+document.getElementById('output3').innerHTML = Date3.format('MMMM D, YYYY');
+// will try 2 possible date formats
+var Date4 = moment(incorrect, ['D/M/YYYY','M/D/YYYY']);
+document.getElementById('output4').innerHTML = Date4.format('MMMM D, YYYY');
+})();
+</script>
+</body>
+</html>

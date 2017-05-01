@@ -77,6 +77,11 @@ define("ADMIN_WWW_DIR",ROOT_WWW . "/admin");
 
 
 
+define ('PDF_DIR',HTML_DIR . "/pdfs/");
+define ('PDF_WWW_DIR',HTML_WWW_DIR . "/pdfs/");
+
+
+
 define("TS2_ADMIN_WWW",ADMIN_WWW_DIR . "/tasklist2");
 
 

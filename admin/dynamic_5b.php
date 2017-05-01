@@ -284,7 +284,7 @@ if(array_item($_POST,'mode') && array_item($_POST,'mode')!=null ){
 			$_REQUEST['decID']=$del['mode'][1];
 			 		
             }   
-            if($_POST['conn_second_by_paging'] ) {
+            if(isset($_POST['conn_second_by_paging']) && $_POST['conn_second_by_paging'] ) {
             $_POST['mode']="link_second";
             $_REQUEST['mode']="link_second";
             unset($_SESSION['decID']);

@@ -37,6 +37,20 @@
                             }, $.datepicker.regional['he'])); 
     	});
 
+ $(document).ready(function(){
+
+     $('#pdf_date').datepicker( $.extend({}, {showOn: 'button',
+         buttonImage: '../images/calendar.gif', buttonImageOnly: true,
+         changeMonth: true,
+         changeYear: true,
+         showButtonPanel: true,
+         buttonText: "Open date picker",
+         dateFormat: 'yy-mm-dd',
+         altField: '#actualDate'
+
+
+     }, $.datepicker.regional['he']));
+ });
 
 /***********************************************************************************************/		
 // $(document).ready(function(){
