@@ -82,6 +82,15 @@ define ('PDF_WWW_DIR',HTML_WWW_DIR . "/pdfs/");
 
 
 
+
+define ('CONVERT_PDF_TO_IMG_DIR', ROOT_DIR .'/images/convertPdfToImg');
+define('CONVERT_PDF_TO_IMG_WWW_DIR', ROOT_WWW ."/images/convertPdfToImg");
+
+
+
+
+
+
 define("TS2_ADMIN_WWW",ADMIN_WWW_DIR . "/tasklist2");
 
 
