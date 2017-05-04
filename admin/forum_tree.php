@@ -1,9 +1,9 @@
-<?php 
- 
-require_once ("../config/application3.php"); 
+<?php
+
+require_once ("../config/application3.php");
+define("TREEVIEW_LIB_PATH","../lib/dbtreeview");
 
 
-  
 
 class MyHandler implements RequestHandler{
 	
@@ -28,28 +28,28 @@ class MyHandler implements RequestHandler{
         }
 		
 
-		 $query = sprintf("SELECT * FROM categories1 WHERE parentCatID='%s'",
+		 $query = sprintf("SELECT * FROM categories WHERE parentCatID='%s'",
              mysqli_real_escape_string($link,$parentCode));
-					
-					
+
+
 		$result = mysqli_query($link,$query) or die("Query failed");
 
 		$nodes=array();
-		
+
 
 		while ($line = mysqli_fetch_assoc($result)) {
 			$code = $line["catID"];
 			//$text = "<b>$code</b> : ".$line["catName"];
 			$text ="<b> $line[catName] </b>";
-			
+
 		 $node = DBTreeView::createTreeNode(
 				$text, array("catID"=>$code));
 				//$text, array($code=>'catName'));
 	    // $node->setURL(sprintf("javascript:alert(\"צפה בהחלטה %s\");", $code));
 	      $node->setURL(sprintf(ROOT_WWW."/admin/find3.php?mode=search_forum&cat_forumID=%s", $code));
-		
+
 		//has children
-          $query2 = sprintf("SELECT * FROM categories1 WHERE parentCatID='%s' LIMIT 1",
+          $query2 = sprintf("SELECT * FROM categories WHERE parentCatID='%s' LIMIT 1",
               mysqli_real_escape_string($link,$code));
 					
 		$result2 = mysqli_query($link,$query2) or die("Query failed");
@@ -81,55 +81,55 @@ try{
  
 html_header();
  echo '<form class="paginated" style="width:80%;">';
-  echo "<table><tr class='menu4'><td><p><b> ",build_href2("find3.php", "","", "חזרה לטופס החיפוש","class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";	
+  echo "<table><tr class='menu4'><td><p><b> ",build_href2("find3.php", "","", "חזרה לטופס החיפוש","class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
 
-		
-echo "<td><p><b> ",build_href2("forum_demo12.php", "","", "חיפוש קטגוריות בדף","class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";	
 
-		
+echo "<td><p><b> ",build_href2("forum_demo12.php", "","", "חיפוש קטגוריות בדף","class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
+
+
 $url="../admin/forum_demo12_2.php";
 $str='onclick=\'openmypage2("'.$url.'"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
 	        echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון",$str) . " </b></p></td>\n";
-	        
-		        
+
+
        echo "<td><p><b> ",build_href2("../admin/database5.php", "","", "עץ הפורומים","class=my_decLink_root title='עץ הפורומים'") . " </b></p></td></tr></table>\n";
-       	
-  
+
+
  ?>
 
 <table>
  <tr>
- <td >     
+ <td >
 <?php form_label1('חתכי סוגי החלטות:',TRUE); ?>
-     <a href='#' title='חתכי סוגי החלטות'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_DEC/Default.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  > 
-            <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
-
-     </a>  
-   </td>  
-    
-    
-     <td>
-    <?php form_label1('חתכי סוגי פורומים:',TRUE); ?>
-     <a href='#' title='חתכי סוגי פורומים'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_FORUM/default_ajx2.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  > 
+     <a href='#' title='חתכי סוגי החלטות'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_DEC/Default.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  >
             <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
 
      </a>
-    </td>  
-     
-     
+   </td>
+
+
      <td>
-       <?php form_label1('חתכי סוגי מנהלים:',TRUE); ?>  
-    
-     <a href='#' title='חתכי סוגי מנהלים'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJAX/default.php'"; ?> ,'סוגי המנהלים');this.blur();return false;";  > 
+    <?php form_label1('חתכי סוגי פורומים:',TRUE); ?>
+     <a href='#' title='חתכי סוגי פורומים'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJX_CAT_FORUM/default_ajx2.php'"; ?> ,'סוגי פורומים');this.blur();return false;";  >
             <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
 
-     </a>                                                               
-                                                      
-</td></tr></table>                             
- <?php  	            
-  
- 
- echo'<fieldset   style="margin-left:85px;background: #94C5EB url(../images/background-grad.png) repeat-x">'; 	 
+     </a>
+    </td>
+
+
+     <td>
+       <?php form_label1('חתכי סוגי מנהלים:',TRUE); ?>
+
+     <a href='#' title='חתכי סוגי מנהלים'  class="tTip"  OnClick= "return  opengoog2(<?php echo " '".ROOT_WWW."/admin/PHP/AJAX/default.php'"; ?> ,'סוגי המנהלים');this.blur();return false;";  >
+            <img src='<?php echo ROOT_WWW;?>/images/pie-chart-icon.png'     onMouseOver="this.src=img.edit[1]" onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'"    title='הצג נתונים' />
+
+     </a>
+
+</td></tr></table>
+ <?php
+
+
+ echo'<fieldset   style="margin-left:85px;background: #94C5EB url(../images/background-grad.png) repeat-x">';
 
  
 $rootAttributes = array("catID"=>"11");

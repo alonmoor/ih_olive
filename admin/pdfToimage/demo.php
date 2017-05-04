@@ -4,79 +4,79 @@
 require_once(dirname(__FILE__).'/digiBook.php');//configuration file
 
 
-////----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 //http://snipplr.com/view/48513/pdf2jpg--convert-pdf-to-jpg-images-with-imagemagick/
-//$pdf_file   =  PDF_FILE;// './pdf/demo.pdf';
-//$save_to    =  IMAGE_LOCATION.'demo.jpg';//$dir.'demo.jpg';//   './jpg/demo.jpg';     //make sure that apache has permissions to write in this folder! (common problem)
-//
-////execute ImageMagick command 'convert' and convert PDF to JPG with applied settings
-//exec('convert "'.$pdf_file.'" -colorspace RGB -resize 800 "'.$save_to.'"', $output, $return_var);
-//exec("convert -density 100 -colorspace rgb test.pdf -scale 200x200 test.jpg");
-//
-//if($return_var == 0) {              //if exec successfuly converted pdf to jpg
-//    print "Conversion OK";
-//}
-//else print "Conversion failed.<br />".$output;
-//
-////----------------------------------------------------------------------------
-//
-//
-//
-//
-//
-//$im = new imagick($dir.'Reports_Presentationnnnnnnnnnn_22.pdf'); $im->setImageFormat('jpg'); header('Content-Type: image/jpeg'); echo $im;
-//
-//$imagick = new Imagick();
-//$imagick->readImage(PDF_FILE);
-//$imagick->writeImage('output.jpg');
-//
-////----------------------------------------------------------------------------
-//
-//
-//
-//
-//$im = new imagick( 'Reports_Presentation_2.pdf[ 0]' );
-//
-//$im->setImageColorspace(255);
-//
-//$im->setResolution(300, 300);
-//
-//$im->setCompressionQuality(95);
-//
-//$im->setImageFormat('jpeg');
-//
-//$im->writeImage('thumb.jpg');
-//
-//$im->clear();
-//
-//$im->destroy();
-//
-////-------------------------------------------------------------------------------------
-//
-//// read page 1
-//$im = new imagick( 'Reports_Presentation_2.pdf[ 0]' );
-//// convert to jpg
-//$im->setImageColorspace(255);
-//$im->setCompression(Imagick::COMPRESSION_JPEG);
-//$im->setCompressionQuality(60);
-//$im->setImageFormat('jpeg');
-////resize
-//$im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
-////write image on server
-//$im->writeImage('thumb2.jpg');
-//$im->clear();
-//$im->destroy();
-//
-//
-////------------------------------without saving.----------------------------------------------
-////http://serversideguy.com/2012/10/04/imagemagick-php-converting-a-pdf-to-image-and-displaying-without-saving/
-//
-//$image = new Imagick();
-//$pdf = 'Reports_Presentationnnnnnnnnnn_22.pdf[0]';
-//$image = new Imagick($pdf);
-//$image->resizeImage( 200, 200, imagick::FILTER_LANCZOS, 0);
-//$image->setImageFormat( "png" );
-//$image->writeImage('pdfAsImage.png');
+$pdf_file   =  PDF_FILE;// './pdf/demo.pdf';
+$save_to    =  IMAGE_LOCATION.'demo.jpg';//$dir.'demo.jpg';//   './jpg/demo.jpg';     //make sure that apache has permissions to write in this folder! (common problem)
+
+//execute ImageMagick command 'convert' and convert PDF to JPG with applied settings
+exec('convert "'.$pdf_file.'" -colorspace RGB -resize 800 "'.$save_to.'"', $output, $return_var);
+exec("convert -density 100 -colorspace rgb test.pdf -scale 200x200 test.jpg");
+
+if($return_var == 0) {              //if exec successfuly converted pdf to jpg
+    print "Conversion OK";
+}
+else print "Conversion failed.<br />".$output;
+
+//----------------------------------------------------------------------------
+
+
+
+
+
+$im = new imagick($dir.'Reports_Presentationnnnnnnnnnn_22.pdf'); $im->setImageFormat('jpg'); header('Content-Type: image/jpeg'); echo $im;
+
+$imagick = new Imagick();
+$imagick->readImage(PDF_FILE);
+$imagick->writeImage('output.jpg');
+
+//----------------------------------------------------------------------------
+
+
+
+
+$im = new imagick( 'Reports_Presentation_2.pdf[ 0]' );
+
+$im->setImageColorspace(255);
+
+$im->setResolution(300, 300);
+
+$im->setCompressionQuality(95);
+
+$im->setImageFormat('jpeg');
+
+$im->writeImage('thumb.jpg');
+
+$im->clear();
+
+$im->destroy();
+
+//-------------------------------------------------------------------------------------
+
+// read page 1
+$im = new imagick( 'Reports_Presentation_2.pdf[ 0]' );
+// convert to jpg
+$im->setImageColorspace(255);
+$im->setCompression(Imagick::COMPRESSION_JPEG);
+$im->setCompressionQuality(60);
+$im->setImageFormat('jpeg');
+//resize
+$im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
+//write image on server
+$im->writeImage('thumb2.jpg');
+$im->clear();
+$im->destroy();
+
+
+//------------------------------without saving.----------------------------------------------
+//http://serversideguy.com/2012/10/04/imagemagick-php-converting-a-pdf-to-image-and-displaying-without-saving/
+
+$image = new Imagick();
+$pdf = 'Reports_Presentationnnnnnnnnnn_22.pdf[0]';
+$image = new Imagick($pdf);
+$image->resizeImage( 200, 200, imagick::FILTER_LANCZOS, 0);
+$image->setImageFormat( "png" );
+$image->writeImage('pdfAsImage.png');
 
 
 $pdf = 'Reports_Presentation_2.pdf';

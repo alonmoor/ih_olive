@@ -3,66 +3,29 @@ require_once ("../config/application.php");
 require_once (LIB_DIR.'/model/forum_class.php');
 require_once ("../lib/model/DBobject3.php");
  require_once(LIB_DIR.'/model/class.handler.php');
- 
-/***********************************************************/
-  
-
- 
- 
- 
-/***********************************************************/
 $showform=TRUE;
 global $db;
  $_POST['form']['dynamic_ajx']=FALSE;
  if(  !(isAjax())){
   html_header();
  }
-
- 
- 
-
 if( array_item($_POST, 'forum_decision') && count($_POST)==1 && !$_GET ){
-	
-$_REQUEST['mode']="read_data";	
+$_REQUEST['mode']="read_data";
 }
- 
-
-/*********************************************************************************/
 if( array_key_exists('read_users',$_GET)  &&   is_numeric($_GET['read_users'])    ){
- 
 	$_POST['mode']="read_users";
 	$_REQUEST['mode']="read_users";
 }
-/********************************************************************************/
 if( array_key_exists('read_decisions',$_GET)  &&   is_numeric($_GET['read_decisions'])    ){
- 
 	$_POST['mode']="read_decisions";
 	$_REQUEST['mode']="read_decisions";
 }
-/********************************************************************************/
 if( array_key_exists('read_data2',$_GET)  &&  ($_GET['read_data2'])==0  && (is_numeric($_GET['editID']))  ){
- 
 	$_POST['mode']="read_data2";
 	$_REQUEST['mode']="read_data2";
-	 
-
 }
-
-
- 
-//if(  array_item($_POST,'read_data2') && !empty($_POST['read_data2'])  ){
-//$_GET['editID']=$_POST['read_data2'];
-//	$_POST['mode']="read_data2";
-//	$_REQUEST['mode']="read_data2";
-//	$_REQUEST['editID']=$_POST['read_data2'];
-//
-//}
 /*****************************************************************************/
-
 if(  array_item($_POST,'entry') && !empty($_POST['entry'])  ){
-	
-	
-	
 $entry=explode(',',$_POST['entry']);
 $insertID =$entry[0];
  if($insertID=='none' || $insertID==0)
@@ -73,9 +36,7 @@ $forum_decID =$entry[1];
 if($insertID==$forum_decID){
 	?>
 	<script>
-	
 	$('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
-
     turn_red();
 	</script>
 	<?php  
@@ -84,89 +45,65 @@ if($insertID==$forum_decID){
 		$sql  = "SELECT forum_decName, forum_decID, parentForumID " .
           " FROM forum_dec ORDER BY forum_decName";
 		$rows = $db->queryObjectArray($sql);
-
 		// build assoc. arrays for name, parent and subcats
 		foreach($rows as $row) {
-			 
 			$parents[$row->forum_decID] = $row->parentForumID;
 			$parents_b[$row->forum_decID] = $row->parentForumID;
 			$subcats[$row->parentForumID][] = $row->forum_decID;   }
-
 			// build list of all parents for $insertID
 			$forum_ID = $insertID;
 			while($parents[$forum_ID]!=NULL) {
 				$forum_ID = $parents[$forum_ID];
 				$parentList[] = $forum_ID; 
 			}
-			
-			
             $forumID = $insertID;
 			while($parents_b[$forumID]!=NULL && $parents_b[$forumID]!=$forum_decID) {
 				$forumID = $parents_b[$forumID];
 				$parentList_b[] = $forumID; 
 			}
-			
-			
-		if($subcats[$forum_decID]){	
+		if($subcats[$forum_decID]){
 			if(   in_array($insertID, $subcats[$forum_decID]) 
 			||    in_array($parents[$insertID],$subcats[$forum_decID] ) 
 			||    in_array($forumID,$subcats[$forum_decID] )
-			||    $parents[$insertID]== $forum_decID 
-		   
-			){
-			 
+			||    $parents[$insertID]== $forum_decID){
 			 ?>
-			 
 			 <script>
 	         $('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
              turn_red();
 	        </script>
-
-			 <?php  
+			 <?php
 			 exit;
 			}
 		}elseif( $insertID==$forum_decID){
-			
 			 ?>
 			  <script>
 	         $('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
              turn_red();
 	        </script>
-			 
-
-			 
-			 <?php  
+			 <?php
 			 exit;
-			 
-		}	
-
-		
-
-/*******************************************************************************/
+		}
+//----------------------------------------------
 $frm=new forum_dec();
 $frm->update_parent_b($insertID, $forum_decID);
 //$frm->print_forum_entry_form_c($forum_decID);
-}            
-/******************************************************************************/
+}
+//----------------------------------------------
 if($_POST['forum_decision']!=$_POST['forum_decID'] && $_POST['forum_decision']!='none' && $_POST['forum_decID']){
 	$_POST['forum_decID']=	$_POST['forum_decision'];
 	$_POST['form']['forum_decID']=	$_POST['forum_decision'];
-}	
-/******************************************************************************/	
+}
+//----------------------------------------------
 if( array_item($_REQUEST, 'id'))
 $forum_decID = array_item($_REQUEST, 'id');
 else
 $forum_decID = array_item($_REQUEST, 'forum_decID');
-/*******************************************************************************/
-
-
-
+//----------------------------------------------
 if(array_item($_POST,'form') && is_numeric($_POST['form']['forum_decID'])
 && $_REQUEST['mode']=='insert'  ){
 	$_SESSION['forum_decID']=$_POST['form']['forum_decID'];
-
 }
-/*******************************************************************************/
+//----------------------------------------------
 
 if( ($_POST['form']['forum_decision'] && $_POST['form']['forum_decision']!='none')
      && !($_POST['form']['newforum'] && !$_POST['form']['newforum']!='none') 
@@ -174,9 +111,7 @@ if( ($_POST['form']['forum_decision'] && $_POST['form']['forum_decision']!='none
 	  $_POST['mode']="update";
 	$_REQUEST['mode']="update";
 }
-
-/**********************************************************************************/
-/**********************************************************************************/
+//----------------------------------------------
 if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
      &&  ( is_array($_POST['form']) && is_numeric($_POST['forum_decision'] ) )
      && ($_REQUEST['mode']=='save') 
@@ -185,7 +120,7 @@ if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
 	$_REQUEST['mode']="update";
 }
 
-/**********************************************************************************/
+//----------------------------------------------
 if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
      &&  ( is_array($_POST['form']) && is_numeric($_POST['forum_decision'] ) )
      && ($_REQUEST['mode']=='save') 

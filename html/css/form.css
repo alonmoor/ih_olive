@@ -16,7 +16,7 @@
     float:right;
 }
 /*************************************************/
-html { height:100%;}
+html { height:100%;direction: rtl;}
 .shadow {    -moz-box-shadow: 5px 5px 5px #ccc;    -webkit-box-shadow: 5px 5px 5px #ccc;    box-shadow: 5px 5px 5px #ccc;}
 form {
   padding: 0.5em;

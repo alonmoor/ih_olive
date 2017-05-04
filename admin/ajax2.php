@@ -8,7 +8,37 @@
  global $lang;
  global $db;
 
- if( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות
+
+if(isset($_POST['category_pdf']) &&  isset($_POST['page_num']) && is_numeric($_POST['page_num'])) {
+
+        $page_num = isset($_REQUEST['page_num']) ? $_REQUEST['page_num'] : false;
+        if(isset($page_num) && is_numeric($page_num) ){
+
+            for ($i = 0; $i < $page_num ; $i++) {
+                // Display each record:
+
+                echo '<div class="col-xs-3" >';
+                echo "<div style=\"border-radius:3px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \"> 
+                            <div id='my_pdfs_$i'>
+                                <h4>
+                                     <a class='my_href_li' href=\"#\">
+                                     </a> 
+                                 </h4>
+                              </div>
+                                <input type='checkbox' id= improve_$i>
+                              </div>\n";
+                echo '<br/></div>';
+            } // End of WHILE loop.
+        }
+    }else if(! isset($_GET['page_num'])){
+    echo '<h1> "need to input number of pdfs!!"</h1>';
+}
+
+
+
+
+
+elseif( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות
 	$insertID =$_REQUEST['insertID'];
 		$decID =$_REQUEST['decID'];
 
@@ -112,10 +142,6 @@ WHERE decID=$decID ";
 
 	
    } 
-   
-/**************************************************************************************************/  
-
-
 
 /**********************************************AUTO_COMPLETE_FORUMS*************************************************************/   
 elseif(isset($_GET['usrArr_frm']  ))  {   
@@ -577,17 +603,13 @@ $sql= "select distinct(f.forum_decID),f.forum_decName,f.forum_date,f.managerID,f
 
 
 
-} 
-/******************************************CATEGORY_DEC1******************************************************/
-
+}
+//-------------------------------------------CAT DEC------------------------------------------------------------------
 elseif(isset($_POST['category_dec']) && $_POST['category_dec'] != ''){
 /****************
 Sanitize the data
 ***************/
 $safeCat = (int)$_POST['category_dec'];
-/****************/
- 
-
 $sql= "select d.*, c.* 
              FROM decisions d
              left join rel_cat_dec rc on d.decID=rc.decID
@@ -599,12 +621,7 @@ $sql= "select d.*, c.*
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
-               
        }//endif;//rows == 1
-
-
-
-
 } 
 
 /******************************************CATEGORY_DEC2******************************************************/
@@ -4935,7 +4952,54 @@ elseif(isset($_GET['load_DecFrmNote']))
 }
 
 
+
+elseif(isset($action)) {
+    if ($action == "showAll") {
+
+
+
+    }
+}
 /******************************************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function prepareTaskRow($r, $tz=null)
 {
  	$dueA = prepare_duedate($r->duedate, $tz);
@@ -5622,5 +5686,15 @@ global $db;
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
 
 ?>

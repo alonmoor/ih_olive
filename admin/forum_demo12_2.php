@@ -166,7 +166,7 @@ global $db;
 	form_new_line();
 	form_label("קטגוריות של פורומים:",TRUE);
 // get all categories
-	$sql = "SELECT catName, catID, parentCatID FROM categories1 ORDER BY catName";
+	$sql = "SELECT catName, catID, parentCatID FROM categories ORDER BY catName";
 	$rows = $db->queryObjectArray($sql);
  
 	foreach($rows as $row) {

@@ -8,7 +8,7 @@ unset($root_dir, $config_dir);
 require_once(ROOT_DIR.'/config/constants.php');
 require_once(ROOT_DIR.'/config/dbtreeview_config.php');
 require_once(LIB_DIR.'/model/dbtreeview.php');
-require_once(LIB_DIR.'/password.php');
+//require_once(LIB_DIR.'/password.php');
 require_once(HTML_DIR.'/template.php');
 
 
@@ -40,5 +40,11 @@ function  __($s)
 		  global $lang;
 		echo $lang->get($s);
 	 }
- 
+
+// Mysql...
+require_once(LIB_DIR.'/mydb.php');
+$db = new MyDb(); // Running on Windows or Linux/Unix?
+$db->execute_query("SET NAMES 'utf8'");
+
+
 ?>

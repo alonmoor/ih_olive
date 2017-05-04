@@ -546,25 +546,27 @@ class Pdfs extends DBObject3
             echo "</li></ul>\n";
         }
     }
-//------------------------------------------------------------------------------------------
-    function insert_pdf(&$formdata = "", &$publishersIDs = "", &$brandIDs = "")
+
+//------------------------------------------------------------------------------------------------
+//    function insert_pdf(&$formdata = "", &$publishersIDs = "", &$brandIDs = "")
+    function insert_pdf(&$formdata = "")
     {
         if(isset($formdata['files']['name'])){
-        global $db, $dbc;
+            global $db, $dbc;
 // Include the header file:
-        $page_title = ' PDF -הוסף קבצי';
+            $page_title = ' PDF -הוסף קבצי';
 // For storing errors:
-        $add_pdf_errors = array();
-        $formdata['error'] = '';
-        /*** maximum filesize allowed in bytes ***/
-        $max_file_size = 512000;
-        /*** the maximum filesize from php.ini ***/
-        $ini_max = str_replace('M', '', ini_get('upload_max_filesize'));
+            $add_pdf_errors = array();
+            $formdata['error'] = '';
+            /*** maximum filesize allowed in bytes ***/
+            $max_file_size = 512000;
+            /*** the maximum filesize from php.ini ***/
+            $ini_max = str_replace('M', '', ini_get('upload_max_filesize'));
 //        $upload_max = $ini_max * 1024;
-        $upload_max = $ini_max * 2048;
-        $file_list = sizeof($formdata['files']['name']);
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (count($file_list) > 0 && !empty($formdata['files']['tmp_name'])) {
+            $upload_max = $ini_max * 2048;
+            $file_list = sizeof($formdata['files']['name']);
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                if (count($file_list) > 0 && !empty($formdata['files']['tmp_name'])) {
 
                     for ($i = 0; $i < $file_list; $i++) {
                         // Check for a title:
@@ -656,7 +658,8 @@ class Pdfs extends DBObject3
                                     $tmp_name = mysqli_real_escape_string($dbc, array_shift($_SESSION['pdf']['tmp_name']));
                                     $size = (int)array_shift($_SESSION['pdf']['size']);
                                     $db->execute("START TRANSACTION");
-                                    if ($this->insert_new_pdfs($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newName, $d)) {
+//                                    if ($this->insert_new_pdfs($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newName, $d)) {
+                                    if ($this->insert_new_pdfs($formdata, $fn, $tmp_name, $size, $newName, $d)) {
                                         //NSERT INTO pdfs (tmp_name, title, description, file_name, size) VALUES ('$tmp_name', '$t', '$d', '$fn', $size)";
                                     } else {
                                         $db->execute("ROLLBACK");
@@ -673,6 +676,7 @@ class Pdfs extends DBObject3
                             unset($_SESSION['pdf'][$i]);
                         } // End of the submission IF.
                     }//end loop
+                    $formdata['count'] = $i;
                 }
             }//end if(count)
 
@@ -684,6 +688,7 @@ class Pdfs extends DBObject3
                     $add_pdf_errors['pdf'] = 'קובץ לא תקין';
                 }
             }
+            return true;
         }//end $_SERVER['REQUEST_METHOD'] == 'POST'
         else {
             echo('must upload files!!!');
@@ -691,8 +696,9 @@ class Pdfs extends DBObject3
         }
     }//end function
 
+//---------------------------------------------------------------------------------------------------
 //---------------------------------iINSERT NEW PDF----------------------------------------------------
-    function insert_new_pdfs(&$formdata, &$publishersIDs = "", &$brandIDs = "", &$fn = "", &$tmp_name = "", &$size = "", &$newPdfName = "", &$d = "")
+    function insert_new_pdfs(&$formdata, &$fn = "", &$tmp_name = "", &$size = "", &$newPdfName = "", &$d = "")
     {
         global $db, $dbc;
 
@@ -710,7 +716,6 @@ class Pdfs extends DBObject3
 
 
         if (!$newPdfName) return 0;
-
         // test if newpdfName already exists
         $sql = "SELECT COUNT(*) FROM pdfs " .
             "WHERE pdfName='$newPdfName'";
@@ -718,8 +723,9 @@ class Pdfs extends DBObject3
             echo "כבר קיים PDF בשם הזה";
             return 0;
         }
-//---------------------------------------------------------------
-        $result = $this->insert_new_pdf($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newPdfName, $d);
+
+//        $result = $this->insert_new_pdf($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newPdfName, $d);
+        $result = $this->insert_new_pdf($formdata, $fn, $tmp_name, $size, $newPdfName, $d);
         if ($result == -1) {
             echo "<p>Sorry, an error happened. Nothing was saved.</p>\n";
             return FALSE;
@@ -727,17 +733,40 @@ class Pdfs extends DBObject3
             //$formdata['pdfID'] = $dbc->insert_id;
             $formdata['pdfID'] = $db->insertId();
             $pdfID = $formdata['pdfID'];
-            if (isset($publishersIDs) && count($publishersIDs) > 0) {
-                $this->conn_pub_pdf($publishersIDs, $pdfID);
-                $this->conn_brand_pdf($brandIDs, $pdfID);
-            }
+//            if (isset($publishersIDs) && count($publishersIDs) > 0) {
+//                $this->conn_pub_pdf($publishersIDs, $pdfID);
+//                $this->conn_brand_pdf($brandIDs, $pdfID);
+//            }
             $db->execute("COMMIT");
             // build_form_pdf_ajx($form);
+
+
+
+//            $file = '/home/alon/Desktop/PROJECT/4.4.17/'.$newPdfName;
+//            $file_name = explode('.',$newPdfName);
+//            $file_name = substr($file_name[0],-9);
+//            $newfile = CONVERT_PDF_TO_IMG_DIR.'/'.$file_name;
+//            $im = new imagick( '/home/alon/Desktop/PROJECT/4.4.17/'.$newPdfName );
+//
+//// convert to jpg
+//            $im->setImageColorspace(255);
+//            $im->setCompression(Imagick::COMPRESSION_JPEG);
+//            $im->setCompressionQuality(60);
+//            $im->setResolution(300, 300);
+//            $im->setImageFormat('jpeg');
+////resize
+//            $im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
+////write image on server
+//            $im->writeImage($newfile.'.jpg');
+//            $im->clear();
+//            $im->destroy();
         }
         return TRUE;
     }
-//---------------------------------------------------------------------------------------------------
-    function insert_new_pdf($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newPdfName, $d)
+//------------------------------------------------------------------------------------------
+
+//    function insert_new_pdf($formdata, $publishersIDs, $brandIDs, $fn, $tmp_name, $size, $newPdfName, $d)
+    function insert_new_pdf($formdata,  $fn, $tmp_name, $size, $newPdfName, $d)
     {
         global $db, $dbc;
         $dest = PDF_DIR . $tmp_name;
@@ -758,8 +787,7 @@ class Pdfs extends DBObject3
         }
         return -1;
     }
-
-
+//-------------------------------------------------------------------------------------------------
     function conn_pub_pdf($pubIDs, $pdfID)
     {
         global $db;
@@ -773,7 +801,6 @@ class Pdfs extends DBObject3
         }
         return true;
     }
-
 
     function conn_brand_pdf($brandIDs, $pdfID)
     {
@@ -820,8 +847,10 @@ class Pdfs extends DBObject3
             $page_title = 'Error!';
             echo '<p class="error">נוצרה טעות בכניסה לדף זה!</p>';
         }
-//---------------------------------------------------------------------------------------
-
       }
 
+
+
+//---------------------------------------------------------------------------------------
     } //end class
+//---------------------------------------------------------------------------------------
