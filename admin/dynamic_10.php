@@ -1,2696 +1,2665 @@
 <?php
 require_once ("../config/application.php");
-require_once (LIB_DIR.'/model/forum_class.php');
+require_once (LIB_DIR.'/model/Brand.php');
 require_once ("../lib/model/DBobject3.php");
- require_once(LIB_DIR.'/model/class.handler.php');
- 
-/***********************************************************/
-  
-
- 
- 
- 
-/***********************************************************/
+require_once(LIB_DIR.'/model/class.handler.php');
+require_once ("getproducts.php");
 $showform=TRUE;
 global $db;
- $_POST['form']['dynamic_ajx']=FALSE;
- if(  !(isAjax())){
-  html_header();
- }
-
- 
- 
-
-if( array_item($_POST, 'forum_decision') && count($_POST)==1 && !$_GET ){
-	
-$_REQUEST['mode']="read_data";	
+$_POST['form']['dynamic_ajx']=FALSE;
+if(  !(isAjax())){
+    html_header();
 }
- 
-
-/*********************************************************************************/
+if( array_item($_POST, 'brand_pdf') && count($_POST)==1 && !$_GET ){
+    $_REQUEST['mode']="read_data";
+}
 if( array_key_exists('read_users',$_GET)  &&   is_numeric($_GET['read_users'])    ){
- 
-	$_POST['mode']="read_users";
-	$_REQUEST['mode']="read_users";
+
+    $_POST['mode']="read_users";
+    $_REQUEST['mode']="read_users";
 }
-/********************************************************************************/
 if( array_key_exists('read_decisions',$_GET)  &&   is_numeric($_GET['read_decisions'])    ){
- 
-	$_POST['mode']="read_decisions";
-	$_REQUEST['mode']="read_decisions";
+
+    $_POST['mode']="read_decisions";
+    $_REQUEST['mode']="read_decisions";
 }
-/********************************************************************************/
 if( array_key_exists('read_decisions2',$_GET)  &&   is_numeric($_GET['read_decisions2'])    ){
- 
-	$_POST['mode']="read_decisions2";
-	$_REQUEST['mode']="read_decisions2";
+    $_POST['mode']="read_decisions2";
+    $_REQUEST['mode']="read_decisions2";
 }
-/********************************************************************************/
+//----------------------------------------------------------------------------------------------------------
 if( array_key_exists('read_decisions_multi',$_GET)  &&   is_numeric($_GET['read_decisions_multi'])    ){
- 
-	$_POST['mode']="read_decisions_multi";
-	$_REQUEST['mode']="read_decisions_multi";
+    $_POST['mode']="read_decisions_multi";
+    $_REQUEST['mode']="read_decisions_multi";
 }
-/********************************************************************************/
+//----------------------------------------------------------------------------------------------------------
 if( array_key_exists('read_decisions_multi2',$_GET)  &&   is_numeric($_GET['read_decisions_multi2'])    ){
- 
-	$_POST['mode']="read_decisions_multi2";
-	$_REQUEST['mode']="read_decisions_multi2";
+    $_POST['mode']="read_decisions_multi2";
+    $_REQUEST['mode']="read_decisions_multi2";
 }
-/********************************************************************************/
-
+//----------------------------------------------------------------------------------------------------------
 if( array_key_exists('read_data2',$_GET)  &&  ($_GET['read_data2'])==0  && (is_numeric($_GET['editID']))  ){
- 
-	$_POST['mode']="read_data2";
-	$_REQUEST['mode']="read_data2";
-	 
+    $_POST['mode']="read_data2";
+    $_REQUEST['mode']="read_data2";
+
 
 }
-
-
- 
-//if(  array_item($_POST,'read_data2') && !empty($_POST['read_data2'])  ){
-//$_GET['editID']=$_POST['read_data2'];
-//	$_POST['mode']="read_data2";
-//	$_REQUEST['mode']="read_data2";
-//	$_REQUEST['editID']=$_POST['read_data2'];
-//
-//}
-/*****************************************************************************/
-
+//----------------------------------------------------------------------------------------------------------
 if(  array_item($_POST,'entry') && !empty($_POST['entry'])  ){
-	
-	
-	
-$entry=explode(',',$_POST['entry']);
-$insertID =$entry[0];
- if($insertID=='none' || $insertID==0)
- return;
+    $entry=explode(',',$_POST['entry']);
+    $insertID =$entry[0];
+    if($insertID=='none' || $insertID==0)
+        return;
 //|$insertID='11';
-$forum_decID =$entry[1];
-/*****************************************************************************/
-if($insertID==$forum_decID){
-	?>
-	<script>
-	
-	$('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
+    $brandID =$entry[1];
+//----------------------------------------------------------------------------------------------------------
+    if($insertID==$brandID){
+        ?>
+        <script>
 
-    turn_red();
-	</script>
-	<?php  
- exit;
+            $('#brand_pdf_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
+
+            turn_red();
+        </script>
+        <?php
+        exit;
+    }
+    $sql  = "SELECT brandName, brandID, parentForumID " .
+        " FROM brand ORDER BY brandName";
+    $rows = $db->queryObjectArray($sql);
+
+    // build assoc. arrays for name, parent and subcats
+    foreach($rows as $row) {
+
+        $parents[$row->brandID] = $row->parentForumID;
+        $parents_b[$row->brandID] = $row->parentForumID;
+        $subcats[$row->parentForumID][] = $row->brandID;   }
+
+    // build list of all parents for $insertID
+    $forum_ID = $insertID;
+    while($parents[$forum_ID]!=NULL) {
+        $forum_ID = $parents[$forum_ID];
+        $parentList[] = $forum_ID;
+    }
+
+
+    $forumID = $insertID;
+    while($parents_b[$forumID]!=NULL && $parents_b[$forumID]!=$brandID) {
+        $forumID = $parents_b[$forumID];
+        $parentList_b[] = $forumID;
+    }
+
+
+    if($subcats[$brandID]){
+        if(   in_array($insertID, $subcats[$brandID])
+            ||    in_array($parents[$insertID],$subcats[$brandID] )
+            ||    in_array($forumID,$subcats[$brandID] )
+            ||    $parents[$insertID]== $brandID
+
+        ){
+
+            ?>
+
+            <script>
+                $('#brand_pdf_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
+                turn_red();
+            </script>
+
+            <?php
+            exit;
+        }
+    }elseif( $insertID==$brandID){
+
+        ?>
+        <script>
+            $('#brand_pdf_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
+            turn_red();
+        </script>
+        <?php
+        exit;
+    }
+//----------------------------------------------------------------------------------------------------------
+    $brand=new brand();
+    $brand->update_parent_b($insertID, $brandID);
+//$brand->print_forum_entry_form_c($brandID);
 }
-		$sql  = "SELECT forum_decName, forum_decID, parentForumID " .
-          " FROM forum_dec ORDER BY forum_decName";
-		$rows = $db->queryObjectArray($sql);
-
-		// build assoc. arrays for name, parent and subcats
-		foreach($rows as $row) {
-			 
-			$parents[$row->forum_decID] = $row->parentForumID;
-			$parents_b[$row->forum_decID] = $row->parentForumID;
-			$subcats[$row->parentForumID][] = $row->forum_decID;   }
-
-			// build list of all parents for $insertID
-			$forum_ID = $insertID;
-			while($parents[$forum_ID]!=NULL) {
-				$forum_ID = $parents[$forum_ID];
-				$parentList[] = $forum_ID; 
-			}
-			
-			
-            $forumID = $insertID;
-			while($parents_b[$forumID]!=NULL && $parents_b[$forumID]!=$forum_decID) {
-				$forumID = $parents_b[$forumID];
-				$parentList_b[] = $forumID; 
-			}
-			
-			
-		if($subcats[$forum_decID]){	
-			if(   in_array($insertID, $subcats[$forum_decID]) 
-			||    in_array($parents[$insertID],$subcats[$forum_decID] ) 
-			||    in_array($forumID,$subcats[$forum_decID] )
-			||    $parents[$insertID]== $forum_decID 
-		   
-			){
-			 
-			 ?>
-			 
-			 <script>
-	         $('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
-             turn_red();
-	        </script>
-
-			 <?php  
-			 exit;
-			}
-		}elseif( $insertID==$forum_decID){
-			
-			 ?>
-			  <script>
-	         $('#forum_decision_tree').append($('<p ID="bgchange"   ><b style="color:blue;">אי אפשר לקשר פורום לעצמו או לבניו!!!!!</b></p>\n' ));
-             turn_red();
-	        </script>
-			 
-
-			 
-			 <?php  
-			 exit;
-			 
-		}	
-
-		
-
-/*******************************************************************************/
-$frm=new forum_dec();
-$frm->update_parent_b($insertID, $forum_decID);
-//$frm->print_forum_entry_form_c($forum_decID);
-}            
-/******************************************************************************/
-if($_POST['forum_decision']!=$_POST['forum_decID'] && $_POST['forum_decision']!='none' && $_POST['forum_decID']){
-	$_POST['forum_decID']=	$_POST['forum_decision'];
-	$_POST['form']['forum_decID']=	$_POST['forum_decision'];
-}	
-/******************************************************************************/	
+//----------------------------------------------------------------------------------------------------------
+$_POST['brandID']=	isset($_POST['brand_pdf']) ? $_POST['brand_pdf'] : '';
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  ( $_POST['brand_pdf']!=$_POST['brandID'] && $_POST['brand_pdf']!='none' && $_POST['brandID']) ) {
+    $_POST['form']['brandID']=	$_POST['brand_pdf'];
+}
+//---------------------------------------------------------------------------------
 if( array_item($_REQUEST, 'id'))
-$forum_decID = array_item($_REQUEST, 'id');
+    $brandID = array_item($_REQUEST, 'id');
 else
-$forum_decID = array_item($_REQUEST, 'forum_decID');
-/*******************************************************************************/
-
-
-
-if(array_item($_POST,'form') && is_numeric($_POST['form']['forum_decID'])
-&& $_REQUEST['mode']=='insert'  ){
-	$_SESSION['forum_decID']=$_POST['form']['forum_decID'];
-
+    $brandID = isset($_REQUEST['brandID']) ?  $_REQUEST['brandID'] : '' ;//array_item($_REQUEST, 'brandID') : '';
+//---------------------------------------------------------------------------------
+if(isset($_POST['form']['brandID']) && array_item($_POST,'form') && is_numeric($_POST['form']['brandID'])
+    && $_REQUEST['mode']=='insert'  ){
+    $_SESSION['brandID']=$_POST['form']['brandID'];
 }
-/*******************************************************************************/
+//---------------------------------------------------------------------------------
 
-if( ($_POST['form']['forum_decision'] && $_POST['form']['forum_decision']!='none')
-     && !($_POST['form']['newforum'] && !$_POST['form']['newforum']!='none') 
-     && ($_REQUEST['mode']=='save')   ){
-	  $_POST['mode']="update";
-	$_REQUEST['mode']="update";
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  ( ($_POST['form']['brand_pdf'] && $_POST['form']['brand_pdf']!='none')
+        && !($_POST['form']['newbrand '] && !$_POST['form']['newbrand ']!='none') )
+    && ($_REQUEST['mode']=='save')   ){
+    $_POST['mode']="update";
+    $_REQUEST['mode']="update";
 }
-
-/**********************************************************************************/
-/**********************************************************************************/
-if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
-     &&  ( is_array($_POST['form']) && is_numeric($_POST['forum_decision'] ) )
-     && ($_REQUEST['mode']=='save') 
-     && !$_POST['form']['newforum']){
-	  $_POST['mode']="update";
-	$_REQUEST['mode']="update";
+//---------------------------------------------------------------------------------/
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  (($_POST['brand_pdf'] && $_POST['brand_pdf']!='none')
+        &&  ( is_array($_POST['form']) && is_numeric($_POST['brand_pdf'] ) ))
+    && ($_REQUEST['mode']=='save')
+    && !$_POST['form']['newbrand ']){
+    $_POST['mode']="update";
+    $_REQUEST['mode']="update";
 }
-
-/**********************************************************************************/
-if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
-     &&  ( is_array($_POST['form']) && is_numeric($_POST['forum_decision'] ) )
-     && ($_REQUEST['mode']=='save') 
-     && $_POST['form']['newforum']){
-	  $_POST['mode']="save";
-	$_REQUEST['mode']="save";
+//--------------------------------------------------------------------------------
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  ( ($_POST['brand_pdf'] && $_POST['brand_pdf']!='none')
+        &&  ( is_array($_POST['form']) && is_numeric($_POST['brand_pdf'] ) ))
+    && ($_REQUEST['mode']=='save')
+    && $_POST['form']['newbrand ']){
+    $_POST['mode']="save";
+    $_REQUEST['mode']="save";
 }
 
+//---------------------------------------------------------------------------------
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  ( ($_POST['form']['brand_pdf'] && $_POST['form']['brand_pdf']!='none')
+        &&  ( is_array($_POST['form']) && is_numeric($_POST['form']['brand_pdf'] ) ))
+    && ($_REQUEST['mode']=='update')
+    && $_POST['form']['newbrand ']){
+    $_POST['mode']="save";
+    $_REQUEST['mode']="save";
+}
+//---------------------------------------------------------------------------------
+if(isset($_POST['brand_pdf']) &&  isset($_POST['form']) &&  ($_POST['brand_pdf'] && $_POST['brand_pdf']!='none')
+    &&  ( is_array($_POST['form']) && is_numeric($_POST['brand_pdf'] ) )
+    && ($_REQUEST['mode']=='update')
+    && $_POST['form']['newbrand ']){
 
-/**********************************************************************************/
-if( ($_POST['form']['forum_decision'] && $_POST['form']['forum_decision']!='none')
-     &&  ( is_array($_POST['form']) && is_numeric($_POST['form']['forum_decision'] ) )
-     && ($_REQUEST['mode']=='update') 
-     && $_POST['form']['newforum']){
-	  $_POST['mode']="save";
-	$_REQUEST['mode']="save";
+    /*	if($_POST['insert_forum']&& is_numeric($_POST['insert_forum']) ){
+        unset($_POST['form']['insertID']);
+        }*/
+    if($_POST['brandID']){
+        unset($_POST['brandID']);
+    }
+    unset($_POST['brand_pdf']);
+    unset($_POST['form']['brandID']);
+    $_POST['form']['dynamic_ajx']=1;
+    $_POST['mode']="save";
+    $_REQUEST['mode']="save";
 }
 
-/***********************************************************************************/
+//---------------------------------------------------------------------------------
+if(isset($_POST['brand_pdf']) &&   ($_POST['brand_pdf'] && $_POST['brand_pdf']=='none')
+    &&  ( is_array($_POST['form']) )
+    &&  $_POST['brandID']==0
+    && ($_REQUEST['mode']=='save')
+    && $_POST['form']['newbrand ']){
 
-if( ($_POST['forum_decision'] && $_POST['forum_decision']!='none')
-     &&  ( is_array($_POST['form']) && is_numeric($_POST['forum_decision'] ) )
-     && ($_REQUEST['mode']=='update') 
-     && $_POST['form']['newforum']){
-        
-     /*	if($_POST['insert_forum']&& is_numeric($_POST['insert_forum']) ){
-     	unset($_POST['form']['insertID']);
-     	}*/
-     if($_POST['forum_decID']){
-     	unset($_POST['forum_decID']);
-     }		
-     unset($_POST['forum_decision']);
-     unset($_POST['form']['forum_decID']);
-     $_POST['form']['dynamic_ajx']=1;	
-	  $_POST['mode']="save";
-	$_REQUEST['mode']="save";
-}
-
-
-/**********************************************************************************/
-if( ($_POST['forum_decision'] && $_POST['forum_decision']=='none')
-     &&  ( is_array($_POST['form']) )
-     &&  $_POST['forum_decID']==0
-     && ($_REQUEST['mode']=='save') 
-     && $_POST['form']['newforum']){
-        
-     /*	if($_POST['insert_forum']&& is_numeric($_POST['insert_forum']) ){
-     	unset($_POST['form']['insertID']);
-     	}*/
-     if($_POST['forum_decID'] || $_POST['forum_decID']==0){
-     	unset($_POST['forum_decID']);
-     }	
-     if($_POST['form']['forum_decision']=='none'){
-     	unset($_POST['form']['forum_decision']);
-     }			
-     unset($_POST['forum_decision']);
-     unset($_POST['form']['forum_decID']);
-     $_POST['form']['dynamic_ajx']=1;	
-	  $_POST['mode']="save";
-	$_REQUEST['mode']="save";
+    /*	if($_POST['insert_forum']&& is_numeric($_POST['insert_forum']) ){
+        unset($_POST['form']['insertID']);
+        }*/
+    if($_POST['brandID'] || $_POST['brandID']==0){
+        unset($_POST['brandID']);
+    }
+    if($_POST['form']['brand_pdf']=='none'){
+        unset($_POST['form']['brand_pdf']);
+    }
+    unset($_POST['brand_pdf']);
+    unset($_POST['form']['brandID']);
+    $_POST['form']['dynamic_ajx']=1;
+    $_POST['mode']="save";
+    $_REQUEST['mode']="save";
 }
 
 
 
 
 
-   if(isset ($_POST['forum_decision']))  {
- 	$frm_decID=$_POST['forum_decision'];
- 	if(isset ($_POST["submitbutton3_$frm_decID"]))  {
- 		$_POST['mode']='take_data';
- 		unset($_REQUEST['mode']);
- 		$_REQUEST['mode']=$_POST['mode'];
- 		
- 	}
- }   
+if(isset ($_POST['brand_pdf']))  {
+    $brandID=$_POST['brand_pdf'];
+    if(isset ($_POST["submitbutton3_$brandID"]))  {
+        $_POST['mode']='take_data';
+        unset($_REQUEST['mode']);
+        $_REQUEST['mode']=$_POST['mode'];
 
-
-/**********************************************************************************/
-//if($_POST['form']['btnLink1'] ) {
-//	$_POST['mode']="list";
-//	$_REQUEST['mode']="list";
-//}
- 
-
-/****************************************/
+    }
+}
+$_REQUEST['mode']  = isset( $_REQUEST['mode'] ) ? $_REQUEST['mode'] : 'default';
+//---------------------------------------------------------------------------------
 switch ($_REQUEST['mode'] ) {
-/***************************************************************************************************/
-/***************************************************************************************************/
-	case "read_decisions":
-		if(is_numeric($_GET['read_decisions']) ){
-		
-          get_dec($_GET['read_decisions']);
-		} 
-		break;
-/***************************************************************************************************/
-case "read_decisions2":
-		if(is_numeric($_GET['read_decisions2']) ){
-		
-          get_dec2($_GET['read_decisions2']);
-		} 
-		break;
-/***************************************************************************************************/
-		
-	case "read_decisions_multi":
-		if(is_numeric($_GET['read_decisions_multi']) ){
-		
-          get_dec_multi($_GET['read_decisions_multi'],$_GET['count_form']);
-		} 
-		break;
-/***************************************************************************************************/
-case "read_decisions_multi2":
-		if(is_numeric($_GET['read_decisions_multi2']) ){
-		
-          get_dec_multi2($_GET['read_decisions_multi2'],$_GET['count_form']);
-		} 
-		break;
-/***************************************************************************************************/				
-case "read_users":
-		if(is_numeric($_GET['read_users']) ){
-		
-          get_users($_GET['read_users']);
-		} 
-		break;
-		
-/***************************************************************************************************/
-	case "insert":
-		if(is_numeric($_GET['forum_decID']) ){
+    case "view_pdfs":
+        if( ! isAjax() ){
+            global $dbc;
+            $valid = false;
+// Validate the PDF ID:
+            if (isset($_GET['id']) && (strlen($_GET['id']) == 40) && (substr($_GET['id'], 0, 1) != '.') ) {
+                // Identify the file:
+                $file = PDF_DIR . $_GET['id'];
+                // Check that the PDF exists and is a file:
+                if (file_exists($file) && (is_file($file))) {
+                    // Get the info:
+                    $q = 'SELECT * FROM pdfs WHERE tmpName="' . mysqli_real_escape_string($dbc, $_GET['id']) . '"';
+                    $r = mysqli_query($dbc, $q);
+                    if (mysqli_num_rows($r) == 1) { // Ok!
+                        // Fetch the info:
+                        $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
+                        // Indicate that the file reference is fine:
+                        $valid = true;
+                        $GLOBALS['TEMPLATE']['content'] = ob_get_contents();
+                        ob_end_clean();
+                        ob_start();
+                        // Send the content information:
+                        header('Content-type:application/pdf');
+                        header('Content-Disposition:inline;filename="' . $row['pdfName'] . '"');
+                        $fs = filesize($file);
+                        header("Content-Length:$fs\n");
+                        // Send the file:
+                        readfile($file);
+                        exit();
+                        $GLOBALS['TEMPLATE']['content'] = ob_get_contents();
+                        ob_end_clean();
+                        ob_end_flush();
+                    }
+                }
+            }
+        }
+        break;
+//-------------------------------------------------------------------------------
+    case "read_decisions":
+        if(is_numeric($_GET['read_decisions']) ){
 
-			update_to_parent($_GET['forum_decID'],$_GET['insertID']);
-			unset($_SESSION['forum_decID']);
-		}else{
-			
-			insert_forum($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories']);
-		}
+            get_dec($_GET['read_decisions']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "read_decisions2":
+        if(is_numeric($_GET['read_decisions2']) ){
 
-		break;
-/***************************************************************************************************/
-/***************************************************************************************************/
-	case  "link":
-		if (isset($_REQUEST['form'])){
-			read_befor_link($_POST['form']);
-		}else{
-			$formdata['forum_decID']=$_GET['forum_decID'];
-			$formdata['insertID']=$_GET['insertID'];
-			read_link($formdata);
-		}
-		break;
-/***************************************************************************************************/
-/***************************************************************************************************/
-	case  "read_data":
-		if( array_item($_POST, 'forum_decision') && count($_POST)==1 && !$_GET){
-		$_REQUEST['editID']= array_item($_POST, 'forum_decision');
-		}
-		if($_REQUEST['editID']){
-		$formdata =read_forum($_GET['editID']);
-		}else{
-		$formdata =read_forum($_GET['forum_decID']);
-		}
-		break;
-		
-		case  "read_data2":
-		if( array_item($_POST, 'forum_decision') && count($_POST)==1 && !$_GET){
-		$_REQUEST['editID']= array_item($_POST, 'forum_decision');
-		}
-		if($_REQUEST['editID']){
-		$formdata =read_forum_ajx($_GET['editID']);
-		}else{
-		$formdata =read_forum_ajx($_GET['forum_decID']);
-		}
-		break;
-/***************************************************************************************************/
-/***************************************************************************************************/
-	case "update":
-		if($_GET['updateID']) {
-			update_forum1($_GET['updateID']);
-			 
-		}else{
+            get_dec2($_GET['read_decisions2']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "read_decisions_multi":
+        if(is_numeric($_GET['read_decisions_multi']) ){
+
+            get_dec_multi($_GET['read_decisions_multi'],$_GET['count_form']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "read_decisions_multi2":
+        if(is_numeric($_GET['read_decisions_multi2']) ){
+
+            get_dec_multi2($_GET['read_decisions_multi2'],$_GET['count_form']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "read_users":
+        if(is_numeric($_GET['read_users']) ){
+
+            get_users($_GET['read_users']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "insert":
+        if(is_numeric($_GET['brandID']) ){
+            update_to_parent($_GET['brandID'],$_GET['insertID']);
+            unset($_SESSION['brandID']);
+        }else{
+
+            insert_forum($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case  "link":
+        if (isset($_REQUEST['form'])){
+            read_befor_link($_POST['form']);
+        }else{
+            $formdata['brandID']=$_GET['brandID'];
+            $formdata['insertID']=$_GET['insertID'];
+            read_link($formdata);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case  "read_data":
+        if( array_item($_POST, 'brand_pdf') && count($_POST)==1 && !$_GET){
+            $_REQUEST['editID']= array_item($_POST, 'brand_pdf');
+        }
+        if($_REQUEST['editID']){
+            $formdata =read_forum($_GET['editID']);
+        }else{
+            $formdata =read_forum($_GET['brandID']);
+        }
+        break;
+
+    case  "read_data2":
+        if( array_item($_POST, 'brand_pdf') && count($_POST)==1 && !$_GET){
+            $_REQUEST['editID']= array_item($_POST, 'brand_pdf');
+        }
+        if($_REQUEST['editID']){
+            $formdata =read_forum_ajx($_GET['editID']);
+        }else{
+            $formdata =read_forum_ajx($_GET['brandID']);
+        }
+        break;
+//---------------------------------------------------------------------------------
+    case "update":
+        if($_GET['updateID']) {
+            update_forum1($_GET['updateID']);
+
+        }else{
 //------------------------------------------------------------------------------------			
-			if($_POST['form']){
-				foreach($_POST['form']  as $key=>$val){
-					if ($val=='none' || $val== "" )
-					unset ($_POST['form'][$key]);
-						
-				}
-					
-			}
+            if($_POST['form']){
+                foreach($_POST['form']  as $key=>$val){
+                    if ($val=='none' || $val== "" )
+                        unset ($_POST['form'][$key]);
+
+                }
+
+            }
 //------------------------------------------------------------------------------------			
-			global $db;
-			$frmID= $_POST['form']['forum_decision']?$_POST['form']['forum_decision']:$_POST['form'] ; 
-				 
-/*********************************************************************************/
-			if($_POST['form']["dest_users$frmID"][0]== 'none')
-			unset($_POST['form']["dest_users$frmID"][0] );
-/********************************DEST_USERS*************************************************/
-			if($_POST['form']['dest_users'][0]== 'none')
-			unset($_POST['form']['dest_users'][0] );
-
-			if(count($_POST['form']['dest_users'])==0  )
-			unset($_POST['form']['dest_users'] );
-
-			if($_POST['form']['src_users'][0]== 'none')
-			unset($_POST['form']['src_users'][0] );
-
-			if(count($_POST['form']['src_users'])==0  )
-			unset($_POST['form']['src_users'] );
+            global $db;
+            $brandID= $_POST['form']['brand_pdf']?$_POST['form']['brand_pdf']:$_POST['form'] ;
 
 
-			if($_POST['arr_dest_users'][0]== 'none')
-			unset($_POST['arr_dest_users'][0] );
+            if($_POST['form']["dest_dfps$brandID"][0]== 'none')
+                unset($_POST['form']["dest_dfps$brandID"][0] );
+            /********************************dest_dfps*************************************************/
+            if($_POST['form']['dest_dfps'][0]== 'none')
+                unset($_POST['form']['dest_dfps'][0] );
 
-			if(count($_POST['arr_dest_users'])==0  )
-			unset($_POST['arr_dest_users'] );
-/********************************DEST_FORUMSTYPE*************************************************/
-			if($_POST['form']['dest_forumsType'][0]== 'none')
-			unset($_POST['form']['dest_forumsType'][0] );
+            if(count($_POST['form']['dest_dfps'])==0  )
+                unset($_POST['form']['dest_dfps'] );
 
-			if(count($_POST['form']['dest_forumsType'])==0  )
-			unset($_POST['form']['dest_forumsType'] );
+            if($_POST['form']['src_dfps'][0]== 'none')
+                unset($_POST['form']['src_dfps'][0] );
 
-			if($_POST['form']['src_forumsType'][0]== 'none')
-			unset($_POST['form']['src_forumsType'][0] );
-
-			if(count($_POST['form']['src_forumsType'])==0  )
-			unset($_POST['form']['src_forumsType'] );
+            if(count($_POST['form']['src_dfps'])==0  )
+                unset($_POST['form']['src_dfps'] );
 
 
-			if($_POST['arr_dest_forumsType'][0]== 'none')
-			unset($_POST['arr_dest_forumsType'][0] );
+            if($_POST['arr_dest_dfps'][0]== 'none')
+                unset($_POST['arr_dest_dfps'][0] );
 
-			if(count($_POST['arr_dest_forumsType'])==0  )
-			unset($_POST['arr_dest_forumsType'] );	
-/********************************DEST_MANAGERSTYPE*************************************************/
-			if($_POST['form']['dest_managersType'][0]== 'none')
-			unset($_POST['form']['dest_managersType'][0] );
+            if(count($_POST['arr_dest_dfps'])==0  )
+                unset($_POST['arr_dest_dfps'] );
+            /********************************DEST_brandsTYPE*************************************************/
+            if($_POST['form']['dest_brandsType'][0]== 'none')
+                unset($_POST['form']['dest_brandsType'][0] );
 
-			if(count($_POST['form']['dest_managersType'])==0  )
-			unset($_POST['form']['dest_managersType'] );
+            if(count($_POST['form']['dest_brandsType'])==0  )
+                unset($_POST['form']['dest_brandsType'] );
 
-			if($_POST['form']['src_managersType'][0]== 'none')
-			unset($_POST['form']['src_managersType'][0] );
+            if($_POST['form']['src_brandsType'][0]== 'none')
+                unset($_POST['form']['src_brandsType'][0] );
 
-			if(count($_POST['form']['src_managersType'])==0  )
-			unset($_POST['form']['src_managersType'] );
-
-
-			if($_POST['arr_dest_managersType'][0]== 'none')
-			unset($_POST['arr_dest_managersType'][0] );
-
-			if(count($_POST['arr_dest_managersType'])==0  )
-			unset($_POST['arr_dest_managersType'] );						 
-/*********************************************************************************/
-			 
-/*********************************************************************************/
-			if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-				$formdata=$_POST['form'];
-				 
-			$staff=implode(',',$_POST['arr_dest_users']);	
-			$sql="SELECT userID,full_name FROM users WHERE userID in($staff)";
-
-			if($rows=$db->queryObjectArray($sql)){
-				foreach($rows as $row){
-				 
-				 $formdata["dest_users"][$row->userID]=$row->full_name;		
-				}
-				unset($formdata['arr_dest_users']);
-			  }	
-				
-			}elseif($_POST['form']['dest_users'] && is_numeric($_POST['form']['dest_users'][0])){
-					
-				$formdata=$_POST['form'];
-/**********************************************************************************/
-			}elseif( !is_numeric($_POST['form']['dest_users'][0])
-			&& ($_POST['form']['dest_users'])
-			&&  ($_POST['form']['dest_users'][1])
-			&&  (is_numeric($_POST['form']['dest_users'][1]))  ){
-				 
-
-				$dest_users= $_POST['form']['dest_users'];
-				$i=0;
-				foreach($dest_users as $key => $val){
-					if(is_numeric($val)){
-						$array_num[]=$val ;
-					}elseif(!is_numeric($val) && $val=='none'){
-						unset($dest_users[$i]);
-					}else
-					$vals[$key] = "'$val'" ;
-					$i++;
-				}
+            if(count($_POST['form']['src_brandsType'])==0  )
+                unset($_POST['form']['src_brandsType'] );
 
 
-/*************************************************************************************/
-				if($vals){
-					$stuff = implode(", ", $vals);
-				
-					$sql="SELECT  userID,full_name FROM users where full_name in($stuff)";
-					$rows=$db->queryObjectArray($sql);
-					$dest_users="";
-				 foreach($rows as $row){
-				 	$dest_users[]=$row->userID; 
-				 	 
-				 }
-				 
-				 
-				 	
-				}
-				$formdata=$_POST['form'];
+            if($_POST['arr_dest_brandsType'][0]== 'none')
+                unset($_POST['arr_dest_brandsType'][0] );
 
-				if($array_num && !$dest_users){
-					$formdata['dest_user']=$array_num;
-	     
-				}elseif(!$array_num && $dest_users){
-					$formdata['dest_users']=$dest_users;
-				 $size_dest=count($formdata['dest_users']);
-				}
-				elseif($array_num && $dest_users){
-					$dest=array_merge($array_num,$dest_users);
-					$dest=array_unique($dest);
-					$formdata['dest_users'] = $dest;
-				}
+            if(count($_POST['arr_dest_brandsType'])==0  )
+                unset($_POST['arr_dest_brandsType'] );
+            /********************************DEST_MANAGERSTYPE*************************************************/
+            if($_POST['form']['dest_managersType'][0]== 'none')
+                unset($_POST['form']['dest_managersType'][0] );
 
-/***************************************************************************************/
-			}
-/*******************************************************************************************************/			
+            if(count($_POST['form']['dest_managersType'])==0  )
+                unset($_POST['form']['dest_managersType'] );
 
-			
-/**********************************************************************************************************/			
-			else{
-				$formdata=$_POST['form'];
-			}
-/********************************************************************************************/
-if($_POST['form']['dest_users'] && !($_POST['arr_dest_users']) ){			
-	$formdata['dest_users2']  = $formdata['dest_users'] ;
+            if($_POST['form']['src_managersType'][0]== 'none')
+                unset($_POST['form']['src_managersType'][0] );
 
-}	
-			if($formdata['dest_users'][0] && is_numeric($formdata['dest_users'][0]) && is_array($formdata['dest_users']) ){
-				foreach($formdata['dest_users'] as $key=>$val){
-					
-		        $sql="SELECT full_name FROM users where userID =$val";
-				if($rows=$db->queryObjectArray($sql))
-					
-					$destNames[$val]=$rows[0]->full_name;
-				
-				}
-				$formdata['dest_users']=$destNames;
-			}elseif($formdata['dest_users'] && is_numeric($formdata['dest_users'])  ){
-				$destID=$formdata['dest_users'] ;
-			
-				$sql="SELECT  userID,full_name FROM users where userID in($destID)";
-				$rows=$db->queryObjectArray($sql);
-				foreach($rows as $row){
-					$destNames[$row->userID]=$row->full_name;
-				}
-				
-				$frmID= $_POST['form']['forum_decision'] ; 
-				$formdata['dest_users']=$formdata["dest_users$frmID"];
-				$formdata['dest_users']=$destNames;
-				
-			}
-			
-			
-			
-			
-		if(!array_item($formdata,'forum_decision') && array_item($_POST,'forum_decision')  && $_POST['forum_decision']!=null){
- 				$formdata['forum_decision']=array_item($_POST,'forum_decision');
- 			}
- 			
- 			
- 		if(!$_POST['form']['dest_forumsType'] && $_POST['arr_dest_forumsType']){
-				 
-				$formdata['dest_forumsType']=$_POST['arr_dest_forumsType'];
-			}
+            if(count($_POST['form']['src_managersType'])==0  )
+                unset($_POST['form']['src_managersType'] );
 
-		if($_POST['form']['dest_forumsType'] && !$_POST['arr_dest_forumsType']){
-				 
-				$formdata['dest_forumsType']=$_POST['form']['dest_forumsType'];
-			}	
-//		if(!$_POST['form']['dest_forumsType'] && !$_POST['arr_dest_forumsType'] && $_POST['form']['src_forumsType']){
+
+            if($_POST['arr_dest_managersType'][0]== 'none')
+                unset($_POST['arr_dest_managersType'][0] );
+
+            if(count($_POST['arr_dest_managersType'])==0  )
+                unset($_POST['arr_dest_managersType'] );
+            /*********************************************************************************/
+
+            /*********************************************************************************/
+            if(!$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']){
+                $formdata=$_POST['form'];
+
+                $staff=implode(',',$_POST['arr_dest_dfps']);
+                $sql="SELECT userID,full_name FROM users WHERE userID in($staff)";
+
+                if($rows=$db->queryObjectArray($sql)){
+                    foreach($rows as $row){
+
+                        $formdata["dest_dfps"][$row->userID]=$row->full_name;
+                    }
+                    unset($formdata['arr_dest_dfps']);
+                }
+
+            }elseif($_POST['form']['dest_dfps'] && is_numeric($_POST['form']['dest_dfps'][0])){
+
+                $formdata=$_POST['form'];
+                /**********************************************************************************/
+            }elseif( !is_numeric($_POST['form']['dest_dfps'][0])
+                && ($_POST['form']['dest_dfps'])
+                &&  ($_POST['form']['dest_dfps'][1])
+                &&  (is_numeric($_POST['form']['dest_dfps'][1]))  ){
+
+
+                $dest_dfps= $_POST['form']['dest_dfps'];
+                $i=0;
+                foreach($dest_dfps as $key => $val){
+                    if(is_numeric($val)){
+                        $array_num[]=$val ;
+                    }elseif(!is_numeric($val) && $val=='none'){
+                        unset($dest_dfps[$i]);
+                    }else
+                        $vals[$key] = "'$val'" ;
+                    $i++;
+                }
+
+
+                /*************************************************************************************/
+                if($vals){
+                    $stuff = implode(", ", $vals);
+
+                    $sql="SELECT  userID,full_name FROM users where full_name in($stuff)";
+                    $rows=$db->queryObjectArray($sql);
+                    $dest_dfps="";
+                    foreach($rows as $row){
+                        $dest_dfps[]=$row->userID;
+
+                    }
+
+
+
+                }
+                $formdata=$_POST['form'];
+
+                if($array_num && !$dest_dfps){
+                    $formdata['dest_user']=$array_num;
+
+                }elseif(!$array_num && $dest_dfps){
+                    $formdata['dest_dfps']=$dest_dfps;
+                    $size_dest=count($formdata['dest_dfps']);
+                }
+                elseif($array_num && $dest_dfps){
+                    $dest=array_merge($array_num,$dest_dfps);
+                    $dest=array_unique($dest);
+                    $formdata['dest_dfps'] = $dest;
+                }
+
+                /***************************************************************************************/
+            }
+            /*******************************************************************************************************/
+
+
+            /**********************************************************************************************************/
+            else{
+                $formdata=$_POST['form'];
+            }
+            /********************************************************************************************/
+            if($_POST['form']['dest_dfps'] && !($_POST['arr_dest_dfps']) ){
+                $formdata['dest_dfps2']  = $formdata['dest_dfps'] ;
+
+            }
+            if($formdata['dest_dfps'][0] && is_numeric($formdata['dest_dfps'][0]) && is_array($formdata['dest_dfps']) ){
+                foreach($formdata['dest_dfps'] as $key=>$val){
+
+                    $sql="SELECT full_name FROM users where userID =$val";
+                    if($rows=$db->queryObjectArray($sql))
+
+                        $destNames[$val]=$rows[0]->full_name;
+
+                }
+                $formdata['dest_dfps']=$destNames;
+            }elseif($formdata['dest_dfps'] && is_numeric($formdata['dest_dfps'])  ){
+                $destID=$formdata['dest_dfps'] ;
+
+                $sql="SELECT  userID,full_name FROM users where userID in($destID)";
+                $rows=$db->queryObjectArray($sql);
+                foreach($rows as $row){
+                    $destNames[$row->userID]=$row->full_name;
+                }
+
+                $brandID= $_POST['form']['brand_pdf'] ;
+                $formdata['dest_dfps']=$formdata["dest_dfps$brandID"];
+                $formdata['dest_dfps']=$destNames;
+
+            }
+
+
+
+
+            if(!array_item($formdata,'brand_pdf') && array_item($_POST,'brand_pdf')  && $_POST['brand_pdf']!=null){
+                $formdata['brand_pdf']=array_item($_POST,'brand_pdf');
+            }
+
+
+            if(!$_POST['form']['dest_brandsType'] && $_POST['arr_dest_brandsType']){
+
+                $formdata['dest_brandsType']=$_POST['arr_dest_brandsType'];
+            }
+
+            if($_POST['form']['dest_brandsType'] && !$_POST['arr_dest_brandsType']){
+
+                $formdata['dest_brandsType']=$_POST['form']['dest_brandsType'];
+            }
+//		if(!$_POST['form']['dest_brandsType'] && !$_POST['arr_dest_brandsType'] && $_POST['form']['src_brandsType']){
 //				 
-//				$formdata['dest_forumsType']=$_POST['form']['src_forumsType'];
+//				$formdata['dest_brandsType']=$_POST['form']['src_brandsType'];
 //			}		
-/*************************************MANAGERSTYPE****************************************************/
-		if(!$_POST['form']['dest_managersType'] && $_POST['arr_dest_managersType']){
-				 
-				$formdata['dest_managersType']=$_POST['arr_dest_managersType'];
-			}
+            /*************************************MANAGERSTYPE****************************************************/
+            if(!$_POST['form']['dest_managersType'] && $_POST['arr_dest_managersType']){
 
-		if($_POST['form']['dest_managersType'] && !$_POST['arr_dest_managersType']){
-				 
-				$formdata['dest_managersType']=$_POST['form']['dest_managersType'];
-			}	
+                $formdata['dest_managersType']=$_POST['arr_dest_managersType'];
+            }
+
+            if($_POST['form']['dest_managersType'] && !$_POST['arr_dest_managersType']){
+
+                $formdata['dest_managersType']=$_POST['form']['dest_managersType'];
+            }
 //		if(!$_POST['form']['dest_managersType'] && !$_POST['arr_dest_managersType'] && $_POST['form']['src_managersType']){
 //				 
 //				$formdata['dest_managersType']=$_POST['form']['src_managersType'];
 //			}		
-			
-/******************************************************************************************/
-if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
-	
-$formdata['insert_forum']=$_POST['insert_forum'];
-}else{
-$frmID=$formdata['forum_decision'];	
-$sql="select parentForumID from forum_dec where forum_decID=$frmID";
-if($rows=$db->queryObjectArray($sql) ){
-	 
-	$formdata['insert_forum']=$rows[0]->parentForumID;
-  }	
-	
-}							
-/*****************************************************************************************/
 
-			$db->execute("START TRANSACTION");
-/******************************************************/			
-			if(!$formdata=update_forum($formdata)){
-/*****************************************************/				
-				$db->execute("ROLLBACK");
-			
-				
-				$formdata=$_POST['form'];
-/**********************************************************************************************************/			
-if($formdata['src_managersType'] &&  is_array($formdata['src_managersType']) && (is_numeric ($formdata['src_managersType'][0])) ){
-unset($formdata['src_managersType']);
-}
+            /******************************************************************************************/
+            if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
 
-if($formdata['src_forumsType'] &&  is_array($formdata['src_forumsType']) && (is_numeric($formdata['src_forumsType'][0])) ){
-	unset($formdata['src_forumsType']);
-}
+                $formdata['insert_forum']=$_POST['insert_forum'];
+            }else{
+                $brandID=$formdata['brand_pdf'];
+                $sql="select parentForumID from brand where brandID=$brandID";
+                if($rows=$db->queryObjectArray($sql) ){
 
-if($formdata['src_users'] &&  is_array($formdata['src_users']) && (is_numeric($formdata['src_users'][0])) ){
-	unset($formdata['src_users']);
-}		
-/**********************************************************************************************************/			
-							
-				
-				$formdata['forum_decision']=$_POST['form']['forum_decision'];
-				$formdata['category']=$_POST['form']['category'];
-				$formdata['appoint_forum']=$_POST['form']['appoint_forum'];
-				$formdata['manager_forum']=$_POST['form']['manager_forum'];
-				$formdata['managerType']=$_POST['form']['managerType'];
+                    $formdata['insert_forum']=$rows[0]->parentForumID;
+                }
+
+            }
+            /*****************************************************************************************/
+
+            $db->execute("START TRANSACTION");
+            /******************************************************/
+            if(!$formdata=update_forum($formdata)){
+                /*****************************************************/
+                $db->execute("ROLLBACK");
+
+
+                $formdata=$_POST['form'];
+                /**********************************************************************************************************/
+                if($formdata['src_managersType'] &&  is_array($formdata['src_managersType']) && (is_numeric ($formdata['src_managersType'][0])) ){
+                    unset($formdata['src_managersType']);
+                }
+
+                if($formdata['src_brandsType'] &&  is_array($formdata['src_brandsType']) && (is_numeric($formdata['src_brandsType'][0])) ){
+                    unset($formdata['src_brandsType']);
+                }
+
+                if($formdata['src_dfps'] &&  is_array($formdata['src_dfps']) && (is_numeric($formdata['src_dfps'][0])) ){
+                    unset($formdata['src_dfps']);
+                }
+                /**********************************************************************************************************/
+
+
+                $formdata['brand_pdf']=$_POST['form']['brand_pdf'];
+                $formdata['category']=$_POST['form']['category'];
+                $formdata['appoint_forum']=$_POST['form']['appoint_forum'];
+                $formdata['manager_forum']=$_POST['form']['manager_forum'];
+                $formdata['managerType']=$_POST['form']['managerType'];
                 //$formdata['appoint_date1']=$_POST['form']['appoint_date1'];
-				//$formdata['manager_date']=$_POST['form']['manager_date'];  
-				
-				
-				
-			if($_POST['form']['appoint_date1'] ){
-				$formdata['appoint_date1']= $_POST['form']['appoint_date1']  ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['appoint_date1']);
-				if(strlen($year_date)>3 ){
-				$formdata['appoint_date1']="$day_date-$month_date-$year_date";	
-				 }
-				}
-				
-				if($_POST['form']['manager_date']){
-				$formdata['manager_date']= $_POST['form']['manager_date'] ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['manager_date']);
-				if(strlen($year_date)>3){
-				$formdata['manager_date']="$day_date-$month_date-$year_date";
-				 } 
-				}	
-				
-				
-				if($_POST['form']['forum_date']){
-				$formdata['forum_date']=$_POST['form']['forum_date'];
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
-				if(strlen($year_date)>3 ){
-				$formdata['forum_date']="$day_date-$month_date-$year_date";
-				  } 	
-				}
-				
-				
-				
-			if($_POST['arr_dest_forums']){
-			  $formdata['dest_forums']=$_POST['arr_dest_forumsType'];	
-			}
-			
-			if($_POST['arr_dest_managersType']){
-			  $formdata['dest_managersType']=$_POST['arr_dest_managersType'];	
-			}
-				
-				
-				
+                //$formdata['manager_date']=$_POST['form']['manager_date'];
+
+
+
+                if($_POST['form']['appoint_date1'] ){
+                    $formdata['appoint_date1']= $_POST['form']['appoint_date1']  ;
+                    list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['appoint_date1']);
+                    if(strlen($year_date)>3 ){
+                        $formdata['appoint_date1']="$day_date-$month_date-$year_date";
+                    }
+                }
+
+                if($_POST['form']['manager_date']){
+                    $formdata['manager_date']= $_POST['form']['manager_date'] ;
+                    list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['manager_date']);
+                    if(strlen($year_date)>3){
+                        $formdata['manager_date']="$day_date-$month_date-$year_date";
+                    }
+                }
+
+
+                if($_POST['form']['forum_date']){
+                    $formdata['forum_date']=$_POST['form']['forum_date'];
+                    list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
+                    if(strlen($year_date)>3 ){
+                        $formdata['forum_date']="$day_date-$month_date-$year_date";
+                    }
+                }
+
+
+
+                if($_POST['arr_dest_brands']){
+                    $formdata['dest_brands']=$_POST['arr_dest_brandsType'];
+                }
+
+                if($_POST['arr_dest_managersType']){
+                    $formdata['dest_managersType']=$_POST['arr_dest_managersType'];
+                }
+
+
+
 //				$formdata['forum_date']=substr($_POST['form']['forum_date'],1,10);
 //				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
 //				if(strlen($year_date>3) )
 //				$formdata['forum_date']="$day_date-$month_date-$year_date";
-				
-
-				
-if($formdata['dest_users']){				
-	    $i=0;
-	   foreach($formdata['dest_users'] as $row){
-			$member_date="member_date$i"; 
-			$rows['full_date'][$i] =$formdata[$member_date];
-	       	
-		    $i++;	
-		}
-
-		  
-		
-		$i=0;
-		foreach($rows['full_date'] as $row){
-			
-		        $member_date="member_date$i"; 
-				list($year_date,$month_date, $day_date) = explode('-',$row);
-				if(strlen($year_date)>3 ){
-				$formdata[$member_date]="$day_date-$month_date-$year_date";
-				}
-
-				$i++;
-		}
-		      
-	$formdata['fail']=true;	
-}		
-		
-					
-				if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-					$formdata['dest_users']=$_POST['arr_dest_users'];
-				}
-					
-				if($formdata['src_users'] && $_POST['arr_dest_users'] ){
-						
-					$i=0;
-					foreach ($_POST['arr_dest_users'] as $dst){
-						if($dst=='none')
-						unset ($_POST['arr_dest_users'][$i]);
-						$i++;
-
-					}
-						
-					$arr=implode(',',$_POST['arr_dest_users'] );
-						
-					$sql="select userID,full_name from users where userID in($arr)";
-					$rows=$db->queryObjectArray($sql);
-					foreach ($rows as $row){
-						$dest[$row->userID]=$row->full_name;
-					}
-						
-					$formdata['dest_users']=$dest;//$_POST['arr_dest_users'];
-						
-						
-				}elseif($formdata['dest_users']){// && $formdata['dest_users'][0]!='none' && is_numeric($formdata['dest_users'][0]) ){
 
 
 
-					$dest_users = $dest_users ? $dest_users:$formdata['dest_users'];
-					$i=0;
-					foreach ($dest_users as $dst){
-						if($dst=='none')
-						unset ($dest_users[$i]);
-						$i++;
+                if($formdata['dest_dfps']){
+                    $i=0;
+                    foreach($formdata['dest_dfps'] as $row){
+                        $member_date="member_date$i";
+                        $rows['full_date'][$i] =$formdata[$member_date];
 
-					}
-
-
-					$arr=implode(',',$dest_users  );
-						
-					$sql="select userID,full_name from users where userID in($arr)";
-					$rows=$db->queryObjectArray($sql);
-					foreach ($rows as $row){
-						$dest[$row->userID]=$row->full_name;
-					}
-					$formdata['dest_users']=$dest;
-
-				}
-				if($formdata['forum_decision']&& $formdata['newforum'])
-				unset( $formdata['forum_decision']);
-				
-				//if(!$formdata['fail'])
-				$formdata['fail']=true;
-				$formdata['dynamic_10']=1;
-				show_list($formdata);
+                        $i++;
+                    }
 
 
-				return;
 
-			}else{
+                    $i=0;
+                    foreach($rows['full_date'] as $row){
 
-/*************************************TO_AJAX**********************************************/		   
+                        $member_date="member_date$i";
+                        list($year_date,$month_date, $day_date) = explode('-',$row);
+                        if(strlen($year_date)>3 ){
+                            $formdata[$member_date]="$day_date-$month_date-$year_date";
+                        }
 
-/**********************************GET_DECISION************************************************/				
-$forum_decID=$formdata['forum_decID'];	
-	$sql="SELECT d.decID,d.decName 
+                        $i++;
+                    }
+
+                    $formdata['fail']=true;
+                }
+
+
+                if(!$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']){
+                    $formdata['dest_dfps']=$_POST['arr_dest_dfps'];
+                }
+
+                if($formdata['src_dfps'] && $_POST['arr_dest_dfps'] ){
+
+                    $i=0;
+                    foreach ($_POST['arr_dest_dfps'] as $dst){
+                        if($dst=='none')
+                            unset ($_POST['arr_dest_dfps'][$i]);
+                        $i++;
+
+                    }
+
+                    $arr=implode(',',$_POST['arr_dest_dfps'] );
+
+                    $sql="select userID,full_name from users where userID in($arr)";
+                    $rows=$db->queryObjectArray($sql);
+                    foreach ($rows as $row){
+                        $dest[$row->userID]=$row->full_name;
+                    }
+
+                    $formdata['dest_dfps']=$dest;//$_POST['arr_dest_dfps'];
+
+
+                }elseif($formdata['dest_dfps']){// && $formdata['dest_dfps'][0]!='none' && is_numeric($formdata['dest_dfps'][0]) ){
+
+
+
+                    $dest_dfps = $dest_dfps ? $dest_dfps:$formdata['dest_dfps'];
+                    $i=0;
+                    foreach ($dest_dfps as $dst){
+                        if($dst=='none')
+                            unset ($dest_dfps[$i]);
+                        $i++;
+
+                    }
+
+
+                    $arr=implode(',',$dest_dfps  );
+
+                    $sql="select userID,full_name from users where userID in($arr)";
+                    $rows=$db->queryObjectArray($sql);
+                    foreach ($rows as $row){
+                        $dest[$row->userID]=$row->full_name;
+                    }
+                    $formdata['dest_dfps']=$dest;
+
+                }
+                if($formdata['brand_pdf']&& $formdata['newbrand '])
+                    unset( $formdata['brand_pdf']);
+
+                //if(!$formdata['fail'])
+                $formdata['fail']=true;
+                $formdata['dynamic_10']=1;
+                show_list($formdata);
+
+
+                return;
+
+            }else{
+
+                /*************************************TO_AJAX**********************************************/
+
+                /**********************************GET_DECISION************************************************/
+                $brandID=$formdata['brandID'];
+                $sql="SELECT d.decID,d.decName 
 	         FROM decisions d 
-	       left join rel_forum_dec rf on d.decID=rf.decID
-	       WHERE rf.forum_decID=$forum_decID";
-	      // left join forum_dec f on f.forum_decID
-				
+	       left join rel_brand rf on d.decID=rf.decID
+	       WHERE rf.brandID=$brandID";
+                // left join brand f on f.brandID
 
-		    if($rows  = $db->queryObjectArray($sql) ){
-               		    	
-		     $formdata["decision"]=$rows; 
-	}			
-/******************************************************************************************/				
-$i=0; 	
-		if($formdata['dest_users'] && is_array($formdata['dest_users']) && is_array($dest_users)){
-			
-		foreach($dest_users as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-		 
 
-     
-		     $formdata["dest_user"]=$results; 
-		     
-		     
-/********************************************************************************************************/
-$i=0;
-foreach($formdata['dest_users'] as $key=>$val){
-$sql="select active  from rel_user_forum where userID=$key and forum_decID=$forum_decID ";
-if($rows=$db->queryObjectArray($sql)){
-	
-	$formdata['active'][$key]=$rows[0]->active;
-	$i++;
-  }
- } 
-		   		          	
-/**********************************************************************************************************************/	     
-		     
-		     
-		     
- }elseif($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-			 
-		foreach($formdata['dest_users'] as $key=>$val){
-		if(is_numeric($key)){	
-		$sql="select userID,full_name  from users where userID=$key";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-		 
-		     $formdata["dest_user"]=$results; 
-/********************************************************************************************************/
-$i=0;
-foreach($formdata['dest_users'] as $key=>$val){
-$sql="select active  from rel_user_forum where userID=$key and forum_decID=$forum_decID ";
-if($rows=$db->queryObjectArray($sql)){
-	
-	$formdata['active'][$key]=$rows[0]->active;
-	$i++;
-  }
- } 
-		   		          	
-/**********************************************************************************************************/	     
-		     
-		     
- }
+                if($rows  = $db->queryObjectArray($sql) ){
 
-/**********************************************************************************************************************/
+                    $formdata["decision"]=$rows;
+                }
+                /******************************************************************************************/
+                $i=0;
+                if($formdata['dest_dfps'] && is_array($formdata['dest_dfps']) && is_array($dest_dfps)){
+
+                    foreach($dest_dfps as $key=>$val){
+                        if(is_numeric($val)){
+                            $sql="select userID,full_name  from users where userID=$val";
+                            if($rows=$db->queryObjectArray($sql)){
+
+                                $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                                $i++;
+
+                            }
+                        }
+
+
+                    }
+
+
+
+                    $formdata["dest_user"]=$results;
+
+
+                    /********************************************************************************************************/
+                    $i=0;
+                    foreach($formdata['dest_dfps'] as $key=>$val){
+                        $sql="select active  from rel_user_forum where userID=$key and brandID=$brandID ";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $formdata['active'][$key]=$rows[0]->active;
+                            $i++;
+                        }
+                    }
+
+                    /**********************************************************************************************************************/
+
+
+
+                }elseif($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+
+                    foreach($formdata['dest_dfps'] as $key=>$val){
+                        if(is_numeric($key)){
+                            $sql="select userID,full_name  from users where userID=$key";
+                            if($rows=$db->queryObjectArray($sql)){
+
+                                $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                                $i++;
+
+                            }
+                        }
+
+
+                    }
+
+                    $formdata["dest_user"]=$results;
+                    /********************************************************************************************************/
+                    $i=0;
+                    foreach($formdata['dest_dfps'] as $key=>$val){
+                        $sql="select active  from rel_user_forum where userID=$key and brandID=$brandID ";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $formdata['active'][$key]=$rows[0]->active;
+                            $i++;
+                        }
+                    }
+
+                    /**********************************************************************************************************/
+
+
+                }
+
+                /**********************************************************************************************************************/
 //for check the length
-	 $i=0; 	
-		if($formdata['src_usersID'] && is_array($formdata['src_usersID'])   ){
-			 
-		foreach($formdata['src_usersID'] as $key=>$val){
-	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		       
+                $i=0;
+                if($formdata['src_dfpsID'] && is_array($formdata['src_dfpsID'])   ){
+
+                    foreach($formdata['src_dfpsID'] as $key=>$val){
+
+                        $sql="select userID,full_name  from users where userID=$val";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                            $i++;
+
+                        }
+
+
+                    }
+                    $formdata["src_user"]=$results1;
+                }else{
+                    $formdata["src_user"]=$formdata["dest_user"];
+                }
+                /***********************************************************************/
+                /***********************brandsTYPE**********************************************/
+                $i=0;
+                if($formdata['dest_brandsType'] && is_array($formdata['dest_brandsType'])  ){
+
+                    foreach($formdata['dest_brandsType'] as $key=>$val){
+                        if(is_numeric($val)){
+                            $sql="select catID,catName  from categories1 where catID=$val";
+                            if($rows=$db->queryObjectArray($sql)){
+
+                                $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
+
+
+                                $i++;
+
+                            }
+                        }
+
+
+                    }
+                    $formdata['dest_brandsType']=$results_cat_frm;
+                }
+                /*************************************MANAGER_TYPE*****************************************************************/
+
+                $i=0;
+                if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
+
+                    foreach($formdata['dest_managersType'] as $key=>$val){
+                        if(is_numeric($val)){
+                            $sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
+                            if($rows=$db->queryObjectArray($sql)){
+
+                                $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
+
+
+                                $i++;
+
+                            }
+                        }
+
+
+                    }
+                    $formdata['dest_managersType']=$results_cat_mgr;
+                }
+                /******************************************************************************************************/
+
+
+                $manageID=$formdata['manager_forum'];
+                $sql="select managerName from managers where managerID=$manageID";
+                if($rows=$db->queryObjectArray($sql)){
+                    $formdata['managerName']=$rows[0]->managerName;
+                }
+                /**********************************************************************/
+                $appID=$formdata['appoint_forum'];
+                $sql="select appointName from appoint_forum where appointID=$appID";
+                if($rows=$db->queryObjectArray($sql)){
+                    $formdata['appointName']=$rows[0]->appointName;
+                }
+                /**********************************************************************/
+                unset($_POST['form']['multi_year']);
+                unset($_POST['form']['multi_month']);
+                unset($_POST['form']['multi_day']);
+                unset($formdata['multi_year']);
+                unset($formdata['multi_month']);
+                unset($formdata['multi_day']);
+                $formdata['multi_year'][0]='none';
+                $formdata['multi_month'][0]='none';
+                $formdata['multi_day'][0]='none';
+
+                /******************************************************/
+                $sql = "SELECT catName, catID, parentCatID FROM categories1 ORDER BY catName";
+                if( 	$rows = $db->queryObjectArray($sql)){
+
+                    foreach($rows as $row) {
+                        $subcatsftype[$row->parentCatID][] = $row->catID;
+                        $catNamesftype[$row->catID] = $row->catName; }
+
+                    $rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
+                    if($rows && is_array($rows))
+                        $formdata['frmType']=$rows;
+                }
+
+
+                /*****************************************************/
+                $db->execute("COMMIT");
+
+
+                $formdata['type'] = 'success';
+                $formdata['message'] = 'עודכן בהצלחה!';
+                echo json_encode($formdata);
+                exit;
+
+
+            }
         }
-		 
-
-     }
-		     $formdata["src_user"]=$results1; 
- }else{
- 	$formdata["src_user"]=$formdata["dest_user"];
- }
-/***********************************************************************/		   		          			 
-/***********************FORUMSTYPE**********************************************/
-  $i=0; 	
-		if($formdata['dest_forumsType'] && is_array($formdata['dest_forumsType'])  ){
-			
-		foreach($formdata['dest_forumsType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select catID,catName  from categories1 where catID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+        break;
+    /***************************************************************************************************/
+    /***************************************************************************************************/
+    case "save":
+        if(isset($_POST['form']) && $_POST['form']){
+            foreach($_POST['form'] as $key=>$val){
+                if ($val=='none'  ||( $val == ""   ) ){
+                    unset ($_POST['form'][$key]);
+                }else {
+                    $_POST['form'][$key]=$_POST['form'][$key];
+                }
+            }
         }
-	$formdata['dest_forumsType']=$results_cat_frm;
-}
-/*************************************MANAGER_TYPE*****************************************************************/
+        /*****************************CLEANING SECTION*************************************************/
+        /********************************DEST_brandsTYPE*************************************************/
+        if(isset($_POST['form']['dest_brandsType'][0]) &&  $_POST['form']['dest_brandsType'][0]== 'none')
+            unset($_POST['form']['dest_brandsType'][0] );
 
-  $i=0; 	
-		if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
-			
-		foreach($formdata['dest_managersType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+        if(isset($_POST['form']['dest_brandsType']) &&  count($_POST['form']['dest_brandsType'])==0  )
+            unset($_POST['form']['dest_brandsType'] );
+
+        if(isset($_POST['form']['src_brandsType'][0]) &&  $_POST['form']['src_brandsType'][0]== 'none')
+            unset($_POST['form']['src_brandsType'][0] );
+
+        if(isset($_POST['form']['src_brandsType']) &&  count($_POST['form']['src_brandsType'])==0  )
+            unset($_POST['form']['src_brandsType'] );
+
+
+        if(isset($_POST['arr_dest_brandsType'][0]) && $_POST['arr_dest_brandsType'][0]== 'none')
+            unset($_POST['arr_dest_brandsType'][0] );
+
+        if(isset($_POST['arr_dest_brandsType']) &&  count($_POST['arr_dest_brandsType'])==0  )
+            unset($_POST['arr_dest_brandsType'] );
+//-----------------------------------------------------------------------
+
+        global $db;
+        if(isset($_POST['form']['dest_dfps']) && $_POST['form']['dest_dfps'][0]== 'none')
+            unset($_POST['form']['dest_dfps'][0] );
+
+        if(!empty($_POST['form']['dest_dfps']) && count($_POST['form']['dest_dfps'])== 0  )
+            unset($_POST['form']['dest_dfps'] );
+
+        if(!empty($_POST['form']['src_dfps'][0]) &&  $_POST['form']['src_dfps'][0]== 'none')
+            unset($_POST['form']['src_dfps'][0] );
+
+        if(!empty($_POST['form']['src_dfps']) && count($_POST['form']['src_dfps'])==0  )
+            unset($_POST['form']['src_dfps'] );
+
+
+        if(!empty($_POST['arr_dest_dfps'][0]) && $_POST['arr_dest_dfps'][0]== 'none')
+            unset($_POST['arr_dest_dfps'][0] );
+
+        if(!empty($_POST['arr_dest_dfps']) && count($_POST['arr_dest_dfps'])==0  )
+            unset($_POST['arr_dest_dfps'] );
+        /*********************************************************************************/
+        if(isset($_POST['form']['dest_dfps']) && !$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']){
+            $formdata= isset($_POST['form']) ? $_POST['form'] : '';
+            $formdata['dest_dfps']= isset($_POST['arr_dest_dfps']) ? $_POST['arr_dest_dfps'] : '';
+        }elseif(isset($_POST['form']['dest_dfps']) &&  isset($_POST['form']['dest_dfps'][0]) && $_POST['form']['dest_dfps'] && is_numeric($_POST['form']['dest_dfps'][0])){
+
+            $formdata=$_POST['form'];
+            /**********************************************************************************/
+        }elseif(isset($_POST['form']['dest_dfps']) && !is_numeric($_POST['form']['dest_dfps'][0]
+                && ($_POST['form']['dest_dfps'][0]=='none'))
+            && ($_POST['form']['dest_dfps'])
+            &&  ($_POST['form']['dest_dfps'][1])) {
+
+
+            $dest_dfps = isset($_POST['form']['dest_dfps']) ? $_POST['form']['dest_dfps'] : '';
+            $i = 0;
+            foreach ($dest_dfps as $key => $val) {
+                if (is_numeric($val)) {
+                    $array_num[] = $val;
+                } elseif (!is_numeric($val) && $val == 'none') {
+                    unset($dest_dfps[$i]);
+                } else
+                    $vals[$key] = "'$val'";
+                $i++;
+            }
         }
-	$formdata['dest_managersType']=$results_cat_mgr;
-}
-/******************************************************************************************************/
+        $formdata = isset($_POST['form']) ? $_POST['form'] : false;
+        if (array_item($_POST, 'arr_dest_pdfs'))
+            $formdata['dest_pdfs'] = isset($_POST['arr_dest_pdfs']) ? $_POST['arr_dest_pdfs'] : '';
 
 
-$manageID=$formdata['manager_forum'];
-$sql="select managerName from managers where managerID=$manageID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['managerName']=$rows[0]->managerName;
-}		 
-/**********************************************************************/ 		   		          	
-$appID=$formdata['appoint_forum'];
-$sql="select appointName from appoint_forum where appointID=$appID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['appointName']=$rows[0]->appointName;
-}		 
-/**********************************************************************/ 
-unset($_POST['form']['multi_year']);
-unset($_POST['form']['multi_month']);
-unset($_POST['form']['multi_day']);
-unset($formdata['multi_year']);
-unset($formdata['multi_month']);
-unset($formdata['multi_day']);
-$formdata['multi_year'][0]='none';
- $formdata['multi_month'][0]='none';
- $formdata['multi_day'][0]='none';
-
-/******************************************************/
-$sql = "SELECT catName, catID, parentCatID FROM categories1 ORDER BY catName";
-		if( 	$rows = $db->queryObjectArray($sql)){
-				
-			foreach($rows as $row) {
-				$subcatsftype[$row->parentCatID][] = $row->catID;
-				$catNamesftype[$row->catID] = $row->catName; }
-
-				$rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
-if($rows && is_array($rows))
- $formdata['frmType']=$rows; 
-}
- 
- 
-/*****************************************************/ 
-	$db->execute("COMMIT");
-	
- 
-    $formdata['type'] = 'success';
-	$formdata['message'] = 'עודכן בהצלחה!';
-     echo json_encode($formdata);
- 	  exit;
-	
-			 	
-			}
-		}
-		break;
-/***************************************************************************************************/
-/***************************************************************************************************/
-	case "save":
-
-		if($_POST['form']){
-			foreach($_POST['form'] as $key=>$val){
-				if ($val=='none'  ||( $val == ""   ) ){
-					unset ($_POST['form'][$key]);
-				}else {
-					$_POST['form'][$key]=$_POST['form'][$key];
-				}
-			}
-				
-		}
-/*****************************CLEANING SECTION*************************************************/
-/********************************DEST_FORUMSTYPE*************************************************/
-			if($_POST['form']['dest_forumsType'][0]== 'none')
-			unset($_POST['form']['dest_forumsType'][0] );
-
-			if(count($_POST['form']['dest_forumsType'])==0  )
-			unset($_POST['form']['dest_forumsType'] );
-
-			if($_POST['form']['src_forumsType'][0]== 'none')
-			unset($_POST['form']['src_forumsType'][0] );
-
-			if(count($_POST['form']['src_forumsType'])==0  )
-			unset($_POST['form']['src_forumsType'] );
+        if(array_item ($_POST,'arr_dest_publishers') )
+            $formdata['dest_publishers'] = isset($_POST['arr_dest_publishers']) ? $_POST['arr_dest_publishers'] : '';
 
 
-			if($_POST['arr_dest_forumsType'][0]== 'none')
-			unset($_POST['arr_dest_forumsType'][0] );
 
-			if(count($_POST['arr_dest_forumsType'])==0  )
-			unset($_POST['arr_dest_forumsType'] );	
-/********************************DEST_MANAGERSTYPE*************************************************/
-			if($_POST['form']['dest_managersType'][0]== 'none')
-			unset($_POST['form']['dest_managersType'][0] );
-
-			if(count($_POST['form']['dest_managersType'])==0  )
-			unset($_POST['form']['dest_managersType'] );
-
-			if($_POST['form']['src_managersType'][0]== 'none')
-			unset($_POST['form']['src_managersType'][0] );
-
-			if(count($_POST['form']['src_managersType'])==0  )
-			unset($_POST['form']['src_managersType'] );
+        /*************************************************************************************/
+//			if($vals){
+//				$stuff = implode(", ", $vals);
+//				//$sql="select userID from users where full_name in($stuff)";
+//				$sql="SELECT  userID,full_name FROM users where full_name in($stuff) ORDER BY userID";
+//				$rows=$db->queryObjectArray($sql);
+//				$dest_dfps="";
+//				foreach($rows as $row){
+//				 $dest_dfps[]=$row->userID;//=$row->full_name;
+//				 $dest_dfps[$row->userID]==$row->full_name;
+//				}
+//			}
 
 
-			if($_POST['arr_dest_managersType'][0]== 'none')
-			unset($_POST['arr_dest_managersType'][0] );
-
-			if(count($_POST['arr_dest_managersType'])==0  )
-			unset($_POST['arr_dest_managersType'] );						 
-/*********************************************************************************/	
-	
-		global $db;
-		if($_POST['form']['dest_users'][0]== 'none')
-		unset($_POST['form']['dest_users'][0] );
-
-		if(count($_POST['form']['dest_users'])==0  )
-		unset($_POST['form']['dest_users'] );
-
-		if($_POST['form']['src_users'][0]== 'none')
-		unset($_POST['form']['src_users'][0] );
-
-		if(count($_POST['form']['src_users'])==0  )
-		unset($_POST['form']['src_users'] );
-
-
-		if($_POST['arr_dest_users'][0]== 'none')
-		unset($_POST['arr_dest_users'][0] );
-
-		if(count($_POST['arr_dest_users'])==0  )
-		unset($_POST['arr_dest_users'] );
-/*********************************************************************************/
-		if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-			$formdata=$_POST['form'];
-			$formdata['dest_users']=$_POST['arr_dest_users'];
-		}elseif($_POST['form']['dest_users'] && is_numeric($_POST['form']['dest_users'][0])){
-				
-			$formdata=$_POST['form'];
-/**********************************************************************************/
-		}elseif(!is_numeric($_POST['form']['dest_users'][0]
-		&& ($_POST['form']['dest_users'][0]=='none'))
-		&& ($_POST['form']['dest_users'])
-		&&  ($_POST['form']['dest_users'][1])){
-			 
-
-			$dest_users= $_POST['form']['dest_users'];
-			$i=0;
-			foreach($dest_users as $key => $val){
-				if(is_numeric($val)){
-					$array_num[]=$val ;
-				}elseif(!is_numeric($val) && $val=='none'){
-					unset($dest_users[$i]);
-				}else
-				$vals[$key] = "'$val'" ;
-				$i++;
-			}
-
-
-/*************************************************************************************/
-			if($vals){
-				$stuff = implode(", ", $vals);
-				//$sql="select userID from users where full_name in($stuff)";
-				$sql="SELECT  userID,full_name FROM users where full_name in($stuff) ORDER BY userID";
-				$rows=$db->queryObjectArray($sql);
-				$dest_users="";
-				foreach($rows as $row){
-				 $dest_users[]=$row->userID;//=$row->full_name;
-				 $dest_users[$row->userID]==$row->full_name;
-				}
-			}
-			$formdata=$_POST['form'];
-
-			if($array_num && !$dest_users){
-				$formdata['dest_user']=$array_num;
-				 
-			}elseif(!$array_num && $dest_users){
-				$formdata['dest_users']=$dest_users;
-				$size_dest=count($formdata['dest_users']);
-			}
-			elseif($array_num && $dest_users){
-				$dest=array_merge($array_num,$dest_users);
-				$dest=array_unique($dest);
-				$formdata['dest_users'] = $dest;
-			}
-/***************************************************************************************/
-		}elseif($_POST['form']['dest_users'][0]=='none'){
-			$formdata=$_POST['form'];
-			unset($formdata['dest_users']);
-		}elseif(array_item($_POST['form'],'src_users') &&  $_POST['form']['src_users'][0]!=0){
-			$formdata=$_POST['form'];
-			$formdata['dest_users']=$_POST['form']['src_users'];
-				
-				
-
-			$i=0;
-			foreach($formdata['dest_users'] as $key => $val){
-				if(is_numeric($val)){
-					$array_num[]=$val ;
-				}elseif(!is_numeric($val) && $val=='none'){
-					unset($dest_users[$i]);
-				}else
-				$vals[$key] = "'$val'" ;
-				$i++;
-			}
-			 
-
-			if($vals){
-				$stuff = implode(", ", $vals);
-				//$sql="select userID from users where full_name in($stuff)";
-				$sql="SELECT  userID FROM users where full_name in($stuff) ORDER BY userID";
-				$rows=$db->queryObjectArray($sql);
-				$dest_users="";
-				foreach($rows as $row){
-				 $dest_users[]=$row->userID;//=$row->full_name;
-				}
-					
-			}
-			if($array_num && $dest_users && is_array($array_num) && is_array ($dest_users) ){ 
-			$dest=array_merge($array_num,$dest_users);
-			$formdata['dest_users'] = $dest;
-			}
-/********************************************************************************************/
-		}else{
-			$formdata=$_POST['form'];
-		}
-		if($_POST['form']['adduser_Forum'] && $_POST['form']['adduser_Forum']!='none'){
-			$formdata['dest_users']=$_POST['form']['adduser_Forum'];
-			unset($formdata['adduser_Forum']);
-		}
-			
-/****************************************************************************************/
-		if($formdata['dest_users'][0] && is_numeric($formdata['dest_users'][0])  ){
-			$destID=implode(',',$formdata['dest_users']);
-			$sql="SELECT  userID,full_name FROM users where userID in($destID) ORDER BY userID";
-			$rows=$db->queryObjectArray($sql);
-			foreach($rows as $row){
-				$destNames[$row->userID]=$row->full_name;
-			}
-			$formdata['dest_users']=$destNames;
-		}
-
-/****************************************************************************************/
-if($_POST['arr_dest_forumsType'] && (is_array($_POST['arr_dest_forumsType']) ) ){
-	
-	$formdata['dest_forumsType']=$_POST['arr_dest_forumsType'];
-}
-
-if($_POST['arr_dest_managersType'] && (is_array($_POST['arr_dest_managersType']) ) ){
-	
-	$formdata['dest_managersType']=$_POST['arr_dest_managersType'];
-}		
-/***************************************************************************************/		
-if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
-	
-	$formdata['insert_forum']=$_POST['insert_forum'];
-}elseif($formdata['forum_decision']){
-$frmID=$formdata['forum_decision'];	
-$sql="select parentForumID from forum_dec where forum_decID=$frmID";
-if($rows=$db->queryObjectArray($sql) ){
-	 
-	$formdata['insert_forum']=$rows[0]->parentForumID;
-  }	
-	
-}	
+//			if($array_num && !$dest_dfps){
+//				$formdata['dest_user']=$array_num;
+//
+//			}elseif(!$array_num && $dest_dfps){
+//				$formdata['dest_dfps']=$dest_dfps;
+//				$size_dest=count($formdata['dest_dfps']);
+//			}
+//			elseif($array_num && $dest_dfps){
+//				$dest=array_merge($array_num,$dest_dfps);
+//				$dest=array_unique($dest);
+//				$formdata['dest_dfps'] = $dest;
+//			}
+///***************************************************************************************/
+//		}elseif($_POST['form']['dest_dfps'][0]=='none'){
+//			$formdata=$_POST['form'];
+//			unset($formdata['dest_dfps']);
+//		}elseif(array_item($_POST['form'],'src_dfps') &&  $_POST['form']['src_dfps'][0]!=0){
+//			$formdata=$_POST['form'];
+//			$formdata['dest_dfps']=$_POST['form']['src_dfps'];
+//
+//
+//
+//			$i=0;
+//			foreach($formdata['dest_dfps'] as $key => $val){
+//				if(is_numeric($val)){
+//					$array_num[]=$val ;
+//				}elseif(!is_numeric($val) && $val=='none'){
+//					unset($dest_dfps[$i]);
+//				}else
+//				$vals[$key] = "'$val'" ;
+//				$i++;
+//			}
+//
+//
+//			if($vals){
+//				$stuff = implode(", ", $vals);
+//				//$sql="select userID from users where full_name in($stuff)";
+//				$sql="SELECT  userID FROM users where full_name in($stuff) ORDER BY userID";
+//				$rows=$db->queryObjectArray($sql);
+//				$dest_dfps="";
+//				foreach($rows as $row){
+//				 $dest_dfps[]=$row->userID;//=$row->full_name;
+//				}
+//
+//			}
+//			if($array_num && $dest_dfps && is_array($array_num) && is_array ($dest_dfps) ){
+//			$dest=array_merge($array_num,$dest_dfps);
+//			$formdata['dest_dfps'] = $dest;
+//			}
+///********************************************************************************************/
+//		}else{
+//			$formdata=$_POST['form'];
+//		}
+//		if($_POST['form']['adduser_Forum'] && $_POST['form']['adduser_Forum']!='none'){
+//			$formdata['dest_dfps']=$_POST['form']['adduser_Forum'];
+//			unset($formdata['adduser_Forum']);
+//		}
+//
+///****************************************************************************************/
+//		if($formdata['dest_dfps'][0] && is_numeric($formdata['dest_dfps'][0])  ){
+//			$destID=implode(',',$formdata['dest_dfps']);
+//			$sql="SELECT  userID,full_name FROM users where userID in($destID) ORDER BY userID";
+//			$rows=$db->queryObjectArray($sql);
+//			foreach($rows as $row){
+//				$destNames[$row->userID]=$row->full_name;
+//			}
+//			$formdata['dest_dfps']=$destNames;
+//		}
+//
+///****************************************************************************************/
+//if($_POST['arr_dest_brandsType'] && (is_array($_POST['arr_dest_brandsType']) ) ){
+//
+//	$formdata['dest_brandsType']=$_POST['arr_dest_brandsType'];
+//}
+//
+//if($_POST['arr_dest_managersType'] && (is_array($_POST['arr_dest_managersType']) ) ){
+//
+//	$formdata['dest_managersType']=$_POST['arr_dest_managersType'];
+//}
+///***************************************************************************************/
+//if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
+//
+//	$formdata['insert_forum']=$_POST['insert_forum'];
+//}elseif($formdata['brand_pdf']){
+//$brandID=$formdata['brand_pdf'];
+//$sql="select parentForumID from brand where brandID=$brandID";
+//if($rows=$db->queryObjectArray($sql) ){
+//
+//	$formdata['insert_forum']=$rows[0]->parentForumID;
+//  }
+//
+//}
 
 //$formdata['dynamic_ajx']=1;
 
-		
-		$db->execute("START TRANSACTION");
-/***********************************************/		
-		if(!validate($formdata )){             /*
-/***********************************************/          
-	 
-			 show_error_msg(" נכשל בשמירה!!!!! ");
-		 		  
-			$formdata=$_POST['form'];
 
-/**********************************************************************************************************/			
-if($formdata['src_managersType'] &&  is_array($formdata['src_managersType']) && (is_numeric ($formdata['src_managersType'][0])) ){
-unset($formdata['src_managersType']);
-}
+        $db->execute("START TRANSACTION");
+        /***********************************************/
+        if(isset($formdata))
+            if (!validate($formdata)) {             /*
+/***********************************************/
 
-if($formdata['src_forumsType'] &&  is_array($formdata['src_forumsType']) && (is_numeric($formdata['src_forumsType'][0])) ){
-	unset($formdata['src_forumsType']);
-}
+                show_error_msg(" נכשל בשמירה!!!!! ");
 
-if($formdata['src_users'] &&  is_array($formdata['src_users']) && (is_numeric($formdata['src_users'][0])) ){
-	unset($formdata['src_users']);
-}		
-/**********************************************************************************************************/			
-			
-				
-				
-		if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-			$formdata['dest_users']=$_POST['arr_dest_users'];
-		}
-				
-		if(!$_POST['form']['dest_forumsType'] && $_POST['arr_dest_forumsType']){
-				$formdata['dest_forumsType']=$_POST['arr_dest_forumsType'];
-			}
-			
-		if(!$_POST['form']['dest_managers'] && $_POST['arr_dest_managersType']){
-				$formdata['dest_managersType']=$_POST['arr_dest_managersType'];
-			}
-			
-			
-			
-/*********************************************************************************************/			
-			
-			
-			
-			if($formdata['src_users'] && $_POST['arr_dest_users'] ){
-					
-				$i=0;
-				foreach ($_POST['arr_dest_users'] as $dst){
-					if($dst=='none')
-					unset ($_POST['arr_dest_users'][$i]);
-					$i++;
+                $formdata = $_POST['form'];
 
-				}
-					
-				$arr=implode(',',$_POST['arr_dest_users'] );
-					
-				$sql="select userID,full_name from users where userID in($arr)";
-				if($rows=$db->queryObjectArray($sql) ){
-				foreach ($rows as $row){
-					$dest[$row->userID]=$row->full_name;
-				}
-					
-				$formdata['dest_users']=$dest;//$_POST['arr_dest_users'];
-				}	
-					
-			}elseif($formdata['dest_users']){
+                /**********************************************************************************************************/
+
+                if (isset($formdata['src_brandsType']) && $formdata['src_brandsType'] && is_array($formdata['src_brandsType']) && (is_numeric($formdata['src_brandsType'][0]))) {
+                    unset($formdata['src_brandsType']);
+                }
+
+                if (isset($formdata['src_dfps']) && $formdata['src_dfps'] && is_array($formdata['src_dfps']) && (is_numeric($formdata['src_dfps'][0]))) {
+                    unset($formdata['src_dfps']);
+                }
+                /**********************************************************************************************************/
 
 
-                
-				$dest_users = $dest_users ? $dest_users:$formdata['dest_users'];
-				$i=0;
-				foreach ($dest_users as $dst){
-					if($dst=='none')
-					unset ($dest_users[$i]);
-					$i++;
+                if (!empty($_POST['form']['dest_dfps']) && !$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']) {
+                    $formdata['dest_dfps'] = $_POST['arr_dest_dfps'];
+                }
 
-				}
+                if (!empty($_POST['form']['dest_brandsType']) && !$_POST['form']['dest_brandsType'] && $_POST['arr_dest_brandsType']) {
+                    $formdata['dest_brandsType'] = $_POST['arr_dest_brandsType'];
+                }
 
-
-				$arr=implode(',',$dest_users  );
-					
-				$sql="select userID,full_name from users where userID in($arr)";
-				if($rows=$db->queryObjectArray($sql)){
-				 unset($dest);	
-				foreach ($rows as $row){
-					$dest[$row->userID]=$row->full_name;
-				}
-				unset($formdata['dest_users']);
-				//$formdata['dest_users']=$dest;
-			  }
-			}
-			
-/***************************************************************************************************/			
-			if($formdata['forum_decision']&& $formdata['newforum'])
-			unset( $formdata['forum_decision']);
-			unset($formdata['src_users']);	
-/*****************************************************************************************************/				
-		//	$formdata['forum_status']=($_POST['form']['forum_status']);
-/*********************************************************************************************************/
-			$formdata['appoint_date1']= $_POST['form']['appoint_date1']  ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['appoint_date1']);
-				if(strlen($year_date)>3 ){
-				$formdata['appoint_date1']="$day_date-$month_date-$year_date";	
-				}
-				
-				$formdata['manager_date']= $_POST['form']['manager_date'] ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['manager_date']);
-				if(strlen($year_date)>3){
-				$formdata['manager_date']="$day_date-$month_date-$year_date";
-				}
-				
-				$formdata['forum_date']=$_POST['form']['forum_date'];
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
-				if(strlen($year_date)>3 ){
-				$formdata['forum_date']="$day_date-$month_date-$year_date";
-				} 	
-				$formdata['fail']=true;
-				$formdata['forum_demo_last8']=1;
-/***************************************************************************************************/
-			 show_list($formdata);
+                if (!empty($_POST['form']['dest_managers']) &&  !$_POST['form']['dest_managers'] && $_POST['arr_dest_managersType']) {
+                    $formdata['dest_managersType'] = $_POST['arr_dest_managersType'];
+                }
 
 
-			return;
-
-		}else{
-			//show_list($_POST['form']);
-		}
-		break;
-/**********************************************************************************************/
-/**********************************************************************************************/
-	case "realy_delete":
-			
-		real_del($_POST['form']);
-		$showform=FALSE;
+                /*********************************************************************************************/
 
 
-		break;
-/**********************************************************************************************/
-/*********************************************************************************************/
-	case "clear":
-			
-         $frm =new forum_dec();
+                if (isset($formdata['src_dfps']) && $formdata['src_dfps'] && $_POST['arr_dest_dfps']) {
 
-			echo "<h1>הזן נתונים לפורום  </h1>";
-             $frm->print_forum_paging();
-			show_list($formdata);
-		//link1();
-		break;
-/**********************************************************************************************/
-/********************************************************************************************/
-	case "delete":
-		if (($_GET['deleteID'])){
-			$formdata['forum_demo_last8']=1;
-			delete_forum($_GET['deleteID'],$formdata);//subcategories
-		}else{
-			$formdata['forum_demo_last8']=1;
-			delete_forum($_POST['form']['forum_decision'],$formdata);
-		}
+                    $i = 0;
+                    foreach ($_POST['arr_dest_dfps'] as $dst) {
+                        if ($dst == 'none')
+                            unset ($_POST['arr_dest_dfps'][$i]);
+                        $i++;
 
-		break;
-/**********************************************************************************************/
-/**********************************************************************************************/
-	case "del_usrFrm":
-		if (($_GET['userID']) &&  ($_GET['forum_decID']) )
-		if(!delete_user_forum($_GET['userID'],$_GET['forum_decID']) ){
-			show_error_msg("אין מספיק נתונים למחיקה");
-		}else{
-			read_forum($_GET['forum_decID']);
-		}
+                    }
 
-		break;
-/**********************************************************************************************/
- 
-case "take_data":
-		 
-			if($_POST['form']){
-				foreach($_POST['form']  as $key=>$val){
-					if ($val=='none' || $val== "" )
-					unset ($_POST['form'][$key]);
-						
-				}
-					
-			}
-			global $db;
-			$frmID= $_POST['form']['forum_decision']?$_POST['form']['forum_decision']:$_POST['form'] ; 
-				 
-/*********************************************************************************/
-			if($_POST['form']["dest_users$frmID"][0]== 'none')
-			unset($_POST['form']["dest_users$frmID"][0] );
-/********************************DEST_USERS*************************************************/
-			if($_POST['form']['dest_users'][0]== 'none')
-			unset($_POST['form']['dest_users'][0] );
+                    $arr = implode(',', $_POST['arr_dest_dfps']);
 
-			if(count($_POST['form']['dest_users'])==0  )
-			unset($_POST['form']['dest_users'] );
+                    $sql = "select userID,full_name from users where userID in($arr)";
+                    if ($rows = $db->queryObjectArray($sql)) {
+                        foreach ($rows as $row) {
+                            $dest[$row->userID] = $row->full_name;
+                        }
 
-			if($_POST['form']['src_users'][0]== 'none')
-			unset($_POST['form']['src_users'][0] );
+                        $formdata['dest_dfps'] = $dest;//$_POST['arr_dest_dfps'];
+                    }
 
-			if(count($_POST['form']['src_users'])==0  )
-			unset($_POST['form']['src_users'] );
+                } elseif (isset($formdata['dest_dfps']) && $formdata['dest_dfps']) {
 
 
-			if($_POST['arr_dest_users'][0]== 'none')
-			unset($_POST['arr_dest_users'][0] );
+                    $dest_dfps = $dest_dfps ? $dest_dfps : $formdata['dest_dfps'];
+                    $i = 0;
+                    foreach ($dest_dfps as $dst) {
+                        if ($dst == 'none')
+                            unset ($dest_dfps[$i]);
+                        $i++;
 
-			if(count($_POST['arr_dest_users'])==0  )
-			unset($_POST['arr_dest_users'] );
-/********************************DEST_FORUMSTYPE*************************************************/
-			if($_POST['form']['dest_forumsType'][0]== 'none')
-			unset($_POST['form']['dest_forumsType'][0] );
-
-			if(count($_POST['form']['dest_forumsType'])==0  )
-			unset($_POST['form']['dest_forumsType'] );
-
-			if($_POST['form']['src_forumsType'][0]== 'none')
-			unset($_POST['form']['src_forumsType'][0] );
-
-			if(count($_POST['form']['src_forumsType'])==0  )
-			unset($_POST['form']['src_forumsType'] );
+                    }
 
 
-			if($_POST['arr_dest_forumsType'][0]== 'none')
-			unset($_POST['arr_dest_forumsType'][0] );
+                    $arr = implode(',', $dest_dfps);
 
-			if(count($_POST['arr_dest_forumsType'])==0  )
-			unset($_POST['arr_dest_forumsType'] );	
-/********************************DEST_MANAGERSTYPE*************************************************/
-			if($_POST['form']['dest_managersType'][0]== 'none')
-			unset($_POST['form']['dest_managersType'][0] );
+                    $sql = "select userID,full_name from users where userID in($arr)";
+                    if ($rows = $db->queryObjectArray($sql)) {
+                        unset($dest);
+                        foreach ($rows as $row) {
+                            $dest[$row->userID] = $row->full_name;
+                        }
+                        unset($formdata['dest_dfps']);
+                        //$formdata['dest_dfps']=$dest;
+                    }
+                }
 
-			if(count($_POST['form']['dest_managersType'])==0  )
-			unset($_POST['form']['dest_managersType'] );
-
-			if($_POST['form']['src_managersType'][0]== 'none')
-			unset($_POST['form']['src_managersType'][0] );
-
-			if(count($_POST['form']['src_managersType'])==0  )
-			unset($_POST['form']['src_managersType'] );
-
-
-			if($_POST['arr_dest_managersType'][0]== 'none')
-			unset($_POST['arr_dest_managersType'][0] );
-
-			if(count($_POST['arr_dest_managersType'])==0  )
-			unset($_POST['arr_dest_managersType'] );						 
-/*********************************************************************************/
-			 
-/*********************************************************************************/
-			if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-				$formdata=$_POST['form'];
-				 
-			$staff=implode(',',$_POST['arr_dest_users']);	
-			$sql="SELECT userID,full_name FROM users WHERE userID in($staff)";
-
-			if($rows=$db->queryObjectArray($sql)){
-				foreach($rows as $row){
-				 
-				 $formdata["dest_users"][$row->userID]=$row->full_name;		
-				}
-				unset($formdata['arr_dest_users']);
-			  }	
-				
-			}elseif($_POST['form']['dest_users'] && is_numeric($_POST['form']['dest_users'][0])){
-					
-				$formdata=$_POST['form'];
-/**********************************************************************************/
-			}elseif( !is_numeric($_POST['form']['dest_users'][0])
-			&& ($_POST['form']['dest_users'])
-			&&  ($_POST['form']['dest_users'][1])
-			&&  (is_numeric($_POST['form']['dest_users'][1]))  ){
-				 
-
-				$dest_users= $_POST['form']['dest_users'];
-				$i=0;
-				foreach($dest_users as $key => $val){
-					if(is_numeric($val)){
-						$array_num[]=$val ;
-					}elseif(!is_numeric($val) && $val=='none'){
-						unset($dest_users[$i]);
-					}else
-					$vals[$key] = "'$val'" ;
-					$i++;
-				}
+                /***************************************************************************************************/
+                if (isset($formdata['brand_pdf']) && $formdata['brand_pdf'] && $formdata['newbrand '])
+                    unset($formdata['brand_pdf']);
+                unset($formdata['src_dfps']);
+                /*****************************************************************************************************/
+                //	$formdata['forum_status']=($_POST['form']['forum_status']);
+                /*********************************************************************************************************/
+//                $formdata['appoint_date1'] = isset($_POST['form']['appoint_date1']) ? $_POST['form']['appoint_date1'] : '';
+//
+//
+//                list($year_date, $month_date, $day_date) = explode('-', $_POST['form']['appoint_date1']);
+//                if (strlen($year_date) > 3) {
+//                    $formdata['appoint_date1'] = "$day_date-$month_date-$year_date";
+//                }
+//
+//                $formdata['manager_date'] = isset($_POST['form']['manager_date']) ?  $_POST['form']['manager_date'] : '';
+//                list($year_date, $month_date, $day_date) = explode('-', $_POST['form']['manager_date']);
+//                if (strlen($year_date) > 3) {
+//                    $formdata['manager_date'] = "$day_date-$month_date-$year_date";
+//                }
+//
+//                $formdata['forum_date'] = isset($_POST['form']['forum_date']) ? $_POST['form']['forum_date'] : '';
+//                list($year_date, $month_date, $day_date) = explode('-', $_POST['form']['forum_date']);
+//                if (strlen($year_date) > 3) {
+//                    $formdata['forum_date'] = "$day_date-$month_date-$year_date";
+//                }
+                $formdata['fail'] = true;
+                $formdata['forum_demo_last8'] = 1;
+                /***************************************************************************************************/
+                show_list($formdata);
 
 
-/*************************************************************************************/
-				if($vals){
-					$stuff = implode(", ", $vals);
-				
-					$sql="SELECT  userID,full_name FROM users where full_name in($stuff)";
-					$rows=$db->queryObjectArray($sql);
-					$dest_users="";
-				 foreach($rows as $row){
-				 	$dest_users[]=$row->userID; 
-				 	 
-				 }
-				 
-				 
-				 	
-				}
-				$formdata=$_POST['form'];
+                return;
 
-				if($array_num && !$dest_users){
-					$formdata['dest_user']=$array_num;
-	     
-				}elseif(!$array_num && $dest_users){
-					$formdata['dest_users']=$dest_users;
-				 $size_dest=count($formdata['dest_users']);
-				}
-				elseif($array_num && $dest_users){
-					$dest=array_merge($array_num,$dest_users);
-					$dest=array_unique($dest);
-					$formdata['dest_users'] = $dest;
-				}
+            } else {
+                show_list($formdata);
+                return;
 
-/***************************************************************************************/
-			}
-/*******************************************************************************************************/			
-			else{
-				$formdata=$_POST['form'];
-			}
-/********************************************************************************************/
-			 
-			if($formdata['dest_users'][0] && is_numeric($formdata['dest_users'][0]) && is_array($formdata['dest_users']) ){
-				foreach($formdata['dest_users'] as $key=>$val){
-					
-		        $sql="SELECT full_name FROM users where userID =$val";
-				if($rows=$db->queryObjectArray($sql))
-					
-					$destNames[$val]=$rows[0]->full_name;
-				
-				}
-				$formdata['dest_users']=$destNames;
-			}elseif($formdata['dest_users'] && is_numeric($formdata['dest_users'])  ){
-				$destID=$formdata['dest_users'] ;
-			
-				$sql="SELECT  userID,full_name FROM users where userID in($destID)";
-				$rows=$db->queryObjectArray($sql);
-				foreach($rows as $row){
-					$destNames[$row->userID]=$row->full_name;
-				}
-				
-				$frmID= $_POST['form']['forum_decision'] ; 
-				$formdata['dest_users']=$formdata["dest_users$frmID"];
-				$formdata['dest_users']=$destNames;
-				
-			}
-			
-			
-			
-			
-		if(!array_item($formdata,'forum_decision') && array_item($_POST,'forum_decision')  && $_POST['forum_decision']!=null){
- 				$formdata['forum_decision']=array_item($_POST,'forum_decision');
- 			}
- 			
- 			
- 		if(!$_POST['form']['dest_forumsType'] && $_POST['arr_dest_forumsType']){
-				 
-				$formdata['dest_forumsType']=$_POST['arr_dest_forumsType'];
-			}
+            }
 
-		if($_POST['form']['dest_forumsType'] && !$_POST['arr_dest_forumsType']){
-				 
-				$formdata['dest_forumsType']=$_POST['form']['dest_forumsType'];
-			}	
-	
-/*************************************MANAGERSTYPE****************************************************/
-		if(!$_POST['form']['dest_managersType'] && $_POST['arr_dest_managersType']){
-				 
-				$formdata['dest_managersType']=$_POST['arr_dest_managersType'];
-			}
+        break;
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+    case "realy_delete":
 
-		if($_POST['form']['dest_managersType'] && !$_POST['arr_dest_managersType']){
-				 
-				$formdata['dest_managersType']=$_POST['form']['dest_managersType'];
-			}	
-/******************************************************************************************/
-if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
-	
-$formdata['insert_forum']=$_POST['insert_forum'];
-}else{
-$frmID=$formdata['forum_decision'];	
-$sql="select parentForumID from forum_dec where forum_decID=$frmID";
-if($rows=$db->queryObjectArray($sql) ){
-	 
-	$formdata['insert_forum']=$rows[0]->parentForumID;
-  }	
-	
-}							
-/*****************************************************************************************/
+        real_del($_POST['form']);
+        $showform=FALSE;
 
-			$db->execute("START TRANSACTION");
-/******************************************************/			
-			if(!$formdata=take_forum_data($formdata)){
-/*****************************************************/				
-				$db->execute("ROLLBACK");
-			
-				
-				$formdata=$_POST['form'];
-/**********************************************************************************************************/			
-if($formdata['src_managersType'] &&  is_array($formdata['src_managersType']) && (is_numeric ($formdata['src_managersType'][0])) ){
-unset($formdata['src_managersType']);
-}
 
-if($formdata['src_forumsType'] &&  is_array($formdata['src_forumsType']) && (is_numeric($formdata['src_forumsType'][0])) ){
-	unset($formdata['src_forumsType']);
-}
+        break;
+    /**********************************************************************************************/
+    /*********************************************************************************************/
+    case "clear":
 
-if($formdata['src_users'] &&  is_array($formdata['src_users']) && (is_numeric($formdata['src_users'][0])) ){
-	unset($formdata['src_users']);
-}		
-/**********************************************************************************************************/			
-							
-				
-				$formdata['forum_decision']=$_POST['form']['forum_decision'];
-				$formdata['category']=$_POST['form']['category'];
-				$formdata['appoint_forum']=$_POST['form']['appoint_forum'];
-				$formdata['manager_forum']=$_POST['form']['manager_forum'];
-				$formdata['managerType']=$_POST['form']['managerType'];
-                //$formdata['appoint_date1']=$_POST['form']['appoint_date1'];
-				//$formdata['manager_date']=$_POST['form']['manager_date'];  
-				
-				
-				
-			if($_POST['form']['appoint_date1'] ){
-				$formdata['appoint_date1']= $_POST['form']['appoint_date1']  ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['appoint_date1']);
-				if(strlen($year_date)>3 ){
-				$formdata['appoint_date1']="$day_date-$month_date-$year_date";	
-				 }
-				}
-				
-				if($_POST['form']['manager_date']){
-				$formdata['manager_date']= $_POST['form']['manager_date'] ;
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['manager_date']);
-				if(strlen($year_date)>3){
-				$formdata['manager_date']="$day_date-$month_date-$year_date";
-				 } 
-				}	
-				
-				
-				if($_POST['form']['forum_date']){
-				$formdata['forum_date']=$_POST['form']['forum_date'];
-				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
-				if(strlen($year_date)>3 ){
-				$formdata['forum_date']="$day_date-$month_date-$year_date";
-				  } 	
-				}
-				
-				
-				
-			if($_POST['arr_dest_forums']){
-			  $formdata['dest_forums']=$_POST['arr_dest_forumsType'];	
-			}
-			
-			if($_POST['arr_dest_managersType']){
-			  $formdata['dest_managersType']=$_POST['arr_dest_managersType'];	
-			}
-				
-				
-				
+        $brand =new brand();
+
+        echo "<h1>הזן נתונים לפורום  </h1>";
+        $brand->print_forum_paging();
+        $formdata = isset($formdata) ? $formdata : '';
+        show_list($formdata);
+        //link1();
+        break;
+    /**********************************************************************************************/
+    /********************************************************************************************/
+    case "delete":
+        if (($_GET['deleteID'])){
+            $formdata['forum_demo_last8']=1;
+            delete_forum($_GET['deleteID'],$formdata);//subcategories
+        }else{
+            $formdata['forum_demo_last8']=1;
+            delete_forum($_POST['form']['brand_pdf'],$formdata);
+        }
+
+        break;
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+    case "del_usrFrm":
+        if (($_GET['userID']) &&  ($_GET['brandID']) )
+            if(!delete_user_forum($_GET['userID'],$_GET['brandID']) ){
+                show_error_msg("אין מספיק נתונים למחיקה");
+            }else{
+                read_forum($_GET['brandID']);
+            }
+
+        break;
+    /**********************************************************************************************/
+
+    case "take_data":
+
+        if($_POST['form']){
+            foreach($_POST['form']  as $key=>$val){
+                if ($val=='none' || $val== "" )
+                    unset ($_POST['form'][$key]);
+
+            }
+
+        }
+        global $db;
+        $brandID= $_POST['form']['brand_pdf']?$_POST['form']['brand_pdf']:$_POST['form'] ;
+
+        /*********************************************************************************/
+        if($_POST['form']["dest_dfps$brandID"][0]== 'none')
+            unset($_POST['form']["dest_dfps$brandID"][0] );
+        /********************************dest_dfps*************************************************/
+        if($_POST['form']['dest_dfps'][0]== 'none')
+            unset($_POST['form']['dest_dfps'][0] );
+
+        if(count($_POST['form']['dest_dfps'])==0  )
+            unset($_POST['form']['dest_dfps'] );
+
+        if($_POST['form']['src_dfps'][0]== 'none')
+            unset($_POST['form']['src_dfps'][0] );
+
+        if(count($_POST['form']['src_dfps'])==0  )
+            unset($_POST['form']['src_dfps'] );
+
+
+        if($_POST['arr_dest_dfps'][0]== 'none')
+            unset($_POST['arr_dest_dfps'][0] );
+
+        if(count($_POST['arr_dest_dfps'])==0  )
+            unset($_POST['arr_dest_dfps'] );
+        /********************************DEST_brandsTYPE*************************************************/
+        if($_POST['form']['dest_brandsType'][0]== 'none')
+            unset($_POST['form']['dest_brandsType'][0] );
+
+        if(count($_POST['form']['dest_brandsType'])==0  )
+            unset($_POST['form']['dest_brandsType'] );
+
+        if($_POST['form']['src_brandsType'][0]== 'none')
+            unset($_POST['form']['src_brandsType'][0] );
+
+        if(count($_POST['form']['src_brandsType'])==0  )
+            unset($_POST['form']['src_brandsType'] );
+
+
+        if($_POST['arr_dest_brandsType'][0]== 'none')
+            unset($_POST['arr_dest_brandsType'][0] );
+
+        if(count($_POST['arr_dest_brandsType'])==0  )
+            unset($_POST['arr_dest_brandsType'] );
+        /********************************DEST_MANAGERSTYPE*************************************************/
+        if($_POST['form']['dest_managersType'][0]== 'none')
+            unset($_POST['form']['dest_managersType'][0] );
+
+        if(count($_POST['form']['dest_managersType'])==0  )
+            unset($_POST['form']['dest_managersType'] );
+
+        if($_POST['form']['src_managersType'][0]== 'none')
+            unset($_POST['form']['src_managersType'][0] );
+
+        if(count($_POST['form']['src_managersType'])==0  )
+            unset($_POST['form']['src_managersType'] );
+
+
+        if($_POST['arr_dest_managersType'][0]== 'none')
+            unset($_POST['arr_dest_managersType'][0] );
+
+        if(count($_POST['arr_dest_managersType'])==0  )
+            unset($_POST['arr_dest_managersType'] );
+        /*********************************************************************************/
+
+        /*********************************************************************************/
+        if(!$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']){
+            $formdata=$_POST['form'];
+
+            $staff=implode(',',$_POST['arr_dest_dfps']);
+            $sql="SELECT userID,full_name FROM users WHERE userID in($staff)";
+
+            if($rows=$db->queryObjectArray($sql)){
+                foreach($rows as $row){
+
+                    $formdata["dest_dfps"][$row->userID]=$row->full_name;
+                }
+                unset($formdata['arr_dest_dfps']);
+            }
+
+        }elseif($_POST['form']['dest_dfps'] && is_numeric($_POST['form']['dest_dfps'][0])){
+
+            $formdata=$_POST['form'];
+            /**********************************************************************************/
+        }elseif( !is_numeric($_POST['form']['dest_dfps'][0])
+            && ($_POST['form']['dest_dfps'])
+            &&  ($_POST['form']['dest_dfps'][1])
+            &&  (is_numeric($_POST['form']['dest_dfps'][1]))  ){
+
+
+            $dest_dfps= $_POST['form']['dest_dfps'];
+            $i=0;
+            foreach($dest_dfps as $key => $val){
+                if(is_numeric($val)){
+                    $array_num[]=$val ;
+                }elseif(!is_numeric($val) && $val=='none'){
+                    unset($dest_dfps[$i]);
+                }else
+                    $vals[$key] = "'$val'" ;
+                $i++;
+            }
+
+
+            /*************************************************************************************/
+            if($vals){
+                $stuff = implode(", ", $vals);
+
+                $sql="SELECT  userID,full_name FROM users where full_name in($stuff)";
+                $rows=$db->queryObjectArray($sql);
+                $dest_dfps="";
+                foreach($rows as $row){
+                    $dest_dfps[]=$row->userID;
+
+                }
+
+
+
+            }
+            $formdata=$_POST['form'];
+
+            if($array_num && !$dest_dfps){
+                $formdata['dest_user']=$array_num;
+
+            }elseif(!$array_num && $dest_dfps){
+                $formdata['dest_dfps']=$dest_dfps;
+                $size_dest=count($formdata['dest_dfps']);
+            }
+            elseif($array_num && $dest_dfps){
+                $dest=array_merge($array_num,$dest_dfps);
+                $dest=array_unique($dest);
+                $formdata['dest_dfps'] = $dest;
+            }
+
+            /***************************************************************************************/
+        }
+        /*******************************************************************************************************/
+        else{
+            $formdata=$_POST['form'];
+        }
+        /********************************************************************************************/
+
+        if($formdata['dest_dfps'][0] && is_numeric($formdata['dest_dfps'][0]) && is_array($formdata['dest_dfps']) ){
+            foreach($formdata['dest_dfps'] as $key=>$val){
+
+                $sql="SELECT full_name FROM users where userID =$val";
+                if($rows=$db->queryObjectArray($sql))
+
+                    $destNames[$val]=$rows[0]->full_name;
+
+            }
+            $formdata['dest_dfps']=$destNames;
+        }elseif($formdata['dest_dfps'] && is_numeric($formdata['dest_dfps'])  ){
+            $destID=$formdata['dest_dfps'] ;
+
+            $sql="SELECT  userID,full_name FROM users where userID in($destID)";
+            $rows=$db->queryObjectArray($sql);
+            foreach($rows as $row){
+                $destNames[$row->userID]=$row->full_name;
+            }
+
+            $brandID= $_POST['form']['brand_pdf'] ;
+            $formdata['dest_dfps']=$formdata["dest_dfps$brandID"];
+            $formdata['dest_dfps']=$destNames;
+
+        }
+
+
+
+
+        if(!array_item($formdata,'brand_pdf') && array_item($_POST,'brand_pdf')  && $_POST['brand_pdf']!=null){
+            $formdata['brand_pdf']=array_item($_POST,'brand_pdf');
+        }
+
+
+        if(!$_POST['form']['dest_brandsType'] && $_POST['arr_dest_brandsType']){
+
+            $formdata['dest_brandsType']=$_POST['arr_dest_brandsType'];
+        }
+
+        if($_POST['form']['dest_brandsType'] && !$_POST['arr_dest_brandsType']){
+
+            $formdata['dest_brandsType']=$_POST['form']['dest_brandsType'];
+        }
+
+        /*************************************MANAGERSTYPE****************************************************/
+        if(!$_POST['form']['dest_managersType'] && $_POST['arr_dest_managersType']){
+
+            $formdata['dest_managersType']=$_POST['arr_dest_managersType'];
+        }
+
+        if($_POST['form']['dest_managersType'] && !$_POST['arr_dest_managersType']){
+
+            $formdata['dest_managersType']=$_POST['form']['dest_managersType'];
+        }
+        /******************************************************************************************/
+        if($_POST['insert_forum'] && (is_numeric($_POST['insert_forum']) ) ){
+
+            $formdata['insert_forum']=$_POST['insert_forum'];
+        }else{
+            $brandID=$formdata['brand_pdf'];
+            $sql="select parentForumID from brand where brandID=$brandID";
+            if($rows=$db->queryObjectArray($sql) ){
+
+                $formdata['insert_forum']=$rows[0]->parentForumID;
+            }
+
+        }
+        /*****************************************************************************************/
+
+        $db->execute("START TRANSACTION");
+        /******************************************************/
+        if(!$formdata=take_forum_data($formdata)){
+            /*****************************************************/
+            $db->execute("ROLLBACK");
+
+
+            $formdata=$_POST['form'];
+            /**********************************************************************************************************/
+            if($formdata['src_managersType'] &&  is_array($formdata['src_managersType']) && (is_numeric ($formdata['src_managersType'][0])) ){
+                unset($formdata['src_managersType']);
+            }
+
+            if($formdata['src_brandsType'] &&  is_array($formdata['src_brandsType']) && (is_numeric($formdata['src_brandsType'][0])) ){
+                unset($formdata['src_brandsType']);
+            }
+
+            if($formdata['src_dfps'] &&  is_array($formdata['src_dfps']) && (is_numeric($formdata['src_dfps'][0])) ){
+                unset($formdata['src_dfps']);
+            }
+            /**********************************************************************************************************/
+
+
+            $formdata['brand_pdf']=$_POST['form']['brand_pdf'];
+            $formdata['category']=$_POST['form']['category'];
+            $formdata['appoint_forum']=$_POST['form']['appoint_forum'];
+            $formdata['manager_forum']=$_POST['form']['manager_forum'];
+            $formdata['managerType']=$_POST['form']['managerType'];
+            //$formdata['appoint_date1']=$_POST['form']['appoint_date1'];
+            //$formdata['manager_date']=$_POST['form']['manager_date'];
+
+
+
+            if($_POST['form']['appoint_date1'] ){
+                $formdata['appoint_date1']= $_POST['form']['appoint_date1']  ;
+                list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['appoint_date1']);
+                if(strlen($year_date)>3 ){
+                    $formdata['appoint_date1']="$day_date-$month_date-$year_date";
+                }
+            }
+
+            if($_POST['form']['manager_date']){
+                $formdata['manager_date']= $_POST['form']['manager_date'] ;
+                list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['manager_date']);
+                if(strlen($year_date)>3){
+                    $formdata['manager_date']="$day_date-$month_date-$year_date";
+                }
+            }
+
+
+            if($_POST['form']['forum_date']){
+                $formdata['forum_date']=$_POST['form']['forum_date'];
+                list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
+                if(strlen($year_date)>3 ){
+                    $formdata['forum_date']="$day_date-$month_date-$year_date";
+                }
+            }
+
+
+
+            if($_POST['arr_dest_brands']){
+                $formdata['dest_brands']=$_POST['arr_dest_brandsType'];
+            }
+
+            if($_POST['arr_dest_managersType']){
+                $formdata['dest_managersType']=$_POST['arr_dest_managersType'];
+            }
+
+
+
 //				$formdata['forum_date']=substr($_POST['form']['forum_date'],1,10);
 //				list($year_date,$month_date, $day_date) = explode('-',$_POST['form']['forum_date']);
 //				if(strlen($year_date>3) )
 //				$formdata['forum_date']="$day_date-$month_date-$year_date";
-				
-
-				
-if($formdata['dest_users']){				
-	    $i=0;
-	   foreach($formdata['dest_users'] as $row){
-			$member_date="member_date$i"; 
-			$rows['full_date'][$i] =$formdata[$member_date];
-	       	
-		    $i++;	
-		}
-
-		  
-		
-		$i=0;
-		foreach($rows['full_date'] as $row){
-			
-		        $member_date="member_date$i"; 
-				list($year_date,$month_date, $day_date) = explode('-',$row);
-				if(strlen($year_date)>3 ){
-				$formdata[$member_date]="$day_date-$month_date-$year_date";
-				}
-
-				$i++;
-		}
-		      
-	$formdata['fail']=true;	
-}		
-		
-					
-				if(!$_POST['form']['dest_users'] && $_POST['arr_dest_users']){
-					$formdata['dest_users']=$_POST['arr_dest_users'];
-				}
-					
-				if($formdata['src_users'] && $_POST['arr_dest_users'] ){
-						
-					$i=0;
-					foreach ($_POST['arr_dest_users'] as $dst){
-						if($dst=='none')
-						unset ($_POST['arr_dest_users'][$i]);
-						$i++;
-
-					}
-						
-					$arr=implode(',',$_POST['arr_dest_users'] );
-						
-					$sql="select userID,full_name from users where userID in($arr)";
-					$rows=$db->queryObjectArray($sql);
-					foreach ($rows as $row){
-						$dest[$row->userID]=$row->full_name;
-					}
-						
-					$formdata['dest_users']=$dest;//$_POST['arr_dest_users'];
-						
-						
-				}elseif($formdata['dest_users']){// && $formdata['dest_users'][0]!='none' && is_numeric($formdata['dest_users'][0]) ){
 
 
 
-					$dest_users = $dest_users ? $dest_users:$formdata['dest_users'];
-					$i=0;
-					foreach ($dest_users as $dst){
-						if($dst=='none')
-						unset ($dest_users[$i]);
-						$i++;
+            if($formdata['dest_dfps']){
+                $i=0;
+                foreach($formdata['dest_dfps'] as $row){
+                    $member_date="member_date$i";
+                    $rows['full_date'][$i] =$formdata[$member_date];
 
-					}
-
-
-					$arr=implode(',',$dest_users  );
-						
-					$sql="select userID,full_name from users where userID in($arr)";
-					$rows=$db->queryObjectArray($sql);
-					foreach ($rows as $row){
-						$dest[$row->userID]=$row->full_name;
-					}
-					$formdata['dest_users']=$dest;
-
-				}
-				if($formdata['forum_decision']&& $formdata['newforum'])
-				unset( $formdata['forum_decision']);
-				
-				//if(!$formdata['fail'])
-				$formdata['fail']=true;
-				$formdata['dynamic_10']=1;
-				show_list($formdata);
+                    $i++;
+                }
 
 
-				return;
 
-			}
-/*************************************TO_AJAX**********************************************/		   
-	else{
-/**********************************GET_DECISION************************************************/
-if($formdata['take_data']==1){
-	
-$i=0;
-		$frmID=$formdata['forum_decID'] ? $formdata['forum_decID']:$formdata['forum_decision'];	
-		
+                $i=0;
+                foreach($rows['full_date'] as $row){
 
- if($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-			 
-		foreach($formdata['dest_users'] as $key=>$val){
-		if(is_numeric($key)){	
-		$sql="select HireDate  from rel_user_forum where userID=$key and forum_decID=$frmID  ";
-		if($rows1=$db->queryObjectArray($sql)){
-			
-			$rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
-			
-			list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
-		    if(strlen($year_date)==4 ){
-		    $rows1[0]->HireDate="$day_date-$month_date-$year_date";
-		    }elseif(strlen($day_date)==4){
-		     $rows1[0]->HireDate="$year_date-$month_date-$day_date"; 
-		    } 
-		     
-		    
-		    $member_date="member_date$i"  ;
-		    $formdata[$member_date]=$rows1[0]->HireDate; 
-		     $formdata['member_date'][$i]=$rows1[0]->HireDate;  
-		    
-		    
-		       
-		 }	
-			$i++;
-			 
-	    }
-		
-	  }
-	 
-	}	
-	
-	
-	
-}
-		
-/**********************************************************************************************/		
-$forum_decID=$formdata['forum_decID'];	
-	$sql="SELECT d.decID,d.decName 
+                    $member_date="member_date$i";
+                    list($year_date,$month_date, $day_date) = explode('-',$row);
+                    if(strlen($year_date)>3 ){
+                        $formdata[$member_date]="$day_date-$month_date-$year_date";
+                    }
+
+                    $i++;
+                }
+
+                $formdata['fail']=true;
+            }
+
+
+            if(!$_POST['form']['dest_dfps'] && $_POST['arr_dest_dfps']){
+                $formdata['dest_dfps']=$_POST['arr_dest_dfps'];
+            }
+
+            if($formdata['src_dfps'] && $_POST['arr_dest_dfps'] ){
+
+                $i=0;
+                foreach ($_POST['arr_dest_dfps'] as $dst){
+                    if($dst=='none')
+                        unset ($_POST['arr_dest_dfps'][$i]);
+                    $i++;
+
+                }
+
+                $arr=implode(',',$_POST['arr_dest_dfps'] );
+
+                $sql="select userID,full_name from users where userID in($arr)";
+                $rows=$db->queryObjectArray($sql);
+                foreach ($rows as $row){
+                    $dest[$row->userID]=$row->full_name;
+                }
+
+                $formdata['dest_dfps']=$dest;//$_POST['arr_dest_dfps'];
+
+
+            }elseif($formdata['dest_dfps']){// && $formdata['dest_dfps'][0]!='none' && is_numeric($formdata['dest_dfps'][0]) ){
+
+
+
+                $dest_dfps = $dest_dfps ? $dest_dfps:$formdata['dest_dfps'];
+                $i=0;
+                foreach ($dest_dfps as $dst){
+                    if($dst=='none')
+                        unset ($dest_dfps[$i]);
+                    $i++;
+
+                }
+
+
+                $arr=implode(',',$dest_dfps  );
+
+                $sql="select userID,full_name from users where userID in($arr)";
+                $rows=$db->queryObjectArray($sql);
+                foreach ($rows as $row){
+                    $dest[$row->userID]=$row->full_name;
+                }
+                $formdata['dest_dfps']=$dest;
+
+            }
+            if($formdata['brand_pdf']&& $formdata['newbrand '])
+                unset( $formdata['brand_pdf']);
+
+            //if(!$formdata['fail'])
+            $formdata['fail']=true;
+            $formdata['dynamic_10']=1;
+            show_list($formdata);
+
+
+            return;
+
+        }
+        /*************************************TO_AJAX**********************************************/
+        else{
+            /**********************************GET_DECISION************************************************/
+            if($formdata['take_data']==1){
+
+                $i=0;
+                $brandID=$formdata['brandID'] ? $formdata['brandID']:$formdata['brand_pdf'];
+
+
+                if($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+
+                    foreach($formdata['dest_dfps'] as $key=>$val){
+                        if(is_numeric($key)){
+                            $sql="select HireDate  from rel_user_forum where userID=$key and brandID=$brandID  ";
+                            if($rows1=$db->queryObjectArray($sql)){
+
+                                $rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
+
+                                list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
+                                if(strlen($year_date)==4 ){
+                                    $rows1[0]->HireDate="$day_date-$month_date-$year_date";
+                                }elseif(strlen($day_date)==4){
+                                    $rows1[0]->HireDate="$year_date-$month_date-$day_date";
+                                }
+
+
+                                $member_date="member_date$i"  ;
+                                $formdata[$member_date]=$rows1[0]->HireDate;
+                                $formdata['member_date'][$i]=$rows1[0]->HireDate;
+
+
+
+                            }
+                            $i++;
+
+                        }
+
+                    }
+
+                }
+
+
+
+            }
+
+            /**********************************************************************************************/
+            $brandID=$formdata['brandID'];
+            $sql="SELECT d.decID,d.decName 
 	         FROM decisions d 
-	       left join rel_forum_dec rf on d.decID=rf.decID
-	       WHERE rf.forum_decID=$forum_decID";
-				
+	       left join rel_brand rf on d.decID=rf.decID
+	       WHERE rf.brandID=$brandID";
 
-		    if($rows  = $db->queryObjectArray($sql) ){
-               		    	
-		     $formdata["decision"]=$rows; 
-	}			
-/******************************************************************************************/				
-$i=0; 	
-		if($formdata['dest_users'] && is_array($formdata['dest_users']) && is_array($dest_users)){
-			
-		foreach($dest_users as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-		 
 
-     
-		     $formdata["dest_user"]=$results; 
- }elseif($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-			 
-		foreach($formdata['dest_users'] as $key=>$val){
-		if(is_numeric($key)){	
-		$sql="select userID,full_name  from users where userID=$key";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-		 
-		     $formdata["dest_user"]=$results; 
- }
-		   		          	
-/**********************************************************************************************************************/
+            if($rows  = $db->queryObjectArray($sql) ){
+
+                $formdata["decision"]=$rows;
+            }
+            /******************************************************************************************/
+            $i=0;
+            if($formdata['dest_dfps'] && is_array($formdata['dest_dfps']) && is_array($dest_dfps)){
+
+                foreach($dest_dfps as $key=>$val){
+                    if(is_numeric($val)){
+                        $sql="select userID,full_name  from users where userID=$val";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                            $i++;
+
+                        }
+                    }
+
+
+                }
+
+
+
+                $formdata["dest_user"]=$results;
+            }elseif($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+
+                foreach($formdata['dest_dfps'] as $key=>$val){
+                    if(is_numeric($key)){
+                        $sql="select userID,full_name  from users where userID=$key";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                            $i++;
+
+                        }
+                    }
+
+
+                }
+
+                $formdata["dest_user"]=$results;
+            }
+
+            /**********************************************************************************************************************/
 //for check the length
-	 $i=0; 	
-		if($formdata['src_usersID'] && is_array($formdata['src_usersID'])   ){
-			 
-		foreach($formdata['src_usersID'] as $key=>$val){
-	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		       
+            $i=0;
+            if($formdata['src_dfpsID'] && is_array($formdata['src_dfpsID'])   ){
+
+                foreach($formdata['src_dfpsID'] as $key=>$val){
+
+                    $sql="select userID,full_name  from users where userID=$val";
+                    if($rows=$db->queryObjectArray($sql)){
+
+                        $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                        $i++;
+
+                    }
+
+
+                }
+                $formdata["src_user"]=$results1;
+            }else{
+                $formdata["src_user"]=$formdata["dest_user"];
+            }
+            /***********************************************************************/
+            /***********************brandsTYPE**********************************************/
+            $i=0;
+            if($formdata['dest_brandsType'] && is_array($formdata['dest_brandsType'])  ){
+
+                foreach($formdata['dest_brandsType'] as $key=>$val){
+                    if(is_numeric($val)){
+                        $sql="select catID,catName  from categories1 where catID=$val";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
+
+
+                            $i++;
+
+                        }
+                    }
+
+
+                }
+                $formdata['dest_brandsType']=$results_cat_frm;
+            }
+            /*************************************MANAGER_TYPE*****************************************************************/
+
+            $i=0;
+            if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
+
+                foreach($formdata['dest_managersType'] as $key=>$val){
+                    if(is_numeric($val)){
+                        $sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
+                        if($rows=$db->queryObjectArray($sql)){
+
+                            $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
+
+
+                            $i++;
+
+                        }
+                    }
+
+
+                }
+                $formdata['dest_managersType']=$results_cat_mgr;
+            }
+            /******************************************************************************************************/
+
+
+            $manageID=$formdata['manager_forum'];
+            $sql="select managerName from managers where managerID=$manageID";
+            if($rows=$db->queryObjectArray($sql)){
+                $formdata['managerName']=$rows[0]->managerName;
+            }
+            /**********************************************************************/
+            $appID=$formdata['appoint_forum'];
+            $sql="select appointName from appoint_forum where appointID=$appID";
+            if($rows=$db->queryObjectArray($sql)){
+                $formdata['appointName']=$rows[0]->appointName;
+            }
+            /**********************************************************************/
+            unset($_POST['form']['multi_year']);
+            unset($_POST['form']['multi_month']);
+            unset($_POST['form']['multi_day']);
+            unset($formdata['multi_year']);
+            unset($formdata['multi_month']);
+            unset($formdata['multi_day']);
+            $formdata['multi_year'][0]='none';
+            $formdata['multi_month'][0]='none';
+            $formdata['multi_day'][0]='none';
+
+            /******************************************************/
+            $sql = "SELECT catName, catID, parentCatID FROM categories1 ORDER BY catName";
+            if( 	$rows = $db->queryObjectArray($sql)){
+
+                foreach($rows as $row) {
+                    $subcatsftype[$row->parentCatID][] = $row->catID;
+                    $catNamesftype[$row->catID] = $row->catName; }
+
+                $rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
+
+                $formdata['frmType']=$rows;
+            }
+
+
+            /*****************************************************/
+            $db->execute("COMMIT");
+
+
+            $formdata['type'] = 'success';
+            $formdata['message'] = 'עודכן בהצלחה!';
+            echo json_encode($formdata);
+            exit;
+
+
         }
-		 
 
-     }
-		     $formdata["src_user"]=$results1; 
- }else{
- 	$formdata["src_user"]=$formdata["dest_user"];
- }
-/***********************************************************************/		   		          			 
-/***********************FORUMSTYPE**********************************************/
-  $i=0; 	
-		if($formdata['dest_forumsType'] && is_array($formdata['dest_forumsType'])  ){
-			
-		foreach($formdata['dest_forumsType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select catID,catName  from categories1 where catID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+        break;
+    /***************************************************************************************************/
+
+    default:
+    case "list":
+
+        $brand =new brand();
+
+
+
+
+        if(isset($showform) &&  $showform && !empty($_POST['form']['btnLink1'])  && !($_POST['form']['btnLink1'])) {
+
+            $formdata = array_item($_POST, "form");
+
+            if(array_item($formdata, "brandID"))
+                echo "<h1>ערוך פורום</h1>";
+            else
+                echo "<h1>הזן נתונים לפורום  </h1>";
+
+            $brand->print_forum_paging_b();
+
+            show_list($formdata);
+
+        }else{
+            if(isset($_POST['form']['brandID'])) {
+                $brandID = $_POST['form']['brandID'];
+                if (is_numeric($brandID))
+                    $brand->print_forum_entry_form1($brandID);
+                $brand->print_forum_paging_b($brandID);
+            }
         }
-	$formdata['dest_forumsType']=$results_cat_frm;
-}
-/*************************************MANAGER_TYPE*****************************************************************/
-
-  $i=0; 	
-		if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
-			
-		foreach($formdata['dest_managersType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-	$formdata['dest_managersType']=$results_cat_mgr;
-}
-/******************************************************************************************************/
-
-
-$manageID=$formdata['manager_forum'];
-$sql="select managerName from managers where managerID=$manageID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['managerName']=$rows[0]->managerName;
-}		 
-/**********************************************************************/ 		   		          	
-$appID=$formdata['appoint_forum'];
-$sql="select appointName from appoint_forum where appointID=$appID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['appointName']=$rows[0]->appointName;
-}		 
-/**********************************************************************/ 
-unset($_POST['form']['multi_year']);
-unset($_POST['form']['multi_month']);
-unset($_POST['form']['multi_day']);
-unset($formdata['multi_year']);
-unset($formdata['multi_month']);
-unset($formdata['multi_day']);
-$formdata['multi_year'][0]='none';
- $formdata['multi_month'][0]='none';
- $formdata['multi_day'][0]='none';
-
-/******************************************************/
-$sql = "SELECT catName, catID, parentCatID FROM categories1 ORDER BY catName";
-		if( 	$rows = $db->queryObjectArray($sql)){
-				
-			foreach($rows as $row) {
-				$subcatsftype[$row->parentCatID][] = $row->catID;
-				$catNamesftype[$row->catID] = $row->catName; }
-
-				$rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
-
- $formdata['frmType']=$rows; 
-}
- 
- 
-/*****************************************************/ 
-	$db->execute("COMMIT");
-	
- 
-    $formdata['type'] = 'success';
-	$formdata['message'] = 'עודכן בהצלחה!';
-     echo json_encode($formdata);
- 	  exit;
-	
-			 	
-}
-		
-		break;
-/***************************************************************************************************/
-		
-	default:
-	case "list":
-
-		$frm =new forum_dec();
-
-
-
-	 
-		if($showform && !($_POST['form']['btnLink1'])) {
-				
-			$formdata = array_item($_POST, "form");
-				
-			if(array_item($formdata, "forum_decID"))
-			echo "<h1>ערוך פורום</h1>";
-			else
-			echo "<h1>הזן נתונים לפורום  </h1>";
-
-			$frm->print_forum_paging_b();
-			
-			show_list($formdata);
-
-		}else{
-			$forum_decID=$_POST['form']['forum_decID'];
-			if(is_numeric($forum_decID) )
-			$frm->print_forum_entry_form1($forum_decID);
-			$frm->print_forum_paging_b($forum_decID);
-				
-		}
 }
 
 /***************************************GET_DEC_FOR_THE_TREE_VIEW*******************************************************/
- function   get_dec($frmID){
-$frm=new forum_dec();
-$frm->restore_tree($frmID);
+function   get_dec($brandID){
+    $brand=new brand();
+    $brand->restore_tree($brandID);
 }
 /***************************************GET_DEC2_FOR_THE_TREE_VIEW*******************************************************/
- function   get_dec2($frmID){
-$frm=new forum_dec();
-$frm->restore_tree_2($frmID);
+function   get_dec2($brandID){
+    $brand=new brand();
+    $brand->restore_tree_2($brandID);
 }
 
 
 /***************************************GET_DEC_FOR_THE_TREE_VIEW_MULTI*******************************************************/
-function   get_dec_multi($frmID,$count_form=""){
-$frm=new forum_dec();
-$frm->restore_tree2($frmID,$count_form);
+function   get_dec_multi($brandID,$count_form=""){
+    $brand=new brand();
+    $brand->restore_tree2($brandID,$count_form);
 }
 /*********************************************************************************************/
- function   get_dec_multi2($frmID,$count_form=""){
-$frm=new forum_dec();
-$frm->restore_tree_win($frmID,$count_form);
+function   get_dec_multi2($brandID,$count_form=""){
+    $brand=new brand();
+    $brand->restore_tree_win($brandID,$count_form);
 }
 /*********************************************************************************************/
 
 
 
 
-function get_users($frmID){
-	global $db;
-	
+function get_users($brandID){
+    global $db;
 
-   if(array_item($_SESSION, 'level')=='user'){
-   	 $flag_level=0;
-   	 $level=false;
-	?>
-	<div style="float:left"><span id="msg" onClick="toggleMsgDetails()"></span><div id="msgdetails"></div></div>
-	<input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level;?>" /> 
-	<?php       
-   }else{
-   	$level=true;
-   	$flag_level=1;
-   	
-   	?>
-	<input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level;?>" /> 
-	<?php
-   	
-   }     
- 		
-	
-	
-	
- $getUser_sql	=	"SELECT u.userID,u.full_name,r.HireDate FROM users u 
+
+    if(array_item($_SESSION, 'level')=='user'){
+        $flag_level=0;
+        $level=false;
+        ?>
+        <div style="float:left"><span id="msg" onClick="toggleMsgDetails()"></span><div id="msgdetails"></div></div>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level;?>" />
+        <?php
+    }else{
+        $level=true;
+        $flag_level=1;
+
+        ?>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level;?>" />
+        <?php
+
+    }
+
+
+
+
+    $getUser_sql	=	"SELECT u.userID,u.full_name,r.HireDate FROM users u 
                      inner join rel_user_forum r  
                      on u.userID = r.userID              
-                     WHERE r.forum_decID = $frmID
+                     WHERE r.brandID = $brandID
                      ORDER BY u.full_name ASC";
 
-if($rows=$db->queryObjectArray($getUser_sql) ){
+    if($rows=$db->queryObjectArray($getUser_sql) ){
 
-$formdata=Array();	
-	
-$i=0;
-foreach($rows as $row){
-	$sql="select active,userID  from rel_user_forum where userID=$row->userID and forum_decID=$frmID ";
-if($rows_active=$db->queryObjectArray($sql)){
-	
-	$formdata['active'][$row->userID]=$rows_active[0]->active;
-	
-  }
-  $i++;
- }
-	
-	
+        $formdata=Array();
 
- 
- 
-$i=0;
-   
- 
- echo '<table  id="my_table" style="overflow:auto;width:80%;">';
-    	
-    	
-    	
-    	
-/***************************************************/
-		foreach($rows as $row){
-/**************************************************/
-        $li_id="my_li$i";
-        $tr_id="my_tr$i$row->userID $row->forum_decID;";   
-		$member_date="member_date$i"  ;
- 
-       $gif_num=''; 
+        $i=0;
+        foreach($rows as $row){
+            $sql="select active,userID  from rel_user_forum where userID=$row->userID and brandID=$brandID ";
+            if($rows_active=$db->queryObjectArray($sql)){
 
-       
-       
-if( $formdata["active"][$row->userID] && ($formdata["active"][$row->userID]==2) )
-    $gif_num=1;
-     else 
-    $gif_num=0;
-?>
+                $formdata['active'][$row->userID]=$rows_active[0]->active;
 
- <tr class="my_tr"  id="<?php echo $tr_id ?>">
-       
-       
- <td width="16"  id="my_active<?php echo $row->userID; echo $frmID;?>">
-	        <a href="javascript:void(0)" onclick="edit_active(<?php echo $row->userID;?>,<?php echo $frmID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $formdata["active"][$row->userID] ;?>); return false;">
-	          <img src="<?php echo IMAGES_DIR ?>/icon_status_<?php echo $gif_num; ?>.gif" width="16" height="10" alt="" border="0" />  
-	        </a>      
-</td>
-       
+            }
+            $i++;
+        }
 
 
-       
- <td>
-
-<?php  
-
- 
-     $name=$row->full_name;
-	 form_label1("חבר פורום:");
-	 form_text_a("member", $name ,  20, 50, 1);
-
-if(($level)){	 
-?> 
-<!-- <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="ערוך משתמש" onClick="return editUser_frmID(<?php echo $row->userID;;?>,<?php echo $frmID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" ; return false; />-->
- <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="ערוך מישתמש"  onClick="return editUser3(<?php echo $row->userID;?>,<?php echo $frmID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" return false; />     
-<?php }elseif(!($level)){?>
- <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="צפה בפרטי המישתמש"  onClick="return editUser3(<?php echo $row->userID;?>,<?php echo $frmID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" return false; />
-<?php }?>
 
 
-          <script  language="JavaScript" type="text/javascript">
-           
+
+        $i=0;
+
+
+        echo '<table  id="my_table" style="overflow:auto;width:80%;">';
+
+
+
+
+        /***************************************************/
+        foreach($rows as $row){
+            /**************************************************/
+            $li_id="my_li$i";
+            $tr_id="my_tr$i$row->userID $row->brandID;";
+            $member_date="member_date$i"  ;
+
+            $gif_num='';
+
+
+
+            if( $formdata["active"][$row->userID] && ($formdata["active"][$row->userID]==2) )
+                $gif_num=1;
+            else
+                $gif_num=0;
+            ?>
+
+        <tr class="my_tr"  id="<?php echo $tr_id ?>">
+
+
+            <td width="16"  id="my_active<?php echo $row->userID; echo $brandID;?>">
+                <a href="javascript:void(0)" onclick="edit_active(<?php echo $row->userID;?>,<?php echo $brandID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo $formdata["active"][$row->userID] ;?>); return false;">
+                    <img src="<?php echo IMAGES_DIR ?>/icon_status_<?php echo $gif_num; ?>.gif" width="16" height="10" alt="" border="0" />
+                </a>
+            </td>
+
+
+
+
+            <td>
+
+            <?php
+
+
+            $name=$row->full_name;
+            form_label1("חבר פורום:");
+            form_text_a("member", $name ,  20, 50, 1);
+
+            if(($level)){
+                ?>
+                <!-- <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="ערוך משתמש" onClick="return editUser_frmID(<?php echo $row->userID;;?>,<?php echo $brandID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" ; return false; />-->
+                <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="ערוך מישתמש"  onClick="return editUser3(<?php echo $row->userID;?>,<?php echo $brandID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" return false; />
+            <?php }elseif(!($level)){?>
+                <input type="button"  class="mybutton"  id="my_button_<?php echo $row->userID;?>"  value="צפה בפרטי המישתמש"  onClick="return editUser3(<?php echo $row->userID;?>,<?php echo $brandID;?>,<?php echo " '".ROOT_WWW."/admin/' "; ?>,<?php echo "' $i '";?>);" return false; />
+            <?php }?>
+
+
+            <script  language="JavaScript" type="text/javascript">
+
                 $(document).ready(function(){
-	           	$("#<?php echo $member_date; ?>").datepicker( $.extend({}, {showOn: 'button',
-		                               buttonImage: '<?php echo IMAGES_DIR ;?>/calendar.gif', buttonImageOnly: true,
-		                               changeMonth: true,
-				                       changeYear: true,
-				                       showButtonPanel: true,
-				                       buttonText: "Open date picker",
-				                       dateFormat: 'yy-mm-dd',
-				                       altField: '#actualDate'}, $.datepicker.regional['he'])); 
-                 	});
+                    $("#<?php echo $member_date; ?>").datepicker( $.extend({}, {showOn: 'button',
+                        buttonImage: '<?php echo IMAGES_DIR ;?>/calendar.gif', buttonImageOnly: true,
+                        changeMonth: true,
+                        changeYear: true,
+                        showButtonPanel: true,
+                        buttonText: "Open date picker",
+                        dateFormat: 'yy-mm-dd',
+                        altField: '#actualDate'}, $.datepicker.regional['he']));
+                });
             </script>
-        <?php  
+            <?php
 
-	
-     
-    list($year_date,$month_date, $day_date) = explode('-',$formdata[$member_date]);
-    if(strlen($day_date)==4 ){
-    $formdata[$member_date]="$year_date-$month_date-$day_date";
-    }elseif(strlen($year_date)==4){
-     $formdata[$member_date]="$day_date-$month_date-$year_date";	
-    }   
-  
- form_label1("תאריך צרוף לפורום:");
- form_text3 ("$member_date",$row->HireDate  ,  10, 50, 1,$member_date );
- 
-  echo '</td>';
-  echo '</tr>';
- 
-   $i++; 	
- 	     
-	}//end foreach
- 
- echo '</table>';
-  }	
-  return true;
+
+
+            list($year_date,$month_date, $day_date) = explode('-',$formdata[$member_date]);
+            if(strlen($day_date)==4 ){
+                $formdata[$member_date]="$year_date-$month_date-$day_date";
+            }elseif(strlen($year_date)==4){
+                $formdata[$member_date]="$day_date-$month_date-$year_date";
+            }
+
+            form_label1("תאריך צרוף לפורום:");
+            form_text3 ("$member_date",$row->HireDate  ,  10, 50, 1,$member_date );
+
+            echo '</td>';
+            echo '</tr>';
+
+            $i++;
+
+        }//end foreach
+
+        echo '</table>';
+    }
+    return true;
 }//end get_users
 /************************************************************************************************/
 function update_forum($formdata){
-	
-	global $db;
-	$frm=new forum_dec();//($formdata);
-     $formdata['dynamic_10']=1;
 
-	$formselect=$frm->read_forum_data($formdata['forum_decision']);
-	if($formselect['src_users'] && $formselect['src_users']!=null
-	   && $formselect['src_usersID'] && $formselect['src_usersID']!=null  ){
+    global $db;
+    $brand=new brand();//($formdata);
+    $formdata['dynamic_10']=1;
 
-		 		
-		$formdata['src_users']= explode(',',$formselect['src_users']);
-		 
-		$formdata['src_usersID']= explode(',',$formselect['src_usersID']);
-		 
-		$formdata['src_users2']=$formdata['src_usersID']; 
-				 
-		$formdata['date_src_users']= explode(',',$formselect['date_users']);
-	}else{
-		unset($formdata[src_users]);
-		unset($formdata[src_usersID]);
-	}
-	
-/********************************************************************************************/	
-$formdata['src_forumsType']= explode(',',$formselect['src_forumsType']);
-		 
-$formdata['src_managersType']= explode(',',$formselect['src_managersType']);	
+    $formselect=$brand->read_forum_data($formdata['brand_pdf']);
+    if($formselect['src_dfps'] && $formselect['src_dfps']!=null
+        && $formselect['src_dfpsID'] && $formselect['src_dfpsID']!=null  ){
 
-/******************************************************************************************/
-	$formdata['forum_decID']= $formdata['forum_decision'];
-    $frmID=$formdata['forum_decision'];
-	$formdata['insertID']=$formselect['parentForumID'];
-	$formdata['forum_decName']=$formselect['forum_decName'];
-/*****************************************************************************************/
-	$dates = getdate();
-  $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
-  $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
-    
-   $today= $frm->build_date5($dates); 
+
+        $formdata['src_dfps']= explode(',',$formselect['src_dfps']);
+
+        $formdata['src_dfpsID']= explode(',',$formselect['src_dfpsID']);
+
+        $formdata['src_dfps2']=$formdata['src_dfpsID'];
+
+        $formdata['date_src_dfps']= explode(',',$formselect['date_users']);
+    }else{
+        unset($formdata[src_dfps]);
+        unset($formdata[src_dfpsID]);
+    }
+
+    /********************************************************************************************/
+    $formdata['src_brandsType']= explode(',',$formselect['src_brandsType']);
+
+    $formdata['src_managersType']= explode(',',$formselect['src_managersType']);
+
+    /******************************************************************************************/
+    $formdata['brandID']= $formdata['brand_pdf'];
+    $brandID=$formdata['brand_pdf'];
+    $formdata['insertID']=$formselect['parentForumID'];
+    $formdata['brandName']=$formselect['brandName'];
+    /*****************************************************************************************/
+    $dates = getdate();
+    $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
+    $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
+
+    $today= $brand->build_date5($dates);
     $formdata['today']=$today['full_date'];
-    
-	$frm->config_date($formdata);
-	
-	$dateIDs=$frm->build_date($formdata) ;//users_date=>multi
-	$dateIDs=$dateIDs['full_date'];
-	
-	$frm_date=$formdata['forum_date'];
-	$date_usr = $formdata['today'];
-    
-/***************************************************************************************************/
-	if(array_item($formdata,"dest_users")){
-		 
-		$usersIDs=$formdata["dest_users"];
-	}	 
-/******************************************************************************************/
-	
-	  if($frm->validate_data_ajx($formdata,$dateIDs,$frm_date,$insertID="",$formselect) ){
-/*******************************************************************************************/
-	$db->execute("START TRANSACTION");	 
-		if($appointsIDs=$frm->save_appoint($formdata)){
-			if($managersIDs=$frm->save_manager($formdata)){
-					$formdata['appoint_forum']=$appointsIDs;
-					$formdata['manager_forum']=$managersIDs;
-				
-				 if($catIDs=$frm->save_category_ajx($formdata)){
-					 if($catTypeIDs=$frm->save_managerType_ajx($formdata)){
-	$db->execute("COMMIT");				 	
-/*********************************************************************************************/
-/*********************************************************************************************/
-if($forum_decID=$frm->update_forum1($formdata,$formselect,$appointsIDs,$managersIDs)) {
-						
-	if(array_item($formdata,'dest_users'))$frm->conn_user_forum_test($forum_decID,$usersIDs,$dateIDs,$date_usr,$formdata);
-								
-		 if($frm->conn_cat_forum($forum_decID,$catIDs,$formdata)){
-		 	if($frm->conn_type_manager($forum_decID,$catTypeIDs,$formdata)){								 
-						
-									$id=$formdata['forum_decision'];
-/***********************************************************************************************/
-									if(!$formdata['forum_decision']  ){
-										$formdata['forum_decision']=$forum_decID;
-										unset($formdata['newforum']);
-									}
-							        if($formdata['forum_decision'] && $formdata['newforum'] ){
-										$formdata['forum_decision']=$forum_decID;
-										unset($formdata['newforum']);
-									} 
 
-							         if($formdata['insert_forum']  ){
-									 //   unset($formdata['insert_forum']);
-									}
-									
-/***********************************************************************************************/									
-									
-									if(!$formdata['dest_forumsType'] ){
-										$formdata['dest_forumsType']=$catIDs;
-										unset($formdata['new_forumType']);
-									}
-							         if($formdata['dest_forumsType'] && $formdata['new_forumType'] ){
-										$formdata['dest_forumsType']=$catIDs;
-										unset($formdata['new_forumType']);
-									}
-									 if($formdata['insert_category']  ){
-									    unset($formdata['insert_category']);
-									  }
-/***********************************************************************************************/									
-									
-									if(!$formdata['appoint_forum'] ){
-										$formdata['appoint_forum']=$appointsIDs;
-										unset($formdata['new_appoint']);
-									}
-										 
-						        	if($formdata['appoint_forum'] && $formdata['new_appoint'] ){
-										$formdata['appoint_forum']=$appointsIDs;
-										unset($formdata['new_appoint']);
-									}
-							        if($formdata['insert_appoint']  ){
-									    unset($formdata['insert_appoint']);
-									  }
-									
-									
-/***********************************************************************************************/									
-									
-									if(!$formdata['manager_forum']  ){
-										$formdata['manager_forum']=$managersIDs;
-										unset($formdata['new_manager']);
-									}
+    $brand->config_date($formdata);
+
+    $dateIDs=$brand->build_date($formdata) ;//users_date=>multi
+    $dateIDs=$dateIDs['full_date'];
+
+    $brand_date=$formdata['forum_date'];
+    $date_usr = $formdata['today'];
+
+    /***************************************************************************************************/
+    if(array_item($formdata,"dest_dfps")){
+
+        $usersIDs=$formdata["dest_dfps"];
+    }
+    /******************************************************************************************/
+
+    if($brand->validate_data_ajx($formdata,$dateIDs,$brand_date,$insertID="",$formselect) ){
+        /*******************************************************************************************/
+        $db->execute("START TRANSACTION");
+        if($appointsIDs=$brand->save_appoint($formdata)){
+            if($managersIDs=$brand->save_manager($formdata)){
+                $formdata['appoint_forum']=$appointsIDs;
+                $formdata['manager_forum']=$managersIDs;
+
+                if($catIDs=$brand->save_category_ajx($formdata)){
+                    if($catTypeIDs=$brand->save_managerType_ajx($formdata)){
+                        $db->execute("COMMIT");
+                        /*********************************************************************************************/
+                        /*********************************************************************************************/
+                        if($brandID=$brand->update_forum1($formdata,$formselect,$appointsIDs,$managersIDs)) {
+
+                            if(array_item($formdata,'dest_dfps'))$brand->conn_user_forum_test($brandID,$usersIDs,$dateIDs,$date_usr,$formdata);
+
+                            if($brand->conn_cat_forum($brandID,$catIDs,$formdata)){
+                                if($brand->conn_type_manager($brandID,$catTypeIDs,$formdata)){
+
+                                    $id=$formdata['brand_pdf'];
+                                    /***********************************************************************************************/
+                                    if(!$formdata['brand_pdf']  ){
+                                        $formdata['brand_pdf']=$brandID;
+                                        unset($formdata['newbrand ']);
+                                    }
+                                    if($formdata['brand_pdf'] && $formdata['newbrand '] ){
+                                        $formdata['brand_pdf']=$brandID;
+                                        unset($formdata['newbrand ']);
+                                    }
+
+                                    if($formdata['insert_forum']  ){
+                                        //   unset($formdata['insert_forum']);
+                                    }
+
+                                    /***********************************************************************************************/
+
+                                    if(!$formdata['dest_brandsType'] ){
+                                        $formdata['dest_brandsType']=$catIDs;
+                                        unset($formdata['new_forumType']);
+                                    }
+                                    if($formdata['dest_brandsType'] && $formdata['new_forumType'] ){
+                                        $formdata['dest_brandsType']=$catIDs;
+                                        unset($formdata['new_forumType']);
+                                    }
+                                    if($formdata['insert_category']  ){
+                                        unset($formdata['insert_category']);
+                                    }
+                                    /***********************************************************************************************/
+
+                                    if(!$formdata['appoint_forum'] ){
+                                        $formdata['appoint_forum']=$appointsIDs;
+                                        unset($formdata['new_appoint']);
+                                    }
+
+                                    if($formdata['appoint_forum'] && $formdata['new_appoint'] ){
+                                        $formdata['appoint_forum']=$appointsIDs;
+                                        unset($formdata['new_appoint']);
+                                    }
+                                    if($formdata['insert_appoint']  ){
+                                        unset($formdata['insert_appoint']);
+                                    }
+
+
+                                    /***********************************************************************************************/
+
+                                    if(!$formdata['manager_forum']  ){
+                                        $formdata['manager_forum']=$managersIDs;
+                                        unset($formdata['new_manager']);
+                                    }
                                     if($formdata['manager_forum'] && $formdata['new_manager'] ){
-							  			$formdata['manager_forum']=$managersIDs;
-										unset($formdata['new_manager']);
-									}
-							        if($formdata['insert_manager']  ){
-									    unset($formdata['insert_manager']);
-									  }
-									
-									
-/***********************************************************************************************/									
-									
-									
-									if(!$formdata['dest_managersType']){
-										$formdata['dest_managersType']=$catTypeIDs;
-										unset($formdata['new_type']);
-									}
-							        if($formdata['dest_managersType'] && $formdata['new_type'] ){
-										$formdata['managerType']=$catTypeIDs;
-										unset($formdata['new_type']);
-									}
-							        if($formdata['insert_managerType']  ){
-									    unset($formdata['insert_managerType']); 	 
-							         }
-/***********************************************************************************************/
-							if($formdata['multi_day']  ){
-							    unset($formdata['multi_day']);
-							}
-							if($formdata['multi_month']  ){
-							   unset($formdata['multi_month']);
-							}
-							if($formdata['multi_year']  ){
-								unset($formdata['multi_year']);
-							 }	  
-							 
-							 if($dateIDs){
-								unset($dateIDs);
-							 }	  
-/***********************************************************************************************/									  
-									return $formdata;
-								 
-									}
-		 				  		}
-							} 	
-						}
-					}
-				}
-			}
- 	}
-	 
-	return false;
+                                        $formdata['manager_forum']=$managersIDs;
+                                        unset($formdata['new_manager']);
+                                    }
+                                    if($formdata['insert_manager']  ){
+                                        unset($formdata['insert_manager']);
+                                    }
+
+
+                                    /***********************************************************************************************/
+
+
+                                    if(!$formdata['dest_managersType']){
+                                        $formdata['dest_managersType']=$catTypeIDs;
+                                        unset($formdata['new_type']);
+                                    }
+                                    if($formdata['dest_managersType'] && $formdata['new_type'] ){
+                                        $formdata['managerType']=$catTypeIDs;
+                                        unset($formdata['new_type']);
+                                    }
+                                    if($formdata['insert_managerType']  ){
+                                        unset($formdata['insert_managerType']);
+                                    }
+                                    /***********************************************************************************************/
+                                    if($formdata['multi_day']  ){
+                                        unset($formdata['multi_day']);
+                                    }
+                                    if($formdata['multi_month']  ){
+                                        unset($formdata['multi_month']);
+                                    }
+                                    if($formdata['multi_year']  ){
+                                        unset($formdata['multi_year']);
+                                    }
+
+                                    if($dateIDs){
+                                        unset($dateIDs);
+                                    }
+                                    /***********************************************************************************************/
+                                    return $formdata;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
-/*********************************************************************************************************************/
+//-----------------------------------------------------------------
 function validate($formdata){
-	global $db;
+    global $db;
 
-	$frm=new forum_dec();
-    $formdata['dynamic_10']=1;	 
+    $brand=new brand();
+    $formdata['dynamic_10']=1;
     $date_frm='';
-    
-    
-	
 
-/***********************************************************************/
-$dates = getdate();
-  $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
-  $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
-    
-  $today= $frm->build_date5($dates); 
-  $formdata['today']=$today['full_date'];
-  //$date_usr[full_date_usr];
-	
-    
-	$frm->config_date($formdata);
-	
-	$dateIDs=$frm->build_date($formdata) ;
-	$dateIDs=$dateIDs['full_date'];
-	
-	$frm_date=$formdata['forum_date'];
-	$date_usr = $formdata['today'];
+//-----------------------------------------------------------------
+//$dates = getdate();
+//  $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
+//  $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
+//
+//  $today= $brand->build_date5($dates);
+//  $formdata['today']=$today['full_date'];
+//  //$date_usr[full_date_usr];
+//
+//
+//	$brand->config_date($formdata);
+//
+//	$dateIDs=$brand->build_date($formdata) ;
+//	$dateIDs=$dateIDs['full_date'];
+//
+//	$brand_date=$formdata['forum_date'];
+//	$date_usr = $formdata['today'];
 
-/***************************************************************************************************/
-	if(array_item($formdata,'dest_users')){
+//-----------------------------------------------------------------
+    if(array_item($formdata,'dest_dfps')){
 
-		$usersIDs=$formdata['dest_users'];
-	
-	}	
-/*************************************************************************/
- 	if($formdata['dynamic_ajx']&& $formdata['dynamic_ajx']==1) {     
- 
-	 if($frm->validate_data_ajx($formdata,$dateIDs,$date_frm)){
+        $usersIDs=$formdata['dest_dfps'];
 
-	 	$db->execute("START TRANSACTION");
-/*******************************************************************************************/
-		if($appointsIDs=$frm->save_appoint($formdata)){
-			if($managersIDs=$frm->save_manager($formdata)){
-				if($catIDs=$frm->save_category_ajx($formdata)){
-					 if($catTypeIDs=$frm->save_managerType_ajx($formdata)){
-								
-/*********************************************************************************************/
-/*********************************************************************************************/
-						if ($forum_decID=$frm->add_forum($formdata,$appointsIDs,$managersIDs,$catIDs,$catTypeIDs,
-						$dateIDs,$date_usr,$frm_date,$usersIDs)) {
+    }
+//-----------------------------------------------------------------
+// 	if($formdata['dynamic_ajx']&& $formdata['dynamic_ajx']==1) {
+//
+//	 if($brand->validate_data_ajx($formdata,$dateIDs,$date_frm)){
+    if ($publishersIDs = $brand->save_publisher($formdata)) {
+        if ($brandIDS = $brand->save_brand($formdata)) {
+            if ($pdfIDS = $brand->save_pdf($formdata)) {
+                if($imgNams = $brand->convertPdfToImg($formdata) ){
+                    $db->execute("START TRANSACTION");
 
-							 
-								
-							$db->execute("COMMIT");
-								
-							return true;
-						}
-					}
-				}
-			}
-		}
-		 
-	}else{
-		$db->execute("ROLLBACK");
-		$formdata = FALSE;
-		return false;
-	}
-	
- }//end	$formdata['dynamic_ajx']==1
-/************************************************************************************************/
- else{	
- if($frm->validate_data($formdata,$dateIDs,$date_frm)){
 
-	 	$db->execute("START TRANSACTION");
-/*******************************************************************************************/
-		if($appointsIDs=$frm->save_appoint($formdata)){
-			if($managersIDs=$frm->save_manager($formdata)){
-//				if($catIDs=$frm->save_category($formdata)){
-//					if($catTypeIDs=$frm->save_managerType($formdata)){
-				if($catIDs=$frm->save_category_ajx($formdata)){
-					 if($catTypeIDs=$frm->save_managerType_ajx($formdata)){
-				
-				
-/*********************************************************************************************/
-/*********************************************************************************************/
-						if ($forum_decID=$frm->add_forum($formdata,$appointsIDs,$managersIDs,$catIDs,$catTypeIDs,
-						$dateIDs,$date_usr,$frm_date,$usersIDs)) {
 
-							 
-								
-							$db->execute("COMMIT");
-								
-							return true;
-						}
-					}
-				}
-			}
-		}
-		 
-	}else{
-		$db->execute("ROLLBACK");
-		$formdata = FALSE;
-		return false;
-	}	
- }	
-/*************************************************************************************************/
+                    $db->execute("COMMIT");
+                    return true;
+                    return false;
+                }
+            }
+        }
+    }
+//-----------------------------------------------------------------
+//		if($appointsIDs=$brand->save_appoint($formdata)){
+//			if($managersIDs=$brand->save_manager($formdata)){
+//				if($catIDs=$brand->save_category_ajx($formdata)){
+//					 if($catTypeIDs=$brand->save_managerType_ajx($formdata)){
+//
+///*********************************************************************************************/
+///*********************************************************************************************/
+//						if ($brandID=$brand->add_forum($formdata,$appointsIDs,$managersIDs,$catIDs,$catTypeIDs,
+//						$dateIDs,$date_usr,$brand_date,$usersIDs)) {
+//
+//
+//
+//							$db->execute("COMMIT");
+//
+//							return true;
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//	}else{
+//		$db->execute("ROLLBACK");
+//		$formdata = FALSE;
+//		return false;
+//	}
+//
+// }//end	$formdata['dynamic_ajx']==1
+    /************************************************************************************************/
+// else{
+// if($brand->validate_data($formdata,$dateIDs,$date_frm)){
+
+
+    /*******************************************************************************************/
+//		if($appointsIDs=$brand->save_appoint($formdata)){
+//			if($managersIDs=$brand->save_manager($formdata)){
+////				if($catIDs=$brand->save_category($formdata)){
+////					if($catTypeIDs=$brand->save_managerType($formdata)){
+//				if($catIDs=$brand->save_category_ajx($formdata)){
+//					 if($catTypeIDs=$brand->save_managerType_ajx($formdata)){
+//
+//
+///*********************************************************************************************/
+///*********************************************************************************************/
+//						if ($brandID=$brand->add_forum($formdata,$appointsIDs,$managersIDs,$catIDs,$catTypeIDs,
+//						$dateIDs,$date_usr,$brand_date,$usersIDs)) {
+//
+//
+//
+//							$db->execute("COMMIT");
+//
+//							return true;
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//	}else{
+//		$db->execute("ROLLBACK");
+//		$formdata = FALSE;
+//		return false;
+//	}
+// }
+    /*************************************************************************************************/
 }//end function validate
 
 /************************************************************************************************/
 /************************************************************************************************/
 function take_forum_data($formdata){
-	
-	global $db;
-	$frm=new forum_dec();//($formdata);
-     $formdata['dynamic_10']=1;
-     $formdata['take_data']=1;
-	$formselect=$frm->read_forum_data($formdata['forum_decision']);
-	if($formselect['src_users'] && $formselect['src_users']!=null
-	   && $formselect['src_usersID'] && $formselect['src_usersID']!=null  ){
 
-		 		
-		$formdata['src_users']= explode(',',$formselect['src_users']);
-		 
-		$formdata['src_usersID']= explode(',',$formselect['src_usersID']);
-		 
-		$formdata['date_src_users']= explode(',',$formselect['date_users']);
-	}else{
-		unset($formdata[src_users]);
-		unset($formdata[src_usersID]);
-	}
-	
-/********************************************************************************************/	
-$formdata['src_forumsType']= explode(',',$formselect['src_forumsType']);
-		 
-$formdata['src_managersType']= explode(',',$formselect['src_managersType']);	
+    global $db;
+    $brand=new brand();//($formdata);
+    $formdata['dynamic_10']=1;
+    $formdata['take_data']=1;
+    $formselect=$brand->read_forum_data($formdata['brand_pdf']);
+    if($formselect['src_dfps'] && $formselect['src_dfps']!=null
+        && $formselect['src_dfpsID'] && $formselect['src_dfpsID']!=null  ){
 
-/******************************************************************************************/
-	$formdata['forum_decID']= $formdata['forum_decision'];
-    $frmID=$formdata['forum_decision'];
-	$formdata['insertID']=$formselect['parentForumID'];
-	$formdata['forum_decName']=$formselect['forum_decName'];
-/*****************************************************************************************/
-	$dates = getdate();
-  $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
-  $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
-    
-   $today= $frm->build_date5($dates); 
+
+        $formdata['src_dfps']= explode(',',$formselect['src_dfps']);
+
+        $formdata['src_dfpsID']= explode(',',$formselect['src_dfpsID']);
+
+        $formdata['date_src_dfps']= explode(',',$formselect['date_users']);
+    }else{
+        unset($formdata[src_dfps]);
+        unset($formdata[src_dfpsID]);
+    }
+
+    /********************************************************************************************/
+    $formdata['src_brandsType']= explode(',',$formselect['src_brandsType']);
+
+    $formdata['src_managersType']= explode(',',$formselect['src_managersType']);
+
+    /******************************************************************************************/
+    $formdata['brandID']= $formdata['brand_pdf'];
+    $brandID=$formdata['brand_pdf'];
+    $formdata['insertID']=$formselect['parentForumID'];
+    $formdata['brandName']=$formselect['brandName'];
+    /*****************************************************************************************/
+    $dates = getdate();
+    $dates['mon']  = str_pad($dates['mon'] , 2, "0", STR_PAD_LEFT);
+    $dates['mday']  = str_pad($dates['mday'] , 2, "0", STR_PAD_LEFT);
+
+    $today= $brand->build_date5($dates);
     $formdata['today']=$today['full_date'];
-    
-	$frm->config_date($formdata);
-	
-	$dateIDs=$frm->build_date($formdata) ;//users_date=>multi
-	$dateIDs=$dateIDs['full_date'];
-	
-	$frm_date=$formdata['forum_date'];
-	$date_usr = $formdata['today'];
-    
-/***************************************************************************************************/
-	if(array_item($formdata,"dest_users")){
-		 
-		$usersIDs=$formdata["dest_users"];
-	}	 
-/******************************************************************************************/
-if(array_item($formdata,"dest_users")){
-$i=0;
-foreach($formdata['dest_users'] as $key=>$val){
-	$sql="select active  from rel_user_forum where userID=$key and forum_decID=$frmID ";
-if($rows=$db->queryObjectArray($sql)){
-	
-	$formdata['active'][$key]=$rows[0]->active;
-	$i++;
-  }
- }	
-}	
-	
-/**************************************************************************************/	
-	  if($frm->validate_data_ajx($formdata,$dateIDs,$frm_date) ){
-		return $formdata;
-								 
- 	}
-	 
-	return false;
+
+    $brand->config_date($formdata);
+
+    $dateIDs=$brand->build_date($formdata) ;//users_date=>multi
+    $dateIDs=$dateIDs['full_date'];
+
+    $brand_date=$formdata['forum_date'];
+    $date_usr = $formdata['today'];
+
+    /***************************************************************************************************/
+    if(array_item($formdata,"dest_dfps")){
+
+        $usersIDs=$formdata["dest_dfps"];
+    }
+    /******************************************************************************************/
+    if(array_item($formdata,"dest_dfps")){
+        $i=0;
+        foreach($formdata['dest_dfps'] as $key=>$val){
+            $sql="select active  from rel_user_forum where userID=$key and brandID=$brandID ";
+            if($rows=$db->queryObjectArray($sql)){
+
+                $formdata['active'][$key]=$rows[0]->active;
+                $i++;
+            }
+        }
+    }
+
+    /**************************************************************************************/
+    if($brand->validate_data_ajx($formdata,$dateIDs,$brand_date) ){
+        return $formdata;
+
+    }
+
+    return false;
 }
 
 /*********************************************************************************************************************/
 
 function delete_forum($deleteID,$formdata=''){
-	$frm=new forum_dec();
-	$frm->del_forum($deleteID);
-//	$frm->print_forum_paging();
-			 
-			show_list($formdata);
+    $brand=new brand();
+    $brand->del_forum($deleteID);
+//	$brand->print_forum_paging();
+
+    show_list($formdata);
 }
 /************************************************************************************************/
 function insert_forum($insertID,$submitbutton,$subcategories){
-	$frm=new forum_dec();
-	$frm->set($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories']);
-	$insertID=$_GET['insertID'];
-	$forum_decID=$_GET['forum_decID'];
-	if(is_numeric($forum_decID)){
-		$formdata=$frm->read_forum_data($forum_decID);
-	}else{
-		//$frm->add_forum($formdata,$userIDs,$catIDs,$dateIDs);
-		$formdata['insertID']=$insertID  ;
+    $brand=new brand();
+    $brand->set($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories']);
+    $insertID=$_GET['insertID'];
+    $brandID=$_GET['brandID'];
+    if(is_numeric($brandID)){
+        $formdata=$brand->read_forum_data($brandID);
+    }else{
+        //$brand->add_forum($formdata,$userIDs,$catIDs,$dateIDs);
+        $formdata['insertID']=$insertID  ;
 
-		$formdata['year_date']=  $_SESSION['year_date'];
-		$formdata['month_date']= $_SESSION['month_date'];
-		$formdata['day_date']=   $_SESSION['day_date'];
-	 $dates = getdate();
-	 $formdata['year_date']=$dates['year'];
-	 $formdata['month_date']=$dates['mon'];
-	 $formdata['day_date']=$dates['mday'];
-	 $formdata['forum_demo_last8']=1;
-	}
-	//$frm->print_forum_entry_form1_b($insertID);
-	$frm->print_forum_entry_form_b($insertID); 
-	 build_form($formdata);
-	  $frm->print_forum_paging_b();
-	 
-	$frm->link();
+        $formdata['year_date']=  $_SESSION['year_date'];
+        $formdata['month_date']= $_SESSION['month_date'];
+        $formdata['day_date']=   $_SESSION['day_date'];
+        $dates = getdate();
+        $formdata['year_date']=$dates['year'];
+        $formdata['month_date']=$dates['mon'];
+        $formdata['day_date']=$dates['mday'];
+        $formdata['forum_demo_last8']=1;
+    }
+    //$brand->print_forum_entry_form1_b($insertID);
+    $brand->print_forum_entry_form_b($insertID);
+    build_form($formdata);
+    $brand->print_forum_paging_b();
+
+    $brand->link();
 }
 
 
 /************************************************************************************************/
+/**
+ * @param string $formdata
+ */
 function  show_list($formdata=""){
-	$frm=new forum_dec();
+    $brand=new brand();
 
-	$frm->link_div();
-	$formdata=FALSE;
-	build_form($formdata);
-	$frm->print_forum_paging_b();
+//	$brand->link_div();
+    //$formdata=FALSE;
+    build_form($formdata);
+    $brand->print_forum_paging_b();
 
 
 }
 /****************************************************************************/
 function  show_list_fail($formdata=""){
-	$frm=new forum_dec();
+    $brand=new brand();
 
     build_form($formdata);
-	$frm->print_forum_paging_b();
-	
+    $brand->print_forum_paging_b();
+
 }
 /****************************************************************************/
 
 function read_forum($editID){
-	global $db;
-	$frm=new forum_dec();
+    global $db;
+    $brand=new brand();
 
-	if($_REQUEST['editID']){
-		if(($editID =$frm->array_item($_REQUEST, 'editID')) && is_numeric($editID)){
-			$formdata =$frm->read_forum_data1($editID);//i took off the merchaot from full_name if will be problem to check
-		}
-	}else{
-		if(($editID =$frm->array_item($_REQUEST, 'forum_decID')) && is_numeric($editID)){
-			$formdata =$frm->read_forum_data1($editID);
-		}
-	}
-	if($formdata['src_users']){
-		$stuff = $formdata['src_users'];
-		//$stuff_a = $formdata['src_users'];
-		$stuff_b=explode(',',$formdata['src_users']);
-	$i=0;
-
-	foreach($stuff_b as $usr_name){
-		if($i==0){
-        $stuff_a = "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
-		}else{
-		$stuff_a .= "," .  "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
-		}
-		$i++;
-	}	
-
-/*******************************************************************/	
-	$sql="SELECT  userID,full_name FROM users where full_name in  ($stuff_a) ORDER BY userID";
-
-		if($rows=$db->queryObjectArray ($sql) ){
-	  
-		foreach($rows as $row)
-		$dst[$row->userID]=$row->full_name;
-
-		$formdata['dest_users']=$dst;
-	}
-}
-/*******************************************************************************************/   
-$i=0;
-$num=$editID ;	
-if($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-foreach($formdata['dest_users'] as $key=>$val){
-if(is_numeric($key)){	
-$sql="select HireDate  from rel_user_forum where userID=$key and forum_decID=$editID ";
-if($rows1=$db->queryObjectArray($sql)){
-	
-	$rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
-	
-	list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
-    if(strlen($year_date)==4 ){
-    $rows1[0]->HireDate="$day_date-$month_date-$year_date";
-    }elseif(strlen($day_date)==4){
-     $rows1[0]->HireDate="$year_date-$month_date-$day_date"; 
-    } 
-     
-    
-    $member_date="member_date$i"  ;
-    $formdata[$member_date]=$rows1[0]->HireDate; 
-                  
-}	
-	$i++;
+    if($_REQUEST['editID']){
+        if(($editID =$brand->array_item($_REQUEST, 'editID')) && is_numeric($editID)){
+            $formdata =$brand->read_forum_data1($editID);//i took off the merchaot from full_name if will be problem to check
+        }
+    }else{
+        if(($editID =$brand->array_item($_REQUEST, 'brandID')) && is_numeric($editID)){
+            $formdata =$brand->read_forum_data1($editID);
+        }
     }
-	
-  }
-$i=0;
-foreach($formdata['dest_users'] as $key=>$val){
-	$sql="select active  from rel_user_forum where userID=$key and forum_decID=$editID ";
-if($rows=$db->queryObjectArray($sql)){
-	
-	$formdata['active'][$key]=$rows[0]->active;
-	$i++;
-  }
- }
-}
-/********************************************************************************************/
- 	
-	$frm->link_div();
-	
-	$forum_decID=$formdata['forum_decID'];
-	$frm->message_update_b($formdata,$forum_decID);
-	$formdata['forum_decision']=$forum_decID;
+    if($formdata['src_dfps']){
+        $stuff = $formdata['src_dfps'];
+        //$stuff_a = $formdata['src_dfps'];
+        $stuff_b=explode(',',$formdata['src_dfps']);
+        $i=0;
 
-	
-	 build_form_ajx7($formdata);
-    
-	 $frm->print_forum_paging_b();
-	return  TRUE;
+        foreach($stuff_b as $usr_name){
+            if($i==0){
+                $stuff_a = "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
+            }else{
+                $stuff_a .= "," .  "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
+            }
+            $i++;
+        }
+
+        /*******************************************************************/
+        $sql="SELECT  userID,full_name FROM users where full_name in  ($stuff_a) ORDER BY userID";
+
+        if($rows=$db->queryObjectArray ($sql) ){
+
+            foreach($rows as $row)
+                $dst[$row->userID]=$row->full_name;
+
+            $formdata['dest_dfps']=$dst;
+        }
+    }
+    /*******************************************************************************************/
+    $i=0;
+    $num=$editID ;
+    if($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+        foreach($formdata['dest_dfps'] as $key=>$val){
+            if(is_numeric($key)){
+                $sql="select HireDate  from rel_user_forum where userID=$key and brandID=$editID ";
+                if($rows1=$db->queryObjectArray($sql)){
+
+                    $rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
+
+                    list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
+                    if(strlen($year_date)==4 ){
+                        $rows1[0]->HireDate="$day_date-$month_date-$year_date";
+                    }elseif(strlen($day_date)==4){
+                        $rows1[0]->HireDate="$year_date-$month_date-$day_date";
+                    }
+
+
+                    $member_date="member_date$i"  ;
+                    $formdata[$member_date]=$rows1[0]->HireDate;
+
+                }
+                $i++;
+            }
+
+        }
+        $i=0;
+        foreach($formdata['dest_dfps'] as $key=>$val){
+            $sql="select active  from rel_user_forum where userID=$key and brandID=$editID ";
+            if($rows=$db->queryObjectArray($sql)){
+
+                $formdata['active'][$key]=$rows[0]->active;
+                $i++;
+            }
+        }
+    }
+    /********************************************************************************************/
+
+    $brand->link_div();
+
+    $brandID=$formdata['brandID'];
+    $brand->message_update_b($formdata,$brandID);
+    $formdata['brand_pdf']=$brandID;
+
+
+    build_form_ajx7($formdata);
+
+    $brand->print_forum_paging_b();
+    return  TRUE;
 
 }
 
@@ -2698,279 +2667,279 @@ if($rows=$db->queryObjectArray($sql)){
 
 
 function read_forum_ajx($editID){
-	global $db;
-	$frm=new forum_dec();
+    global $db;
+    $brand=new brand();
 
-	if($_REQUEST['editID']){
-		if(($editID =$frm->array_item($_REQUEST, 'editID')) && is_numeric($editID)){
-			$formdata =$frm->read_forum_data1($editID);
-		}
-	}else{
-		if(($editID =$frm->array_item($_REQUEST, 'forum_decID')) && is_numeric($editID)){
-			$formdata =$frm->read_forum_data1($editID);
-		}
-	}
-	if($formdata['src_users']){
-		$stuff = $formdata['src_users'];
-		
-/*****************************************************************/	
-		$stuff_b=explode(',',$formdata['src_users']);
-	$i=0;
-
-	foreach($stuff_b as $usr_name){
-		if($i==0){
-        $stuff_a = "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
-		}else{
-		$stuff_a .= "," .  "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
-		}
-		$i++;
-	}	
-
-/*******************************************************************/	
-		
-		
-		
-		$sql="SELECT  userID,full_name FROM users where full_name in($stuff_a) ORDER BY userID";
-		$rows=$db->queryObjectArray($sql);
-	  
-		foreach($rows as $row)
-		$dst[$row->userID]=$row->full_name;
-
-		$formdata['dest_users']=$dst;
-	}
- 
-/*******************************************************************************************/ 
- 	  
-$i=0;
-$num=$editID ;	
-if($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-foreach($formdata['dest_users'] as $key=>$val){
-if(is_numeric($key)){	
-$sql="select HireDate  from rel_user_forum where userID=$key and forum_decID=$editID ";
-if($rows1=$db->queryObjectArray($sql)){
-	
-	$rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
-	
-	list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
-    if(strlen($year_date)==4 ){
-    $rows1[0]->HireDate="$day_date-$month_date-$year_date";
-    }elseif(strlen($day_date)==4){
-     $rows1[0]->HireDate="$year_date-$month_date-$day_date"; 
-    } 
-     
-    
-    $member_date="member_date$i"  ;
-    $formdata[$member_date]=$rows1[0]->HireDate;         
-}	
-	$i++;
+    if($_REQUEST['editID']){
+        if(($editID =$brand->array_item($_REQUEST, 'editID')) && is_numeric($editID)){
+            $formdata =$brand->read_forum_data1($editID);
+        }
+    }else{
+        if(($editID =$brand->array_item($_REQUEST, 'brandID')) && is_numeric($editID)){
+            $formdata =$brand->read_forum_data1($editID);
+        }
     }
-	
-  }
+    if($formdata['src_dfps']){
+        $stuff = $formdata['src_dfps'];
 
-}
- 
+        /*****************************************************************/
+        $stuff_b=explode(',',$formdata['src_dfps']);
+        $i=0;
 
-/**********************************GET_DECISION************************************************/				
-$forum_decID=$formdata['forum_decID'];	
-	$sql="SELECT d.decID,d.decName 
+        foreach($stuff_b as $usr_name){
+            if($i==0){
+                $stuff_a = "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
+            }else{
+                $stuff_a .= "," .  "  '" . $db->getMysqli()->real_escape_string($usr_name). "'";
+            }
+            $i++;
+        }
+
+        /*******************************************************************/
+
+
+
+        $sql="SELECT  userID,full_name FROM users where full_name in($stuff_a) ORDER BY userID";
+        $rows=$db->queryObjectArray($sql);
+
+        foreach($rows as $row)
+            $dst[$row->userID]=$row->full_name;
+
+        $formdata['dest_dfps']=$dst;
+    }
+
+    /*******************************************************************************************/
+
+    $i=0;
+    $num=$editID ;
+    if($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+        foreach($formdata['dest_dfps'] as $key=>$val){
+            if(is_numeric($key)){
+                $sql="select HireDate  from rel_user_forum where userID=$key and brandID=$editID ";
+                if($rows1=$db->queryObjectArray($sql)){
+
+                    $rows1[0]->HireDate=substr($rows1[0]->HireDate,0,10);
+
+                    list($year_date,$month_date, $day_date) = explode('-',$rows1[0]->HireDate);
+                    if(strlen($year_date)==4 ){
+                        $rows1[0]->HireDate="$day_date-$month_date-$year_date";
+                    }elseif(strlen($day_date)==4){
+                        $rows1[0]->HireDate="$year_date-$month_date-$day_date";
+                    }
+
+
+                    $member_date="member_date$i"  ;
+                    $formdata[$member_date]=$rows1[0]->HireDate;
+                }
+                $i++;
+            }
+
+        }
+
+    }
+
+
+    /**********************************GET_DECISION************************************************/
+    $brandID=$formdata['brandID'];
+    $sql="SELECT d.decID,d.decName 
 	         FROM decisions d 
-	       left join rel_forum_dec rf on d.decID=rf.decID
-	       WHERE rf.forum_decID=$forum_decID";
-	      // left join forum_dec f on f.forum_decID
-				
+	       left join rel_brand rf on d.decID=rf.decID
+	       WHERE rf.brandID=$brandID";
+    // left join brand f on f.brandID
 
-		    if($rows  = $db->queryObjectArray($sql) ){
-               		    	
-		     $formdata["decision"]=$rows; 
-	}			
-/******************************************************************************************/				
-$i=0; 	
-		if($formdata['dest_users'] && is_array($formdata['dest_users']) && is_array($dest_users)){
-			
-		foreach($dest_users as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
-        }
-		 
 
-     
-		     $formdata["dest_user"]=$results; 
- }elseif($formdata['dest_users'] && is_array($formdata['dest_users'])   ){
-			 
-		foreach($formdata['dest_users'] as $key=>$val){
-		if(is_numeric($key)){	
-		$sql="select userID,full_name  from users where userID=$key";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+    if($rows  = $db->queryObjectArray($sql) ){
+
+        $formdata["decision"]=$rows;
+    }
+    /******************************************************************************************/
+    $i=0;
+    if($formdata['dest_dfps'] && is_array($formdata['dest_dfps']) && is_array($dest_dfps)){
+
+        foreach($dest_dfps as $key=>$val){
+            if(is_numeric($val)){
+                $sql="select userID,full_name  from users where userID=$val";
+                if($rows=$db->queryObjectArray($sql)){
+
+                    $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                    $i++;
+
+                }
+            }
+
+
         }
-		 
-		     $formdata["dest_user"]=$results; 
-		     $formdata["dest_users"]=$results; 
- }
-		   		          	
-/**********************************************************************************************************************/
+
+
+
+        $formdata["dest_user"]=$results;
+    }elseif($formdata['dest_dfps'] && is_array($formdata['dest_dfps'])   ){
+
+        foreach($formdata['dest_dfps'] as $key=>$val){
+            if(is_numeric($key)){
+                $sql="select userID,full_name  from users where userID=$key";
+                if($rows=$db->queryObjectArray($sql)){
+
+                    $results[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                    $i++;
+
+                }
+            }
+
+
+        }
+
+        $formdata["dest_user"]=$results;
+        $formdata["dest_dfps"]=$results;
+    }
+
+    /**********************************************************************************************************************/
 //for check the length
-	 $i=0; 	
-		if($formdata['src_usersID'] && is_array($formdata['src_usersID'])   ){
-			 
-		foreach($formdata['src_usersID'] as $key=>$val){
-	
-		$sql="select userID,full_name  from users where userID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
-			 
-		    
-		      $i++;
-		       
+    $i=0;
+    if($formdata['src_dfpsID'] && is_array($formdata['src_dfpsID'])   ){
+
+        foreach($formdata['src_dfpsID'] as $key=>$val){
+
+            $sql="select userID,full_name  from users where userID=$val";
+            if($rows=$db->queryObjectArray($sql)){
+
+                $results1[$i] = array('full_name'=>$rows[0]->full_name,'userID'=>$rows[0]->userID);
+
+
+                $i++;
+
+            }
+
+
         }
-		 
+        $formdata["src_user"]=$results1;
+    }else{
+        $formdata["src_user"]=$formdata["dest_user"];
+    }
+    /***********************************************************************/
+    /***********************brandsTYPE**********************************************/
+    $i=0;
+    if($formdata['dest_brandsType'] && is_array($formdata['dest_brandsType'])  ){
 
-     }
-		     $formdata["src_user"]=$results1; 
- }else{
- 	$formdata["src_user"]=$formdata["dest_user"];
- }
-/***********************************************************************/		   		          			 
-/***********************FORUMSTYPE**********************************************/
-  $i=0; 	
-		if($formdata['dest_forumsType'] && is_array($formdata['dest_forumsType'])  ){
-			
-		foreach($formdata['dest_forumsType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select catID,catName  from categories1 where catID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+        foreach($formdata['dest_brandsType'] as $key=>$val){
+            if(is_numeric($val)){
+                $sql="select catID,catName  from categories1 where catID=$val";
+                if($rows=$db->queryObjectArray($sql)){
+
+                    $results_cat_frm[$i] = array('catName'=>$rows[0]->catName,'catID'=>$rows[0]->catID);
+
+
+                    $i++;
+
+                }
+            }
+
+
         }
-	$formdata['dest_forumsType']=$results_cat_frm;
-}
-/*************************************MANAGER_TYPE*****************************************************************/
+        $formdata['dest_brandsType']=$results_cat_frm;
+    }
+    /*************************************MANAGER_TYPE*****************************************************************/
 
-  $i=0; 	
-		if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
-			
-		foreach($formdata['dest_managersType'] as $key=>$val){
-		if(is_numeric($val)){	
-		$sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
-		if($rows=$db->queryObjectArray($sql)){
-		 
-			 $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
-			 
-		    
-		      $i++;
-		    
-		     }
-		  } 
-		    
-		       
+    $i=0;
+    if($formdata['dest_managersType'] && is_array($formdata['dest_managersType'])  ){
+
+        foreach($formdata['dest_managersType'] as $key=>$val){
+            if(is_numeric($val)){
+                $sql="select managerTypeID,managerTypeName  from manager_type where managerTypeID=$val";
+                if($rows=$db->queryObjectArray($sql)){
+
+                    $results_cat_mgr[$i] = array('managerTypeName'=>$rows[0]->managerTypeName,'managerTypeID'=>$rows[0]->managerTypeID);
+
+
+                    $i++;
+
+                }
+            }
+
+
         }
-	$formdata['dest_managersType']=$results_cat_mgr;
-}
-/******************************************************************************************************/
+        $formdata['dest_managersType']=$results_cat_mgr;
+    }
+    /******************************************************************************************************/
 
 
-$manageID=$formdata['manager_forum'];
-$sql="select managerName from managers where managerID=$manageID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['managerName']=$rows[0]->managerName;
-}		 
-/**********************************************************************/ 		   		          	
-$appID=$formdata['appoint_forum'];
-$sql="select appointName from appoint_forum where appointID=$appID";
-if($rows=$db->queryObjectArray($sql)){
-	$formdata['appointName']=$rows[0]->appointName;
-}		 
-/**********************************************************************/ 
+    $manageID=$formdata['manager_forum'];
+    $sql="select managerName from managers where managerID=$manageID";
+    if($rows=$db->queryObjectArray($sql)){
+        $formdata['managerName']=$rows[0]->managerName;
+    }
+    /**********************************************************************/
+    $appID=$formdata['appoint_forum'];
+    $sql="select appointName from appoint_forum where appointID=$appID";
+    if($rows=$db->queryObjectArray($sql)){
+        $formdata['appointName']=$rows[0]->appointName;
+    }
+    /**********************************************************************/
 
-unset($formdata['multi_year']);
-unset($formdata['multi_month']);
-unset($formdata['multi_day']);
-$formdata['multi_year'][0]='none';
- $formdata['multi_month'][0]='none';
- $formdata['multi_day'][0]='none';
+    unset($formdata['multi_year']);
+    unset($formdata['multi_month']);
+    unset($formdata['multi_day']);
+    $formdata['multi_year'][0]='none';
+    $formdata['multi_month'][0]='none';
+    $formdata['multi_day'][0]='none';
 
-$t = array();
-$t['formdata'][]=$formdata;
-	 
- 
+    $t = array();
+    $t['formdata'][]=$formdata;
+
+
     $formdata['type'] = 'success';
-	$formdata['message'] = 'עודכן בהצלחה!';
+    $formdata['message'] = 'עודכן בהצלחה!';
 //     echo json_encode($formdata);
-echo json_encode($t);
- 	  exit;
-	
-			 	
+    echo json_encode($t);
+    exit;
+
+
 }
 
 
 /******************************************************************************/
 
 function read_forum2($editID){
-	global $db;
-	$frm=new forum_dec();
+    global $db;
+    $brand=new brand();
 
-	if(is_numeric($editID)){
-		$formselect =$frm->read_forum_data2($editID);
-		$dest_users=$formselect['dest_users'];
-		$dest_users=explode(";",$dest_users);
-		$formdata['dest_users']=$dest_users;
-	}
+    if(is_numeric($editID)){
+        $formselect =$brand->read_forum_data2($editID);
+        $dest_dfps=$formselect['dest_dfps'];
+        $dest_dfps=explode(";",$dest_dfps);
+        $formdata['dest_dfps']=$dest_dfps;
+    }
 
-	return  $dest_users;
+    return  $dest_dfps;
 }
 
 /******************************************************************************/
 function read_befor_link($formdata){
-	global $db;
-	$dec=new forum();
-	
-	$dec->link();
-	$dec->print_form2($formdata['forum_decID'] );
+    global $db;
+    $dec=new forum();
+
+    $dec->link();
+    $dec->print_form2($formdata['brandID'] );
 
 
 
-	return true;
+    return true;
 }
 
 /******************************************************************************/
 function read_link($formdata){
-	global $db;
-	$frm=new forum_dec();
-	$formdata=$frm->read_forum_data3($formdata['forum_decID'],$formdata['insertID']);
+    global $db;
+    $brand=new brand();
+    $formdata=$brand->read_forum_data3($formdata['brandID'],$formdata['insertID']);
 
-	
-	$frm->link();
-	
-	return $formdata;
+
+    $brand->link();
+
+    return $formdata;
 
 }
 
@@ -2978,83 +2947,83 @@ function read_link($formdata){
 /************************************************************************************************/
 
 function update_forum1($updateID){
-	$frm=new forum_dec();
-	$frm->set($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories'],$_POST['deleteID'],$_GET['updateID']);
-	//$frm->link_div();
-	$frm->update_forum_general();
-  //  show_list();
-	//$frm->print_forum_paging_b();
-	
-	
-//	$frm->link_div();
-	
-//	$forum_decID=$formdata['forum_decID'];
-//	
-//	$formdata['forum_decision']=$forum_decID;
+    $brand=new brand();
+    $brand->set($_GET['insertID'],$_POST['submitbutton'],$_POST['subcategories'],$_POST['deleteID'],$_GET['updateID']);
+    //$brand->link_div();
+    $brand->update_forum_general();
+    //  show_list();
+    //$brand->print_forum_paging_b();
 
-	
-	 build_form($formdata);
-    
-	 $frm->print_forum_paging_b();
-	return  TRUE;
-	
-	
-	
-	
+
+//	$brand->link_div();
+
+//	$brandID=$formdata['brandID'];
+//	
+//	$formdata['brand_pdf']=$brandID;
+
+
+    build_form($formdata);
+
+    $brand->print_forum_paging_b();
+    return  TRUE;
+
+
+
+
 }
 
 /******************************************************************************/
 
 /***********************************************************************/
 function  delete_dec_form ($formdata){
-	$dec=new forum_dec();
-	
-	if(array_item($formdata, "btnClear"))
-	// clear form
-	$formdata = FALSE;
- 
-	elseif(array_item($formdata, "btnDelete")) {
-		// ask, if really delete
-		if($dec->build_delete_form($formdata))
-		$showform=FALSE; }
+    $dec=new brand();
 
-		return true;
+    if(array_item($formdata, "btnClear"))
+        // clear form
+        $formdata = FALSE;
+
+    elseif(array_item($formdata, "btnDelete")) {
+        // ask, if really delete
+        if($dec->build_delete_form($formdata))
+            $showform=FALSE; }
+
+    return true;
 }
 /***********************************************************************/
 function  real_del($formdata){
-	$frm=new forum_dec();
-	global $db;
-	
-	if(array_item($formdata,'forum_decID')){
-		$formdata=$frm->read_forum_data($formdata['forum_decID']);
-		$db->execute("START TRANSACTION");
-		if($frm->delete_forum($formdata))
-		$db->execute("COMMIT");
-		else
-		$db->execute("ROLLBACK");
-		$formdata = FALSE;}
-		return $formdata;
+    $brand=new brand();
+    global $db;
+
+    if(array_item($formdata,'brandID')){
+        $formdata=$brand->read_forum_data($formdata['brandID']);
+        $db->execute("START TRANSACTION");
+        if($brand->delete_forum($formdata))
+            $db->execute("COMMIT");
+        else
+            $db->execute("ROLLBACK");
+        $formdata = FALSE;}
+    return $formdata;
 }
 /***********************************************************************/
 function link1(){
-	$frm=new forum_dec();
-	$frm->print_form();
-    
-	return true;
+    $brand=new brand();
+    $brand->print_form();
+
+    return true;
 }
 /****************************************************************************/
 
-function update_to_parent($forum_decID ,$insertID){
-	$frm=new forum_dec;
-	$frm->update_parent($insertID,$forum_decID);
+function update_to_parent($brandID ,$insertID){
+    $brand=new brand;
+    $brand->update_parent($insertID,$brandID);
 }
 /***************************************************************************/
-function delete_user_forum($usrID,$frmID){
-	$frm=new forum_dec;
-	$frm->del_usr_frm($usrID,$frmID);
-	return true;
+function delete_user_forum($usrID,$brandID){
+    $brand=new brand;
+    $brand->del_usr_frm($usrID,$brandID);
+    return true;
 }
-
-html_footer();
+$brand=new brand;
+$brand ->html_footer();
 
 ?>
