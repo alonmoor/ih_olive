@@ -50,7 +50,7 @@ $showform=TRUE;
                 $_REQUEST['mode']=$_POST['mode'] ;
             }
 
-if(!empty($_GET['mode']) && $_GET['mode'] && ($_GET['mode'] ==  'update' || $_GET['mode'] ==  'save') ) {
+if(!empty($_GET['mode']) && $_GET['mode'] && ($_GET['mode'] ==  'update' || ($_GET['mode'] ==  'save' ||$_GET['mode'] ==  'add_pdf' )) ) {
     $_GET['mode'] = $tmp =(array_item($_GET['mode'], "pdfID") ) ? "update":"save" ;
     $_REQUEST['mode']= $_GET['mode'] ;
 }
@@ -72,64 +72,37 @@ if(!$page || $page<1 || !is_numeric($page))
 $page=1;
 elseif($page>100)
 $page=100;
-
 $_REQUEST['mode']  = isset( $_REQUEST['mode'] ) ? $_REQUEST['mode'] : 'default';
 /********************************************************************************/
 switch ($_REQUEST['mode'] ) {
-    case "view_pdfs": // http://olive/admin/index.php?mode=view_pdfs&id=72da54f314fe325a1b5abc7287e8c372ec4c7dd6
-//        if (isset($_GET['id']) && (strlen($_GET['id']) == 40) && (substr($_GET['id'], 0, 1) != '.') ) {
-//            // Identify the file:
-//            $file = PDF_DIR . $_GET['id'];
-//            // Check that the PDF exists and is a file:
-//            if (file_exists($file) && (is_file($file))) {
-//                $pdf = new pdfs();
-//                $pdf->view_pdfs($file);
-//            } else {
-//                $pdf = new pdfs();
-//                $formdata = isset($_POST['form']) ? $_POST['form'] : false;
-//                build_form($formdata);
-//                $pdf->print_form_paging();
-//                //show_list($_POST['form']);
-//            }
-//        }
-
-//--------------------------------------------------------------------
+    case "view_pdfs":
         if( ! isAjax() ){
        global $dbc;
         $valid = false;
 // Validate the PDF ID:
         if (isset($_GET['id']) && (strlen($_GET['id']) == 40) && (substr($_GET['id'], 0, 1) != '.') ) {
-
             // Identify the file:
             $file = PDF_DIR . $_GET['id'];
-
             // Check that the PDF exists and is a file:
             if (file_exists($file) && (is_file($file))) {
-
                 // Get the info:
                 $q = 'SELECT * FROM pdfs WHERE tmpName="' . mysqli_real_escape_string($dbc, $_GET['id']) . '"';
                 $r = mysqli_query($dbc, $q);
                 if (mysqli_num_rows($r) == 1) { // Ok!
-
                     // Fetch the info:
                     $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
-
                     // Indicate that the file reference is fine:
                     $valid = true;
-
                     $GLOBALS['TEMPLATE']['content'] = ob_get_contents();
                     ob_end_clean();
                     ob_start();
-
                     // Send the content information:
                         header('Content-type:application/pdf');
                         header('Content-Disposition:inline;filename="' . $row['pdfName'] . '"');
                         $fs = filesize($file);
                         header("Content-Length:$fs\n");
-
                         // Send the file:
                         readfile($file);
-
                         exit();
                     $GLOBALS['TEMPLATE']['content'] = ob_get_contents();
                     ob_end_clean();
@@ -138,17 +111,19 @@ switch ($_REQUEST['mode'] ) {
                 }
             }
         }
-
-//---------------------------------------------------------------
         break;
 //------------------------------------------------------------
     case "save":
         global $db;
+
+        if(isset($_POST['form']['dest_publishers'][0]) && $_POST['form']['dest_publishers'][0]== 'none'){
+            unset($_POST['form']['dest_publishers'][0] );
+        }
         $formdata = isset($_POST['form']) ? $_POST['form'] : false;
 
         $files = isset($_FILES['pdf']) ? $_FILES['pdf'] : false;
 
-
+//-------------------all ready exist------------------------------------------
         if(isset($_FILES['pdf'])){
             $i=0;
             foreach($_FILES['pdf']['type']  as $value){
@@ -162,8 +137,6 @@ switch ($_REQUEST['mode'] ) {
                 $i++;
             }
 
-
-
         foreach($_FILES['pdf'] as $key => $value){
             $i = 0;
             foreach($value as $val ){
@@ -172,23 +145,23 @@ switch ($_REQUEST['mode'] ) {
             }
         }
     }
-        if(isset($formdata['files']))
+//-------------------------------------------------------------
+        if(isset($formdata['files'])) {
             $_FILES['pdf'] = $formdata['files'];
 
-//-------------------all ready exist------------------------------------------
-
-        $i=0;
-        foreach($_FILES['pdf']['name']  as $value) {
-            $sql = "SELECT COUNT(*) FROM pdfs " .
-                "WHERE pdfName='$value'";
-            if ($db->querySingleItem($sql) > 0) {
-                unset ($_FILES['pdf']['name'][$i]);
-                unset ($_FILES['pdf']['type'][$i]);
-                unset ($_FILES['pdf']['tmp_name'][$i]);
-                unset ($_FILES['pdf']['error'][$i]);
-                unset ($_FILES['pdf']['size'][$i]);
+            $i = 0;
+            foreach ($_FILES['pdf']['name'] as $value) {
+                $sql = "SELECT COUNT(*) FROM pdfs " .
+                    "WHERE pdfName='$value'";
+                if ($db->querySingleItem($sql) > 0) {
+                    unset ($_FILES['pdf']['name'][$i]);
+                    unset ($_FILES['pdf']['type'][$i]);
+                    unset ($_FILES['pdf']['tmp_name'][$i]);
+                    unset ($_FILES['pdf']['error'][$i]);
+                    unset ($_FILES['pdf']['size'][$i]);
+                }
+                $i++;
             }
-            $i++;
         }
         if(isset($formdata['files']) )  {
             $tmp_formdata = $formdata['files'];
@@ -202,57 +175,49 @@ switch ($_REQUEST['mode'] ) {
                         $i++;
                     }
                 }
-
-
                 $_FILES['pdf'] = $formdata['files'];
             }
         }else{
-            echo "NO AVAILABLE FILES";
+            echo "NO AVAILABLE FILES OR THE FILE IS CORRUPT!";
+            build_form($formdata);
             return ;
         }
 //---------------------------------------------------------------------
-
         $formdata['form'] = isset($_POST['form']) ? $_POST['form'] : false;
-
-
-
         // $formdata['files'] =   $files;
         if(array_item ($_POST,'arr_dest_publishers') )
             $formdata['dest_publishers'] = isset($_POST['arr_dest_publishers']) ? $_POST['arr_dest_publishers'] : '';
-
         if(array_item ($_POST,'arr_dest_decisionsType') )
             $formdata['dest_decisionsType'] = $_POST['arr_dest_decisionsType'];
-
-
         if(!array_item ($_POST,'arr_dest_decisionsType')
             &&  isset($_POST['form']['src_decisionsType'][0]) && isset($_POST['form']['src_decisionsType']) &&   ($_POST['form']['src_decisionsType'][0]   )
             && is_array($_POST['form']['src_decisionsType']))
             $formdata['dest_decisionsType'] =  $_POST['form']['src_decisionsType'];
-
-
-
         if(isset($_POST['form']['src_forums'][0]) && isset($_POST['form']['src_forums']) && !array_item ($_POST,'arr_dest_publishers')
             &&  ($_POST['form']['src_forums'][0]   )
             && is_array($_POST['form']['src_forums']))
             $formdata['dest_publishers']=$_POST['form']['src_forums'];
-
-
-
+//-------------------------------------------------------------------
+//        if(isset($formdata['dest_forums'][0]) && isset($formdata['dest_forums']) &&  is_array($formdata['dest_forums']) && !($formdata['dest_forums'][0]) ){
+//            $i=0;
+//            foreach ($formdata["dest_forums"] as $frm ){
+//                $form["dest_forums"][$i]=$frm ;
+//                $i++;
+//            }
+//            $formdata["dest_forums"]=$form["dest_forums"];
+//        }
+//------------------------------------------------------------------
         if(!validate($formdata )){
             echo " כניראה שהקובץ כבר קיים נכשל בשמירה!!!!!";
             $formdata=$_POST;
             $formdata['fail']=1;
-
-
             $formdata['dfp_Allowed']=  array_item ($_POST,'dfp_Allowed');
             $formdata['dfp_status']= array_item ($_POST,'dfp_status');
-
-
             show_list($formdata);
         }else{
             $pdf = new pdfs();
             build_form($formdata);
-            $pdf->print_form_paging();
+          //  $pdf->print_form_paging();
             //show_list($_POST['form']);
         }
         break;
@@ -698,9 +663,9 @@ function  show_list($formdata){
 	
 	//$pdf->print_decision_entry_form1($formdata['pdfID']);	
 //	}
-	$pdf->link_div();
+//	$pdf->link_div();
 	build_form($formdata);
-	$pdf->print_form_paging();
+	//$pdf->print_form_paging();
 	echo '<br/><br/>',"\n";
 //	$pdf->link();
 }
@@ -976,10 +941,11 @@ function validate($formdata){
 //---------------------------------------------------------------
     // try to validate and save date
             $db->execute("START TRANSACTION");
-            if ($publishersIDs = $pdf->save_publisher($formdata)) {
-                if ($brandIDS = $pdf->save_brand($formdata)) {
-                    $pdf->link();
-                    if ($pdf->insert_pdf($formdata, $publishersIDs, $brandIDS)) {
+           // if ($publishersIDs = $pdf->save_publisher($formdata)) {
+             //   if ($brandIDS = $pdf->save_brand($formdata)) {
+                  //  $pdf->link();
+//                    if ($pdf->insert_pdf($formdata, $publishersIDs, $brandIDS)) {
+                    if ($pdf->insert_pdf($formdata)) {
                         $pdfID = $formdata['pdfID'];
                         $db->execute("COMMIT");
                         return true;
@@ -988,8 +954,8 @@ function validate($formdata){
                        // $formdata = FALSE;
                         return false;
                     }
-            }
-        }
+        //    }
+      //  }
 }
 
 /***********************************************************************/
