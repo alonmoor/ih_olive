@@ -16,6 +16,7 @@ function build_form(&$formdata)
     }
     ?>
     <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/decision.js" type="text/javascript"></script>
+
     <?PHP
     if (array_item($formdata, 'pdfID')) {
         $pdfID = array_item($formdata, 'pdfID');
@@ -61,9 +62,10 @@ function build_form(&$formdata)
           accept-charset="utf-8" dir="rtl"    onsubmit="prepSelObject(document.getElementById('dest_publishers'));" >
 
         <script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
-        <input type="hidden" name="MAX_FILE_SIZE" value="1048576"/>
-        <fieldset style="color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;">
+<!--        <input type="hidden" name="MAX_FILE_SIZE" value="512000"/>-->
+        <div style="color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;">
             <legend> מלא את הטופס להוספת קובץ PDF :</legend>
+           <?php  echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן PDF:">'; ?>
             <p style="margin-right: 30px;">
                 <label for="title" ><strong>כותרת</strong></label><br/><?php create_form_input('title', 'text', $add_pdf_errors); ?>
             </p>
@@ -71,7 +73,7 @@ function build_form(&$formdata)
                 <label for="description"   sttyle="margin-right: 30px;"><strong>תאור</strong></label><br/><?php create_form_input('description', 'textarea', $add_pdf_errors); ?>
             </p>
 
-            <div id="wrap_element" style="margin-right: 40px;">
+
             <canvas id="the-canvas" style="border:1px solid black"></canvas>
             <p><label for="pdf"><strong>PDF</strong></label><br/>
                 <!-- <input type="file" name="pdf[]" id="pdf"  multiple="multiple" ';// name="upload[]" type="file" multiple="multiple"-->
@@ -101,7 +103,7 @@ function build_form(&$formdata)
                 <style id="jsbin-css">
                 </style>
                 <small>גבול מותר 2MB</small>
-            </p>
+            </p></div>
 
             <?PHP
             $arr = array();
@@ -112,20 +114,15 @@ function build_form(&$formdata)
             $selected = array_item($formdata, 'pdf_status') ? array_item($formdata, 'pdf_status') : $arr[1][1];
 
 
-            echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="הזן STATUS:">';
+            echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן STATUS:">';
             form_list_find_notd_no_choose('pdf_status', 'pdf_status', $arr, $selected);
             echo '</div>', "\n";
-            
-            
-            
-            
-            
-            //---------------------------------PUBLISHER-----------------------------------------------
-            echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="הזן PUBLISHER:">';
+//---------------------------------PUBLISHER-----------------------------------------------
+            echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן PUBLISHER:">';
             $sql = "SELECT pubName, pubID FROM publishers ORDER BY pubID";
             $rows = $db->queryArray($sql);
             ?>
-            <div class="myformtd" style="">
+            <div class="myformtd" style="margin-top: 10px;">
                 <?PHP
                 form_list111("src_publishers", $rows, array_item($formdata, "src_publishers"), "multiple size=6 id='src_publishers' style='width:180px;' ondblclick=\"add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));\"");
                 ?>
@@ -133,74 +130,97 @@ function build_form(&$formdata)
             <?PHP
             if (isset($formdata['dest_publishers']) && $formdata['dest_publishers'] != 'none') {
                 $dest_publishers = $formdata['dest_publishers'];
-                unset($staff_test);
-                unset($staff_testb);
-                foreach ($dest_publishers as $key => $val) {
-                    if (!is_numeric($val)) {
-                        $val = $db->sql_string($val);
-                        $staff_test[] = $val;
-                    } elseif (is_numeric($val)) {
-                        $staff_testb[] = $val;
+//                unset($staff_test);
+//                unset($staff_testb);
+//                foreach ($dest_publishers as $key => $val) {
+//                    if (!is_numeric($val)) {
+//                        $val = $db->sql_string($val);
+//                        $staff_test[] = $val;
+//                    } elseif (is_numeric($val)) {
+//                        $staff_testb[] = $val;
+//                    }
+//                }
+
+//-------------------------------------------------------------
+
+
+                $pubIds = '';
+                $i = 0;
+                foreach($dest_publishers as $key => $val){
+                    if ($i == 0) {
+                        $pubIds = $val;
+                    } else {
+                        $pubIds .= "," . $val;
                     }
+                    $i++;
+            }
+
+            $query = "SELECT pubName, pubID FROM publishers  where pubID in ($pubIds)";
+            if ($rows = $db->queryObjectArray($query)){
+                foreach ($rows as $value) {
+
+                    $value->pubName  = $db->sql_string($value->pubName);
+                    $staff_test[] = $value->pubName;
+
+                    $staff_testb[] = $value->pubID;
                 }
-                if (is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
+            }
+
+
+//-------------------------------------------------------
+                if (isset($staff_test) && is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
                     $staff = implode(',', $staff_test);
 
-                    $sql2 = "select catID, catName from categories where catName in ($staff)";
+                    $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($staff)";
                     if ($rows = $db->queryObjectArray($sql2))
                         foreach ($rows as $row) {
-                            $name[$row->catID] = $row->catName;
+                            $name[$row->pubID] = $row->pubName;
                         }
-                } elseif (is_array($staff_test) && is_array($staff_testb) && $staff_testb) {
+                } elseif (isset($staff_test) &&  is_array($staff_test)  && is_array($staff_testb) && $staff_testb) {
                     $staff = implode(',', $staff_test);
-                    $sql2 = "select catID, catName from categories where catName in ($staff)";
+                    $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($staff)";
                     if ($rows = $db->queryObjectArray($sql2))
                         foreach ($rows as $row) {
-                            $name[$row->catID] = $row->catName;
+                            $name[$row->pubID] = $row->pubName;
                         }
-                    $staffb = implode(',', $staff_testb);
-                    $sql2 = "select catID, catName from categories where catID in ($staffb)";
-                    if ($rows = $db->queryObjectArray($sql2))
-                        foreach ($rows as $row) {
-
-                            $name_b[$row->catID] = $row->catName;
-                        }
-                    $name = array_merge($name, $name_b);
-                    unset($staff_testb);
-                } else {
-
-                    foreach ($formdata['dest_publishers'] as $catID) {
-                        $sql2 = "select catID, catName from categories where catID in ($catID)";
-                        if ($rows = $db->queryObjectArray($sql2))
-                            $name_1[$rows[0]->catID] = $rows[0]->catName;
-                    }
                 }
+
+//                else {
+//
+//                    foreach ($formdata['dest_publishers'] as $pubID) {
+//                        $sql2 = "SELECT pubName, pubID FROM publishers  where pubID in ($pubID)";
+//                        if ($rows = $db->queryObjectArray($sql2))
+//                            $name_1[$rows[0]->pubID] = $rows[0]->pubName;
+//                    }
+//                }
                 ?>
-                <div class="myformtd test0" style="width:30%;">
+                <div class="myformtd test0" style="width:180px;margin-right: 200px">
                     <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
                            OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
                     <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
                                    OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
                 </div>
                 <?PHP
+                if(isset($name)){
                 echo '<div style="width:30%;" class="test">';
-                form_list11("dest_publishers", $name_1, array_item($formdata, "dest_publishers"), "multiple size=6 id='dest_publishers' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_publishers'));\"");
+                form_list11("dest_publishers", $name, array_item($formdata, "dest_publishers"), "multiple size=6 id='dest_publishers' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_publishers'));\"");
                 echo '</div>';
+                }
             } elseif (isset($formdata['src_publishers']) && isset($formdata['src_publishers'[0]]) && $formdata['src_publishers'][0] != 0 && !$formdata['dest_publishers']) {
                 $dest_types = $formdata['src_publishers'];
-                $userNames = '';
+                $pubNames = '';
                 for ($i = 0; $i < count($dest_types); $i++) {
                     if ($i == 0) {
-                        $userNames = $dest_types[$i];
+                        $pubNames = $dest_types[$i];
                     } else {
-                        $userNames .= "," . $dest_types[$i];
+                        $pubNames .= "," . $dest_types[$i];
                     }
                 }
-                $name = explode(",", $userNames);
-                $sql2 = "select catID,catName from categories where catID in ($userNames)";
+                $name = explode(",", $pubNames);
+                $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($pubNames)";
                 if ($rows = $db->queryObjectArray($sql2))
                     foreach ($rows as $row) {
-                        $name[$row->catID] = $row->catName;
+                        $name[$row->pubID] = $row->pubName;
                     }
                 ?>
                 <div class="myformtd test3" style="width:30%;">
@@ -216,6 +236,7 @@ function build_form(&$formdata)
                 form_list11("src_publishers", $name, array_item($formdata, "src_publishers"), "multiple size=6 id='src_publishers' ondblclick=\"add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));\"");
                 echo '</div>';
             } else {
+                $x=1;
                 ?>
                 <div class="myformtd test4" style="width:180px;float: left;margin-top: -100px;margin-left: 195px;">
                     <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
@@ -223,257 +244,85 @@ function build_form(&$formdata)
                     <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
                                    OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
                 </div>
-                <div class="myformtd" style="width: 180px;float: left;margin-top: -100px;">
+                <div class="myformtd test 5" style="width: 180px;float: left;margin-top: -100px;">
                     <select class="mycontrol" name='arr_dest_publishers[]' dir=rtl id='dest_publishers'
                             ondblclick="remove_item_from_select_box(document.getElementById('dest_publishers'));"
                             MULTIPLE SIZE=6 style='width:180px;'></select>
                 </div>
 
-                <?php
-                echo '</div>';
-            }
 
-            //-- -----------------------BRANDS-----------------------------------------------  -->
+                <?php
+            }
+            echo '</div>';
+//-------------------------BRANDS-----------------------------------------------  -->
             //BRANDS
-            echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="הזן BRANDS:">';
+            echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן BRANDS:">';
             $sql = "SELECT brandName, brandID FROM brands ORDER BY brandID";
-            $rows = $db->queryArray($sql);
-            ?>
-            <div class="myformtd" style="width:18%;height: auto;">
+            if($rows = $db->queryArray($sql)) {
+                ?>
+                <div class="myformtd" style="width:18%;height: auto;">
+                    <?PHP
+                    form_list13('brand_select', $rows, $selected = -1, $str = "")
+                    ?>
+                </div>
                 <?PHP
-                form_list111('brand_select', $rows, $selected = -1, $str = "")
-                ?>
-            </div>
-            <?PHP
 
-
-            if (isset($formdata['dest_publishers']) && $formdata['dest_publishers'] != 'none') {
-
-
-                $dest_publishers = $formdata['dest_publishers'];
-                unset($staff_test);
-                unset($staff_testb);
-                foreach ($dest_publishers as $key => $val) {
-                    if (!is_numeric($val)) {
-                        $val = $db->sql_string($val);
-                        $staff_test[] = $val;
-                    } elseif (is_numeric($val)) {
-                        $staff_testb[] = $val;
-                    }
-                }
-                if (is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
-                    $staff = implode(',', $staff_test);
-
-                    $sql2 = "select catID, catName from categories where catName in ($staff)";
-                    if ($rows = $db->queryObjectArray($sql2))
-                        foreach ($rows as $row) {
-
-                            $name[$row->catID] = $row->catName;
-
-
-                        }
-
-                } elseif (is_array($staff_test) && is_array($staff_testb) && $staff_testb) {
-                    $staff = implode(',', $staff_test);
-
-                    $sql2 = "select catID, catName from categories where catName in ($staff)";
-                    if ($rows = $db->queryObjectArray($sql2))
-                        foreach ($rows as $row) {
-
-                            $name[$row->catID] = $row->catName;
-
-
-                        }
-                    $staffb = implode(',', $staff_testb);
-
-                    $sql2 = "select catID, catName from categories where catID in ($staffb)";
-                    if ($rows = $db->queryObjectArray($sql2))
-                        foreach ($rows as $row) {
-
-                            $name_b[$row->catID] = $row->catName;
-                        }
-                    $name = array_merge($name, $name_b);
-                    unset($staff_testb);
-                } else {
-
-                    foreach ($formdata['dest_publishers'] as $catID) {
-                        $sql2 = "select catID, catName from categories where catID in ($catID)";
-                        if ($rows = $db->queryObjectArray($sql2))
-
-                            $name_1[$rows[0]->catID] = $rows[0]->catName;
-                    }
-                }
-                ?>
-
-                <div class="myformtd test0" style="width:30%;">
-
-                    <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                           OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-
-                    <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                   OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                </div>
-
-
-                <?PHP
-                echo '<div style="width:30%;" class="test">';
-
-                form_list11("dest_publishers", $name_1, array_item($formdata, "dest_publishers"), "multiple size=6 id='dest_publishers' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_publishers'));\"");
-                echo '</div>';
-
-            } elseif (isset($formdata['src_publishers']) && isset($formdata['src_publishers'[0]]) && $formdata['src_publishers'][0] != 0 && !$formdata['dest_publishers']) {
-
-                $dest_types = $formdata['src_publishers'];
-                $userNames = '';
-                for ($i = 0; $i < count($dest_types); $i++) {
-                    if ($i == 0) {
-                        $userNames = $dest_types[$i];
-                    } else {
-                        $userNames .= "," . $dest_types[$i];
-
-                    }
-
-                }
-
-
-                $name = explode(",", $userNames);
-
-                $sql2 = "select catID,catName from categories where catID in ($userNames)";
-                if ($rows = $db->queryObjectArray($sql2))
-                    foreach ($rows as $row) {
-
-                        $name[$row->catID] = $row->catName;
-
-                    }
-
-
-                ?>
-
-                <div class="myformtd test3" style="width:30%;">
-                    <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                           OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-
-                    <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                   OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                </div>
-
-
-                <?PHP
-                echo '<div style="width:30%;"  class="test2">';
-                form_list11("src_publishers", $name, array_item($formdata, "src_publishers"), "multiple size=6 id='src_publishers' ondblclick=\"add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));\"");
-                echo '</div>';
-            } else {
-
-
-                ?>
-
-                <div class="myformtd test4" style="width:180px;float: left;margin-top: -100px;margin-left: 195px;">
-                    <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                           OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-                    <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                   OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                </div>
-
-
-                <div class="myformtd" style="width: 180px;float: left;margin-top: -100px;">
-                    <select class="mycontrol" name='arr_dest_publishers[]' dir=rtl id='dest_publishers'
-                            ondblclick="remove_item_from_select_box(document.getElementById('dest_publishers'));"
-                            MULTIPLE SIZE=6 style='width:180px;'></select>
-                </div>
-
-                <?php
-                echo '</div>';
             }
-
-
-            //-------------------------------------------USERS-----------------------------------------------------------------------------------
-
-
+             echo '</div>';
+//-------------------------------------------USERS-----------------------------------------------------------------------------------
             $sql = "SELECT full_name,userID FROM users ORDER BY full_name";
             $rows = $db->queryArray($sql);
-
-
             echo '<tr>
 <td   class="myformtd">
 <div style="overflow:hidden;" data-module="הזנת  חברי פורום:">
 <table class="myformtable1" >
 <tr>';
-
-
             //   form_label("הזנת  חברי פורום:", TRUE);
             echo '<td class="myformtd" style="width:10px;overflow:hidden;">';
             form_list111("src_users", $rows, array_item($formdata, "src_users"), "multiple size=6 id='src_users' style='width:180px;' ondblclick=\"add_item_to_select_box(document.getElementById('src_users'), document.getElementById('dest_users'));\"");
             echo '</td>';
-
-
-            /****************************************************************************************************/
+//-------------------------------------------
             if (isset($formdata['dest_users']) && $formdata['dest_users'] && $formdata['dest_users'] != 'none' && count($formdata['dest_users']) > 0) {
-                $dest_users = $formdata['dest_users'];
-
-
-                foreach ($dest_users as $key => $val) {
-
-                    if (!$result["dest_users"])
-                        $result["dest_users"] = $key;
-                    else
-                        $result["dest_users"] .= "," . $key;
-
-                }
-
-
-                $staff = $result["dest_users"];
-                $formdata['dest_users1'] = explode(',', $staff);
-                $sql2 = "select userID, full_name from users where userID in ($staff)";
-                if ($rows = $db->queryObjectArray($sql2))
-                    foreach ($rows as $row) {
-
-                        $name[$row->userID] = $row->full_name;
-
+                $dest_users = isset($formdata['dest_users']) ? $formdata['dest_users'] : '';
+                    if(isset($formdata['dest_users'])) {
+                        foreach ($dest_users as $key => $val) {
+                            if (!$result["dest_users"])
+                                $result["dest_users"] = $key;
+                            else
+                                $result["dest_users"] .= "," . $key;
+                        }
+                        $staff = isset($result["dest_users"]) ? $result["dest_users"] : '';
+                        $formdata['dest_users1'] = explode(',', $staff);
+                        $sql2 = "select userID, full_name from users where userID in ($staff)";
+                        if ($rows = $db->queryObjectArray($sql2))
+                            foreach ($rows as $row) {
+                                $name[$row->userID] = $row->full_name;
+                            }
                     }
-
                 $i = 0;
                 ?>
-
                 <td class="myformtd" style='width:10px;overflow:hidden;'>
-
                     <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
                            OnClick="add_item_to_select_box(document.getElementById('src_users'), document.getElementById('dest_users'));"/>
-
                     <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
                                    OnClick="remove_item_from_select_box(document.getElementById('dest_users'));"/>
-
-
                 </td>
-
-
                 <?php
                 form_list11("dest_users", $name, array_item($formdata, "dest_users1"), "multiple size=6 id='dest_users' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_users'));\"");
-
-                /**********************************************************************************************/
             } elseif (isset($formdata['src_users']) && isset($formdata['src_users'][0]) && $formdata['src_users'][0] != 0 && !$formdata['dest_users']) {
-
                 $dest_users = $formdata['src_users'];
-
                 for ($i = 0; $i < count($dest_users); $i++) {
                     if ($i == 0) {
                         $userNames = $dest_users[$i];
                     } else {
                         $userNames .= "," . $dest_users[$i];
-
                     }
-
                 }
-
-
                 $name = explode(",", $userNames);
-
-
                 ?>
-
                 <td class="myformtd" style='width:10px;overflow:hidden;'>
                     <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
                            OnClick="add_item_to_select_box(document.getElementById('src_users'), document.getElementById('dest_users'));"/>
-
                     <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
                                    OnClick="remove_item_from_select_box(document.getElementById('dest_users'));"/>
                 </td>
@@ -502,17 +351,13 @@ function build_form(&$formdata)
                     </table></div>
                     </td>
                     </tr>';
-
             if (array_item($formdata, 'dest_users') && $formdata['dest_users'] != 'none'){
-
             $i = 0;
             echo '<tr>';
             echo '<td   class="myformtd">';
-
             echo '<div id="my_users_panel" class="my_users_panel">';
             echo '<h3 class="my_title_users" style=" height:15px"></h3>';
             echo '<div id="content_users" class="content_users">';
-
             echo '<table class="myformtable1" id="my_table" style="width:70%;overflow:hidden" align="right">';
             /***************************************************/
             foreach ($formdata['dest_users'] as $key => $val){
@@ -533,29 +378,16 @@ function build_form(&$formdata)
                         ?>.gif" width="16" height="10" alt="" border="0"/>
                     </a>
                 </td>
-
-
                 <td class="myformtd" id="myformtd">
-
                     <?php
-
                     form_label1("חבר פורום:");
                     form_text_a("member", $val, 20, 50, 1);
-
-
                     ?>
-
                     <input type="button" class="mybutton" id="my_button_<?php echo $key; ?>" value="ערוך משתמש"
-                           onClick="return editUser3(<?php echo $key; ?>,<?php echo $formdata['forum_decision']; ?>,<?php echo " '" . ROOT_WWW . "/admin/' "; ?>,<?php echo "' $i '"; ?>);"
-                           ; return false;/>
-
-                    <?php
-
-
-                    /***************************************************************************************/
-                    ?>
+                           onClick="return editUser3(<?php echo $key; ?>,<?php echo $formdata['forum_decision']; ?>,
+                           <?php echo " '" . ROOT_WWW . "/admin/' "; ?>,<?php echo "' $i '"; ?>);"; <?php return false; ?>/>
                     <script language="JavaScript" type="text/javascript">
-
+//-------------------------------------------------------------------------------
                         $(document).ready(function () {
                             $("#<?php echo $member_date; ?>").datepicker($.extend({}, {
                                 showOn: 'button',
@@ -570,48 +402,38 @@ function build_form(&$formdata)
                         });
                     </script>
                     <?php
-
-                    /*****************************************************************************************/
-
+//-------------------------------------------------------------------------------
                     list($year_date, $month_date, $day_date) = explode('-', $formdata[$member_date]);
                     if (strlen($day_date) == 4) {
                         $formdata[$member_date] = "$year_date-$month_date-$day_date";
                     } elseif (strlen($year_date) == 4) {
                         $formdata[$member_date] = "$day_date-$month_date-$year_date";
                     }
-
                     form_label1("תאריך צרוף לפורום:");
                     form_text3("$member_date", $formdata[$member_date], 10, 50, 1, $member_date);
-
                     echo '</td>';
-
                     echo '</tr>';
-
                     $i++;
-
                     }
-
-
                     echo '</table>';
                     echo '</div>';
                     echo '</div>';//end panel
                     echo '</td>';
                     echo '</tr>';
-
-
                     }
                     ?>
                     <!-- ----------------------------------------------------------------------  -->
                     <p><input type="submit" name="submit_add_pdf" value="הוסף את ה-PDF" id="submit_add_pdf"
                               class="formbutton"/></p>
-             </div>
         </fieldset>
-
     </form>
+
+
+
+
     <div class="" id="display">
         <!-- Records will be displayed here -->
     </div>
-
     <?php
 }//end build ajx_formMult
 
