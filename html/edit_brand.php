@@ -2,6 +2,12 @@
 function build_form(&$formdata)
 {
     global $db;
+       if (array_item($formdata, 'brandID')) {
+            $brandID = array_item($formdata, 'brandID');
+            ?>
+            <input type="hidden" id="brandID" name="brandID" value="<?php echo $brandID; ?>"/>
+            <?php
+        }
     if (array_item($_SESSION, 'level') == 'user') {
         $flag_level = 0;
         $level = false;
@@ -23,63 +29,64 @@ function build_form(&$formdata)
     }
     ?>
     <script language="javascript" src="<?php print JS_ADMIN_WWW ?>/treeview_forum.js" type="text/javascript"></script>
-    <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js" type="text/javascript"></script>
+<!--    <script language="JavaScript" src="--><?php //print JS_ADMIN_WWW ?><!--/info_brand.js" type="text/javascript"></script>-->
     <script>
         $('.bgchange_tree').css('width', '50%');
         turn_red_tree();
-
     </script>
 
-
     <div id="main">
+
+        <?php
+//-----------------------UPDATE---------------------------------------
+          if (array_item($formdata, 'brandID')) {
+        ?>
+
         <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/dynamic_10.php"
               onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
                         prepSelObject(document.getElementById('dest_publishers'));
                         prepSelObject(document.getElementById('dest_brandsType'));
                         prepSelObject(document.getElementById('dest_managersType'));" >
+        <script  language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js"  type="text/javascript"></script>
+          <?php
 
-                <fieldset style="color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;"  >
+           }
+//-----------------------SAVE---------------------------------------
+           else{
+          ?>
+        <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/dynamic_10.php"
+                      onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
+                                prepSelObject(document.getElementById('dest_publishers'));
+                                prepSelObject(document.getElementById('dest_brandsType'));
+                                prepSelObject(document.getElementById('dest_managersType'));" >
+          <?php
+          }
+          ?>
+                <fieldset style="margin-right:4%;width:90%;color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;"  >
                     <legend> מלא את הטופס להוספת  BRAND :</legend>
+                    <div class="wrapper" style="margin-right: 25%;width:80%">
                     <?PHP
                     $page_input = isset($formdata['pages']) ? $formdata['pages'] : '';
                     ?>
                     <input type="hidden" name="pdf_page_num"  id="pdf_page_num" value="<?PHP echo $page_input; ?>">
-
-                <table>
                     <?php
                     if (array_item($formdata, 'brandID')) {
                         $brand = new brand();
-                        $brand->print_brand_entry_form1($formdata['brandID']);
+                        $brand->print_forum_entry_form_c($formdata['brandID']);
                     }
                     $dates = getdate();
-                    
-//------------------------page-number-----------------------------------                    
-                    echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="הזן מספר עמודים:">';
-                   echo  '<div id="num_page">';
-                        
-                      //  form_label("הזן מספר עמודים:", true);
-                        for ($i = 1; $i <= 50; $i++) {
-                            $pages[$i] = $i;
-                        }
-                       form_list2("pages", $pages);
-                    echo  '</div></div>';
-        
-//-- -----------------------BRANDS-----------------------------------------------  -->
-                    //BRANDS
-                    echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="הזן BRANDS:">';
-                    $selected = isset($formdata['brand_select']) ? $formdata['brand_select'] : -1;
-                    $sql = "SELECT brandName, brandID FROM brands ORDER BY brandID";
-                    if($rows = $db->queryArray($sql)) {
-                        ?>
-                        <div class="myformtd" style="width:18%;height: auto;">
-                            <?PHP
-                            form_list13('brand_select', $rows, $selected = -1, $str = "")
-                            ?>
-                        </div>
-                        <?PHP
-                    }
-                     echo '</div>';
-//--------------------------------------------------------------------------------------
+//-----------------------------------------------------------
+   $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
+    $rows = $db->queryObjectArray($sql);
+
+    foreach ($rows as $row) {
+    $subcatsftype[$row->parentBrandID][] = $row->brandID;
+    $catNamesftype[$row->brandID] = $row->brandName;
+    }
+
+    $rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
+
+//--------------------------------------------------------
                     $arr_show = array();
                     $arr_show[0][0] = "ציבורי";
                     $arr_show[0][1] = "1";
@@ -96,1009 +103,175 @@ function build_form(&$formdata)
                     $arr[1][0] = "פעיל";
                     $arr[1][1] = "2";
 
-
                     $selected = array_item($formdata, 'brand_status') ? array_item($formdata, 'brand_status') : $arr[1][1];
-                    echo '<div class="myformtable1" style="overflow:hidden;width:35%;"  data-module="שם הברנד:">';
+                    $tmp_insertID = '11';
+
+                    echo '<div class="myformtable1" style="width:60%;height: 15em;"  data-module="שם הברנד:">';
+//---------------------------------UPDATE------------------------------------------
                     if (array_item($formdata, 'brandID')) {
-
-                        form_list_b("brand_pdf", $rows, array_item($formdata, "brand_pdf"));
+                        echo '<div class="myformtd 1" style="width:60%;">';
+                        form_label_red1("שם הברנד::", true);
+                        //form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
+                        form_text_a("brand_pdf", array_item($formdata, "brandName"), 15, 15, 1);
                         form_empty_cell_no_td(10);
+                         echo '</div>';
+
+                    echo '<div class="myformtd 1" style="width:60%;">';
+                    form_label_red1("תאריך הפצה:", true);
+                    form_text3("brand_date2", array_item($formdata, "brand_date"), 15, 15, 1, 'brand_date2');
+                    form_empty_cell_no_td(10);
+                    echo '</div>';
+
+                      if($level) {
+                          echo '<div class="myformtd 1" style="width:60%;">';
+                          form_label_red1("קידומת:", TRUE);
+                          //form_list_find_notd_no_choose2('brand_prefix', $arr_show, $selected_show, "id=brand_prefix");
+                          form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 15, 15, 1, "brandPrefix");
+                          form_empty_cell_no_td(5);
+                          echo '</div>';
+                      }else{
+                          echo '<div class="myformtd 1" style="width:60%;display: none;">';
+                          form_label_red1("קידומת:", TRUE);
+                          //form_list_find_notd_no_choose2('brand_prefix', $arr_show, $selected_show, "id=brand_prefix");
+                          form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 20, 50, 1,"brandPrefix");
+                          form_empty_cell_no_td(5);
+                          echo '</div>';
+                      }
                     }
-                    form_label1("שם ברנד חדש:", TRUE);
-                    form_text_a("newbrand", array_item($formdata, "newbrand"), 20, 50, 1);
+//-----------------------SAVE--------------------------------------------
+                    else{
+                     echo '<div class="myformtd 1" style="width:60%;margin-top: 15px;">';
+                    form_label1("שם ברנד:", TRUE);
+                    form_text_a("newbrandName", array_item($formdata, "brandName"), 20, 50, 1);
                     form_empty_cell_no_td(5);
+                    echo '</div>';
 
-
+                    echo '<div class="myformtd 1" style="width:60%;margin-top: 15px;">';
+                     $connect = array_item($formdata, "insertID") ? array_item($formdata, "insertID") : '11';
+                     form_label1("קשר לברנד:", TRUE);
+                    form_list_find_notd("insert_forum", "insert_forum", $rows, $connect);
+                    form_empty_cell_no_td(5);
+                      echo '</div>';
+                     echo '<div class="myformtd 1" style="width:60%;">';
                     form_label_red1("סטטוס ברנד:", TRUE);
                     form_list_find_notd_no_choose2('brand_status', $arr, $selected, $str = "");
                     form_empty_cell_no_td(5);
-
-                    /*****************************************/
-                    form_label_red1("סיווג ברנד:", TRUE);
-                    form_list_find_notd_no_choose2('brand_allowed', $arr_show, $selected_show, "id=brand_allowed");
-                    form_empty_cell_no_td(5);
-
-                    /*****************************************/
-
-                    if ($level) {
-                        form_url2("categories.php", "ערוך ברנדים", 2);
-                    }
-
-
-                    form_label_red1("תאריך הקמה:", true);
-                    form_text3("brand_date", array_item($formdata, "brand_date"), 15, 15, 1, 'brand_date');
-                    form_empty_cell_no_td(10);
-
-
                     echo '</div>';
-                    //---------------------------------PUBLISHER-----------------------------------------------
-                    echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן PUBLISHER:">';
-                    $sql = "SELECT pubName, pubID FROM publishers ORDER BY pubID";
-                    $rows = $db->queryArray($sql);
-                    ?>
-                    <div class="myformtd" style="margin-top: 10px;">
-                        <?PHP
-                        form_list111("src_publishers", $rows, array_item($formdata, "src_publishers"), "multiple size=6 id='src_publishers' style='width:180px;' ondblclick=\"add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));\"");
-                        ?>
-                    </div>
-                    <?PHP
-                    if (isset($formdata['dest_publishers']) && $formdata['dest_publishers'] != 'none') {
-                        $dest_publishers = $formdata['dest_publishers'];
-
-                        $pubIds = '';
-                        $i = 0;
-                        foreach($dest_publishers as $key => $val){
-                            if ($i == 0) {
-                                $pubIds = $val;
-                            } else {
-                                $pubIds .= "," . $val;
-                            }
-                            $i++;
-                        }
-
-                        $query = "SELECT pubName, pubID FROM publishers  where pubID in ($pubIds)";
-                        if ($rows = $db->queryObjectArray($query)){
-                            foreach ($rows as $value) {
-
-                                $value->pubName  = $db->sql_string($value->pubName);
-                                $staff_test[] = $value->pubName;
-
-                                $staff_testb[] = $value->pubID;
-                            }
-                        }
-
-
-//-------------------------------------------------------
-                        if (isset($staff_test) && is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
-                            $staff = implode(',', $staff_test);
-
-                            $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($staff)";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name[$row->pubID] = $row->pubName;
-                                }
-                        } elseif (isset($staff_test) &&  is_array($staff_test)  && is_array($staff_testb) && $staff_testb) {
-                            $staff = implode(',', $staff_test);
-                            $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($staff)";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name[$row->pubID] = $row->pubName;
-                                }
-                        }
-
-                        ?>
-                        <div class="myformtd test0" style="width:180px;margin-right: 200px">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                        </div>
-                        <?PHP
-                        if(isset($name)){
-                            echo '<div style="width:30%;" class="test">';
-                          form_list11("dest_publishers", $name, array_item($formdata, "dest_publishers"), "multiple size=6 id='dest_publishers' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_publishers'));\"");
-                            echo '</div>';
-                        }
-                    } elseif (isset($formdata['src_publishers']) && isset($formdata['src_publishers'[0]]) && $formdata['src_publishers'][0] != 0 && !$formdata['dest_publishers']) {
-                        $dest_types = $formdata['src_publishers'];
-                        $pubNames = '';
-                        for ($i = 0; $i < count($dest_types); $i++) {
-                            if ($i == 0) {
-                                $pubNames = $dest_types[$i];
-                            } else {
-                                $pubNames .= "," . $dest_types[$i];
-                            }
-                        }
-                        $name = explode(",", $pubNames);
-                        $sql2 = "SELECT pubName, pubID FROM publishers  where pubName in ($pubNames)";
-                        if ($rows = $db->queryObjectArray($sql2))
-                            foreach ($rows as $row) {
-                                $name[$row->pubID] = $row->pubName;
-                            }
-                        ?>
-                        <div class="myformtd test3" style="width:30%;">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                        </div>
-
-                        <?PHP
-                        echo '<div style="width:30%;"  class="test2">';
-                        form_list11("src_publishers", $name, array_item($formdata, "src_publishers"), "multiple size=6 id='src_publishers' ondblclick=\"add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));\"");
+                    if($level) {
+                        echo '<div class="myformtd 1" style="width:60%;">';
+                        form_label_red1("קידומת:", TRUE);
+                        //form_list_find_notd_no_choose2('brand_prefix', $arr_show, $selected_show, "id=brand_prefix");
+                        form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 20, 50, 1);
+                        form_empty_cell_no_td(5);
                         echo '</div>';
-                    } else {
-                        $x=1;
-                        ?>
-                        <div class="myformtd test4" style="width:180px;float: left;margin-top: -100px;margin-left: 195px;">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_publishers'), document.getElementById('dest_publishers'));"/>
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_publishers'));"/>
-                        </div>
-                        <div class="myformtd test 5" style="width: 180px;float: left;margin-top: -100px;">
-                            <select class="mycontrol" name='arr_dest_publishers[]' dir=rtl id='dest_publishers'
-                                    ondblclick="remove_item_from_select_box(document.getElementById('dest_publishers'));"
-                                    MULTIPLE SIZE=6 style='width:180px;'></select>
-                        </div>
-
-
-                        <?php
+                    }else{
+                        echo '<div class="myformtd 1" style="width:60%;display: none;">';
+                        form_label_red1("קידומת:", TRUE);
+                        //form_list_find_notd_no_choose2('brand_prefix', $arr_show, $selected_show, "id=brand_prefix");
+                        form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 20, 50, 1);
+                        form_empty_cell_no_td(5);
+                        echo '</div>';
                     }
-                    echo '</div>';
-//---------------------------------סוג ברנד--------------------------------------------------
-                    echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזנת  סוגי הברנד:">';
-                    $sql = "SELECT catName, catID, parentCatID FROM categories ORDER BY catName";
-                    $rows = $db->queryObjectArray($sql);
-
-                    foreach ($rows as $row) {
-                        $subcatsftype[$row->parentCatID][] = $row->catID;
-                        $catNamesftype[$row->catID] = $row->catName;
-                    }
-
-                    $rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
-                    $rows2 = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
-
-
-                    form_list111("src_brandsType", $rows, array_item($formdata, "src_brandsType"), "multiple size=6 id='src_brandsType' style='width:180px;' ondblclick=\"add_item_to_select_box(document.getElementById('src_brandsType'), document.getElementById('dest_brandsType'));\"");
-
-                    if (isset($formdata['dest_brandsType']) && $formdata['dest_brandsType'] && $formdata['dest_brandsType'] != 'none') {
-                        $dest_brandsType = $formdata['dest_brandsType'];
-                        foreach ($dest_brandsType as $key => $val) {
-                            if (!is_numeric($val)) {
-                                $val = $db->sql_string($val);
-                                $staff_test[] = $val;
-                            } elseif (is_numeric($val)) {
-                                $staff_testb[] = $val;
-                            }
-                        }
-                        if (is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
-                            $staff = implode(',', $staff_test);
-
-                            $sql2 = "select catID, catName from categories where catName in ($staff)";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name_frmType[$row->catID] = $row->catName;
-                                }
-                        } elseif (is_array($staff_test) && is_array($staff_testb) && $staff_testb) {
-                            $staff = implode(',', $staff_test);
-                            $sql2 = "select catID, catName from categories where catName in ($staff)";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name_frmType[$row->catID] = $row->catName;
-                                }
-                            $staffb = implode(',', $staff_testb);
-
-                            $sql2 = "select catID, catName from categories where catID in ($staffb)";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name_b[$row->catID] = $row->catName;
-                                }
-                            $name_frmType = array_merge($name, $name_b);
-                            unset($staff_testb);
-                        } else {
-                            $staff = implode(',', $formdata['dest_brandsType']);
-
-                            $sql2 = "select catID, catName from categories where catID in ($staff)  ORDER BY FIND_IN_SET(catID, '$staff')";
-                            if ($rows = $db->queryObjectArray($sql2))
-                                foreach ($rows as $row) {
-                                    $name_frmType[$row->catID] = $row->catName;
-//$name[]=$row->catName;
-                                }
-                        }
-                        ?>
-                        <div class="myformtd">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_brandsType'), document.getElementById('dest_brandsType'));"/>
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_brandsType'));"/>
-                        </div>
-                        <?php
-                        form_list11("dest_brandsType", $name_frmType, array_item($formdata, "dest_brandsType"), "multiple size=6 id='dest_brandsType' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_brandsType'));\"");
-                    } elseif (isset($formdata['src_brandsType']) && $formdata['src_brandsType'] && $formdata['src_brandsType'][0] != 0 && !$formdata['dest_brandsType']) {
-                        $dest_types = $formdata['src_brandsType'];
-                        for ($i = 0; $i < count($dest_types); $i++) {
-                            if ($i == 0) {
-                                $userNames = $dest_types[$i];
-                            } else {
-                                $userNames .= "," . $dest_types[$i];
-                            }
-                        }
-                        $name_frmType = explode(",", $userNames);
-
-                        $sql2 = "select catID,catName from categories where catID in ($userNames)";
-                        if ($rows = $db->queryObjectArray($sql2))
-                            foreach ($rows as $row) {
-                                $name_frmType[$row->catID] = $row->catName;
-                            }
-                        ?>
-                        <div class="myformtd">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_brandsType'), document.getElementById('dest_brandsType'));"/>
-
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_brandsType'));"/>
-                        </div>
-                        <?php
-                        form_list11("src_brandsType", $name_frmType, array_item($formdata, "src_brandsType"), "multiple size=6 id='src_brandsType' ondblclick=\"add_item_to_select_box(document.getElementById('src_brandsType'), document.getElementById('dest_brandsType'));\"");
-                    } else {
-                        ?>
-                        <div class="myformtd">
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_brandsType'), document.getElementById('dest_brandsType'));"/>
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_brandsType'));"/>
-                        </div>
-                        <div class="myformtd">
-                            <select class="mycontrol" name='arr_dest_brandsType[]' dir=rtl id='dest_brandsType'
-                                    ondblclick="remove_item_from_select_box(document.getElementById('dest_brandsType'));"
-                                    MULTIPLE SIZE=6 style='width:180px;'></select>
-                        </div>
-                        <?php
-                    }
-
-
+ }
                     if ($level) {
-                        echo '<div>';
-                        form_url2("categories.php", "ערוך ברנדים", 1);
-                        echo "</div>";
-                    }
-
-                    $sql = "SELECT pdfID,pdfName FROM pdfs ORDER BY pdfName";
-                    $rows = $db->queryArray($sql);
-
-
-                    echo '</div>';
-
-//---------------------------------------PDFS-----------------------------------------------------------
-                    echo '<div class="myformtable1" style="overflow:hidden;width:40%;"  data-module="הזן PDF::">';
-                    $sql = "SELECT pdfName,pdfID FROM pdfs ORDER BY pdfName";
-                    $rows3 = $db->queryArray($sql);
-                    echo '<div class="myformtd" style="width:40%;overflow:hidden;">';
-                    form_list111("src_pdfs", $rows3, array_item($formdata, "src_pdfs"), "multiple size=6 id='src_pdfs' style='width:180px;' ondblclick=\"add_item_to_select_box(document.getElementById('src_pdfs'), document.getElementById('dest_pdfs'));\"");
-                    echo '</div>';
-
-
-                    if (isset($formdata['dest_pdfs']) && $formdata['dest_pdfs'] && $formdata['dest_pdfs'] != 'none' && count($formdata['dest_pdfs']) > 0) {
-                        $dest_pdfs = $formdata['dest_pdfs'];
-
-                        $result["dest_pdfs"] = '';
-                        foreach ($dest_pdfs as $key => $val) {
-
-                            if ($result["dest_pdfs"] == "")
-                                $result["dest_pdfs"] = $key;
-                            else
-                                $result["dest_pdfs"] .= "," . $key;
-
-                        }
-
-
-                        $staff = $result["dest_pdfs"];
-                        $formdata['dest_pdfs1'] = explode(',', $staff);
-                        $sql2 = "SELECT * FROM pdfs  where pdfID in ($staff)";
-                        if ($rows = $db->queryObjectArray($sql2))
-                            foreach ($rows as $row) {
-
-                                $name[$row->pdfID] = $row->pdfName;
-
-                            }
-
-                        $i = 0;
-                        ?>
-
-                        <div class="myformtd" style='width:10px;overflow:hidden;'>
-
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_pdfs'), document.getElementById('dest_pdfs'));"/>
-
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_pdfs'));"/>
-
-
-                        </div>
-
-
-                        <?php
-                        form_list11("dest_pdfs", $name, array_item($formdata, "dest_pdfs1"), "multiple size=6 id='dest_pdfs' style='width:180px;' ondblclick=\"remove_item_from_select_box(document.getElementById('dest_pdfs'));\"");
-
-                    } elseif (isset($formdata['src_pdfs']) && isset($formdata['src_pdfs'][0]) && $formdata['src_pdfs'] && $formdata['src_pdfs'][0] != 0 && !$formdata['dest_pdfs']) {
-
-                        $dest_pdfs = $formdata['src_pdfs'];
-
-                        for ($i = 0; $i < count($dest_pdfs); $i++) {
-                            if ($i == 0) {
-                                $userNames = $dest_pdfs[$i];
-                            } else {
-                                $userNames .= "," . $dest_pdfs[$i];
-
-                            }
-
-                        }
-
-
-                        $name = explode(",", $userNames);
-
-
-                        ?>
-
-                        <div class="myformtd" style='width:width:40%;overflow:hidden;'>
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_pdfs'), document.getElementById('dest_pdfs'));"/>
-
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_pdfs'));"/>
-                        </div>
-
-
-                        <?php
-                        form_list11("src_pdfs", $name, array_item($formdata, "src_pdfs"), "multiple size=6 id='src_pdfs' ondblclick=\"add_item_to_select_box(document.getElementById('src_pdfs'), document.getElementById('src_pdfs'));\"");
-
-
-                    } else {
-
-
-                        ?>
-
-                        <div class="myformtd" style='width:width:40%;overflow:hidden;'>
-                            <input type=button name='add_to_list' value='הוסף לרשימה &gt;&gt;'
-                                   OnClick="add_item_to_select_box(document.getElementById('src_pdfs'), document.getElementById('dest_pdfs'));"/>
-                            <BR><BR><input type=button name='remove_from_list();' value='<< הוצא מרשימה'
-                                           OnClick="remove_item_from_select_box(document.getElementById('dest_pdfs'));"/>
-                        </div>
-
-
-                        <div class="myformtd">
-                            <select class="mycontrol" name='arr_dest_pdfs[]' dir=rtl id='dest_pdfs' MULTIPLE SIZE=6
-                                    style='width:180px;'
-                                    ondblclick="remove_item_from_select_box(document.getElementById('dest_pdfs'));"></select>
-                        </div>
-
-                        <?php
-
-
-                    }
-                    if ($level) {
-                        echo '<div>';
-                        form_url2("dynamic_5_demo.php", "ערוך pdf", 1);
+                        echo '<div class="myformtd 1" style="width:60%;">';
+                        form_url2("forum_demo_last8.php", "ערוך ברנדים", 2);
                         echo '</div>';
                     }
                     echo '</div>';
-;
-//-----------------------------------------------------------------------
-
-
-
-
-
-
-
-                    if (array_item($formdata, 'dest_users') && $formdata['dest_users'] != 'none'){
-
-                    $i = 0;
-                    echo '<tr>';
-                    echo '<div   class="myformtd">';
-
-                    echo '<div id="my_brands_panel" class="my_brands_panel">';
-                    echo '<h3 class="my_title_brands" style=" height:15px"></h3>';
-                    echo '<div id="content_brands" class="content_brands">';
-
-                    echo '<table class="myformtable1" id="my_table" style="width:70%;overflow:hidden" align="right">';
-
-
-                    /***************************************************/
-                    foreach ($formdata['dest_pdfs'] as $key => $val){
-                    /**************************************************/
-
-                    $tr_id = "my_tr$i";
-                    $member_date = "member_date$i";
-                    if ($formdata["active"][$key] == 2)
-                        $gif_num = 1;
-                    else
-                        $gif_num = 0;
-                    ?>
-                    <tr class="my_tr" id="<?php echo $tr_id ?>">
-                        <td width="16" id="my_active<?php echo $key;
-                        echo $formdata['brandID']; ?>">
-                            <a href="javascript:void(0)"
-                               onclick="edit_active(<?php echo $key; ?>,<?php echo $formdata['brandID']; ?>,<?php echo " '" . ROOT_WWW . "/admin/' "; ?>,<?php echo $formdata["active"][$key]; ?>); return false;">
-                                <img src="<?php echo IMAGES_DIR ?>/icon_status_<?php echo $gif_num; //print $formdata["active"][$key]
-                                ?>.gif" width="16" height="10" alt="" border="0"/>
-                            </a>
-                        </td>
-
-
-                        <td class="myformtd" id="myformtd">
-
-                            <?php
-
-                            form_label1("חבר ברנד:");
-                            form_text_a("member", $val, 20, 50, 1);
-
-
-                            ?>
-
-                            <input type="button" class="mybutton" id="my_button_<?php echo $key; ?>" value="ערוך משתמש"
-                                   onClick="return editUser3(<?php echo $key; ?>,<?php echo $formdata['brandID']; ?>,<?php echo " '" . ROOT_WWW . "/admin/' "; ?>,<?php echo "' $i '"; ?>);"
-                                   ; return false;/>
-
-                            <?php
-
-
-                            /***************************************************************************************/
-                            ?>
-                            <script language="JavaScript" type="text/javascript">
-
-                                $(document).ready(function () {
-                                    $("#<?php echo $member_date; ?>").datepicker($.extend({}, {
-                                        showOn: 'button',
-                                        buttonImage: '<?php echo IMAGES_DIR;?>/calendar.gif', buttonImageOnly: true,
-                                        changeMonth: true,
-                                        changeYear: true,
-                                        showButtonPanel: true,
-                                        buttonText: "Open date picker",
-                                        dateFormat: 'yy-mm-dd',
-                                        altField: '#actualDate'
-                                    }, $.datepicker.regional['he']));
-                                });
-                            </script>
-                            <?php
-
-                            /*****************************************************************************************/
-
-                            list($year_date, $month_date, $day_date) = explode('-', $formdata[$member_date]);
-                            if (strlen($day_date) == 4) {
-                                $formdata[$member_date] = "$year_date-$month_date-$day_date";
-                            } elseif (strlen($year_date) == 4) {
-                                $formdata[$member_date] = "$day_date-$month_date-$year_date";
-                            }
-
-                            form_label1("תאריך צרוף לברנד:");
-                            form_text3("$member_date", $formdata[$member_date], 10, 50, 1, $member_date);
-
-                            echo '</td>';
-
-                            echo '</tr>';
-
-                            $i++;
-
-                            }
-
-
-                            echo '</table>';
-                            echo '</div>';
-                            echo '</div>';//end panel
-                            echo '</td>';
-                            echo '</tr>';
-
-
-                            }
-
-
-                            /***********************************************************************************************************/
-                              if (array_item($formdata, 'dest_dates') && $formdata['dest_dates'] != 'none') {
-                                  for ($i = 1; $i <= 31; $i++) {
-                                      $days[$i] = $i;
-                                  }
-                                  $months = array('1' => 'January', '2' => 'February', '3' => 'March', '4' => 'April', '5' => 'May', '6' => 'June', '7' => 'July', '8' => 'August', '9' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
-                                  $dates = getdate();
-
-                                  $year = date('Y');
-
-                                  $end = $year;
-                                  $start = $year - 15;
-
-                                  for ($start; $start <= $end; $start++) {
-                                      $years[$start] = $start;
-                                  }
-                                  /************************************************************************************************/
-                                  /*******************************************************************************************************************/
-                                  $formdata['multi_year'] = isset($formdata['multi_year']) ? $formdata['multi_year'] : '';
-                                  $formdata['multi_month'] = isset($formdata['multi_month']) ? $formdata['multi_month'] : '';
-                                  $formdata['multi_day'] = isset($formdata['multi_day']) ? $formdata['multi_day'] : '';
-                                  if (!($formdata['multi_year'] && $formdata['multi_year'] != 'none')
-                                      && !($formdata['multi_month'] && $formdata['multi_month'] != 'none')
-                                      && !($formdata['multi_day'] && $formdata['multi_day'] != 'none')
-                                      && !($formdata)
-                                      || ($formdata && !(array_item($formdata, 'dest_pdfs')))
-                                  ) {
-
-
-                                      echo '<tr>
-<td   class="myformtd"><div data-module="הזנת תאריכים לכמה משתמשים:">
-<table class="myformtable1" id="my_date_table" style="width:50%"><tr>';
-
-
-                                      echo '<td class="myformtd">';
-//  form_label1("הזנת תאריכים לכמה משתמשים:",true);
-
-                                      list11("multi_year", $years, array_item($formdata, "multi_year"), " multiple size=6    id='multi_year' ");
-
-                                      list11("multi_month", $months, array_item($formdata, "multi_month"), " multiple size=6 id='multi_month' ");
-
-                                      list11("multi_day", $days, array_item($formdata, "multi_day"), " multiple size=6        id='multi_day' ");
-
-                                      echo '</td>';
-
-
-                                      echo '</tr>
-</table></div>
-</td>
-</tr>';
-
-                                  }
-
-                                  /*******************************************************************************************/
-                                  if ($formdata && (array_item($formdata, 'dest_pdfs'))) {
-                                      echo '<tr>
-<td   class="myformtd" ><div data-module="ההזנת תאריכים למשתמשים חדשים:">
-<table class="myformtable1" id="my_date_table2" style="width:50%" style="display:none">
-<tr>
-<td class="myformtd"  >';
-
-                                      list11("multi_year", $years, array_item($formdata, "multi_year"), " multiple size=6    id='new_multi_year' ");
-
-                                      list11("multi_month", $months, array_item($formdata, "multi_month"), " multiple size=6    id='new_multi_month' ");
-
-                                      list11("multi_day", $days, array_item($formdata, "multi_day"), " multiple size=6    id='new_multi_day' ");
-
-
-                                      echo ' 
-</td>
-</tr>
-</table></div>
-</td>
-<tr>';
-
-
-                                  }
-                              }
-
-                            /****************************************************DEALING WITH TREE_VIEW*****************************************************/
-
-                            /**************************************************************************************************************************/
-                            if (array_item($formdata, "brandID")) {
-
-
-                                $sql = "SELECT d.decName,d.decID,d.parentDecID 
-                                            FROM decisions d, rel_brand r
-                                            WHERE d.decID = r.decID
-                                            AND r.brandID = " . $db->sql_string($formdata['brandID']) .
-                                    " ORDER BY  d.decName ";
-
-
-                                if ($rows = $db->queryObjectArray($sql)) {
-
-// echo '<div id="tree_content_target">';
-
-
-                                    echo '<tr>';
-                                    echo '<td   class="myformtd">';
-                                    echo '<table class="myformtable1"  id="tree_content_target">';
-
-
-                                    echo '<tr>';
-                                    echo '<td class="myformtd">';
-
-                                    echo '<h5 class="my_title_trees" style=" height:15px"></h5>';
-                                    echo '<div id="tree_content" class="tree_content" >';
-
-                                    form_label1("ערוך החלטות", true);
-                                    display_tree($rows, $formdata);
-
-                                    $rootAttributes = array("decID" => "11");
-
-                                    $treeID = "treev1";
-                                    $tv = DBTreeView::createTreeView(
-                                        $rootAttributes,
-                                        TREEVIEW_LIB_PATH,
-                                        $treeID);
-                                    $string = "כול ההחלטות";
-                                    $tv->setRootHTMLText($string);
-
-                                    $tv->setRootIcon(TAMPLATE_IMAGES_DIR . "/star.gif");
-                                    $tv->printTreeViewScript();
-
-
-                                    echo '</div>
-</td>
-</tr>';
-
-
-//echo '<div>';
-                                    echo '<tr>';
-                                    echo '<td   class="myformtd">';
-                                    echo '<h5 class="my_title_trees2" style=" height:15px"></h5>';
-                                    echo '<div id="tree_content2" class="tree_content" >';
-
-                                    form_label1("הראה נתונים", true);
-                                    display_tree($rows, $formdata);
-
-                                    $rootAttributes = array("decID" => "11", "flag_print" => "1");
-                                    $treeID = "treev2";
-                                    $tv1 = DBTreeView::createTreeView(
-                                        $rootAttributes,
-                                        TREEVIEW_LIB_PATH,
-                                        $treeID);
-                                    $str = "כול ההחלטות";
-                                    $tv1->setRootHTMLText($str);
-                                    $tv1->setRootIcon(TAMPLATE_IMAGES_DIR . "/star.gif");
-
-                                    $tv1->printTreeViewScript();
-
-
-                                    echo '</div>
-</td>
-</tr>
-
-</table></td></tr>';
-
-                                }
-                            }
-
-
-                            /**************************************************************************************************************************************/
-//
-//                            elseif(!(ae_detect_ie())){//FOR form_dem_9.php
-//
-//
-//                            		echo '<div id="tree_content_target">'; //for pushing the data
-//                            	 	 echo '<table style="width:80%;">';
-//                            		echo '<tr>';
-//                                    echo '<td>';
-//                                     echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
-//                                     echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
-//                                 if($level){
-//                                    echo '<table class="myformtable1"   style="width:50%;"   id="tree_content1" data-module="ערוך החלטות"><tr>';
-//                                 }elseif(!($level)){
-//                                	echo '<table class="myformtable1"   style="width:50%;" id="tree_content1" data-module="הצג החלטות בדף"><tr>';
-//                                 }
-//                                    echo '<td>';
-//                                    echo '<div id="tree_content_ajx" class="tree_content" >';
-//
-//
-//
-//                                 echo '<table style="width:50%;">';
-//                            	echo '</table>';
-//
-//
-//
-//                             	  echo '</div>
-//                                        </td></tr>
-//                             	        </table>
-//                             	        </td>
-//                                        </tr>';
-//
-//
-//
-//
-//                             	  echo '<tr>';
-//                                    echo '<td>';
-//
-//                                    echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
-//                                    echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
-//                                    echo '<table style="width:50%;"  class="myformtable1" id="tree_content2" data-module="הצג החלטות בחלון"><tr>';
-//                                    echo '<td>';
-//                                    echo '<div id="tree_content_ajx2" class="tree_content" >';
-//
-//
-//                                echo '<table style="width:50%;">';
-//                            	echo '</table>';
-//
-//
-//
-//
-//
-//                            echo   '   </div>
-//                                        </td></tr>
-//                             	        </table>
-//                             	        </td>
-//                                        </tr>';
-//                               echo '</table>';
-//
-//                            echo    '</div>';
-//
-//
-//                            }else{//for ie
-//
-//                             $sql = "SELECT decName,decID,parentDecID
-//                            				FROM decisions
-//                            				WHERE decID = '1962'
-//                            				ORDER BY decName ";
-//
-//
-//                             	$rows = $db->queryObjectArray($sql);
-//
-//
-//
-//
-//                            		echo '<div id="tree_content_target">'; //for pushing the data
-//
-//                            		echo '<tr>';
-//                                    echo '<td>';
-//                                     echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
-//                                     echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
-//                                 if($level){
-//                                    echo '<table class="myformtable1"   style="width:50%;"   id="tree_content1" data-module="ערוך החלטות"><tr>';
-//                                 }elseif(!($level)){
-//                                	echo '<table class="myformtable1"   style="width:50%;" id="tree_content1" data-module="הצג החלטו	ת בדף"><tr>';
-//                                 }
-//                                    echo '<td>';
-//                                    echo '<div id="tree_content_ajx" class="tree_content" >';
-//
-//
-//
-//                             treedisplayDown($rows,$formdata);
-//                                $rootAttributes = array("decID"=>"11" );
-//                                $treeID = "treev1";
-//                                 $tv = DBTreeView::createTreeView(
-//                            		$rootAttributes,
-//                            		TREEVIEW_LIB_PATH,
-//                            		$treeID);
-//                                   $str="ערוך החלטות"	;
-//                                   $tv->setRootHTMLText($str);
-//                              $tv->setRootIcon(TAMPLATE_IMAGES_DIR ."/star.gif");
-//                               $tv->printTreeViewScript();
-//
-//
-//
-//                             	  echo '</div>
-//                                        </td></tr>
-//                             	        </table>
-//                             	        </td>
-//                                        </tr>';
-//
-//
-//
-//                             	  echo '<tr>';
-//                                    echo '<td>';
-//
-//                                    echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
-//                                    echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
-//                                    echo '<table style="width:50%;"  class="myformtable1" id="tree_content2" data-module="הצג החלטות בחלון"><tr>';
-//                                    echo '<td>';
-//                                    echo '<div id="tree_content_ajx2" class="tree_content" >';
-//
-//
-//
-//                             treedisplayDown($rows,$formdata);
-//                               $rootAttributes = array("decID"=>"11","flag_print"=>"1");
-//                                $treeID = "treev2";
-//                                 $tv1 = DBTreeView::createTreeView(
-//                            		$rootAttributes,
-//                            		TREEVIEW_LIB_PATH,
-//                            		$treeID);
-//                                  $str="צפייה בהחלטות"	;
-//                                 $tv1->setRootHTMLText($str);
-//                                $tv1->setRootIcon(TAMPLATE_IMAGES_DIR ."/star.gif");
-//                                $tv1->printTreeViewScript();
-//
-//
-//
-//
-//                            echo   '   </div>
-//                                        </td></tr>
-//                             	        </table>
-//                             	        </td>
-//                                        </tr>';
-//
-//
-//                            echo    '</div>';
-//
-//                            }
-
-                            /***************************************************************************************************************************/
-
-
-                            /*********************************BUTTON***********************************************************/
-                            if ($level) {
-                                echo '<tr><td class="myformtd">';
-
-
-//$name, $txt, $type="button", $free_text=""
-                                form_button_no_td2("submitbutton", "שמור", "Submit", "OnClick=\"
-                                                            prepSelObject(document.getElementById('dest_brandsType'));
-                                                            prepSelObject(document.getElementById('dest_managersType'));
-                                                            prepSelObject(document.getElementById('dest_pdfs'));
-                                                            \";");
-
-
-                                if (array_item($formdata, 'dynamic_6')) {
-                                    $x = $formdata['index'];
-                                    $formdata["brandID"] = $formdata["brandID"][$x];
-                                    $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
-                                    form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
-                                    form_hidden("brandID", $formdata["brandID"]);
-                                    form_hidden("insertID", $formdata["insertID"]);
-                                } else
-                                    $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
-                                $formdata["brandID"] = isset($formdata["brandID"]) ? $formdata["brandID"] : '';
-                                $formdata["insertID"] = isset($formdata["insertID"]) ? $formdata["insertID"] : '';
-                                form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
-                                form_hidden("brandID", $formdata["brandID"]);
-                                form_hidden("insertID", $formdata["insertID"]);
-
-
-                                if (array_item($formdata, "brandID") && !$formdata['fail']) {
-
-
-                                    form_button_no_td2("btnLink1", "קשר לברנד");
-                                    form_hidden("brandID", $formdata["brandID"]);
-
-
-// form_button1("btnDelete", "מחק ברנד", "Submit", "OnClick=\"return document.getElementById('mode_".$formdata["brandID"]."').value='delete'\";");
-                                    form_empty_cell_no_td(20);
-                                    form_button_no_td2("btnDelete", "מחק ברנד", "Submit", "OnClick='return shalom(\"" . $formdata[brandID] . "\")'");
-                                    ?>
-
-
-                                    <?php
-
-
-                                } else {
-
-                                    form_empty_cell_no_td(10);
-                                    $formdata["btnClear"] = isset($formdata["btnClear"]) ? $formdata["btnClear"] : '';
-
-                                    form_button_no_td("btnClear", "הכנס נתונים לברנד/נקה טופס", "Submit", "OnClick=\"return document.getElementById('mode_" . $formdata["btnClear"] . "').value='clear'\" ");
-
-
-                                }
-                                $formdata["fail"] = isset($formdata["fail"]) ? $formdata["fail"] : '';
-                                if ($formdata['fail'])
-                                    unset($formdata['fail']);
-
-
-                                echo '</td></tr>';
-
-                            }
-                            /************************************************************************************************/
-                            ?>
-                </table>
-
-                </fielset>
-
-
-
-
-
-        </form>
-        <div class="" id="display">
-            <!-- Records will be displayed here -->
-        </div>
-
-
-        <!-- ============================================================================================================ -->
-        <?PHP $formdata['brandID'] = isset($formdata['brandID']) ? $formdata['brandID'] : ''; ?>
-
-        <div id="page_useredit" class="page_useredit" style="display:none">
-
-            <h3 class="my_title" style=" height:15px"></h3>
-            <h3><?php __('edit_user'); ?></h3>
-
-            <div class="content">
-
-
-                <form onSubmit="return saveUser3(this,<?php echo " '" . ROOT_WWW . "/admin/' "; ?>);" name="edituser"
-                      id="edituser">
-                    <input type="hidden" name="Request_Tracking_Number_1" id="Request_Tracking_Number_1" value=""/>
-                    <input type="hidden" name="Request_Tracking_Number1" id="Request_Tracking_Number1" value=""/>
-                    <input type="hidden" name="Request_Tracking_Number2" id="Request_Tracking_Number2" value=""/>
-                    <input type="hidden" name="id" value=""/>
-                    <input type="hidden" name="brandID" id="brandID"
-                           value="<?php echo $formdata['brandID']; ?>"/>
-
-
-                    <div class="form-row">
-                        <span class="h"><?php __('priority'); ?></span>
-                        <SELECT name="prio" id="prio" class="mycontrol">
-                            <option value="3">+3</option>
-                            <option value="2">+2</option>
-                            <option value="1">+1</option>
-                            <option value="0" selected>&plusmn;0</option>
-                            <option value="-1">&minus;1</option>
-                        </SELECT>
-                        &nbsp;
-
-
-                        <span class="h"><?php __('active'); ?></span>
-                        <SELECT name="active" id="active" class="mycontrol">
-                            <option value="0">0</option>
-                            <option value="1" selected>1</option>
-                        </SELECT>
-                        &nbsp;
-
-
-                        <span class="h"><?php __('due'); ?> </span>
-                        <input name="duedate3" id="duedate3" value="" class="in100"
-                               title="Y-M-D, M/D/Y, D.M.Y, M/D, D.M" autocomplete="off"/>
+//------------------------page-number-----------------------------------
+                if (array_item($formdata, 'brandID')) {
+                    echo '<div class="myformtable1" style="width:60%;"  data-module="הזן מספר עמודים:">';
+                   echo  '<div id="num_page">';
+                        for ($i = 1; $i <= 50; $i++) {
+                            $pages[] = $i;
+                        }
+                     form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
+                    echo  '</div></div>';
+                }
+//---------------------------BUTTON-------------------------------------------
+            if ($level) {
+                echo '<div class="myformtd">';
+                form_button_no_td2("submitbutton", "שמור", "Submit", "OnClick=\"
+                                            prepSelObject(document.getElementById('dest_brandsType'));
+                                            prepSelObject(document.getElementById('dest_managersType'));
+                                            prepSelObject(document.getElementById('dest_pdfs'));
+                                            \";");
+                echo '</div>';
+                if (array_item($formdata, 'dynamic_6')) {
+                    $x = $formdata['index'];
+                    $formdata["brandID"] = $formdata["brandID"][$x];
+                    $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
+                    form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
+                    echo '<div class="myformtd" style="width:60%;">';
+                    form_hidden("brandID", $formdata["brandID"]);
+                    form_hidden("insertID", $formdata["insertID"]);
+                    echo '</div>';
+                } else
+                    $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
+                $formdata["brandID"] = isset($formdata["brandID"]) ? $formdata["brandID"] : '';
+                $formdata["insertID"] = isset($formdata["insertID"]) ? $formdata["insertID"] : '';
+                echo '<div class="myformtd" style="width:60%;">';
+                form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
+                form_hidden("brandID", $formdata["brandID"]);
+                form_hidden("insertID", $formdata["insertID"]);
+                echo '</div>';
+                if (!empty($formdata['fail']) && array_item($formdata, "brandID") && !$formdata['fail']) {
+                    echo '<div class="myformtd" style="width:60%;">';
+                    form_button_no_td2("btnLink1", "קשר לברנד");
+                    form_hidden("brandID", $formdata["brandID"]);
+                    form_button1("btnDelete", "מחק ברנד", "Submit", "OnClick=\"return document.getElementById('mode_".$formdata["brandID"]."').value='delete'\";");
+                    form_empty_cell_no_td(20);
+                    form_button_no_td2("btnDelete", "מחק ברנד", "Submit", "OnClick='return shalom(\"" . $formdata[brandID] . "\")'");
+                    echo '</div>';
+                } else {
+//                    echo '<div class="myformtd" style="width:60%;">';
+//                    form_empty_cell_no_td(10);
+//                    $formdata["btnClear"] = isset($formdata["btnClear"]) ? $formdata["btnClear"] : '';
+//                    form_button_no_td("btnClear", "הכנס נתונים לברנד/נקה טופס", "Submit", "OnClick=\"return document.getElementById('mode_" . $formdata["btnClear"] . "').value='clear'\" ");
+//                    echo '</div>';
+                }
+                $formdata["fail"] = isset($formdata["fail"]) ? $formdata["fail"] : '';
+                if ($formdata['fail'])
+                    unset($formdata['fail']);
+
+                ?>
+                     <div id="loading">
+                        <img src="loading4.gif" border="0" />
                     </div>
+                <?php
+$html = '';
 
 
-                    <div class="form-row">
-                        <span class="h"><?php __('level'); ?></span>
-                        <SELECT name="level" id="level" class="mycontrol">
-                            <option value="1"><?php __('brand_user') ?></option>
-                            <option value="2"><?php __('admin') ?></option>
-                            <option value="3"><?php __('suppervizer') ?></option>
-                            <option value="none" selected>(בחר אופציה)</option>
-                        </SELECT>
+                 for ($i = 0; $i < 7; $i++) {
+            // Display each record:
 
-                    </div>
+            $html .= '<div class="col-xs-3" >';
+            $html .=  "<div style=\"border-radius:3px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \">
+                            <div id='my_pdfs_$i'>
+                                <h4>
+                                     <a class='my_href_li' href=\"#\">
+                                     </a>
+                                 </h4>
+                              </div>
+                                <input type='checkbox' id= improve_$i>
+                              </div>\n";
+            $html .=  '<br/></div>';
+        } // End of WHILE loop.
+        echo $html;
+//$html = '<table>';
+//foreach($data as $row) {
+//    $html .= '<tr>';
+//    $html .= '<td><a href="#" class="button">Click!</a></td>';
+//    $html .= '<td>'.$row['id'].'</td>';
+//    $html .= '<td>'.$row['name'].'</td>';
+//    $html .= '</tr>';
+//}
+//$html .= '</table>';
 
+             echo '</div><div class="" id="display"></div></fielset></form></div>';
+            }
 
-                    <div class="form-row"><span class="h"><?php __('full_name'); ?></span><br> <input type="text"
-                                                                                                      name="full_name"
-                                                                                                      id="full_name"
-                                                                                                      value=""
-                                                                                                      class="in200"
-                                                                                                      maxlength="50"/>
-                    </div>
-
-                    <div class="form-row"><span class="h"><?php __('user'); ?></span><br> <input type="text" name="user"
-                                                                                                 id="user" value=""
-                                                                                                 class="in200"
-                                                                                                 maxlength="50"/></div>
-
-                    <div class="form-row"><span class="h"><?php __('upass'); ?></span><br> <input type="text"
-                                                                                                  name="upass"
-                                                                                                  id="upass" value=""
-                                                                                                  class="in200"
-                                                                                                  maxlength="50"/></div>
-                    <div class="form-row"><span class="h"><?php __('email'); ?></span><br> <input type="text"
-                                                                                                  name="email"
-                                                                                                  id="email" value=""
-                                                                                                  class="in200"
-                                                                                                  maxlength="50"/></div>
-                    <div class="form-row"><span class="h"><?php __('phone'); ?></span><br> <input type="text"
-                                                                                                  name="phone"
-                                                                                                  id="phone" value=""
-                                                                                                  class="in200"
-                                                                                                  maxlength="50"/></div>
-                    <div class="form-row"><span class="h"><?php __('note'); ?></span><br> <textarea name="note"
-                                                                                                    id="note"
-                                                                                                    class="in500"></textarea>
-                    </div>
-                    <div class="form-row"><span class="h"><?php __('tags'); ?></span><br> <input type="text" name="tags"
-                                                                                                 id="edittags1" value=""
-                                                                                                 class="in500"
-                                                                                                 maxlength="250"/></div>
-                    <div class="form-row">
-
-                        <input type="submit" id="edit_usr" value="<?php __('save'); ?>" onClick="this.blur()"/>
-                        <input type="button" value="<?php __('cancel'); ?>"
-                               onClick="canceluserEdit3();this.blur();return false"/>
-
-
-                    </div>
-                </form>
-
-            </div> <!--  end div content -->
-
-        </div> <!--  end of page_user_edit -->
-
-    </div><!-- end div main -->
-    <?php
 }//end build_form
 
 function build_form_ajx7(&$formdata)
@@ -1138,19 +311,14 @@ function build_form_ajx7(&$formdata)
 
     <div id="main">
         <?php
-        /****************************************************************************************************/
-        $formdata['manager_brand'] = isset ($formdata['manager_brand']) ? $formdata['manager_brand'] : '';
-        $formdata['managerName'] = isset ($formdata['managerName']) ? $formdata['managerName'] : '';
-        $url_mgr = "../admin/find3.php?managerID=" . $formdata['manager_brand'];
-        $link_frm_mgr = "<span><a onClick=openmypage3('" . $url_mgr . "');   class=href_modal1  href='javascript:void(0)' ><b style='color:brown;font-size:1.4em;'>'" . $formdata['managerName'] . "'<b></a></span>";
+//------------------------------------------------------------------------------
+//        $formdata['manager_brand'] = isset ($formdata['manager_brand']) ? $formdata['manager_brand'] : '';
+//        $formdata['managerName'] = isset ($formdata['managerName']) ? $formdata['managerName'] : '';
+//        $url_mgr = "../admin/find3.php?managerID=" . $formdata['manager_brand'];
+//        $link_frm_mgr = "<span><a onClick=openmypage3('" . $url_mgr . "');   class=href_modal1  href='javascript:void(0)' ><b style='color:brown;font-size:1.4em;'>'" . $formdata['managerName'] . "'<b></a></span>";
+//        echo '<table style="width:300px;height:25px;"><tr><td><p  data-module="מנהל ברנד:' . $link_frm_mgr . '"  id="my_manager_td"></p></td></tr></table>';
+//---------------------------------------------------------------------------------
 
-
-        echo '<table style="width:300px;height:25px;overflow:hidden;">
-<tr><td><p  data-module="מנהל ברנד:' . $link_frm_mgr . '"  id="my_manager_td">			      
-</p></td></tr>
-</table>';
-
-        /****************************************************************************************************/
         ?>
 
 
@@ -1186,9 +354,9 @@ function build_form_ajx7(&$formdata)
                 }
                 ?>
                 <fieldset id="main_fieldset<?php echo $formdata['brandID'] ?>"
-                          style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden"
+                          style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden"
                           ;>
-                    <legend style="color:brown;overflow:hidden;">פורומים עין השופט</legend>
+                    <legend style="color:brown;">ברנד - ישראל היום</legend>
                     <input type=hidden name="brandID" id="brandID"
                            value="<?php echo $formdata['brandID'] ?>"/>
 
@@ -1198,9 +366,9 @@ function build_form_ajx7(&$formdata)
                     <div id="brandID_tree" name="brandID_tree"></div>
 
                     <?php if (ae_detect_ie()){ ?>
-                    <table style="margin-right:25px;overflow:hidden;width:95%;">
+                    <table style="margin-right:25px;width:95%;">
                         <?php }else{ ?>
-                        <table style="margin-right:25px;overflow:hidden; width:95%;">
+                        <table style="margin-right:25px; width:95%;">
                             <?php
                             }
 
@@ -1215,18 +383,14 @@ function build_form_ajx7(&$formdata)
                             $dates = getdate();
 
 
-                            $sql = "SELECT brandName,brandID,parentbrandID FROM brand ORDER BY brandName";
-                            $rows = $db->queryObjectArray($sql);
+                            $sql = "SELECT brandName,brandID,parentBrandID FROM brands ORDER BY brandName";
+                           if( $rows = $db->queryObjectArray($sql)){
 
                             foreach ($rows as $row) {
                                 $subcats_a[$row->parentbrandID][] = $row->brandID;
                                 $catNames_a[$row->brandID] = $row->brandName;
-
-
                             }
-
                             $rows = build_category_array($subcats_a[NULL], $subcats_a, $catNames_a);
-
                             $arr = array();
                             $arr[0][0] = "לא פעיל";
                             $arr[0][1] = "1";
@@ -1250,11 +414,11 @@ function build_form_ajx7(&$formdata)
                             elseif ($selected_show == 'private') $selected_show = 2;
                             elseif ($selected_show == 'top_secret') $selected_show = 3;
                             echo '<tr>
-<td> 
-<div style="overflow:hidden;" data-module="שם הברנד:">
-<table class="myformtable1" style="height:100px;width:98%;overflow:hidden;">';
+                                    <td> 
+                                    <div style="" data-module="שם הברנד:">
+                                    <table class="myformtable1" style="height:100px;width:98%;">';
 
-                            echo '<tr><td colspan="4" style="overflow:hidden;">';
+                            echo '<tr><td colspan="4" style="">';
 
                             form_label_red1("שם הברנד:", TRUE);
                             form_list_find_notd("brandID", "brandID_link", $rows, array_item($formdata, "brandID"));
@@ -1294,79 +458,10 @@ function build_form_ajx7(&$formdata)
 
 
                             echo '</table></div></td></tr>';
-                            /****************************************************************************************************/
-
-
-                            $sql = "SELECT appointName,appointID,parentAppointID FROM appoint_brand ORDER BY appointName";
-                            $rows = $db->queryObjectArray($sql);
-
-                            foreach ($rows as $row) {
-                                $subcats22[$row->parentAppointID][] = $row->appointID;
-                                $catNames22[$row->appointID] = $row->appointName;
                             }
-
-
-                            $rows = build_category_array($subcats22[NULL], $subcats22, $catNames22);
-                            $rows1 = build_category_array($subcats22[NULL], $subcats22, $catNames22);
-
-                            $sql = "SELECT u.* FROM brands u
-LEFT JOIN appoint_brand a   ON u.userID=a.userID
-WHERE u.userID NOT IN(SELECT userID FROM appoint_brand)
-ORDER BY u.full_name ";
-                            if ($rows2 = $db->queryObjectArray($sql)) {
-                                foreach ($rows2 as $row) {
-                                    $array[$row->userID] = $row->full_name;
-                                }
-                            }
-
-
-                            echo '<tr><td>
-<div style="overflow:hidden;" data-module="ממנה ברנד:">
-<table class="myformtable1" style="height:100px;width:98%;">';
-
-                            echo '<tr><td>';
-
-                            form_label1("ממנה ברנד:", TRUE);
-                            form_list_b("appoint_brand", $rows, array_item($formdata, "appoint_brand"), "id=my_appoint");
-                            form_empty_cell_no_td(5);
-
-                            form_label1("גוף ממנה חדש:", TRUE);
-                            // form_list_b ("new_appoint",$rows2, array_item($formdata, "new_appoint"),"id=my_newAppoint");
-                            form_list_idx_one("new_appoint", $array, array_item($formdata, "new_appoint"), "id=my_newAppoint");
-                            form_empty_cell_no_td(5);
-
-                            form_label1("קשר לממנה:", TRUE);
-                            form_list_b("insert_appoint", $rows1, array_item($formdata, "insert_appoint"), "id=insert_appoint");
-                            form_empty_cell_no_td(8);
-
-                            echo '</td>';
-                            if ($level) {
-                                form_url_noformtd("appoint_edit.php", "ערוך ממני ברנד", 1);
-                            }
-                            echo '</tr>';
-
-                            if (isset($formdata['appoint_date']) && $formdata['appoint_date'])
-                                $formdata['appoint_date1'] = $formdata['appoint_date'];
-                            //form_empty_cell_noformtd(5);
-
-
-                            echo '<tr><td>';
-                            form_label_red1("תאריך ממנה:", TRUE);
-                            form_text3("appoint_date1", array_item($formdata, "appoint_date1"), 20, 50, 1, 'appoint_date1');
-                            form_empty_cell_no_td(10);
-
-
-                            echo '</td></tr>';
-
-
-                            echo '</table></div></td></tr>';
-
-                            /**********************************************************************************************/
-
-
+//---------------------------------------------------------------------------------------------------------------------------
                             $sql = "SELECT managerName,managerID,parentManagerID FROM managers ORDER BY managerName";
-                            $rows = $db->queryObjectArray($sql);
-
+                           if($rows = $db->queryObjectArray($sql)) {
 
                             foreach ($rows as $row) {
                                 $subcats6[$row->parentManagerID][] = $row->managerID;
@@ -1375,37 +470,30 @@ ORDER BY u.full_name ";
 
                             $rows = build_category_array($subcats6[NULL], $subcats6, $catNames6);
                             $rows1 = build_category_array($subcats6[NULL], $subcats6, $catNames6);
-
+                            }
 
                             $sql = "SELECT u.* FROM brands u
-LEFT JOIN managers m ON u.userID=m.userID
-WHERE u.userID NOT IN(SELECT userID FROM managers)
-ORDER BY u.full_name ";
+                                        LEFT JOIN managers m ON u.userID=m.userID
+                                        WHERE u.userID NOT IN(SELECT userID FROM managers)
+                                        ORDER BY u.full_name ";
                             if ($rows2 = $db->queryObjectArray($sql)) {
 
                                 foreach ($rows2 as $row) {
                                     $array[$row->userID] = $row->full_name;
                                 }
                             }
-
-
-                            /**********************************************************************************************************/
+//---------------------------------------------------------------------------------------------------------------------------
                             $managerName = $formdata['managerName'] ? $formdata['managerName'] : '';
                             $manager_brand = $formdata['manager_brand'] ? $formdata['manager_brand'] : '';
                             $url = "../admin/find3.php?managerID=$manager_brand";
                             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-
-
                             $link_frm = "<a onClick=openmypage3('" . $url . "');   class=href_modal1  href='javascript:void(0)' >
-<b style='color:brown;font-size:1.4em;'>$managerName<b></a>";
-
-                            // echo '<fieldset data-module="חברי הברנד:'.$link_frm.'"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  id="brands_fieldset" >';
-
-                            /****************************************************************************************************/
+                            <b style='color:brown;font-size:1.4em;'>$managerName<b></a>";
+//---------------------------------------------------------------------------------------------------------------------------
 
 
                             echo '<tr><td id="my_manager_td">
-<div style="overflow:hidden;"  data-module="מנהל ברנד:' . $link_frm . '">
+<div style=""  data-module="מנהל ברנד:' . $link_frm . '">
 <table class="myformtable1" style="height:100px;width:98%;"><tr><td>';
 
 
@@ -1456,8 +544,8 @@ ORDER BY u.full_name ";
 
                             echo '<tr>
 <td>
-<div  style="overflow:hidden;"  data-module="הזנת  סוגי הברנד:">
-<table class="myformtable1" style="overflow:hidden;width:98%;"><tr>';
+<div  style=""  data-module="הזנת  סוגי הברנד:">
+<table class="myformtable1" style="width:98%;"><tr>';
 
 
                             echo '<td style="width:40px;">';
@@ -1484,12 +572,8 @@ ORDER BY u.full_name ";
                                     $sql2 = "select catID, catName from categories where catName in ($staff)";
                                     if ($rows = $db->queryObjectArray($sql2))
                                         foreach ($rows as $row) {
-
                                             $name_frmType[$row->catID] = $row->catName;
-
-
                                         }
-
                                 } elseif (is_array($staff_test) && is_array($staff_testb) && $staff_testb) {
                                     $staff = implode(',', $staff_test);
 
@@ -1658,8 +742,8 @@ ORDER BY u.full_name ";
                             $rows = build_category_array($subcatsmtype[NULL], $subcatsmtype, $catNamesmtype);
                             $rows2 = build_category_array($subcatsmtype[NULL], $subcatsmtype, $catNamesmtype);
 
-                            echo '<tr><td   align="right"><div style="overflow:hidden;"  data-module="הזנת  סוגי המנהלים:">
-<table class="myformtable1" style="overflow:hidden;width:98%;" >
+                            echo '<tr><td   align="right"><div style=""  data-module="הזנת  סוגי המנהלים:">
+<table class="myformtable1" style="width:98%;" >
 <tr>';
                             //  form_label_red("הזנת  סוגי המנהלים:", TRUE);
                             echo '<td style="width:30px;">';
@@ -1866,7 +950,7 @@ ORDER BY u.full_name ";
 
                             echo '<tr>
 <td   class="myformtd">
-<div style="overflow:hidden;" data-module="הזנת  חברי ברנד:">
+<div style="" data-module="הזנת  חברי ברנד:">
 <table class="myformtable1" style="width:60%;">
 <tr>';
 
@@ -2025,8 +1109,8 @@ ORDER BY u.full_name ";
 
 
                                 echo '<tr>
-<td><div style="overflow:hidden;"   data-module="הזנת תאריכים לכמה משתמשים:">
-<table class="myformtable1" id="my_date_table" style="width:40%">
+<td><div style=""   data-module="הזנת תאריכים לכמה משתמשים:">
+<table class="myformtable1" id="my_date_table" style="width:60%">
 <tr>';
 
 
@@ -2053,8 +1137,8 @@ ORDER BY u.full_name ";
                             if ($formdata && (array_item($formdata, 'dest_pdfs'))) {
                                 echo '<tr>
 <td>
-<div style="overflow:hidden;"   data-module="הזנת תאריכים למשתמשים חדשים:">
-<table class="myformtable1" id="my_date_table" style="width:40%">
+<div style=""   data-module="הזנת תאריכים למשתמשים חדשים:">
+<table class="myformtable1" id="my_date_table" style="width:60%">
 <tr>
 <td>';
 
@@ -2093,10 +1177,10 @@ ORDER BY u.full_name ";
 
 
                             ////////////////////////////////////////////////////////////////////////////
-                            // echo '<fieldset data-module="חברי הברנד:'.$brandName.'"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  id="brands_fieldset" >';
-                            echo '<fieldset data-module="חברי הברנד:' . $link_frm . '"  class="myformtable1"  style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  id="brands_fieldset" >';
+                            // echo '<fieldset data-module="חברי הברנד:'.$brandName.'"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  id="brands_fieldset" >';
+                            echo '<fieldset data-module="חברי הברנד:' . $link_frm . '"  class="myformtable1"  style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  id="brands_fieldset" >';
 
-                            echo '<div  id="content_brands" class="content_brands" style="overflow:hidden;">';
+                            echo '<div  id="content_brands" class="content_brands" style="">';
                             echo '<h4 class="my_title_brands" style=" height:15px"></h4>';
                             echo '<div   id="my_div_table" style="overflow:auto;">';
                             echo '<table  id="my_table" >';
@@ -2220,8 +1304,8 @@ ORDER BY u.full_name ";
                                         echo '<tr>';
                                         echo '<td   class="myformtd" id="my_Frm_brands_td">';
 
-                                        echo '<fieldset data-module="חברי הברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  id="brands_fieldset" >';
-                                        echo '<div  id="content_brands" class="content_brands" style="overflow:hidden;">';
+                                        echo '<fieldset data-module="חברי הברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  id="brands_fieldset" >';
+                                        echo '<div  id="content_brands" class="content_brands" style="">';
                                         echo '<h4 class="my_title_brands" style=" height:15px"></h4>';
                                         echo '<div   id="my_div_table" style="overflow:auto;width:80%;">';
                                         echo '<table  id="my_table" >';
@@ -2259,7 +1343,7 @@ AND r.brandID = " . $db->sql_string($formdata['brandID']) .
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td">';
-                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"   id="my_form">';
+                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"   id="my_form">';
                                             echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
 
@@ -2309,7 +1393,7 @@ AND r.brandID = " . $db->sql_string($formdata['brandID']) .
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td2">';
-                                            echo '<fieldset  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
+                                            echo '<fieldset  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
                                             echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
 
@@ -2359,7 +1443,7 @@ AND r.brandID = " . $db->sql_string($formdata['brandID']) .
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td">';
-                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"   id="my_form">';
+                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"   id="my_form">';
                                             echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
 
@@ -2394,7 +1478,7 @@ AND r.brandID = " . $db->sql_string($formdata['brandID']) .
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td2">';
-                                            echo '<fieldset  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
+                                            echo '<fieldset  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
                                             echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
 
@@ -2434,7 +1518,7 @@ WHERE decID = '1962' ";
 
                                                 echo '<tr>';
                                                 echo '<td id="my_tree_td">';
-                                                echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"   id="my_form">';
+                                                echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"   id="my_form">';
                                                 echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
                                                 echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
 
@@ -2482,7 +1566,7 @@ WHERE decID = '1962' ";
 
                                                 echo '<tr>';
                                                 echo '<td id="my_tree_td2">';
-                                                echo '<fieldset  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
+                                                echo '<fieldset  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
                                                 echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
                                                 echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
 
@@ -2539,7 +1623,7 @@ WHERE decID = '1962' ";
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td">';
-                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"   id="my_form">';
+                                            echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"   id="my_form">';
                                             echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
 
@@ -2574,7 +1658,7 @@ WHERE decID = '1962' ";
 
                                             echo '<tr>';
                                             echo '<td id="my_tree_td2">';
-                                            echo '<fieldset  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
+                                            echo '<fieldset  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
                                             echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
                                             echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
 
@@ -2614,7 +1698,7 @@ WHERE decID = '841' ";
 
                                                 echo '<tr>';
                                                 echo '<td id="my_tree_td">';
-                                                echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"   id="my_form">';
+                                                echo '<fieldset data-module="ערוך החלטות של ברנד:' . $link_frm . '"  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"   id="my_form">';
                                                 echo '<h5 class="my_title_trees_ajx" style=" height:15px"></h5>';
                                                 echo '<h6 class="my_title_trees_ajx_tab" style=" height:15px"></h6>';
 
@@ -2662,7 +1746,7 @@ WHERE decID = '841' ";
 
                                                 echo '<tr>';
                                                 echo '<td id="my_tree_td2">';
-                                                echo '<fieldset  class="myformtable1" style="overflow:hidden;margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;overflow:hidden;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
+                                                echo '<fieldset  class="myformtable1" style="margin-left:40px;margin-right:25px;background: #94C5EB url(../images/background-grad.png) repeat-x;"  data-module="הצג החלטות בחלון של ברנד:' . $link_frm . '"  id="my_form2">';
                                                 echo '<h5 class="my_title_trees2_ajx" style=" height:15px"></h5>';
                                                 echo '<h6 class="my_title_trees_ajx_tab2" style=" height:15px"></h6>';
 
