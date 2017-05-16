@@ -1,12 +1,7 @@
 <?php 
 define("TREEVIEW_LIB_PATH","../lib/dbtreeview"); 
-require_once ("../config/application5.php"); 
- 
- 
-
+require_once ("../config/application5.php");
 class MyHandler implements RequestHandler{
-	
-	 
 
 	public function handleChildrenRequest(ChildrenRequest $req){
 		$class='class="href_modal1"';

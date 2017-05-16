@@ -8,8 +8,122 @@
  global $lang;
  global $db;
 
+if(isset($_GET['brandPrefix']) && isset($_GET['brand_date']) && isset($_GET['brandID']) &&  isset($_GET['page_num']) && is_numeric($_GET['page_num'])) {
 
-if(isset($_POST['category_pdf']) &&  isset($_POST['page_num']) && is_numeric($_POST['page_num'])) {
+$page_num =  $_GET['page_num'] ;
+$brandID =    $_GET['brandID'] ;
+
+    //$sql = "SELECT brandName,brandID,parentBrandID FROM brands ORDER BY brandName";
+    $sql = "SELECT * FROM brands WHERE brandID = $brandID";
+    if( $rows = $db->queryObjectArray($sql)) {
+
+        for ($i = 0; $i < $page_num; $i++) {
+            // Display each record:
+
+            echo '<div class="col-xs-3" >';
+            echo "<div style=\"border-radius:3px;width:250px;height:250px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \"> 
+                            <div id='my_pdfs_$i'>
+                                <h4>
+                                     <a class='my_href_li' href=\"#\">
+                                     </a> 
+                                 </h4>
+                              </div>
+                                <input type='checkbox' id= improve_$i>
+                              </div>\n";
+            echo '<br/></div>';
+        } // End of WHILE loop.
+
+
+
+        if ( is_numeric($brandID)) {
+            $db->execute("set foreign_key_checks=0");
+
+            if (!empty($brandID) && is_numeric($brandID)) {
+                $sql = "UPDATE brands SET " .
+                    " numPage = " . $db->sql_string($page_num) . "  " .
+                    "WHERE brandID =  " . $db->sql_string($brandID) . " ";
+
+                if (!$db->execute($sql)) {
+                    $db->execute("set foreign_key_checks=1");
+                    return -1;
+                } else {
+                    $db->execute("set foreign_key_checks=1");
+                    return false;
+                }
+            }
+        }
+
+
+////------------------------------------------------------------------------------------------------
+//        $q = 'SELECT * FROM pdfs ORDER BY date_created DESC';
+//        $r = mysqli_query($dbc, $q);
+//        if (mysqli_num_rows($r) > 0) { // If there are some...
+//            // Fetch every one:
+//            // $node->setURL(sprintf(ROOT_WWW."/admin/find3.php?mode=search_forum&appointID=%s", $code));
+//            while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+//                // Display each record:
+//                $file_name = explode('.',$row['pdfName']);
+//                $file_name =  $file_name[0];
+//                $tmp_name  =  $file_name;
+//                $file_name = $file_name.'.jpg';
+//                echo '<div class="col-xs-3">';
+//                echo "<div style=\"border-radius:3px; border:#cdcdcd solid 1px; padding:22px;\"> <div id='my_pdfs{$row['pdfName']}'><h4>
+//                                <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row['tmpName']}\">
+//                                <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' >
+//                                </a> ({$row['size']}kb)</h4><p  style='font-weight:bold;color:brown;'>{$row['pdfName']}</p></div>
+//                                <input type='checkbox' id=$tmp_name >
+//                              </div>\n";
+//                echo '<br/></div>';
+//            } // End of WHILE loop.
+//        } else { // No PDFs!
+//            echo '<p>אנא חזור מאוחר יותר pdf -כרגע אין חומר עדכני של קבצי </p>';
+//        }
+//-------------------------------------------------------------------
+
+//        function convertPdfToImg(&$formdata){
+//            global $db;
+//            $imgArray = $formdata['dest_pdfs'];
+//            if(isset($imgArray) && is_array($imgArray)) {
+//                $imgNames = Array();
+//                $newPdfName = '';
+//                foreach ($imgArray as $id) {
+//                    $query = "select  pdfName from pdfs where pdfID in ($id)";
+//                    if ($rows = $db->queryObjectArray($query)) {
+//                        $imgNames[] = $rows['0']->pdfName;
+//                        $newPdfName = $rows['0']->pdfName;
+//                        $imgIDs[] = $id;
+//
+//
+//                        $file = '/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName;
+//                        $file_name = explode('.', $newPdfName);
+//                        $file_name = substr($file_name[0], -9);
+//                        $newfile = CONVERT_PDF_TO_IMG_DIR . '/' . $file_name;
+//                        $im = new imagick('/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName);
+//
+//// convert to jpg
+//                        $im->setImageColorspace(255);
+//                        $im->setCompression(Imagick::COMPRESSION_JPEG);
+//                        $im->setCompressionQuality(60);
+//                        $im->setResolution(300, 300);
+//                        $im->setImageFormat('jpeg');
+////resize
+//                        $im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
+////write image on server
+//                        $im->writeImage($newfile . '.jpg');
+//                        $im->clear();
+//                        $im->destroy();
+//                    }
+//                }
+//            }
+//            return $imgNames;
+//        }
+
+
+//------------------------------------------------------------------
+    }
+
+
+}elseif(isset($_POST['category_pdf']) &&  isset($_POST['page_num']) && is_numeric($_POST['page_num'])) {
 
         $page_num = isset($_REQUEST['page_num']) ? $_REQUEST['page_num'] : false;
         if(isset($page_num) && is_numeric($page_num) ){

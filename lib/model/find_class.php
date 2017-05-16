@@ -41,12 +41,10 @@ class find {
         $this->settreePatternDown($treePatternDown);
         $this->settreePatternUp($treePatternUp);
     }
-
     /**********************************************************************************************/
     function setdecPattern($decPattern) {
         $this->decPattern = $decPattern;
     }
-
     function getdecPattern() {
         return $this->decPattern;
     }
@@ -54,42 +52,31 @@ class find {
     function setforumPattern($forumPattern) {
         $this->forumPattern = $forumPattern;
     }
-
     function getforumPattern() {
         return $this->forumPattern;
     }
-
-
     /**********************************************************************************/
     function setforumPattern1($forumPattern1) {
         $this->forumPattern1 = $forumPattern1;
     }
-
     function getforumPattern1() {
         return $this->forumPattern1;
     }
-
-
     /**********************************************************************************/
     function setdatePattern ($datePattern) {
         $this->datePattern = $datePattern;
     }
-
     function getdatePattern () {
         return $this->datePattern;
     }
-
     /**********************************************************************************/
     function setdatePattern1 ($datePattern1) {
         $this->datePattern1 = $datePattern1;
     }
-
     function getdatePattern1 () {
         return $this->datePattern1;
     }
-
     /**********************************************************************************/
-
     function setletterPattern ($letterPattern) {
         $this->letterPattern = $letterPattern;
     }
@@ -494,7 +481,95 @@ class find {
         }
         return $value;
     }
-    /*******************************************************************************************/
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+    function build_brand_query($formdata,$pattern,$Pattern1,$brandID ,$page) {
+        global $db;
+
+        if(!$pattern)
+            $pattern=$Pattern1;
+        //$sql = "SELECT decID, decName  FROM decisions";
+        $sql="SELECT b.*,r.pubID,p.pdfID
+                       FROM brands b 
+                       LEFT JOIN rel_brand_pub r ON b.brandID=r.brandID
+                       LEFT JOIN pdfs p ON p.brandID=b.brandID ";
+
+        // we are already done
+
+        if($brandID)
+
+            return $sql . " WHERE b.brandID=$brandID ORDER BY b.brandName";
+
+        // add conditions for category search and pattern search
+
+
+
+        if(isset($pubID) && $pubID!="none") {
+
+            $pubsql="select  p.pubID,
+             from  rel_brand_pub r,publishers p 
+             where p.pubID=r.pubID";
+            if($rows = $db->queryObjectArray($catsql)){
+                foreach($rows as $row)
+                    $subcats[$row->parentCatID][] = $row->catID;
+                      $cond1 = "p.pubID IN ($pubID)";
+            }//(" . $this->subcategory_list($subcats, $catID) . ") "; }
+        }
+        else
+
+            $cond1 = "TRUE";
+
+
+        if($pattern){
+            $pattern=trim($pattern);
+            $cond2 = "b.brandName LIKE " . $db->sql_string($pattern) . " ";
+        }else
+            $cond2 = "TRUE";
+
+
+
+        if  ($date && !$date1)
+            $cond3 = "b.brand_date = " .   $date  . " ";
+        else
+            $cond3 = "TRUE";
+
+
+        if($date && $date1)
+            $cond4 = "b.brand_date BETWEEN " .   $date  .  " AND " .   $date1  .  " ";
+        else
+            $cond4 = "TRUE";
+
+
+        if($status || $this->status)
+            $cond5 = "b.status = " . $this->status . " ";
+        else
+            $cond5 = "TRUE";
+
+
+        if($brandID && $brandID!="none") {
+
+
+            $forumsql="select  p.pdfID
+	                    from  pdfs p,brands b
+                        where p.brandID = b.brandID";
+                        $rows = $db->queryObjectArray($forumsql);
+            $cond6 = "p.brandID in($brandID)";
+        }
+        else
+
+            $cond6  = "TRUE";
+
+        $sql .= " WHERE " . $cond1 . " AND " . $cond2 ." AND " . $cond3 . " AND " . $cond4 . " AND " . $cond5 . " AND " . $cond6 . " AND " .  " ORDER BY   d.decName ";
+        return $sql;
+    }
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
     function build_decision_query($formdata,$pattern,$Pattern1, $decID, $catID, $page,$size,$date,$date1,
                                   $forum_decID,$vote_level,$dec_level,$status) {
         global $db;
@@ -996,85 +1071,168 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
     }
 
 
-    function checkForum_Pattern($formdata="",$page="",$forum_decID="",$cat_forumID="",$managerID="",$managerTypeID="",$userID="",$appointID=""){
+    function checkForum_Pattern($formdata="",$page="",$forum_decID="",$cat_forumID="",$managerID="",$managerTypeID="",$userID="",$appointID="")
+    {
 
         global $db;
 
-        if($forum_decID)
-            $this->forum_decID=$forum_decID;
-        if($formdata['forum_decision'])
-            $this->forum_decID=$formdata['forum_decision'];
+        if (array_item($_REQUEST, 'brandID')) {
+            $brandID = array_item($_REQUEST, 'brandID');
+            if (!empty($brandID) && is_numeric($brandID) && $formdata) {
+//-----------------------------------------------------------------------
+     $sql = $this->build_brand_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
+                if ($sql) {
 
-        if($cat_forumID)
-            $this->cat_forumID=$cat_forumID;
-        if($formdata['category1'])
-            $this->cat_forumID=$formdata['category1'];
+                    if (!$rows = $db->queryObjectArray($sql)) {
 
-        if($appointID)
-            $this->appointID=$appointID;
-        if($formdata['appoint_forum'])
-            $this->appointID=$formdata['appoint_forum'];
+                        echo "<h1>תוצאות החיפוש</h1>\n";
+                        echo "<p class='my_task' style='font-weight:bold;color:black;'>מצטערים לא נמצא מידע   .</p>\n";
 
-        if($managerID)
-            $this->managerID=$managerID;
-        if($formdata['manager_forum'])
-            $this->managerID=$formdata['manager_forum'];
+                        echo '<div>';
+                        echo "<table><tr class='menu4'><td><p><b> ", build_href2("find3.php", "", "", "חזרה לטופס החיפוש", "class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
+                        echo "<td><p><b> ", build_href2("forum_demo12.php", "", "", "חיפוש קטגוריות בדף", "class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
+                        $url = "../admin/forum_demo12_2.php";
+                        $str = 'onclick=\'openmypage2("' . $url . '"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
+                        echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון", $str) . " </b></p></td></tr></table>\n";
+                        echo '</div>';
 
-        if($userID)
-            $this->userID=$userID;
-        if($formdata['user_forum'])
-            $this->userID=$formdata['user_forum'];
 
-        if($managerTypeID)
-            $this->managerTypeID=$managerTypeID;
-        if($formdata['managerType'])
-            $this->managerTypeID=$formdata['managerType'];
+                        if (array_item($formdata, 'user_forum') && !(array_item($formdata, 'user_forum') == 'none') || ($this->userID && !($this->userID == 'none'))) {
+                            echo '<fieldset id="my_history_fieldset_usr"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
+                            $this->user_history();
+                            echo '</fieldset>';
+
+
+                        } elseif (array_item($formdata, 'manager_forum') && !(array_item($formdata, 'manager_forum') == 'none') || ($this->managerID && !($this->managerID == 'none'))) {
+
+                            echo '<fieldset id="my_history_fieldset_mgr"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
+                            $this->manager_history();
+                            echo '</fieldset>';
+
+
+                        } elseif (array_item($formdata, 'appoint_forum') && !(array_item($formdata, 'appoint_forum') == 'none') || ($this->appointID && !($this->appointID == 'none'))) {
+
+                            echo '<fieldset id="my_history_fieldset_app"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
+                            $this->appoint_history();
+                            echo '</fieldset>';
+
+
+                        } else {
+                            echo "<h1>תוצאות החיפוש</h1>\n";
+                            echo "<p class='my_task' style='font-weight:bold;color:black;'>מצטערים לא נמצא מידע   .</p>\n";
+
+                            echo '<div>';
+                            echo "<table><tr class='menu4'><td><p><b> ", build_href2("find3.php", "", "", "חזרה לטופס החיפוש", "class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
+                            echo "<td><p><b> ", build_href2("forum_demo12.php", "", "", "חיפוש קטגוריות בדף", "class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
+                            $url = "../admin/forum_demo12_2.php";
+                            $str = 'onclick=\'openmypage2("' . $url . '"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
+                            echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון", $str) . " </b></p></td></tr></table>\n";
+                            echo '</div>';
+
+                        }
+                        return;
+                    }
+                }
+                /****************************************************************************************/
+
+                $this->show_forums($rows, $this->pagesize, $formdata, $this->forum_decID, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
+
+                if ($formdata['forum_decision'] && $formdata['forum_decision'] != 'none') {
+                    $sql1 = "select forum_decName from forum_dec where forum_decID=$this->forum_decID";
+                    $row = $db->querySingleItem($sql1);
+                    $row = is_null($row) ? 'NULL' : "'$row'";
+                    $this->forumPattern = $row;
+                    $query = "forum_decID=$this->forum_decID&catID=$this->catID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern);
+
+                } elseif ($this->forumPattern)
+                    $query = "forum_decID=$this->forum_decID&catID=$this->catID&cat_forumID=$this->cat_forumID&managerTypeID=$this->managerTypeID&managerID=$this->managerID&appointID=$this->appointID&userID=$this->userID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern);
+
+                else
+                    $query = "forum_decID=$this->forum_decID&catID=$this->catID&cat_forumID=$this->cat_forumID&managerTypeID=$this->managerTypeID&managerID=$this->managerID&appointID=$this->appointID&userID=$this->userID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern1);
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------
+            }
+        }else {
+        if ($forum_decID)
+            $this->forum_decID = $forum_decID;
+        if ($formdata['forum_decision'])
+            $this->forum_decID = $formdata['forum_decision'];
+
+        if ($cat_forumID)
+            $this->cat_forumID = $cat_forumID;
+        if ($formdata['category1'])
+            $this->cat_forumID = $formdata['category1'];
+
+        if ($appointID)
+            $this->appointID = $appointID;
+        if ($formdata['appoint_forum'])
+            $this->appointID = $formdata['appoint_forum'];
+
+        if ($managerID)
+            $this->managerID = $managerID;
+        if ($formdata['manager_forum'])
+            $this->managerID = $formdata['manager_forum'];
+
+        if ($userID)
+            $this->userID = $userID;
+        if ($formdata['user_forum'])
+            $this->userID = $formdata['user_forum'];
+
+        if ($managerTypeID)
+            $this->managerTypeID = $managerTypeID;
+        if ($formdata['managerType'])
+            $this->managerTypeID = $formdata['managerType'];
 
 
 //		if($_GET['managerID'])
 //		$this->managerID=$_GET['managerID'];
 //---------------------------------------------------------------------------------------------------------------------------
-        if(($this->forumPattern && $this->forumPattern!='none') ||$this->forum_decID || $this->cat_forumID || $this->managerID || $this->managerTypeID || $this->userID || $this->appointID) {
+        if (($this->forumPattern && $this->forumPattern != 'none') || $this->forum_decID || $this->cat_forumID || $this->managerID || $this->managerTypeID || $this->userID || $this->appointID) {
 
-            if($formdata['forum_decision']&& $formdata['forum_decision']!='none' ){
-                $this->forum_decID=$formdata['forum_decision'];
-                $sql =$this-> build_forum_query($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
+            if ($formdata['forum_decision'] && $formdata['forum_decision'] != 'none') {
+                $this->forum_decID = $formdata['forum_decision'];
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
 //---------------------------------------------------------------------------------------------------------------------------
-            }elseif($this->forumPattern && $this->forumPattern !='none'){
-                $sql="select forum_decID from forum_dec where forum_decName=$this->forumPattern " ;
-                $rows=$db->queryObjectArray($sql);
-                $this->forum_decID=$rows[0]->forum_decID;
-                $sql =$this-> build_forum_query($formdata,$this->forumPattern,$this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
+            } elseif ($this->forumPattern && $this->forumPattern != 'none') {
+                $sql = "select forum_decID from forum_dec where forum_decName=$this->forumPattern ";
+                $rows = $db->queryObjectArray($sql);
+                $this->forum_decID = $rows[0]->forum_decID;
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
 //---------------------------------------------------------------------------------------------------------------------------
-            }elseif($this->forum_decID && $this->forum_decID!='none'){
-                $sql =$this->build_forum_query($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
+            } elseif ($this->forum_decID && $this->forum_decID != 'none') {
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
 //---------------------------------------------------------------------------------------------------------------------------
-            }elseif($this->cat_forumID && $this->cat_forumID!='none'){
-                $sql =$this->build_forum_query($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
+            } elseif ($this->cat_forumID && $this->cat_forumID != 'none') {
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
 //---------------------------------------------------------------------------------------------------------------------------
-            }elseif($this->managerID && $this->managerID!='none' || ($this->managerTypeID && $this->managerTypeID!='none') ){
-                $sql =$this->build_forum_query($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
+            } elseif ($this->managerID && $this->managerID != 'none' || ($this->managerTypeID && $this->managerTypeID != 'none')) {
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
 //---------------------------------------------------------------------------------------------------------------------------
-            }elseif($this->appointID && $this->appointID!='none' ){
-                $sql =$this->build_forum_query($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->appointID);
-            }
-//---------------------------------------------------------------------------------------------------------------------------
-            elseif(($this->userID && $this->userID!='none')){
-                $sql =$this->build_forum_query1($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->userID,$this->appointID);
+            } elseif ($this->appointID && $this->appointID != 'none') {
+                $sql = $this->build_forum_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->appointID);
+            } //---------------------------------------------------------------------------------------------------------------------------
+            elseif (($this->userID && $this->userID != 'none')) {
+                $sql = $this->build_forum_query1($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
 
-                if(!$rows = $db->queryObjectArray($sql)){
-                    $mgr_sql="SELECT  managerID FROM managers WHERE userID=$this->userID  ";
+                if (!$rows = $db->queryObjectArray($sql)) {
+                    $mgr_sql = "SELECT  managerID FROM managers WHERE userID=$this->userID  ";
 
-                    if($rows = $db->queryObjectArray($mgr_sql)){
-                        $mgrID= $rows[0]->managerID;
-                        $formdata['managerID']=$mgrID;
-                        $sql =$this->build_forum_query1($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->userID,$this->appointID);
-                    }else{
-                        $app_sql="SELECT  appointID FROM appoint_forum WHERE appointID=$this->userID  ";
-                        if($rows = $db->queryObjectArray($mgr_sql)){
-                            $appID= $rows[0]->managerID;
-                            $formdata['appointID']=$appID;
-                            $sql =$this->build_forum_query1($formdata,$this->forumPattern, $this->forum_decID, $page, $this->pagesize,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->userID,$this->appointID);
+                    if ($rows = $db->queryObjectArray($mgr_sql)) {
+                        $mgrID = $rows[0]->managerID;
+                        $formdata['managerID'] = $mgrID;
+                        $sql = $this->build_forum_query1($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
+                    } else {
+                        $app_sql = "SELECT  appointID FROM appoint_forum WHERE appointID=$this->userID  ";
+                        if ($rows = $db->queryObjectArray($mgr_sql)) {
+                            $appID = $rows[0]->managerID;
+                            $formdata['appointID'] = $appID;
+                            $sql = $this->build_forum_query1($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
                         }
                     }
 
@@ -1082,72 +1240,70 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
 
             }//end elseif
 //---------------------------------------------------------------------------------------------------------------------------
-            if($sql){
+            if ($sql) {
 
-                if(!$rows = $db->queryObjectArray($sql)){
+                if (!$rows = $db->queryObjectArray($sql)) {
 
                     echo "<h1>תוצאות החיפוש</h1>\n";
                     echo "<p class='my_task' style='font-weight:bold;color:black;'>מצטערים לא נמצא מידע   .</p>\n";
 
                     echo '<div>';
-                    echo "<table><tr class='menu4'><td><p><b> ",build_href2("find3.php", "","", "חזרה לטופס החיפוש","class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
-                    echo "<td><p><b> ",build_href2("forum_demo12.php", "","", "חיפוש קטגוריות בדף","class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
-                    $url="../admin/forum_demo12_2.php";
-                    $str='onclick=\'openmypage2("'.$url.'"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
-                    echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון",$str) . " </b></p></td></tr></table>\n";
+                    echo "<table><tr class='menu4'><td><p><b> ", build_href2("find3.php", "", "", "חזרה לטופס החיפוש", "class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
+                    echo "<td><p><b> ", build_href2("forum_demo12.php", "", "", "חיפוש קטגוריות בדף", "class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
+                    $url = "../admin/forum_demo12_2.php";
+                    $str = 'onclick=\'openmypage2("' . $url . '"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
+                    echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון", $str) . " </b></p></td></tr></table>\n";
                     echo '</div>';
 
 
-                    if(array_item($formdata, 'user_forum') && !(array_item($formdata, 'user_forum')=='none') || ($this->userID &&  !($this->userID=='none')  )  ){
+                    if (array_item($formdata, 'user_forum') && !(array_item($formdata, 'user_forum') == 'none') || ($this->userID && !($this->userID == 'none'))) {
                         echo '<fieldset id="my_history_fieldset_usr"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
                         $this->user_history();
                         echo '</fieldset>';
 
 
-                    }elseif(array_item($formdata, 'manager_forum') && !(array_item($formdata, 'manager_forum')=='none') ||  ($this->managerID &&  !($this->managerID=='none'))  ){
+                    } elseif (array_item($formdata, 'manager_forum') && !(array_item($formdata, 'manager_forum') == 'none') || ($this->managerID && !($this->managerID == 'none'))) {
 
                         echo '<fieldset id="my_history_fieldset_mgr"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
                         $this->manager_history();
                         echo '</fieldset>';
 
 
-                    }elseif(array_item($formdata, 'appoint_forum') && !(array_item($formdata, 'appoint_forum')=='none') || ($this->appointID  &&  !($this->appointID=='none')  )  ){
+                    } elseif (array_item($formdata, 'appoint_forum') && !(array_item($formdata, 'appoint_forum') == 'none') || ($this->appointID && !($this->appointID == 'none'))) {
 
                         echo '<fieldset id="my_history_fieldset_app"  class="my_fieldset" style="border: 2px solid; -moz-border-radius: 10px;margin-bottom:50px;margin-left:40px;overflow:auto; background: #94C5EB url(../images/background-grad.png) repeat-x;width:95%;margin-right:0px;margin-left: 0px">';
                         $this->appoint_history();
                         echo '</fieldset>';
 
 
-                    }else{
+                    } else {
                         echo "<h1>תוצאות החיפוש</h1>\n";
                         echo "<p class='my_task' style='font-weight:bold;color:black;'>מצטערים לא נמצא מידע   .</p>\n";
 
                         echo '<div>';
-                        echo "<table><tr class='menu4'><td><p><b> ",build_href2("find3.php", "","", "חזרה לטופס החיפוש","class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
-                        echo "<td><p><b> ",build_href2("forum_demo12.php", "","", "חיפוש קטגוריות בדף","class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
-                        $url="../admin/forum_demo12_2.php";
-                        $str='onclick=\'openmypage2("'.$url.'"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
-                        echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון",$str) . " </b></p></td></tr></table>\n";
+                        echo "<table><tr class='menu4'><td><p><b> ", build_href2("find3.php", "", "", "חזרה לטופס החיפוש", "class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
+                        echo "<td><p><b> ", build_href2("forum_demo12.php", "", "", "חיפוש קטגוריות בדף", "class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
+                        $url = "../admin/forum_demo12_2.php";
+                        $str = 'onclick=\'openmypage2("' . $url . '"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
+                        echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון", $str) . " </b></p></td></tr></table>\n";
                         echo '</div>';
-
                     }
                     return;
                 }
             }
             /****************************************************************************************/
 
-            $this->show_forums($rows, $this->pagesize,$formdata,$this->forum_decID,$this->cat_forumID,$this->managerID,$this->managerTypeID,$this->userID,$this->appointID);
+            $this->show_forums($rows, $this->pagesize, $formdata, $this->forum_decID, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
 
-            if($formdata['forum_decision']&& $formdata['forum_decision']!='none'){
-                $sql1="select forum_decName from forum_dec where forum_decID=$this->forum_decID";
-                $row=$db->querySingleItem($sql1);
-                $row = is_null($row) ? 'NULL' : "'$row'" ;
-                $this->forumPattern=$row;
+            if ($formdata['forum_decision'] && $formdata['forum_decision'] != 'none') {
+                $sql1 = "select forum_decName from forum_dec where forum_decID=$this->forum_decID";
+                $row = $db->querySingleItem($sql1);
+                $row = is_null($row) ? 'NULL' : "'$row'";
+                $this->forumPattern = $row;
                 $query = "forum_decID=$this->forum_decID&catID=$this->catID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern);
 
-            }elseif($this->forumPattern)
+            } elseif ($this->forumPattern)
                 $query = "forum_decID=$this->forum_decID&catID=$this->catID&cat_forumID=$this->cat_forumID&managerTypeID=$this->managerTypeID&managerID=$this->managerID&appointID=$this->appointID&userID=$this->userID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern);
-
             else
                 $query = "forum_decID=$this->forum_decID&catID=$this->catID&cat_forumID=$this->cat_forumID&managerTypeID=$this->managerTypeID&managerID=$this->managerID&appointID=$this->appointID&userID=$this->userID&decID=$this->decID&forumPattern=" . urlencode($this->forumPattern1);
 //			echo '<p><a href="find3.php" class="href_modal1">חזרה לטופס החיפוש</a></p>', "\n";
@@ -1157,6 +1313,7 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
 //	        echo "<p>חזרה אל ", build_href5("", "", "חיפוש קטגוריות בחלון",$str) . ".</p>\n";
 
         }
+    }
 ///////////////////////
     }//end function  //
 //////////////////////

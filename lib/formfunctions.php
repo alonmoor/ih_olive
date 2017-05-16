@@ -704,9 +704,8 @@ function form_list33($name, $rows, $selected=-1) {
 
 /******************************************************************************/
 
-function form_list2($name, $rows, $selected=-1) {
-
-  echo '<select class="mycontrol" ',
+function form_list2($name, $rows, $selected=-1, $str="") {
+    echo '<select class="mycontrol" '.$str.' ',
     html_attribute("name", "form[$name]"), '>', "\n";
   echo '<option value="none">(choose)</option>';
   foreach($rows as $row) {
@@ -1135,6 +1134,20 @@ function form_list_a($name, $rows, $selected=-1) {
   echo '</select>', "\n";
 }
 /******************************************************************************/
+function form_list_demo($name, $rows, $selected=-1, $str="") {
+    echo '<select class="mycontrol" '.$str.' ',
+
+    html_attribute("name", "$name"), ' style="width:160px;">', "\n";
+    echo '<option value="none">(choose)</option>';
+    foreach($rows as $row) {
+        echo '<option ', html_attribute("value", $row);
+        if($selected==$row)
+            echo 'selected="selected" ';
+        $listentry = str_replace(" ", "&nbsp;", htmlspecial_utf8($row));
+        echo ">$listentry</option>\n";
+    }
+    echo '</select>', "\n";
+}
 /******************************************************************************/
 
 function form_list($name, $rows, $selected=-1) {

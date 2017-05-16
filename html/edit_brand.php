@@ -241,13 +241,13 @@ function build_form(&$formdata)
                     </div>
                 <?php
 $html = '';
-
-
-                 for ($i = 0; $i < 7; $i++) {
+$html .= '<div class="" id="display_div">';
+if(!empty($formdata['pages'])){
+                 for ($i = 0; $i < $formdata['pages']; $i++) {
             // Display each record:
 
             $html .= '<div class="col-xs-3" >';
-            $html .=  "<div style=\"border-radius:3px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \">
+            $html .=  "<div style=\"border-radius:3px;width:250px;height:250px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \">
                             <div id='my_pdfs_$i'>
                                 <h4>
                                      <a class='my_href_li' href=\"#\">
@@ -258,7 +258,10 @@ $html = '';
                               </div>\n";
             $html .=  '<br/></div>';
         } // End of WHILE loop.
+   //     $html .=  '</div>';
         echo $html;
+   }
+
 //$html = '<table>';
 //foreach($data as $row) {
 //    $html .= '<tr>';
@@ -269,7 +272,7 @@ $html = '';
 //}
 //$html .= '</table>';
 
-             echo '</div><div class="" id="display"></div></fielset></form></div>';
+             echo '</div></fielset></form></div>';
             }
 
 }//end build_form

@@ -2,7 +2,7 @@
 // session_start();
 	require 'includes/master.inc.php';
 	require_once 'config/application_no_session.php';
- //session_start();
+ session_start();
 	 global $db;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"

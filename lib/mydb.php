@@ -59,18 +59,6 @@ function get_password_hash($password) {
 	
 } // End of get_password_hash() function.
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*************************************************************************************************/
 
 class MyDb {

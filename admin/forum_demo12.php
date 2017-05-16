@@ -59,11 +59,11 @@ $formdata=array();
                         form_new_line();
                         form_label("קטגוריות של קבצים:",TRUE);
                         // get all categories
-                        $sql = "SELECT catName, catID, parentCatID FROM categories ORDER BY catName";
+                        $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
                         $rows = $db->queryObjectArray($sql);
                         foreach($rows as $row) {
-                            $subcats_a[$row->parentCatID][] = $row->catID;
-                            $catNames_a[$row->catID] = $row->catName; }
+                            $subcats_a[$row->parentBrandID][] = $row->brandID;
+                            $catNames_a[$row->brandID] = $row->brandName; }
                         $rows = build_category_array($subcats_a[NULL], $subcats_a, $catNames_a);
                         form_list_find("category_dec","category_dec", $rows , array_item($formdata, "category_dec"));
                         form_button ("btnTitle", "הראה נתונים");

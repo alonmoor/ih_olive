@@ -83,7 +83,7 @@ function html_header($arr_sublinks=""){
         <script language="javascript"  src="<?php print JS_ADMIN_WWW ?>/scriptAr_dec.js"      charset="utf-8"    type="text/javascript"></script>
         <script language="javascript"  src="<?php print JS_ADMIN_WWW ?>/scriptAr.js"      charset="utf-8"    type="text/javascript"></script>
         <script language="javascript"  src="<?php print JS_ADMIN_WWW ?>/my_load.js"      charset="utf-8"    type="text/javascript"></script>
-
+        <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js" type="text/javascript"></script>
 
 
 

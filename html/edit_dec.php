@@ -2815,11 +2815,10 @@
     </ul>
     
     
-    <table id=""
-    myformtable1<?php echo $formdata['decID'] 
+    <table id="" myformtable1<?php echo $formdata['decID'] >
     
     
-    $decID = $formdata['decID'];
+    $decID = isset($formdata['decID']) ? $formdata['decID'] : '';
     if (array_item($formdata, 'decID')) {
     $dec = new decisions();
     $dec->print_decision_entry_form1_c($formdata['decID']);

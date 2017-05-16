@@ -348,7 +348,7 @@ class Pdfs extends DBObject3
                 || ($formdata["new_forum"] == 'none')
                 || $formdata["new_forum"] == null)
         ) {
-            $tmp = $formdata["dest_publishers"] ? $formdata["dest_publishers"] : $formdata["new_forum"];
+            $tmp = $formdata["dest_publishers"] ? $formdata["dest_publishers"] : $formdata["new_publisher"];
             $dest_publishers = $formdata['dest_publishers'];
             foreach ($dest_publishers as $key => $val) {
                 if (!is_numeric($val)) {
@@ -360,23 +360,23 @@ class Pdfs extends DBObject3
             }
             if (isset($staff_test) && is_array($staff_test) && !is_array($staff_testb) && !$staff_testb) {
                 $staff = implode(',', $staff_test);
-                $sql2 = "select brandID, brandName from brand where brandName in ($staff)";
+                $sql2 = "select pubID, pubName from publishers where pubName in ($staff)";
                 if ($rows = $db->queryObjectArray($sql2))
                     foreach ($rows as $row) {
-                        $name[$row->brandID] = $row->brandName;
+                        $name[$row->pubID] = $row->brandName;
                     }
             } elseif (isset($staff_test) && is_array($staff_test) && is_array($staff_testb) && $staff_testb) {
                 $staff = implode(',', $staff_test);
-                $sql2 = "select brandID, brandName from brand where brandName in ($staff)";
+                $sql2 = "select pubID, pubName from publishers where pubName in ($staff)";
                 if ($rows = $db->queryObjectArray($sql2))
                     foreach ($rows as $row) {
-                        $name[$row->brandID] = $row->brandName;
+                        $name[$row->pubID] = $row->brandName;
                     }
                 $staffb = implode(',', $staff_testb);
-                $sql2 = "select brandID, brandName from brand where brandID in ($staffb)";
+                $sql2 = "select pubID, pubName from publishers where pubID in ($staffb)";
                 if ($rows = $db->queryObjectArray($sql2))
                     foreach ($rows as $row) {
-                        $name_b[$row->brandID] = $row->brandName;
+                        $name_b[$row->pubID] = $row->brandName;
                     }
                 $name = array_merge($name, $name_b);
                 unset($staff_testb);
@@ -394,7 +394,7 @@ class Pdfs extends DBObject3
         global $db;
         if (isset($formdata['brand_select'][0]) && $formdata['brand_select'][0]) {
             $id = $formdata['brand_select'][0];
-            $sql = "select brandID, brandName from brands where brandID in ($id)";
+            $sql = "select pubName, brandName from brands where brandID in ($id)";
             if ($rows = $db->queryObjectArray($sql))
                 foreach ($rows as $row) {
                     $brandIDS[$row->brandID] = $row->brandName;

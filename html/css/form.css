@@ -283,8 +283,7 @@ a.button:active {
 
  .green90x24:hover,
  .green90x24:active {
-	color: #000;
-	background:blue;
+	color: red;
 }
 
 
@@ -655,7 +654,7 @@ scrollbar-arrow-color : red;
     width: 85%;
 }
 
-.banner{width:40%;}
+.banner{width:62%;}
 .leftCap,.rightCap {
     height: 22px !important;
 }

@@ -110,6 +110,15 @@ if(  !($_REQUEST['conn_secound_test'])  && !($_REQUEST['conn_first_test']) ){//f
 $decID         = array_item($_REQUEST, 'decID');
 }
 $forum_decID   = array_item($_REQUEST, 'forum_decID');
+$brandID   = array_item($_REQUEST, 'brandID');
+//if(!empty($brandID) && is_numeric($brandID)){
+//    $forum_decID  = $brandID;
+//}
+
+
+$pdfID         = array_item($_REQUEST, 'pdfID');
+$pubID         = array_item($_REQUEST, 'pubID');
+
 $catID         = array_item($_REQUEST, 'catID');
 
 $cat_forumID         = array_item($_REQUEST, 'cat_forumID');
@@ -135,12 +144,12 @@ else
 $userID         =  array_item($_REQUEST, 'userID') ;
 
 
-
 $datePattern   = array_item($_REQUEST, 'datePattern') ;
 $datePattern1  = array_item($_REQUEST, 'datePattern1') ;
 $forumPattern  = array_item($_REQUEST, 'forumPattern') ;
 $forumPattern1 = array_item($_REQUEST, 'forumPattern1') ;
 $decPattern    = array_item($_REQUEST, 'decPattern') ;
+$brandPattern    = array_item($_REQUEST, 'brandPattern') ;
 //$letterPattern = urldecode(array_item($_REQUEST, 'decPattern'));
 $page          = array_item($_REQUEST, 'page');
 if(!$page || $page<1 || !is_numeric($page))
@@ -191,6 +200,10 @@ if(array_item($formdata, "btnTitle")
 	||($formdata['manager_forum'] && $formdata['manager_forum']!='none'  )
 	||($formdata['appoint_forum'] && $formdata['appoint_forum']!='none' ) 
 	|| ($formdata['managerType']  && $formdata['managerType']!='none' )
+
+    ||($formdata['pdfs']    && $formdata['pdfs']!='none' )
+    ||($formdata['publisher']    && $formdata['publisher']!='none' )
+
 	||($formdata['user_forum']    && $formdata['user_forum']!='none' ) )
 	&& !($formdata["decision"]       && $formdata["decision"]!='none')
 	&& !($formdata["vote_level"]     && $formdata["vote_level"]!='none')
@@ -225,7 +238,7 @@ if(array_item($formdata, "btnTitle")
 }
 
 if(!$formdata){
-	if($forumPattern || $forum_decID || $cat_forumID || $managerID || $managerTypeID || $userID || $appointID ){
+	if($forumPattern || $forum_decID || $brandID || $pubID || $pdfID || $cat_forumID || $managerID || $managerTypeID || $userID || $appointID ){
 		$tmp='forumPattern';
 	}
 	elseif($forumPattern1){
@@ -394,8 +407,8 @@ switch ($_REQUEST['mode'] ) {
 		break;
 
 	case 'forumPattern':
-	 
-         		search_forum($formdata,$page,$forumPattern,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID);
+
+         		search_forum($formdata,$page,$forumPattern,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID,$brandID , $pubID , $pdfID);
 		break;
 
 	case  'forumPattern1':
@@ -485,9 +498,9 @@ function search_dec($formdata,$page,$decPattern,$datePattern,$datePattern1,$decI
 
 
 /************************************************************************************************/
-function search_forum($formdata,$page,$forumPattern,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID){
+function search_forum($formdata,$page,$forumPattern,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID,$brandID , $pubID , $pdfID){
 	$f=new find();
-	$f->set( $decPattern , $forumPattern , $forumPattern1 , $datePattern , $datePattern1 , $treePatternDown , $treePatternUp  );
+	$f->set( $decPattern , $forumPattern , $forumPattern1 , $datePattern , $datePattern1 , $treePatternDown , $treePatternUp ,$brandID , $pubID , $pdfID );
 	$f->setPattern($formdata,$forumPattern);//($formdata['decision'],$formdata['forum_decision'],$formdata['forum'],$datePattern,$datePattern1,$letterPattern,$treePatternDown,$treePatternUp);
  	$f->checkForum_Pattern($formdata,$page,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID);
 }
