@@ -8,179 +8,6 @@
   global $lang;
   global $db;
 
-//
-//if(isset($_GET['brandPrefix']) && isset($_GET['brand_date']) && isset($_GET['brandID']) &&  isset($_GET['page_num']) && is_numeric($_GET['page_num'])) {
-//
-//
-// $brandID =    $_GET['brandID'] ;
-// $brand_date = $_GET['brand_date'];
-// $page_num =  $_GET['page_num'] ;
-//
-//    //$sql = "SELECT brandName,brandID,parentBrandID FROM brands ORDER BY brandName";
-//    $sql = "SELECT * FROM brands WHERE brandID = $brandID";
-//    if( $rows = $db->queryObjectArray($sql)) {
-//        $brandPrefix = $rows[0]->brandPrefix;
-////-----------------------------------------------------------------
-//        $sql = "SELECT * FROM pdfs ORDER BY date_created DESC";
-//        if( $rows = $db->queryObjectArray($sql)) {
-//            $pdf_names = array();
-//            foreach($rows as $row){
-//                $pdf_names[] = $row-> pdfName;;
-//            }
-//        }
-////---------------------------------------------------------------------------------
-//        //  hayom{{date}}p{{page}}.
-//        $dayOfWeek = date("l", strtotime($brand_date));
-////---------------------------------------------------------------------------------
-//        switch ($dayOfWeek ) {
-//            case "Sunday":
-//                $dayOfWeek = "7";
-//                break;
-//            case "Monday":
-//                $dayOfWeek = "1";
-//                break;
-//
-//            case "Tuesday":
-//                $dayOfWeek = "2";
-//                break;
-//            case "Wednesday":
-//                $dayOfWeek = "3";
-//                break;
-//            case "Thursday":
-//                $dayOfWeek = "4";
-//                break;
-//            case "Friday":
-//                $dayOfWeek = "5";
-//                break;
-//            case "Saturday":
-//                $dayOfWeek = "6";
-//                break;
-//            default:
-//            case "":
-//                break;
-//        }
-//    }
-//    if($dayOfWeek == "7" || $dayOfWeek == "1" || $dayOfWeek == "2" || $dayOfWeek == "3" || $dayOfWeek == "4"  ) {
-//        $brandPrefix = str_replace("{{date}}", $dayOfWeek, $brandPrefix);
-//        $brandPrefixArr = array();
-//        $html = '';
-//        $html .= '<div class="wrapper" style=""margin-right: 4%;width:100%"><div class="" id="display_div" >';
-//        for($i = 0; $i < $page_num ; $i++){
-//            $m = $i +1;
-//            if($i<10){
-//                $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
-//            }elseif ($i<100 && $i>=10 ){
-//                $brandPrefixArr[$i] = $brandPrefix."p0".$m.".pdf";
-//            }elseif ($i>=100){
-//                $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
-//            }
-//          //  if (!(file_exists(CONVERT_PDF_TO_IMG_WWW_DIR.$brandPrefixArr[$i])) ) {
-////------------------------------------------------------------------------------
-//            if( !(in_array($brandPrefixArr[$i],$pdf_names))  ){
-//                $html .= '<div class="col-xs-3" id="" >';
-//                $html .=  "<div style=\"border-radius:3px;width:250px;height:250px; border:#cdcdcd solid 1px; padding:22px;background-color:gray; \">
-//                                                    <div id='my_pdfs_$i'>
-//                                                        <h4>
-//                                                             <a class='my_href_li' href=\"#\">
-//                                                             </a>
-//                                                         </h4>
-//                                                      </div>
-//                                                        <input type='checkbox' id= improve_$i>
-//                                                      </div>\n";
-//                $html .=  '<br/></div></div>';
-//            }
-////------------------------------------------------------------------------------
-//            else{
-//                foreach($rows as $row){
-//                    if($brandPrefixArr[$i] == $row->pdfName){
-//                        $pdf_names[] = $row-> pdfName;
-//                        $file_name = explode('.',$row->pdfName);
-//                        $file_name =  $file_name[0];
-//                        $tmp_name  =  $file_name;
-//                        $file_name = $file_name.'.jpg';
-//                        $html .=   '<div class="col-xs-3">';
-//                        $html .=   "<div style=\"border-radius:3px;width:250px;height:250px; border:#cdcdcd solid 1px; padding:22px;\"> <div id='my_pdfs{$row->pdfName}'><h4>
-//                                        <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->tmpName}\">
-//                                        <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' >
-//                                        </a> ({$row->size}kb)</h4><p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p></div>
-//                                        <input type='checkbox' id=$tmp_name >
-//                                      </div>\n";
-//                        $html .=   '<br/></div></div>';
-//                    }
-//                }
-//            }
-////------------------------------------------------------------------------------
-//        }//end for
-//        echo $html;
-//    }
-////------------------------------------------------------------------
-//    if ( is_numeric($brandID)) {
-//        $db->execute("set foreign_key_checks=0");
-//
-//        if (!empty($brandID) && is_numeric($brandID)) {
-//            $sql = "UPDATE brands SET " .
-//                " numPage = " . $db->sql_string($page_num) . "  " .
-//                "WHERE brandID =  " . $db->sql_string($brandID) . " ";
-//
-//            if (!$db->execute($sql)) {
-//                $db->execute("set foreign_key_checks=1");
-//                return -1;
-//            } else {
-//                $db->execute("set foreign_key_checks=1");
-//               // return false;
-//            }
-//        }
-//    }
-////----------------------------convert-----------------------------------------
-//
-//        $pdf_file=PDF_DIR; //PDF FILE LOCATION
-//        $jpgloc=CONVERT_PDF_TO_IMG_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
-//        $book=new digiBook();
-//
-////        $src = "/home/alon/Desktop/PROJECT/4.4.17";
-////        $dst = CONVERT_PDF_TO_IMG_DIR;//"/home/user/public_html/dir/subdir/destination_folder/";
-////        $book-> recurse_copy($src,$dst);
-//        $pattern = "/home/alon/Desktop/4.4.17/REG/*.pdf";
-//        $files = glob("/home/alon/Desktop/4.4.17/REG/*.pdf");
-//        $pdfFiles =  preg_grep('/\.pdf$/i', $files);
-//
-////foreach(glob(IMAGE_LOCATION."*.pdf") as $file){
-////    $file_name = explode('.',$file);
-////    $file_name = substr($file_name[0],-9);
-////    $jpgloc2=IMAGE_LOCATION."$file_name.jpg";
-////    $book->convertPDF2JPG($file,$jpgloc2);
-////}
-//
-//        foreach(glob(CONVERT_PDF_TO_IMG_DIR."*.pdf") as $file){
-//            $file_name = explode('.',$file);
-//            $file_name = substr($file_name[0],-9);
-//            $jpgloc2=TAMPLATE_IMAGES_DIR."$file_name.jpg";
-//            $book->convertPDF2JPG($file,$jpgloc2);
-//        }
-//
-//if(isset($formadata)) {
-//    $file = '/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName;
-//    $file_name = explode('.', $newPdfName);
-//    $file_name = substr($file_name[0], -9);
-//    $newfile = CONVERT_PDF_TO_IMG_DIR . '/' . $file_name;
-//    $im = new imagick('/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName);
-//
-//// convert to jpg
-//    $im->setImageColorspace(255);
-//    $im->setCompression(Imagick::COMPRESSION_JPEG);
-//    $im->setCompressionQuality(60);
-//    $im->setResolution(300, 300);
-//    $im->setImageFormat('jpeg');
-////resize
-//    $im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
-////write image on server
-//    $im->writeImage($newfile . '.jpg');
-//    $im->clear();
-//    $im->destroy();
-//}
-//
-//}else
-//------------------------------------------------------------------
     if(isset($_GET['brandName'] )) {
     $brandID = $_GET['brandName'];
     $sql = "SELECT * FROM brands WHERE brandID = $brandID";
@@ -229,7 +56,7 @@
                 break;
         }
     }
-    if($dayOfWeek == "7" || $dayOfWeek == "1" || $dayOfWeek == "2" || $dayOfWeek == "3" || $dayOfWeek == "4"  ) {
+        if(!empty($dayOfWeek)  ) {
         $brandPrefix = str_replace("{{date}}", $dayOfWeek, $brandPrefix);
         $brandPrefixArr = array();
         $html = '';
@@ -271,13 +98,13 @@
                         $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
                                         
                                            <div  style='margin-right: 224px;'>
-                                                <input type='checkbox' id=$tmp_name>
+                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;' >
                                             </div>
                                       <div >    
                                            <div id='my_pdfs{$row->pdfName}'>
                                             <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
                                            <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
-                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-16px;' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
                                                 </a> 
                                            </div>
                                       </div>  

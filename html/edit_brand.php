@@ -294,6 +294,12 @@ else{
  if (array_item($formdata, 'brandID')) {
 global $dbc,$db;
 //------------------------------------------------------------------------------
+  $sql = "SELECT * FROM brands WHERE brandID=$brandID";
+    if( $rows1 = $db->queryObjectArray($sql)) {
+        $brandPrefix = $rows1[0]-> brandPrefix;
+        $tmpName = $rows1[0]-> tmpName;
+     }
+
 $sql = "SELECT * FROM pdfs ORDER BY date_created DESC";
     if( $rows = $db->queryObjectArray($sql)) {
         $pdf_names = array();
@@ -331,10 +337,13 @@ if( isset($formdata['brand_date2']) ){
         case "":
             break;
     }
-        if($dayOfWeek == "7" || $dayOfWeek == "1" || $dayOfWeek == "2" || $dayOfWeek == "3" || $dayOfWeek == "4"  ) {
+ if(!empty($dayOfWeek)  ) {
            $page_num =      isset($formdata['pages']) ? $formdata['pages'] : '';
            $brandPrefix =   $formdata['brandPrefix'];
+
+           if(trim($tmpName) == "חדשות"){
            $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+           }
            $brandPrefixArr = array();
             $html = '';
            $html .= '<div class="" id="display_div" >';
@@ -375,13 +384,13 @@ if( isset($formdata['brand_date2']) ){
                          $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
                                         
                                            <div  style='margin-right: 224px;'>
-                                                <input type='checkbox' id=$tmp_name>
+                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;'>
                                             </div>
                                       <div >    
                                            <div id='my_pdfs{$row->pdfName}'>
                                             <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
                                            <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
-                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-16px;' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
                                                 </a> 
                                            </div>
                                       </div>  
