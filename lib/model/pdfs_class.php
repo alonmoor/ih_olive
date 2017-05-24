@@ -621,30 +621,6 @@ class Pdfs extends DBObject3
                             $add_pdf_errors = $formdata['files']['error'][$i];
                             throw new UploadException($formdata['files']['error'][$i]);
                         }
-
-
-                        //-----------------------------------------------------------------------------
-//                        elseif (!isset($_SESSION['pdf'])) { // No current or previous uploaded file.
-////                            switch ($_FILES['pdf']['error'][$i]) {
-//                            switch ($formdata['files']['error'][$i]) {
-//                                case 1:
-//                                case 2:
-//                                    $add_pdf_errors['pdf'] = '.הקובץ גדול מידיי';
-//                                    break;
-//                                case 3:
-//                                    $add_pdf_errors['pdf'] = '.הקובץ עלה באופן חלקי';
-//                                    break;
-//                                case 6:
-//                                case 7:
-//                                case 8:
-//                                    $add_pdf_errors['pdf'] = '.הקובץ לא עלה בגלל בעיות במערכת';
-//                                    break;
-//                                case 4:
-//                                default:
-//                                    $add_pdf_errors['pdf'] = '.לא נימצא קובץ';
-//                                    break;
-//                            } // End of SWITCH.
-//                        } // End of $_FILES IF-ELSEIF-ELSE.
                         if (empty($add_pdf_errors)) { // If everything's OK.
                             $newName = isset($formdata['files']['name'][$i]) ? $formdata['files']['name'][$i] : 'stam';
                             $sql = "SELECT COUNT(*) FROM pdfs WHERE pdfName = '$newName'";// . $_FILES['pdf']['name'][$i];
@@ -687,9 +663,9 @@ class Pdfs extends DBObject3
                 if ($_FILES['pdf']['tmp_name'][0] == '') {
                     $add_pdf_errors['pdf'] = 'קובץ לא תקין';
                 }
-            }
+            }//end $_SERVER['REQUEST_METHOD'] == 'POST'
             return true;
-        }//end $_SERVER['REQUEST_METHOD'] == 'POST'
+        }
         else {
             echo('must upload files!!!');
             return false;
@@ -697,6 +673,7 @@ class Pdfs extends DBObject3
     }//end function
 
 //---------------------------------------------------------------------------------------------------
+
 //---------------------------------iINSERT NEW PDF----------------------------------------------------
     function insert_new_pdfs(&$formdata, &$fn = "", &$tmp_name = "", &$size = "", &$newPdfName = "", &$d = "")
     {
@@ -849,8 +826,23 @@ class Pdfs extends DBObject3
         }
       }
 
-
-
+//-----------------------------------------------------------------------
+    function recurse_copy($src,$dst) {
+        $dir = opendir($src);
+        @mkdir($dst);
+        while(false !== ( $file = readdir($dir)) ) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($src . '/' . $file) ) {
+                    recurse_copy($src . '/' . $file,$dst . '/' . $file);
+                    // $this -> convertPDF2JPG($file ,$dst);
+                }
+                else {
+                    copy($src . '/' . $file,$dst . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+    }
 //---------------------------------------------------------------------------------------
     } //end class
 //---------------------------------------------------------------------------------------

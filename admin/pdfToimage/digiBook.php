@@ -108,6 +108,7 @@ class digiBook
             }
         }
         closedir($dir);
+
     }
 
 

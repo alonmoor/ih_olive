@@ -119,6 +119,7 @@ class MyDb {
     $this->dbtime += ($time2 - $time1);
     
     if($result) {
+        ini_set('memory_limit', '-1');
       if($result->num_rows) {
         while($row = $result->fetch_object())
           $result_array[] = $row;

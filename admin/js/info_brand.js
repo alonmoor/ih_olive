@@ -39,56 +39,43 @@ function processJson(data) {
    });
 }
 
-//----------------------------------------------------------------------------
-//     $('body').on('change', '#pdf_page_num', function(){
-//         console.log('changed');
-//     });
- //   $('#'+pdf_page_num).trigger("change");
-
-    // $('select[pages]').change(function () {
-    //     alert(('blablalbla'));
-    // });
-    //
-    //
-    // $('#pdf_page_num select').change(function () {
-    //     alert(('blablalbla'));
-    // });
-    // $('#pdf_page_num').live("change", function()
-    // {
-    //     alert('test');
-    // });
-    // $(":input#pdf_page_num").change(function() {
-    //     /* Logic here does not execute when val() is used */\
-    //      alert('test2');
-    // });
-   //$('form#brand_org fieldset').append('<div id="target_Brand"></div>').find('#num_page').change(function(){
-  //  $("#target_Brand").remove();
+//------------------PULL THE DIV------------------------------
     $('div#target_Brand').empty();
-//------------------------------------------
-   $('form#brand_org fieldset').append('<div id="target_Brand"></div>').find('select#pdf_page_num').change(function(){
-       $("#display_div").empty();
-
-
+     $('form#brand_org fieldset').find('select#brand_pdf').change(function(){
      if($('#brandID').val())
          var brandID = $('#brandID').val();
-         var brand_date = $('#brand_date2').val();
-         var brandPrefix = $('#brandPrefix').val();
-       if(brandID.length && brand_date.length && brandPrefix.length ) {
 
+        // var brand_date = '';
+        // if($('#brand_date2').val()) {
+        //      var brand_date = $('#brand_date2').val();
+        //  }else if($('#brand_date3').val() &&  Date.parse($('#brand_date3').val())  ){
+        //      brand_date = $('#brand_date3').val();
+        //  }
+        //  var brandPrefix = $('#brandPrefix').val();
+       // if( !( brandID == undefined || brandID == '' ) && !( brand_date == undefined  || brand_date == '') && !( brandPrefix == undefined || brandPrefix == '' ) ) {
+       //     $.ajax
+       //     ({
+       //         url: '../admin/ajax2.php',
+       //         data: "page_num=" + this.value + "&brandID=" + brandID+ "&brand_date=" + brand_date+ "&brandPrefix=" + brandPrefix,
+       //         cache: false,
+       //         success: function (r) {
+       //             $("#display_div").html(r);
+       //         }
+       //     });
+       // }else{
+           //$('form#brand_org fieldset').find("wrapper_brand").css('border','3px solid red').append('<div id="display_div"></div>');
+           $("#display_div").empty();
            $.ajax
            ({
                url: '../admin/ajax2.php',
-               //data: 'action=showAllSqure',
-               data: "page_num=" + this.value + "&brandID=" + brandID+ "&brand_date=" + brand_date+ "&brandPrefix=" + brandPrefix,
+               data: "brandName=" + this.value,
                cache: false,
                success: function (r) {
-                   $("#display_div").css('margin-right','-285px').html(r);
-                //   $('div#target_Brand').html(r);
+                   $("#display_div").html(r);
                }
            });
-       }
+      // }
     });
-//--------------------------------------
 //------------------------------------------
 //     $('form#brand_org fieldset').find('select#brand_pdf').change(function(){
 //         if($('#brandID').val())

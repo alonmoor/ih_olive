@@ -6,10 +6,7 @@ global $db,$dbc;
 	if(isset($action)) {
         if ($action == "showAll") {
 // Get the PDFs:
-
 $page_number = isset($_GET['num']) ? $_GET['num'] : 0 ;
-
-
             $q = 'SELECT * FROM pdfs ORDER BY date_created DESC';
             $r = mysqli_query($dbc, $q);
 //-------------------------------------------------------------------
@@ -39,8 +36,6 @@ $page_number = isset($_GET['num']) ? $_GET['num'] : 0 ;
         }
     }
     elseif (isset($action2) &&  isset($_GET['page_num']) && is_numeric($_GET['page_num'])){
-
-
         for ($i = 0; $i < $num_page ; $i++) {
             // Display each record:
             $file_name = explode('.',$row['pdfName']);

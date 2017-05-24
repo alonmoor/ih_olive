@@ -4359,7 +4359,7 @@ function pre_submitUser(form,url)
 	
 	$.ajax({//for loading img  
 		type: "GET",
-		url: "dynamic_10.php",
+		url: "dynamic_10_test.php",
 		data: "",
 		success: function(msg){
 		

@@ -571,7 +571,7 @@
     $sql = "SELECT forum_decName FROM forum_dec WHERE forum_decID=$forum_decID";
     if ($rows = $db->queryObjectArray($sql)) {
     $forum_name = $rows[0]->forum_decName;
-    form_url1("dynamic_10.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
+    form_url1("dynamic_10_test.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
     }
     } else {
     $i = 0;
@@ -582,7 +582,7 @@
     $forum_name = $rows[0]->forum_decName;
     
     echo '<tr><td class="myformtd" colspan="7">';
-    form_url2("dynamic_10.php?mode=read_data&editID=$forum", "ערוך פורום-$forum_name", 4);
+    form_url2("dynamic_10_test.php?mode=read_data&editID=$forum", "ערוך פורום-$forum_name", 4);
     echo "</td></tr>";
     }
     } else {
@@ -596,8 +596,8 @@
     } else {
     echo '</tr>';
     echo '<tr>';
-    //form_url("dynamic_10.php","ערוך פורומים",1 );
-    form_url_noformtd("dynamic_10.php", "ערוך פורומים", 1);
+    //form_url("dynamic_10_test.php","ערוך פורומים",1 );
+    form_url_noformtd("dynamic_10_test.php", "ערוך פורומים", 1);
     echo '</tr>';
     }
     
@@ -1911,7 +1911,7 @@
     if ($rows = $db->queryObjectArray($sql)) {
     $forum_name = $rows[0]->forum_decName;
     echo '<tr><td  >';
-    form_url2("dynamic_10.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
+    form_url2("dynamic_10_test.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
     echo "</td></tr>";
     }
     } else {
@@ -1922,7 +1922,7 @@
     if ($rows = $db->queryObjectArray($sql)) {
     $forum_name = $rows[0]->forum_decName;
     echo '<tr><td >';
-    form_url2("dynamic_10.php?mode=read_data&editID=$forum", "ערוך פורום-$forum_name", 4);
+    form_url2("dynamic_10_test.php?mode=read_data&editID=$forum", "ערוך פורום-$forum_name", 4);
     echo "</td></tr>";
     
     }
@@ -3142,7 +3142,7 @@
     }
     
     echo '<tr><td class="myformtd" colspan="8">';
-    form_url2("dynamic_10.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
+    form_url2("dynamic_10_test.php?mode=read_data&editID=$forum_decID", "ערוך פורום-$forum_name", 4);
     echo '</td></tr>';
     
     

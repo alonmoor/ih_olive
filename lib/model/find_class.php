@@ -489,10 +489,11 @@ class find {
         if(!$pattern)
             $pattern=$Pattern1;
         //$sql = "SELECT decID, decName  FROM decisions";
-        $sql="SELECT b.*,r.pubID,p.pdfID
-                       FROM brands b 
-                       LEFT JOIN rel_brand_pub r ON b.brandID=r.brandID
-                       LEFT JOIN pdfs p ON p.brandID=b.brandID ";
+//        $sql="SELECT b.*,r.pubID,p.pdfID
+//                       FROM brands b
+//                       LEFT JOIN rel_brand_pub r ON b.brandID=r.brandID
+//                       LEFT JOIN pdfs p ON p.brandID=b.brandID ";
+        $sql = "SELECT * FROM brands ";
 
         // we are already done
 
@@ -2843,11 +2844,11 @@ if(!$forums) {
        </a>" ;
 
     if($level){
-        $html.=	  build_href2("dynamic_10.php","mode=update", "&updateID=$id", "(עדכן שם)","style='color:blue' class='tTip' "). " " .
-            build_href2("dynamic_10.php","mode=read_data", "&editID=$id", "( עידכון מורחב)","style='color:blue' class='tTip' ");
+        $html.=	  build_href2("dynamic_10_test.php","mode=update", "&updateID=$id", "(עדכן שם)","style='color:blue' class='tTip' "). " " .
+            build_href2("dynamic_10_test.php","mode=read_data", "&editID=$id", "( עידכון מורחב)","style='color:blue' class='tTip' ");
     }elseif(!($level)){
 
-        $html.= build_href2("dynamic_10.php","mode=read_data", "&editID=$id", "( מידע מורחב)","style='color:blue' class='tTip' ");
+        $html.= build_href2("dynamic_10_test.php","mode=read_data", "&editID=$id", "( מידע מורחב)","style='color:blue' class='tTip' ");
 
 
     }
@@ -3102,11 +3103,11 @@ if(!$forums) {
             <img src='".ROOT_WWW."/images/pie-chart-icon.png'     onMouseOver='this.src=img.edit[4]' onMouseOut='src=\"".ROOT_WWW."/images/pie-chart-icon.png\"'    title='הצג נתוני רמת החלטה' />
             </a>" ;
     if($level){
-        $html.=	  build_href2("dynamic_10.php","mode=update", "&updateID=$id", "(עדכן שם)","style='color:blue' class='tTip' title='עדכן שם פורום בלבד'"). " " .
-            build_href2("dynamic_10.php","mode=read_data", "&editID=$id", "( עידכון מורחב)","style='color:blue' class='tTip' title='ערוך פורום וצפה בנתונים' ");
+        $html.=	  build_href2("dynamic_10_test.php","mode=update", "&updateID=$id", "(עדכן שם)","style='color:blue' class='tTip' title='עדכן שם פורום בלבד'"). " " .
+            build_href2("dynamic_10_test.php","mode=read_data", "&editID=$id", "( עידכון מורחב)","style='color:blue' class='tTip' title='ערוך פורום וצפה בנתונים' ");
     }elseif(!($level)){
 
-        $html.=	  build_href2("dynamic_10.php","mode=read_data", "&editID=$id", "( מידע מורחב)","style='color:blue' class='tTip' title='צפה במיבנה הפורום ובנתונים נוספים'  ");
+        $html.=	  build_href2("dynamic_10_test.php","mode=read_data", "&editID=$id", "( מידע מורחב)","style='color:blue' class='tTip' title='צפה במיבנה הפורום ובנתונים נוספים'  ");
     }
     echo $this->td5asis($html, "tdhead");
     echo $this->td1("", "tdinvisible1"), $this->td2asis("&nbsp;", "tdinvisible1");
@@ -4294,10 +4295,10 @@ if(!$forums) {
        </a>" ;
 
                 if($level){
-                    $html.= build_href2("dynamic_10.php","mode=update", "&updateID=$row->forum_decID", "(עדכן שם)","class='my_decLink'  style='color:blue' title='עדכן שם פורום בלבד'"). " " .
-                        build_href2("dynamic_10.php","mode=read_data", "&editID=$row->forum_decID", "( עידכון מורחב)","class='my_decLink'  style='color:blue' title='ערוך פורום וצפה בנתונים'");
+                    $html.= build_href2("dynamic_10_test.php","mode=update", "&updateID=$row->forum_decID", "(עדכן שם)","class='my_decLink'  style='color:blue' title='עדכן שם פורום בלבד'"). " " .
+                        build_href2("dynamic_10_test.php","mode=read_data", "&editID=$row->forum_decID", "( עידכון מורחב)","class='my_decLink'  style='color:blue' title='ערוך פורום וצפה בנתונים'");
                 }elseif(!($level)){
-                    $html.=	build_href2("dynamic_10.php","mode=read_data", "&editID=$row->forum_decID", "( מידע מורחב)","class='my_decLink' style='color:blue' title='צפה במבנה הפורום ובנתונים נוספים'");
+                    $html.=	build_href2("dynamic_10_test.php","mode=read_data", "&editID=$row->forum_decID", "( מידע מורחב)","class='my_decLink' style='color:blue' title='צפה במבנה הפורום ובנתונים נוספים'");
                 }
                 echo $this->td5asis($html, "tdhead");
                 echo $this->td1("", "tdinvisible1"), $this->td2asis("&nbsp;", "tdinvisible1");

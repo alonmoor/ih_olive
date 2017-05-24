@@ -45,7 +45,7 @@ $im->setCompressionQuality(95);
 
 $im->setImageFormat('jpeg');
 
-$im->writeImage('thumb.jpg');
+$im->writeImage(IMAGE_LOCATION.'thumb.jpg');
 
 $im->clear();
 
@@ -84,8 +84,8 @@ $image = new Imagick($pdf);
 $image->resizeImage( 200, 200, imagick::FILTER_LANCZOS, 0);
 $image->setImageFormat( "png" );
 $thumbnail = $image->getImageBlob();
-echo "<img src='image/png;base64,".base64_encode($thumbnail)."' /><br />";
-
+echo "<img  id='test_im' src='image/png;base64,".base64_encode($thumbnail)."' /><br />";
+echo "<img  id='test_im' src=".IMAGE_LOCATION.".'/png;base64,".base64_encode($thumbnail)."' /><br />";
 //----------------------------------------------------------------------------
 
 
@@ -156,12 +156,37 @@ echo "Initializing book...<br>";
 //echo "Converting PDF to JPG files...<br>";
 
 
+
+
+
+
+
+//$src = "/home/alon/Desktop/PROJECT/4.4.17/";
+//$dst = IMAGE_LOCATION;//"/home/user/public_html/dir/subdir/destination_folder/";
+//if($result =  $book-> recurse_copy($src,$dst)){
+//$pattern = "/home/alon/Desktop/PROJECT/4.4.17/*.pdf";
+//$files = glob("/home/alon/Desktop/PROJECT/4.4.17/*.pdf");
+//$pdfFiles =  preg_grep('/\.pdf$/i', $files);
+//}
+
+
+
+
 $src = "/home/alon/Desktop/PROJECT/4.4.17";
 $dst = IMAGE_LOCATION;//"/home/user/public_html/dir/subdir/destination_folder/";
+//mkdir(dirname($dst), 0777, true);
+//copy($src, $dst);
 $book-> recurse_copy($src,$dst);
 $pattern = "/home/alon/Desktop/PROJECT/4.4.17/*.pdf";
 $files = glob("/home/alon/Desktop/PROJECT/4.4.17/*.pdf");
 $pdfFiles =  preg_grep('/\.pdf$/i', $files);
+
+
+
+//$srcfile='C:\File\Whatever\Path\Joe.txt';
+//$dstfile='G:\Shared\Reports\Joe.txt';
+//mkdir(dirname($dstfile), 0777, true);
+//copy($srcfile, $dstfile);
 
 //foreach(glob(IMAGE_LOCATION."*.pdf") as $file){
 //    $file_name = explode('.',$file);

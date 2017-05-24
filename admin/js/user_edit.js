@@ -1,23 +1,5 @@
 $(document).ready(function() {
-    //if( window.location.pathname == "/admin/dynamic_5_demo.php" || window.location.pathname == "/admin/forum_demo_last8.php" ||  window.location  ==  "/admin/dynamic_10.php"){
 
-		function getAll() {
-           // var num = 5;//document.getElementById('pdf_page_num').value;
-            if (('#num_page').val()) {
-                $.ajax
-                ({
-                    url: 'getproducts.php',
-                    data: 'action=showAll' + "&num=" + num,
-                    cache: false,
-                    success: function (r) {
-                        $("#display").html(r);
-                    }
-                });
-            }
-
-            getAll();
-        }
-   // }
 // $('#tree_content_target').hide();
 //$('form#forum').append('<div id="targetDiv"></div>').find('select#insert_forumType').change(function(){
 //	 
@@ -302,7 +284,28 @@ $(document).ready(function() {
 //	      $(this).removeClass('hover'); 
 //	    } 
 //	  );  	
-/*********************************************************************/  
+/*********************************************************************/
+//if( window.location.pathname == "/admin/dynamic_5_demo.php" || window.location.pathname == "/admin/forum_demo_last8.php" ||  window.location  ==  "/admin/dynamic_10_demo.php"){
+    //
+    // function getAll() {
+    //     // var num = 5;//document.getElementById('pdf_page_num').value;
+    //     //  if (('#num_page').val()) {
+    //     $.ajax
+    //     ({
+    //         url: 'getproducts.php',
+    //         // data: 'action=showAll' + "&num=" + num,
+    //         data: 'action=showAll',
+    //         cache: false,
+    //         success: function (r) {
+    //             $("#display").html(r);
+    //         }
+    //     });
+    //     }
+    //
+    //  getAll();
+    // }
+    // }
+
 	show2();	
 	  var resizeOpts = {
 		      autoHide: true,

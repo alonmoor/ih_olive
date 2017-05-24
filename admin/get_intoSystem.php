@@ -19,5 +19,7 @@ if( array_item($_REQUEST, 'user') && is_numeric($_GET['user'] ) && !(empty($_GET
 $_SESSION['flag_down']=true;
  }
  $_SESSION['auth_username'] = isset($_COOKIE['auth_username']) ? $_COOKIE['auth_username'] : '';
-require_once ("find3.php");
+$_SESSION['flag_down']=true;
+html_header();
+//require_once ("find3.php");
 ?>

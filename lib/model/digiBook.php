@@ -8,7 +8,7 @@
  */
 require_once("../config/application.php");
 require_once(LIB_DIR . '/model/class.handler.php');
-require_once(ADMIN_DIR . '/ajax2.php');
+//require_once(ADMIN_DIR . '/ajax2.php');
 //require_once HTML_DIR . '/edit_pdf.php';
 class digiBook
 {
@@ -17,18 +17,18 @@ class digiBook
     function __construct()
     {
         $convert_status = 0;
-        if (is_dir("book") == false) {
-            echo "Please create folder 'book'<br>";
-            exit;
-        }
-        if (is_dir("book/pages/") == false) {
-            echo "Please create folder 'book\pages'<br>";
-            exit;
-        }
-        if (is_dir("zip") == false) {
-            echo "Please create folder 'zip'<br>";
-            exit;
-        }
+//        if (is_dir("book") == false) {
+//            echo "Please create folder 'book'<br>";
+//            exit;
+//        }
+//        if (is_dir("book/pages/") == false) {
+//            echo "Please create folder 'book\pages'<br>";
+//            exit;
+//        }
+//        if (is_dir("zip") == false) {
+//            echo "Please create folder 'zip'<br>";
+//            exit;
+//        }
     }
 
     function mkdir_r($dirName, $rights = 0777)

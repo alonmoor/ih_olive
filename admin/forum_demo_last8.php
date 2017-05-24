@@ -1,12 +1,32 @@
 <?php
+//phpinfo();
 require_once '../config/application.php';
 require_once (LIB_DIR.'/model/Brand.php');
-require_once ("../lib/model/DBobject3.php");
-
+require_once (LIB_DIR."/model/DBobject3.php");
+require_once (LIB_DIR."/model/digiBook.php");
+//include "cron.php";
 if(!isAjax() ){
   html_header();
 }
 
+//$srv1 = PHP_BINDIR;//s$_SERVER['PHP_BINDIR'];
+//var_dump($srv1);
+$phpbin = preg_replace("@/lib(64)?/.*$@", "/bin/php", ini_get("extension_dir"));
+
+
+$ctx = stream_context_create(array(
+        'http' => array(
+            'timeout' => 1
+        )
+    )
+);
+//$result = file_get_contents("/home/alon/Desktop/4.4.17/*.pdf;", 0, $ctx);
+//$x=1;
+
+///////////////////////////////
+
+
+var_dump($phpbin);
    if(array_item($_SESSION, 'level')=='user'){
    	 $flag_level=0;
    	 $level=false;

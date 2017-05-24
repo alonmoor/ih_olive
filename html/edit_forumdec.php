@@ -34,7 +34,7 @@ function build_form(&$formdata)
 
 
     <div id="main">
-        <form style="width:95%;" name="forum_org" id="forum_org" method="post" action="../admin/dynamic_10.php"
+        <form style="width:95%;" name="forum_org" id="forum_org" method="post" action="../admin/dynamic_10_test.php"
               onsubmit="prepSelObject(document.getElementById('dest_users'));prepSelObject(document.getElementById('dest_forumsType'));
 prepSelObject(document.getElementById('dest_managersType'));">
             <fieldset>
@@ -1391,7 +1391,7 @@ type="text/javascript"></script>
 
 
 <h4 class="my_main_fieldset<?php echo $formdata['forum_decision'] ?>" style="height:15px;cursor:pointer;"></h4>
-<form name="forum" id="forum" method="post" action="../admin/dynamic_10.php">
+<form name="forum" id="forum" method="post" action="../admin/dynamic_10_test.php">
 
 <?php
 }else{

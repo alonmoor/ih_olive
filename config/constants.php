@@ -83,8 +83,8 @@ define ('PDF_WWW_DIR',HTML_WWW_DIR . "/pdfs/");
 
 
 
-define ('CONVERT_PDF_TO_IMG_DIR', ROOT_DIR .'/images/convertPdfToImg');
-define('CONVERT_PDF_TO_IMG_WWW_DIR', ROOT_WWW ."/images/convertPdfToImg");
+define ('CONVERT_PDF_TO_IMG_DIR', ROOT_DIR .'/images/convertPdfToImg/');//IMAGE_FOLDER
+define('CONVERT_PDF_TO_IMG_WWW_DIR', ROOT_WWW ."/images/convertPdfToImg/");
 
 
 
@@ -171,59 +171,11 @@ define('DB_USER', 'alon');
  define('DB_PASSWORD','qwerty');
  define('DB_TBL_PREFIX', '');
 
- 
- 
-//define('DB_DATABASE','dec_tests');
-//define('DB_SCHEMA', 'dec_tests');
 
 
  define('DB_DATABASE','pdf');
  define('DB_SCHEMA', 'pdf');
 
 
-
-//define('DB_DATABASE','dec_test');
-//define('DB_SCHEMA', 'dec_test');
-
- 
- //define('DB_DATABASE','');
-//define('DB_SCHEMA', 'dec');
- 
-
-
-//define('TAMPLATE_PAGE_DIR', ROOT_DIR . "/get_in_out2");
-
-//define('INCLUDES_DIR', TAMPLATE_PAGE_DIR.'/html/includes');
-
-//define ('PDFS_DIR', BASE_URI . 'pdfs/');
-//define ('MYSQL', ROOT_DIR . "/mysql.inc.php");
-//define ('MYSQL', BASE_URI . "mysql.inc.php");
-
- 
-
-# Specify password here to protect your tasks from modification,
-#  or leave empty that everyone could read/write todolist
-//$config['password'] = "1";
-
-# Restrict access for the others when password above is set:
-#  "no" - No access, "read" - Read only
-//$config['allow'] = "no";
-
-# To disable smart syntax uncomment the line below
-#$config['smartsyntax'] = 0;
-
-# To disable auto detecting user time zone uncomment the line below
-#$config['autotz'] = 0;
-
-# To disable auto adding selected tag  comment out the line below or set value to 0
-//$config['autotag'] = 1;
-
-# duedate calendar format: 1 => y-m-d (default), 2 => m/d/y, 3 => d.m.y
-//$config['duedateformat'] = 1;
-
-# select session handling mechanism: files or default (php default)
-//$config['session'] = 'files';
-
-//$home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php';
 
 ?>

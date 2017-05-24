@@ -26,7 +26,7 @@
 	
 			?>
 			<div class="col-xs-3">
-			<div style="border-radius:3px; border:#cdcdcd solid 1px; padding:22px;"><?php echo $product_name; ?></div><br />
+			 <div style="border-radius:3px; border:#cdcdcd solid 1px; padding:22px;"><?php echo $product_name; ?></div><br />
 			</div>
 			<?php		
 		}

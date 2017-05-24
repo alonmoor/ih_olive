@@ -5,39 +5,10 @@ require_once ("../lib/model/DBobject3.php");
 //require_once ("../lib/model/decisions_class.php");
 require_once ("../lib/model/pdfs_class.php");
 require_once ("../lib/model/UploadException.php");
-require_once ("getproducts.php");
+//require_once ("getproducts.php");
 global $lang;   
 
 $showform=TRUE;
-            if(!empty($_POST['form']['btnLink1']) && $_POST['form']['btnLink1'] ) {
-            $_POST['mode']="link_second";
-            $_REQUEST['mode']="link_second";
-            unset($_SESSION['pdfID']);
-            unset($_SESSION['mult_dec_ajx']);
-            }      
-            if(!empty($_POST['form']['btnLink2']) && $_POST['form']['btnLink2'] ) {
-            $_POST['mode']="find";
-            $_REQUEST['mode']="find";
-            unset($_SESSION['pdfID']);
-            unset($_SESSION['mult_dec_ajx']);
-            }     
-
-            if(!empty($_POST['form']['btnLink3']) && $_POST['form']['btnLink3'] ) {
-            $_POST['mode']="link_second";
-            $_REQUEST['mode']="link_second";
-            unset($_SESSION['pdfID']);
-            unset($_SESSION['mult_dec_ajx']);
-            }    
-
-            if(!empty($_POST['form']['btnLink4']) && $_POST['form']['btnLink4'] ) {
-            $_POST['mode']="cancel";
-            $_REQUEST['mode']="cancel";
-            }      
-            	
-            if(!empty($_POST['form']['btnTodo']) && $_POST['form']['btnTodo'] ) {
-            $_POST['mode']="todo_list";
-            $_REQUEST['mode']="todo_list";
-            }   
 
             if(!empty($_POST['form']['submitbutton']) && $_POST['form']['submitbutton'] ) {
             $_POST['mode']=$tmp =(array_item($_POST['form'], "pdfID") ) ? "update":"save" ;
@@ -198,14 +169,7 @@ switch ($_REQUEST['mode'] ) {
             && is_array($_POST['form']['src_forums']))
             $formdata['dest_publishers']=$_POST['form']['src_forums'];
 //-------------------------------------------------------------------
-//        if(isset($formdata['dest_forums'][0]) && isset($formdata['dest_forums']) &&  is_array($formdata['dest_forums']) && !($formdata['dest_forums'][0]) ){
-//            $i=0;
-//            foreach ($formdata["dest_forums"] as $frm ){
-//                $form["dest_forums"][$i]=$frm ;
-//                $i++;
-//            }
-//            $formdata["dest_forums"]=$form["dest_forums"];
-//        }
+
 //------------------------------------------------------------------
         if(!validate($formdata )){
             echo " כניראה שהקובץ כבר קיים נכשל בשמירה!!!!!";
@@ -215,7 +179,7 @@ switch ($_REQUEST['mode'] ) {
             $formdata['dfp_status']= array_item ($_POST,'dfp_status');
             show_list($formdata);
         }else{
-            $pdf = new pdfs();
+           // $pdf = new pdfs();
             build_form($formdata);
           //  $pdf->print_form_paging();
             //show_list($_POST['form']);
