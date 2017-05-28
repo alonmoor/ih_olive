@@ -72,6 +72,15 @@ function processJson(data) {
                cache: false,
                success: function (r) {
                    $("#display_div").html(r);
+                   var page_val= $("#my_pageNum").val();
+                   $('#num_page').find('#pdf_page_num').val(page_val);
+
+
+
+
+                   var brand_date_val= $("#my_brand_date").val();
+                   $("#brand_date2").val(brand_date_val);
+
                }
            });
       // }

@@ -360,16 +360,16 @@ function print_brand_entry_form_c($updateID, $mode = '')
                 if ($parentList[$i] == '11') {
                     printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b> </li>\n",
                         htmlspecial_utf8($forumNames[$parentList[$i]]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                     );
                 } else {
                     printf("<ul><li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                         htmlspecial_utf8($forumNames[$parentList[$i]]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
             }
@@ -379,17 +379,17 @@ function print_brand_entry_form_c($updateID, $mode = '')
         if ($insertID == '11') {
             printf("<ul><li><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                 htmlspecial_utf8($forumNames[$updateID]),
-                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+                build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
         } else {
             $url = "../admin/find3.php?forum_decID=$updateID";
             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
             printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
                 htmlspecial_utf8($forumNames[$updateID]),
-                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                build_href2("pdf_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
+                build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                 build_href5("", "", "הראה נתונים", $str));
         }
         echo "<ul>";
@@ -402,10 +402,10 @@ function print_brand_entry_form_c($updateID, $mode = '')
                     printf("<li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
 
                         htmlspecial_utf8($forumNames[$forum_decID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$forum_decID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$forum_decID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$forum_decID", "עדכן"),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$forum_decID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=delete", "&deleteID=$forum_decID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$forum_decID", "עדכן"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
                 echo "<ul>";
@@ -450,7 +450,7 @@ function print_brand_entry_form_c($updateID, $mode = '')
                 } else {
                     printf("<ul><li style='font-weight:bold;'> %s (%s, %s ) </li>\n",
                         htmlspecial_utf8($forumNames[$parentList[$i]]),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
             }
@@ -467,7 +467,7 @@ function print_brand_entry_form_c($updateID, $mode = '')
             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
             printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s )</b> </li>\n",
                 htmlspecial_utf8($forumNames[$updateID]),
-                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
                 build_href5("", "", "הראה נתונים", $str));
         }
         echo "<ul>";
@@ -479,7 +479,7 @@ function print_brand_entry_form_c($updateID, $mode = '')
                     $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                     printf("<li style='font-weight:bold;'> %s (%s, %s) </li>\n",
                         htmlspecial_utf8($forumNames[$forum_decID]),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
                 echo "<ul>";
@@ -695,16 +695,16 @@ function print_brand_entry_form_d($updateID, $mode = '')
             if ($parentList[$i] == '11') {
                 printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b></li>\n",
                     htmlspecial_utf8($forumNames[$parentList[$i]]),
-                    build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
+                    build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                 );
             } else {
                 printf("<ul><li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                     htmlspecial_utf8($forumNames[$parentList[$i]]),
-                    build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
+                    build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             }
         }
@@ -714,17 +714,17 @@ function print_brand_entry_form_d($updateID, $mode = '')
     if ($insertID == '11') {
         printf("<ul><li style='font-weight :bold;'><b style='color:red;'> %s (%s, %s)</b> </li>\n",
             htmlspecial_utf8($forumNames[$updateID]),
-            build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-            build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+            build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+            build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
     } else {
         $url = "../admin/find3.php?forum_decID=$updateID";
         $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
         printf("<ul><li class='bgchange_tree' style='font-weight :bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
             htmlspecial_utf8($forumNames[$updateID]),
-            build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-            build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-            build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-            build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+            build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+            build_href2("pdf_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+            build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
+            build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
             build_href5("", "", "הראה נתונים", $str));
     }
     echo "<ul>";
@@ -736,10 +736,10 @@ function print_brand_entry_form_d($updateID, $mode = '')
                 $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                 printf("<li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                     htmlspecial_utf8($forumNames[$forum_decID]),
-                    build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$forum_decID", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$forum_decID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$forum_decID", "עדכן"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$forum_decID", "עידכון מורחב"),
+                    build_href2("pdf_brand.php", "mode=insert", "&insertID=$forum_decID", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=delete", "&deleteID=$forum_decID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$forum_decID", "עדכן"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$forum_decID", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             }
             echo "<ul>";
@@ -757,7 +757,7 @@ function print_brand_entry_form_d($updateID, $mode = '')
         echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
     if (($mode == 'update')) {
 
-        echo '<form method="post" action="dynamic_10_test.php?mode=update&updateID=',
+        echo '<form method="post" action="pdf_brand.php?mode=update&updateID=',
         $insertID, '">', "\n",
         "<p>עדכן שם הברנד של ",
         "<b>$forumNames[$insertID]</b>. <br /> ",
@@ -800,41 +800,43 @@ function insert_forum($formdata)
 function add_brand(&$formdata = "", &$publishersIDs = "", &$pdfIDS = "", &$imgNams = "")
 {
     global $db;
-
-    //take care of connect to
-    if (!empty($formdata['insertID']) && !empty($formdata['insert_brand']) && !$formdata['insert_brand'] && !is_numeric($formdata['insert_brand']) && !is_array($formdata['insert_brand']))
-        $insertID = $formdata['insertID'];
-    elseif (!empty($_GET['insertID']) && !$formdata['insert_brand'] && !is_numeric($formdata['insert_brand']) && !is_array($formdata['insert_brand']))
-        $insertID = $this->insertID;
-    elseif (!empty($formdata['insert_brand']) && (is_numeric($formdata['insert_brand'][0])) && is_array($formdata['insert_brand'])) {
-        $insertID = $formdata['insert_brand'];
-    } elseif (!empty($formdata['insert_brand']) && !empty($formdata['insertID']) && array_item($formdata, 'insert_brand') && (is_numeric($formdata['insert_brand']))
-        && !is_array($formdata['insert_brand']) && array_item($formdata, 'insertID') && (is_numeric($formdata['insertID']))
-    ) {
-        $insertID = $formdata['insert_brand'];
-        unset($formdata['insertID']);
-    } elseif (!empty($formdata['insert_brand']) && array_item($formdata, 'insert_brand') && (is_numeric($formdata['insert_brand'])) && !is_array($formdata['insert_brand'])) {
-        $insertID = $formdata['insert_brand'];
-    } elseif (!empty($formdata['insert_brand']) && !is_array($formdata['insert_brand'])) {
-        $insertID = '11';
-        $formdata['insertID'] = '11';
-    }
+    $brand = new brand();
     if (!empty($formdata['submitbutton']) && $formdata['submitbutton'])
         $submitbutton = $formdata['submitbutton'];
     else
         $submitbutton = $this->submitbutton;
-    //if(!empty($formdata['dynamic_ajx']) && !($formdata['dynamic_ajx']) ){
     echo "<h1>הוסף/עדכן ברנד חדש</h1>\n";
-    //}
+
+  if(isset($formdata['brand_pdf'])) {
+   $catID =  $formdata['brand_pdf']  ;
+  }else{
+      return false;
+  }
+
+    $sql = "SELECT * FROM categories WHERE catID = $catID";
+    $rows = $db->queryObjectArray($sql);
+
+    $formdata['newbrandName'] = $rows[0]->catName;
+    if( trim($rows[0]->catName) == 'חדשות'){
+        if (!isset($formdata['brand_date2']) &&  array_item($formdata, 'brand_date2') || (!$brand->check_date($formdata['brand_date2']))) {
+            return false;
+        }else{
+            $formdata['newbrandName'] = $formdata['newbrandName']."-".$formdata['brand_date2'];
+        }
+    }
+
+
+
+
+
+    $formdata['brandPrefix'] = $rows[0]->catPrefix;
+    $formdata['catID'] = $rows[0]->catID;
     // if there is form data to process, insert new
     // subcategories into database
     $subcategories = isset($formdata['newbrandName']) ? $formdata['newbrandName'] : '' ;
     if (!empty($subcategories)) {
-   //     $db->execute("START TRANSACTION");
-        if ($this->insert_new_brand($formdata, $publishersIDs, $pdfIDS, $imgNams)) {
-          //  $db->execute("COMMIT");
+        if ($this->insert_new_brand($formdata)) {
         } else {
-           // $db->execute("ROLLBACK");
             return FALSE;
         }
     }
@@ -846,59 +848,14 @@ function add_brand(&$formdata = "", &$publishersIDs = "", &$pdfIDS = "", &$imgNa
 function insert_new_brand(&$formdata)
 {
     global $db;
-
-
-    //$brand_allowed = $formdata['brand_allowed'];
-
-//    if ($formdata['brand_allowed'] == 1)
-//        $brand_allowed = 'public';
-//    elseif ($formdata['brand_allowed'] == 2)
-//        $brand_allowed = 'private';
-//    elseif ($formdata['brand_allowed'] == 3)
-//        $brand_allowed = 'top_secret';
-    //$now = date('Y-m-d');
-    //$brand_allowed = $db->sql_string($brand_allowed);
-//    $brand_date = isset($formdata['brand_date2']) ? $formdata['brand_date2'] : $now;
-//    $brand_date = $db->sql_string($brand_date);
-
     //$numPage = isset($formdata['pages']) ? $formdata['pages'] : '50';
 //------------------------------insert Brand------------------------------------------
-//    $result = $this->insert_brand($insertID,$newbrandNamename,  $status, $brand_allowed,$numPage, $formdata);
-//---------------------------------------------------------------------
+    $brandPrefix = isset($formdata['brandPrefix']) ? $formdata['brandPrefix'] : '';
+    $newbrandNamename = $formdata['newbrandName'];
 
-    if (isset($formdata['insert_brand']) && array_item($formdata, 'insert_brand') && is_array($formdata['insert_brand']) && is_numeric($formdata['insert_brand'][0])) {
-        $insertID = $formdata['insert_brand'];
-    } elseif (isset($formdata['insertID']) && is_numeric($formdata['insertID']) && array_item($formdata, 'insertID')) {
-        $insertID = $formdata['insertID'];
-    } else {
-        $insertID = 11;
-    }
-    $status = $formdata['brand_status'];
-    $brandPrefix = $formdata['brandPrefix'];
+    if (isset($brandPrefix) && isset($newbrandNamename) ) {
 
-    $formdata['tmpName'] = '';
-    if(isset($formdata['newbrandName']) ){
-        $formdata['tmpName'] = $formdata['newbrandName'];
-        $newbrandNamename = $formdata['newbrandName'];
-    }
-
-
-    if(isset($newbrandNamename) && $newbrandNamename == trim('חדשות') && isset($formdata['brand_date2'])){
-    $newbrandNamename = $formdata['tmpName'].'-'.$formdata['brand_date2'];
-    $formdata['newbrandName'] = $newbrandNamename;
-    }else{
-        echo "one of the details is missing";
-        return false;
-    }
-
-
-
-
-
-
-    if (isset($brandPrefix) && isset($newbrandNamename) && isset($formdata['brand_date2'])&& isset($formdata['pages'])) {
-
-        $result = $this->insert_brand($insertID, $newbrandNamename, $status, $brandPrefix, $formdata);
+        $result = $this->insert_brand( $newbrandNamename, $brandPrefix, $formdata);
         if ($result == -1) {
             echo "<p>Sorry, an error happened. Nothing was saved.</p>\n";
             return FALSE;
@@ -912,13 +869,9 @@ function insert_new_brand(&$formdata)
             $formdata['subcategories'] = isset($formdata['newbrandName']) ? $formdata['newbrandName'] : "no name found";
             $formdata['brandName'] = isset($formdata['newbrandName']) ? $formdata['newbrandName'] : "no name found";
 
-            $form['brand_status'] = $status;
 
-            $formdata['new_name'] = isset($formdata['newbrandName']) ? $formdata['newbrandName'] : "no name found";
-            $form['brand_Name'] = isset($formdata['newbrandName']) ? $formdata['newbrandName'] : "no name found";
-            //check it out
-            $form['insert_brand'] = isset($formdata['insert_brand'][0]) ? $formdata['insert_brand'][0] : '';
-            $submit = "submitbutton_$brandID";
+
+
             $_SESSION['brandID'] = $brandID;
             show_list($formdata);
             echo "<p class='error'>ברנד עודכן/נוסף.</p>\n";
@@ -929,39 +882,32 @@ function insert_new_brand(&$formdata)
 }
 //---------------------------------------------------------------------------------------------------------------------------
 //function insert_brand($insertID,$newbrandNamename, $brand_date, $status, $brand_allowed,$numPage, $formdata) {
-function insert_brand($insertID, $newbrandNamename, $status, $brandPrefix, $formdata)
+function insert_brand( $newbrandNamename,  $brandPrefix, $formdata)
 {
     global $db;
 
     if (empty($brandPrefix) && !$brandPrefix) return 0;
-    $brandPrefix = $db->sql_string($brandPrefix);
+        $brandPrefix = $db->sql_string($brandPrefix);
     if (empty($newbrandNamename) && !$newbrandNamename) return 0;
-    $newbrandNamename = $db->sql_string($newbrandNamename);
+         $newbrandNamename = $db->sql_string($newbrandNamename);
     if ((isset($formdata['newbrandName']) && $formdata['newbrandName'] && $formdata['newbrandName'] != 'none')) {
         $sql = "SELECT COUNT(*) FROM brands " .
-            " WHERE parentBrandID = $insertID " .
-            "  AND brandName = $newbrandNamename" .
+            "  WHERE brandName = $newbrandNamename" .
             "  AND brandPrefix = $brandPrefix";
-
-
-
 
         if ($db->querySingleItem($sql) > 0) {
             show_error_msg('כבר קיים ברנד אם שם כזה');
             return -1;
         } else  {
+            $pages = isset($formdata['pages']) ? $formdata['pages'] : '';
+            $pages =  isset($pages) ? $db->sql_string($pages) : '';
+            $brand_date = isset($formdata['brand_date2'])  ? $formdata['brand_date2'] : NULL ;
+           if(!empty($brand_date))
+            $brand_date  = $db->sql_string($brand_date);
+            $catID = $formdata['catID'];
 
-            $tmpName = $formdata['tmpName'];
-            $tmpName = $db->sql_string($tmpName);
-            $status =  $db->sql_string($status);
-            $pages = $formdata['pages'];
-            $pages =  $db->sql_string($pages);
-            $brand_date = $formdata['brand_date2'];
-            $brand_date =  $db->sql_string($brand_date);
-
-
-            $sql = "INSERT INTO brands (`brandName`, `parentBrandID`,`numPage`, `brandPrefix`, `status`,`brand_date`,`tmpName`) " .
-                                "VALUES ( $newbrandNamename, $insertID, $pages, $brandPrefix, $status, $brand_date , $tmpName)";
+            $sql = "INSERT INTO brands (`brandName`,`numPage`, `brand_date`, `brandPrefix`, `catID`) " .
+                                "VALUES ( $newbrandNamename,  $pages,$brand_date, $brandPrefix, $catID)";
             if ($db->execute($sql))
                 return 1;
             else
@@ -1049,8 +995,8 @@ function link()
 
 
     printf("<p><b>%s</b></p>\n",
-        //	build_href("forum_demo_last8.php", "", " הוסף/ערוך פורום " ));
-        build_href2("../admin/forum_demo_last8.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
+        //	build_href("create_brand.php", "", " הוסף/ערוך פורום " ));
+        build_href2("../admin/create_brand.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
     return true;
 }
 
@@ -1065,7 +1011,7 @@ function link_b()
         build_href2("../admin/find3.php", "", "", "חפש פורומים", "class=href_modal1"));
 
     printf("<p><b>%s</b></p>\n",
-        build_href2("../admin/forum_demo_last8.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
+        build_href2("../admin/create_brand.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
     return true;
 }
 /**************************************************************/
@@ -1615,36 +1561,160 @@ function print_categories_forum_paging_link($catIDs, $subcats, $catNames, $paren
 
 /*******************************************************************************/
 
-function print_forum_paging_b($brandID = "")
+
+function print_brand_paging($brandID = "")
 {
-    /*************************************************************************************************************/
-
     global $db;
-//  echo "<h1>בחר פורום</h1>\n";
-//  echo "<p> <b style='color:blue;'>לחץ להוסיף/למחוק/לעדכן  או לראות נתונים נוספים בפורום.</B></p>\n";
 
-    $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
+    $sql = "SELECT brandName, brandID FROM brands ORDER BY brandName";
     $rows = $db->queryObjectArray($sql);
     $parent = array();
-    foreach ($rows as $row) {
-        $subcats[$row->parentBrandID][] = $row->brandID;
-        $catNames[$row->brandID] = $row->brandName;
-        $parent[$row->brandID][] = $row->parentBrandID;
-    }
+//    foreach ($rows as $row) {
+//        $subcats[$row->parentBrandID][] = $row->brandID;
+//        $catNames[$row->brandID] = $row->brandName;
+//        $parent[$row->brandID][] = $row->parentBrandID;
+//    }
     echo '<fieldset class="my_pageCount"  style="margin-right:32px;">';
 
 
     echo '<ul class="paginated" style=left:100px;  >';
-    if (!is_numeric($brandID))
-        $this->print_categories_forum_paging_b($subcats[NULL], $subcats, $catNames, $parent);
-    else
-        $this->print_categories_forum_paging_link_b($subcats[NULL], $subcats, $catNames, $parent, $brandID);
+    foreach ($rows as $row) {
+        $catID = $row->brandID;
+        $catName = $row->brandName;
+        $url = "../admin/find3.php?brandID=$catID";
+        $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 id="' . $catID . '"   ';
+        printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
+            htmlspecial_utf8($catName),
+            build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+            build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+            build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+            build_href5("", "", "הראה נתונים", $str));
+    }
 
     echo '</ul class="paginated"></fieldset>';
     echo '<BR><BR>';
 }
-/***********************************************************************************************************/
+//----------------------------------------------------------------------------------------------
 
+function print_brand_paging_b($catIDs, $subcats, $catNames, $parent)
+{
+    if (array_item($_SESSION, 'level') == 'user') {
+        $flag_level = 0;
+        $level = false;
+        ?>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level; ?>"/>
+        <?php
+    } else {
+        $level = true;
+        $flag_level = 1;
+        ?>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level; ?>"/>
+        <?php
+    }
+    if ($level) {
+        echo '<ul>';
+        foreach ($catIDs as $catID) {
+            $url = "../admin/find3.php?brandID=$catID";
+            $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 id="' . $catID . '"   ';
+            if ($catID == 11) {
+                printf("<li style='font-weight:bold;color:red;font-size:20px;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','red').css('font-size', '15px')\">%s (%s, %s)</li>\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"));
+            } elseif ($parent[$catID][0] == '11' && !(array_item($subcats, $catID))) {
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)</li>\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            } elseif ($parent[$catID][0] == '11' && array_item($subcats, $catID)) {
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            } else {
+                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            }
+            if (array_key_exists($catID, $subcats))
+                $this->print_categories_forum_paging_b($subcats[$catID], $subcats, $catNames, $parent);
+        }
+        echo "</li></ul>\n";
+    } elseif (!($level)) {
+        echo '<ul>';
+        foreach ($catIDs as $catID) {
+            $url = "../admin/find3.php?brandID=$catID";
+            $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 id="' . $catID . '"   ';
+            if ($catID == 11) {
+                printf("<li style='font-weight:bold;color:red;font-size:30px;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','red').css('font-size', '15px')\">%s </li>\n",
+                    htmlspecial_utf8($catNames[$catID]));
+            } elseif ($parent[$catID][0] == '11' && !(array_item($subcats, $catID))) {
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)</li>\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            } elseif ($parent[$catID][0] == '11' && array_item($subcats, $catID)) {
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            } else {
+                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
+                    htmlspecial_utf8($catNames[$catID]),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href5("", "", "הראה נתונים", $str));
+            }
+            if (array_key_exists($catID, $subcats))
+                $this->print_categories_forum_paging_b($subcats[$catID], $subcats, $catNames, $parent);
+        }
+        echo "</li></ul>\n";
+    }
+}
+//-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------
+function print_forum_paging_b($brandID = "")
+{
+    global $db;
+
+    $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
+    $rows = $db->queryObjectArray($sql);
+    $parent = array();
+//    foreach ($rows as $row) {
+//        $subcats[$row->parentBrandID][] = $row->brandID;
+//        $catNames[$row->brandID] = $row->brandName;
+//        $parent[$row->brandID][] = $row->parentBrandID;
+//    }
+//    echo '<fieldset class="my_pageCount"  style="margin-right:32px;">';
+//
+//
+//    echo '<ul class="paginated" style=left:100px;  >';
+//    if (!is_numeric($brandID))
+//        $this->print_categories_forum_paging_b($subcats[NULL], $subcats, $catNames, $parent);
+//    else
+//        $this->print_categories_forum_paging_link_b($subcats[NULL], $subcats, $catNames, $parent, $brandID);
+
+    echo '</ul class="paginated"></fieldset>';
+    echo '<BR><BR>';
+}
+
+
+//-------------------------------------------------------------------------------------------------------------
 function print_categories_forum_paging_b($catIDs, $subcats, $catNames, $parent)
 {
     if (array_item($_SESSION, 'level') == 'user') {
@@ -1668,31 +1738,31 @@ function print_categories_forum_paging_b($catIDs, $subcats, $catNames, $parent)
             if ($catID == 11) {
                 printf("<li style='font-weight:bold;color:red;font-size:20px;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','red').css('font-size', '15px')\">%s (%s, %s)</li>\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("../admin/forum_demo_last8.php", "mode=insert", "&insertID=$catID", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"));
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"));
             } elseif ($parent[$catID][0] == '11' && !(array_item($subcats, $catID))) {
                 printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)</li>\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("../admin/forum_demo_last8.php", "mode=insert", "&insertID=$catID", "הוסף"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             } elseif ($parent[$catID][0] == '11' && array_item($subcats, $catID)) {
                 printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("../admin/forum_demo_last8.php", "mode=insert", "&insertID=$catID", "הוסף"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             } else {
                 printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("../admin/forum_demo_last8.php", "mode=insert", "&insertID=$catID", "הוסף"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                    build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                    build_href2("../admin/create_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
+                    build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                    build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             }
             if (array_key_exists($catID, $subcats))
@@ -1710,17 +1780,17 @@ function print_categories_forum_paging_b($catIDs, $subcats, $catNames, $parent)
             } elseif ($parent[$catID][0] == '11' && !(array_item($subcats, $catID))) {
                 printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)</li>\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             } elseif ($parent[$catID][0] == '11' && array_item($subcats, $catID)) {
                 printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             } else {
                 printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             }
             if (array_key_exists($catID, $subcats))
@@ -1739,7 +1809,7 @@ function print_categories_forum_paging_link_b($catIDs, $subcats, $catNames, $par
         if ($catID == 11) {
             printf("<li style='font-weight :bold;'>%s (%s, %s)</li>\n",
                 htmlspecial_utf8($catNames[$catID]),
-                build_href2("forum_demo_last8.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
+                build_href2("create_brand.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
                 build_href2("dynamic_8.php", "mode=update", "&updateID=$catID", "עדכן שם"));
 
         } elseif ($parent[$catID][0] == '11' && !(array_item($subcats, $catID))) {
@@ -1747,28 +1817,28 @@ function print_categories_forum_paging_link_b($catIDs, $subcats, $catNames, $par
 
             printf("<li class='li_page'  style='font-weight :bold;'>%s (%s, %s, %s,%s,%s)</li>\n",
                 htmlspecial_utf8($catNames[$catID]),
-                build_href2("forum_demo_last8.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
-                build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                build_href2("create_brand.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
+                build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                 // build_href("../admin/find3.php", "brandID=$catID", "הראה נתונים"));
                 build_href5("", "", "הראה נתונים", $str));
         } elseif ($parent[$catID][0] == '11' && array_item($subcats, $catID)) {
             printf("<li class='li_page' style='font-weight :bold;'>%s (%s, %s, %s,%s,%s)\n",
                 htmlspecial_utf8($catNames[$catID]),
-                build_href2("forum_demo_last8.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
-                build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                build_href2("create_brand.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
+                build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                 // build_href("../admin/find3.php", "brandID=$catID", "הראה נתונים"));
                 build_href5("", "", "הראה נתונים", $str));
         } else {
             printf("<li  style='font-weight :bold;'>%s (%s, %s, %s,%s,%s)\n",
                 htmlspecial_utf8($catNames[$catID]),
-                build_href2("forum_demo_last8.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
-                build_href2("../admin/dynamic_10_test.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                build_href2("../admin/dynamic_10_test.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
+                build_href2("create_brand.php", "mode=insert", "&insertID=$catID&brandID=$brandID", "קשר אליי"),
+                build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+                build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
                 // build_href("../admin/find3.php", "brandID=$catID", "הראה נתונים"));
                 build_href5("", "", "הראה נתונים", $str));
         }
@@ -2146,16 +2216,16 @@ $i--){
                         if ($parentList[$i] == '11') {
                             printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b> </li>\n",
                                 htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                             );
                         } else {
                             printf("<ul><li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                                 htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();'class=href_modal1"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();'class=href_modal1"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
                     }
@@ -2165,17 +2235,17 @@ $i--){
                 if ($insertID == '11') {
                     printf("<ul><li><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
                 } else {
                     $url = "../admin/find3.php?brandID=$updateID";
                     $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                     printf("<ul><li class='bgchange_tree'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
                 echo "<ul>";
@@ -2187,10 +2257,10 @@ $i--){
                             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                             printf("<li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                                 htmlspecial_utf8($forumNames[$brandID]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$brandID", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();'class=href_modal1"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$brandID", "עדכן"),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$brandID", "עידכון מורחב"),
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$brandID", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();'class=href_modal1"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$brandID", "עדכן"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$brandID", "עידכון מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
                         echo "<ul>";
@@ -2235,7 +2305,7 @@ $i--){
                         } else {
                             printf("<ul><li style='font-weight :bold;'> %s (%s, %s) </li>\n",
                                 htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$parentList[$i]", "מידע מורחב"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$parentList[$i]", "מידע מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
 
@@ -2246,14 +2316,14 @@ $i--){
                 if ($insertID == '11') {
                     printf("<ul><li><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
                 } else {
                     $url = "../admin/find3.php?brandID=$updateID";
                     $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                     printf("<ul><li class='bgchange_tree'><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
                 echo "<ul>";
@@ -2265,7 +2335,7 @@ $i--){
                             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                             printf("<li style='font-weight :bold;'> %s (%s, %s) </li>\n",
                                 htmlspecial_utf8($forumNames[$brandID]),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$brandID", "מידע מורחב"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$brandID", "מידע מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
                         echo "<ul>";
@@ -2304,14 +2374,14 @@ $i--){
                 <?php
             }
             if ($level) {
-                $sql = "SELECT brandName, brandID, parentBrandID " .
+                $sql = "SELECT brandName, brandID " .
                     " FROM brands ORDER BY brandName";
-                $rows = $db->queryObjectArray($sql);
+                if($rows = $db->queryObjectArray($sql)){
                 // build assoc. arrays for name, parent and subcats
                 foreach ($rows as $row) {
                     $forumNames[$row->brandID] = $row->brandName;
-                    $parents[$row->brandID] = $row->parentBrandID;
-                    $subcats[$row->parentBrandID][] = $row->brandID;
+                    $parents[$row->brandID] = $row->brandID;
+                    $subcats[$row->brandID]  = $row->brandID;
                 }
                 // build list of all parents for $insertID
                 $brandID = $updateID;
@@ -2328,16 +2398,16 @@ $i--){
                         if ($parentList[$i] == '11') {
                             printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b> </li>\n",
                                 htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                             );
                         } else {
                             printf("<ul><li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                                 htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
 
@@ -2348,18 +2418,18 @@ $i--){
                 if ($insertID == '11') {
                     printf("<ul><li><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
 
                 } else {
                     $url = "../admin/find3.php?brandID=$updateID";
                     $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                     printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
                         htmlspecial_utf8($forumNames[$updateID]),
-                        build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                        build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                        build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                        build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                        build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                        build_href2("pdf_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                        build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
+                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                         build_href5("", "", "הראה נתונים", $str));
                 }
                 echo "<ul>";
@@ -2371,10 +2441,10 @@ $i--){
                             $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                             printf("<li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                                 htmlspecial_utf8($forumNames[$brandID]),
-                                build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$brandID", "הוסף"),
-                                build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                                build_href2("dynamic_10_test.php", "mode=update", "&updateID=$brandID", "עדכן"),
-                                build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                                build_href2("pdf_brand.php", "mode=insert", "&insertID=$brandID", "הוסף"),
+                                build_href2("pdf_brand.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                                build_href2("pdf_brand.php", "mode=update", "&updateID=$brandID", "עדכן"),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                                 build_href5("", "", "הראה נתונים", $str));
                         }
                         echo "<ul>";
@@ -2392,77 +2462,78 @@ $i--){
                     echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
                 echo '</div>';
             } elseif (!($level)) {/////
-                $sql = "SELECT brandName, brandID, parentBrandID " .
-                    " FROM brands ORDER BY brandName";
-                if ($rows = $db->queryObjectArray($sql)) {
-                    // build assoc. arrays for name, parent and subcats
-                    foreach ($rows as $row) {
-                        $forumNames[$row->brandID] = $row->brandName;
-                        $parents[$row->brandID] = $row->parentBrandID;
-                        $subcats[$row->parentBrandID][] = $row->brandID;
-                    }
-                    // build list of all parents for $insertID
-                    $brandID = $updateID;
-                    while ($parents[$brandID] != NULL) {
-                        $brandID = $parents[$brandID];
-                        $parentList[] = $brandID;
-                    }
-                    echo '<div id="my_forum_entry_c">';
-                    //display all exept the choozen
-                    if (isset($parentList)) {
-                        for ($i = sizeof($parentList) - 1; $i >= 0; $i--) {
-                            $url = "../admin/find3.php?brandID=$parentList[$i]";
-                            $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                            if ($parentList[$i] == '11') {
-                                printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s </b> </li>\n",
-                                    htmlspecial_utf8($forumNames[$parentList[$i]]));
-                            } else {
-                                printf("<ul><li style='font-weight:bold;'> %s (%s, %s ) </li>\n",
-                                    htmlspecial_utf8($forumNames[$parentList[$i]]),
-                                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
-                                    build_href5("", "", "הראה נתונים", $str));
-                            }
+                    $sql = "SELECT brandName, brandID, parentBrandID " .
+                        " FROM brands ORDER BY brandName";
+                    if ($rows = $db->queryObjectArray($sql)) {
+                        // build assoc. arrays for name, parent and subcats
+                        foreach ($rows as $row) {
+                            $forumNames[$row->brandID] = $row->brandName;
+                            $parents[$row->brandID] = $row->parentBrandID;
+                            $subcats[$row->parentBrandID][] = $row->brandID;
                         }
-                    }
-                    // display choosen brand  * BOLD *
-                    //display the last on
-                    if ($insertID == '11') {
-                        printf("<ul><li><b style='color:red;'> %s </b> </li>\n",
-                            htmlspecial_utf8($forumNames[$updateID]));
-                    } else {
-                        $url = "../admin/find3.php?brandID=$updateID";
-                        $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                        printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s )</b> </li>\n",
-                            htmlspecial_utf8($forumNames[$updateID]),
-                            build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
-                            build_href5("", "", "הראה נתונים", $str));
-                    }
-                    echo "<ul>";
-                    $i = 0;
-                    if (array_key_exists($updateID, $subcats)) {
-                        while (!empty($subcats[$updateID]) && $subcats[$updateID]) {
-                            foreach ($subcats[$updateID] as $brandID) {
-                                $url = "../admin/find3.php?brandID=$brandID";
+                        // build list of all parents for $insertID
+                        $brandID = $updateID;
+                        while ($parents[$brandID] != NULL) {
+                            $brandID = $parents[$brandID];
+                            $parentList[] = $brandID;
+                        }
+                        echo '<div id="my_forum_entry_c">';
+                        //display all exept the choozen
+                        if (isset($parentList)) {
+                            for ($i = sizeof($parentList) - 1; $i >= 0; $i--) {
+                                $url = "../admin/find3.php?brandID=$parentList[$i]";
                                 $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                                printf("<li style='font-weight:bold;'> %s (%s, %s) </li>\n",
-                                    htmlspecial_utf8($forumNames[$brandID]),
-                                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
-                                    build_href5("", "", "הראה נתונים", $str));
+                                if ($parentList[$i] == '11') {
+                                    printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s </b> </li>\n",
+                                        htmlspecial_utf8($forumNames[$parentList[$i]]));
+                                } else {
+                                    printf("<ul><li style='font-weight:bold;'> %s (%s, %s ) </li>\n",
+                                        htmlspecial_utf8($forumNames[$parentList[$i]]),
+                                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                                        build_href5("", "", "הראה נתונים", $str));
+                                }
                             }
-                            echo "<ul>";
-                            $updateID = $brandID;
-                            $i++;
                         }
+                        // display choosen brand  * BOLD *
+                        //display the last on
+                        if ($insertID == '11') {
+                            printf("<ul><li><b style='color:red;'> %s </b> </li>\n",
+                                htmlspecial_utf8($forumNames[$updateID]));
+                        } else {
+                            $url = "../admin/find3.php?brandID=$updateID";
+                            $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
+                            printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s )</b> </li>\n",
+                                htmlspecial_utf8($forumNames[$updateID]),
+                                build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                                build_href5("", "", "הראה נתונים", $str));
+                        }
+                        echo "<ul>";
+                        $i = 0;
+                        if (array_key_exists($updateID, $subcats)) {
+                            while (!empty($subcats[$updateID]) && $subcats[$updateID]) {
+                                foreach ($subcats[$updateID] as $brandID) {
+                                    $url = "../admin/find3.php?brandID=$brandID";
+                                    $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
+                                    printf("<li style='font-weight:bold;'> %s (%s, %s) </li>\n",
+                                        htmlspecial_utf8($forumNames[$brandID]),
+                                        build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
+                                        build_href5("", "", "הראה נתונים", $str));
+                                }
+                                echo "<ul>";
+                                $updateID = $brandID;
+                                $i++;
+                            }
+                            // close hierarchical category list
+                            echo str_repeat("</ul>", $i + 1), "\n";
+                        } else {
+                            echo "(עדיין אין תת-ברנדים.)";
+                        }
+                        echo "</ul>\n";
                         // close hierarchical category list
-                        echo str_repeat("</ul>", $i + 1), "\n";
-                    } else {
-                        echo "(עדיין אין תת-ברנדים.)";
+                        if (isset($parentList))
+                            echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
+                        echo '</div>';
                     }
-                    echo "</ul>\n";
-                    // close hierarchical category list
-                    if (isset($parentList))
-                        echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
-                    echo '</div>';
                 }
             }
         }//end func///
@@ -2495,16 +2566,16 @@ $i--){
                     if ($parentList[$i] == '11') {
                         printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b></li>\n",
                             htmlspecial_utf8($forumNames[$parentList[$i]]),
-                            build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                            build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
+                            build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                            build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                         );
                     } else {
                         printf("<ul><li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                             htmlspecial_utf8($forumNames[$parentList[$i]]),
-                            build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                            build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                            build_href2("dynamic_10_test.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                            build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
+                            build_href2("pdf_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
+                            build_href2("pdf_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                            build_href2("pdf_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
+                            build_href2("pdf_brand.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
                             build_href5("", "", "הראה נתונים", $str));
                     }
                 }
@@ -2514,17 +2585,17 @@ $i--){
             if ($insertID == '11') {
                 printf("<ul><li style='font-weight :bold;'><b style='color:red;'> %s (%s, %s)</b> </li>\n",
                     htmlspecial_utf8($forumNames[$updateID]),
-                    build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
+                    build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
             } else {
                 $url = "../admin/find3.php?brandID=$updateID";
                 $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                 printf("<ul><li class='bgchange_tree' style='font-weight :bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
                     htmlspecial_utf8($forumNames[$updateID]),
-                    build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                    build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                    build_href2("dynamic_10_test.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                    build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
+                    build_href2("pdf_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
+                    build_href2("pdf_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                    build_href2("pdf_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
+                    build_href2("pdf_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
                     build_href5("", "", "הראה נתונים", $str));
             }
             echo "<ul>";
@@ -2536,10 +2607,10 @@ $i--){
                         $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
                         printf("<li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
                             htmlspecial_utf8($forumNames[$brandID]),
-                            build_href2("dynamic_10_test.php", "mode=insert", "&insertID=$brandID", "הוסף"),
-                            build_href2("dynamic_10_test.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                            build_href2("dynamic_10_test.php", "mode=update", "&updateID=$brandID", "עדכן"),
-                            build_href2("dynamic_10_test.php", "mode=read_data", "&editID=$brandID", "עידכון מורחב"),
+                            build_href2("pdf_brand.php", "mode=insert", "&insertID=$brandID", "הוסף"),
+                            build_href2("pdf_brand.php", "mode=delete", "&deleteID=$brandID", "מחק", "OnClick='return verify();' class='href_modal1'"),
+                            build_href2("pdf_brand.php", "mode=update", "&updateID=$brandID", "עדכן"),
+                            build_href2("pdf_brand.php", "mode=read_data", "&editID=$brandID", "עידכון מורחב"),
                             build_href5("", "", "הראה נתונים", $str));
                     }
                     echo "<ul>";
@@ -2556,7 +2627,7 @@ $i--){
             if (isset($parentList))
                 echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
             if (($mode == 'update')) {
-                echo '<form method="post" action="dynamic_10_test.php?mode=update&updateID=',
+                echo '<form method="post" action="pdf_brand.php?mode=update&updateID=',
                 $insertID, '">', "\n",
                 "<p>עדכן שם הפורום של ",
                 "<b>$forumNames[$insertID]</b>. <br /> ",
@@ -2591,15 +2662,12 @@ $i--){
                 if (is_array($rows) && sizeof($rows) == 1) {
                     $row1 = $rows[0];
                     $result["brandID"] = $row1->brandID;
-                    $result["parentBrandID"] = $row1->parentBrandID;
-                    $result["insertID"] = $row1->parentBrandID;
                     $result["brandName"] = $row1->brandName;
                     $result["status"] = $row1->status;
-                    $result["allowed"] = $row1->brand_allowed;
                     $result["pages"] = $row1->numPage;
                     $result["brand_date2"] = $row1->brand_date;
                     $result["brandPrefix"] = $row1->brandPrefix;
-
+                    $result["catID"] = $row1->catID;
 
                     $result["src_pdfs"] = "";
                     $result["src_pub"] = "";
@@ -3326,11 +3394,11 @@ AND r.brandID =$brandID ORDER BY c.catName";
                 $brandID = isset($formdata['brandID']) ? $formdata['brandID'] : '';
                 $brandName = isset($formdata['brandName']) ? $formdata['brandName'] : 'no name';
                 $brandPrefix = isset($formdata['brandPrefix']) ? $formdata['brandPrefix'] : '';
-                //$numPage = isset($formdata['pages']) ? $formdata['pages'] : NULL;
+
                 $status = isset($formdata['status']) ? $formdata['status'] : 1;
-                //  $brand_allowed = isset($formdata['brand_allowed']) ? $formdata['brand_allowed'] : 1;
+
                 $brand_date = isset($formdata['brand_date2']) ? $formdata['brand_date2'] : '';
-                $insertID = isset($formdata['insertID']) ? $formdata['insertID'] : '11';
+
 
                 $numPage = isset($formdata['pages']) ? $formdata['pages'] : '';
 
@@ -3340,7 +3408,6 @@ AND r.brandID =$brandID ORDER BY c.catName";
                 if (!empty($brandID) && is_numeric($brandID)) {
                     $sql =  "UPDATE brands SET " .
                             " brandName = " . $db->sql_string($brandName) . ", " .
-                            " parentBrandID = " . $db->sql_string($insertID) . " , " .
                             " numPage = " . $db->sql_string($numPage) . " , " .
                             " status = " . $db->sql_string($status) . " , " .
                             " brand_date = " . $db->sql_string($brand_date) . " , " .
@@ -3360,14 +3427,33 @@ AND r.brandID =$brandID ORDER BY c.catName";
             return false;
         }
         //--------------------------------------------------------------------------
+
+        function del_brand1($deleteID)
+        {
+            global $db;
+            $sql = "SELECT COUNT(*) FROM brands WHERE brandID=$deleteID";
+            if ($db->querySingleItem($sql) == 1) {
+                $db->execute("START TRANSACTION");
+                $query = "set foreign_key_checks=0";
+                $db->execute($query);
+              if ($this->delete1($deleteID) == -1) {
+                    $db->execute("ROLLBACK");
+                    $db->execute("set foreign_key_checks=1");
+                } else {
+                    $db->execute("COMMIT");
+                    $db->execute("set foreign_key_checks=1");
+                }
+            }
+        }
+        //--------------------------------------------------------------------------
         function delete_brand($deleteID, $formdata = '')
         {
             $brand = new brand();
             $brand->del_brand($deleteID);
-//	$frm->print_forum_paging();
+
             show_list($formdata);
         }
-
+        //--------------------------------------------------------------------------
         function del_brand($deleteID)
         {
             global $db;
@@ -3421,15 +3507,11 @@ AND r.brandID =$brandID ORDER BY c.catName";
                 return -1;
         }
 
-        function delete1()
+        function delete1($brandID)
         {
             global $db;
-            $query = "set foreign_key_checks=0";
-            if ($db->execute($query))
-                if ($db->execute("delete from  brands where brandID=" . $this->getId()))
-                    $db->execute("set foreign_key_checks=1");
-                else
-                    $db->execute("set foreign_key_checks=1");
+          $db->execute("delete from  brands where brandID=$brandID");
+
         }
         //--------------------------------------------------------------------------------------------------
 

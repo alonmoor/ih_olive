@@ -451,7 +451,7 @@ try{
 				throw new Exception("empty data input");
 			}
 			//$doc->preserveWhiteSpace = false;
-			
+			if(!empty($data))
 			$doc->loadXML($data);
 			//$doc->load("php://input"); //RAW POST DATA
 /*

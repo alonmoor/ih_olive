@@ -270,7 +270,10 @@ if($_POST['forum_decision_general_dest'] &&  (is_numeric(array_item($_POST,'foru
 $formdata['forum_decision']=array_item($_POST,'forum_decision_general_dest');
 	$tmp='forumPattern';
 }
-
+if($_POST['brandID'] &&  (is_numeric(array_item($_POST,'brandID')))   ){
+    $formdata['brandID']=array_item($_POST,'brandID');
+    $tmp='forumPattern';
+}
 /**************************************************************************************************/
 
 
@@ -502,7 +505,7 @@ function search_forum($formdata,$page,$forumPattern,$forum_decID,$cat_forumID,$m
 	$f=new find();
 	$f->set( $decPattern , $forumPattern , $forumPattern1 , $datePattern , $datePattern1 , $treePatternDown , $treePatternUp ,$brandID , $pubID , $pdfID );
 	$f->setPattern($formdata,$forumPattern);//($formdata['decision'],$formdata['forum_decision'],$formdata['forum'],$datePattern,$datePattern1,$letterPattern,$treePatternDown,$treePatternUp);
- 	$f->checkForum_Pattern($formdata,$page,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID);
+ 	$f->checkForum_Pattern($formdata,$page,$forum_decID,$cat_forumID,$managerID,$managerTypeID,$userID,$appointID,$brandID);
 }
 /****************************************************************************/
 function search_forum1($formdata,$page,$forumPattern1,$forum_decID){

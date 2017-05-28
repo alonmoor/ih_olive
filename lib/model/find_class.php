@@ -1072,14 +1072,14 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
     }
 
 
-    function checkForum_Pattern($formdata="",$page="",$forum_decID="",$cat_forumID="",$managerID="",$managerTypeID="",$userID="",$appointID="")
+    function checkForum_Pattern($formdata="",$page="",$forum_decID="",$cat_forumID="",$managerID="",$managerTypeID="",$userID="",$appointID="",$brandID="")
     {
 
         global $db;
 
         if (array_item($_REQUEST, 'brandID')) {
             $brandID = array_item($_REQUEST, 'brandID');
-            if (!empty($brandID) && is_numeric($brandID) && $formdata) {
+            if (!empty($brandID) && is_numeric($brandID) ) {
 //-----------------------------------------------------------------------
      $sql = $this->build_brand_query($formdata, $this->forumPattern, $this->forum_decID, $page, $this->pagesize, $this->cat_forumID, $this->managerID, $this->managerTypeID, $this->userID, $this->appointID);
                 if ($sql) {
@@ -1162,8 +1162,10 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
         }else {
         if ($forum_decID)
             $this->forum_decID = $forum_decID;
+            if ($brandID)
+                $this->brandID = $forum_decID;
         if ($formdata['forum_decision'])
-            $this->forum_decID = $formdata['forum_decision'];
+            $this->forum_decID = $formdata['$brandID'];
 
         if ($cat_forumID)
             $this->cat_forumID = $cat_forumID;
@@ -1316,7 +1318,7 @@ m.managerName,m.managerID,a.appointName,a.appointID,mt.managerTypeName,mt.manage
         }
     }
 ///////////////////////
-    }//end function  //
+        }//end function  //
 //////////////////////
 
 

@@ -285,7 +285,7 @@ $(document).ready(function() {
 //	    } 
 //	  );  	
 /*********************************************************************/
-//if( window.location.pathname == "/admin/dynamic_5_demo.php" || window.location.pathname == "/admin/forum_demo_last8.php" ||  window.location  ==  "/admin/dynamic_10_demo.php"){
+//if( window.location.pathname == "/admin/dynamic_5_demo.php" || window.location.pathname == "/admin/create_brand.php" ||  window.location  ==  "/admin/dynamic_10_demo.php"){
     //
     // function getAll() {
     //     // var num = 5;//document.getElementById('pdf_page_num').value;

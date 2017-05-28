@@ -1,6 +1,24 @@
 <?PHP
 //session_start();
 function html_header($arr_sublinks=""){
+
+
+    if (array_item($_SESSION, 'level') == 'user') {
+        $flag_level = 0;
+        $level = false;
+        ?>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level; ?>"/>
+        <?php
+    } else {
+        $level = true;
+        $flag_level = 1;
+        ?>
+        <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level; ?>"/>
+        <?php
+    }
+
+
+
     ?>
 
     <!DOCTYPE html>
@@ -214,24 +232,15 @@ function html_header($arr_sublinks=""){
 
 
                     <div id="dropMenu3" class="menuDrop">
-                        <a href="forum_demo_last8.php" onfocus="if (this.blur) this.blur();">ניהול ברנד</a>
+                       <?php if($level) { ?>
+<!--                           <a href="categories.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>-->
+                        <a href="create_brand.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>
 
+                        <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">בניית תוכנית עבודה </a>
 
-
-<!--                        <a href="database5.php" onfocus="if (this.blur) this.blur();">עץ הפורומים</a>-->
-<!--                        <a href="forum_tree.php" onfocus="if (this.blur) this.blur();">עץ סוגי הפורומים </a>-->
-<!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
-<!--                            <a href="categories1.php" onfocus="if (this.blur) this.blur();">ערוך קטגוריות הפורומים </a>-->
-<!--                            <a href="forum_dem_last7.php" onfocus="if (this.blur) this.blur();"> הזנת נתונים לכמה פורומים חדשים </a>-->
-<!---->
-<!---->
-<!--                            <a href="form_dem_9.php" onfocus="if (this.blur) this.blur();"> הזנת נתונים דינאמית של פורום</a>-->
-<!--                           -->
-<!--                        --><?php //}else{?>
-<!--                            <a href="form_dem_9.php" onfocus="if (this.blur) this.blur();">צפייה דינאמית במיבנה הפורום</a>-->
-<!--                            <a href="forum_demo_last8.php" onfocus="if (this.blur) this.blur();">מבנה מורכב של פורום</a>-->
-<!--                        --><?php //}?>
-
+                      <?php }else{ ?>
+                           <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">צפייה ואישור תוכנית עבודה </a>
+                          <?php } ?>
                     </div>
 
 

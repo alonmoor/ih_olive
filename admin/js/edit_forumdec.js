@@ -754,7 +754,7 @@ $(document).ready(function () {
 
             $.ajax({
                 type: "POST",
-                url: "dynamic_10_test.php",
+                url: "pdf_brand.php",
                 data: "entry=" + data_a,
                 success: function (msg) {
                     $('div#my_forum_entry_c').remove();
@@ -784,7 +784,7 @@ $(document).ready(function () {
         /*************************************************GET_JSON**********************************************************************/
 
 
-        $.getJSON('dynamic_10_test.php?read_data2&editID=' + frmID + '&tz=' + tz + nocache, function (json) {
+        $.getJSON('pdf_brand.php?read_data2&editID=' + frmID + '&tz=' + tz + nocache, function (json) {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////				
@@ -844,7 +844,7 @@ $(document).ready(function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "dynamic_10_test.php",
+                    url: "pdf_brand.php",
                     data: "entry=" + data_a,
                     success: function (msg) {
 
@@ -875,7 +875,7 @@ $(document).ready(function () {
                     /***************************************READ_USERS**********************************/
                     $.ajax({
                         type: "GET",
-                        url: "../admin/dynamic_10_test.php",
+                        url: "../admin/pdf_brand.php",
                         data: "read_users=" + frmID,
                         success: function (msg) {
 
@@ -904,7 +904,7 @@ $(document).ready(function () {
                     nocache = '&rnd=' + Math.random();
                     $.ajax({
                         type: "GET",
-                        url: "../admin/dynamic_10_test.php",
+                        url: "../admin/pdf_brand.php",
                         data: "read_decisions=" + frmID + nocache,
                         success: function (msg) {
 
@@ -921,7 +921,7 @@ $(document).ready(function () {
                     nocache = '&rnd=' + Math.random();
                     $.ajax({
                         type: "GET",
-                        url: "../admin/dynamic_10_test.php",
+                        url: "../admin/pdf_brand.php",
                         data: "read_decisions2=" + frmID + nocache,
                         success: function (msg) {
 

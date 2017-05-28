@@ -56,7 +56,22 @@
                 break;
         }
     }
-        if(!empty($dayOfWeek)  ) {
+
+
+
+//        $brand_sql = "SELECT b.*,c.* FROM brands b
+//                        inner join categories c
+//                        on b.catID = c.catID
+//                        WHERE b.brandID = $brandID
+//                        ORDER BY b.brandName ASC";
+//        $rows3 = $db->queryObjectArray($brand_sql);
+//
+//        if($rows3[0]->catName == "חדשות"){
+//            $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+//        }
+
+
+        if(!empty($dayOfWeek) && $brandPrefix == "ayom{{date}}") {
         $brandPrefix = str_replace("{{date}}", $dayOfWeek, $brandPrefix);
         $brandPrefixArr = array();
         $html = '';
@@ -72,6 +87,9 @@
             }
             //  if (!(file_exists(CONVERT_PDF_TO_IMG_WWW_DIR.$brandPrefixArr[$i])) ) {
 //------------------------------------------------------------------------------
+
+            $html .= '<input type="hidden" name="my_brand_date"  id="my_brand_date"  value='.$brand_date.' >';
+            $html .= '<input type="hidden" name="my_pageNum"  id="my_pageNum"  value='.$page_num.' >';
             if( !(in_array($brandPrefixArr[$i],$pdf_names))  ){
                 $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
                 $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
@@ -118,89 +136,6 @@
         }//end for
         echo $html;
     }
-//------------------------------------------------------------------
-//    if ( is_numeric($brandID)) {
-//        $db->execute("set foreign_key_checks=0");
-//
-//        if (!empty($brandID) && is_numeric($brandID)) {
-//            $sql = "UPDATE brands SET " .
-//                " numPage = " . $db->sql_string($page_num) . "  " .
-//                "WHERE brandID =  " . $db->sql_string($brandID) . " ";
-//
-//            if (!$db->execute($sql)) {
-//                $db->execute("set foreign_key_checks=1");
-//                return -1;
-//            } else {
-//                $db->execute("set foreign_key_checks=1");
-//                // return false;
-//            }
-//        }
-//    }
-//---------------------------------------------------------------------
-//
-//    $pdf_file=PDF_DIR; //PDF FILE LOCATION
-//    $jpgloc=CONVERT_PDF_TO_IMG_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
-//    $book=new digiBook();
-//
-//
-//    $pattern = "/home/alon/Desktop/4.4.17/REG/*.pdf";
-//    $files = glob("/home/alon/Desktop/4.4.17/REG/*.pdf");
-//    $pdfFiles =  preg_grep('/\.pdf$/i', $files);
-//
-//
-//
-//    foreach(glob(CONVERT_PDF_TO_IMG_DIR."*.pdf") as $file){
-//        $file_name = explode('.',$file);
-//        $file_name = substr($file_name[0],-9);
-//        $jpgloc2=TAMPLATE_IMAGES_DIR."$file_name.jpg";
-//        $book->convertPDF2JPG($file,$jpgloc2);
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//---------------------------------------------------------------------
-
-
-
-
-//    if(isset($formadata)) {
-//        $file = '/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName;
-//        $file_name = explode('.', $newPdfName);
-//        $file_name = substr($file_name[0], -9);
-//        $newfile = CONVERT_PDF_TO_IMG_DIR . '/' . $file_name;
-//        $im = new imagick('/home/alon/Desktop/PROJECT/4.4.17/' . $newPdfName);
-//
-//// convert to jpg
-//        $im->setImageColorspace(255);
-//        $im->setCompression(Imagick::COMPRESSION_JPEG);
-//        $im->setCompressionQuality(60);
-//        $im->setResolution(300, 300);
-//        $im->setImageFormat('jpeg');
-////resize
-//        $im->resizeImage(290, 375, imagick::FILTER_LANCZOS, 1);
-////write image on server
-//        $im->writeImage($newfile . '.jpg');
-//        $im->clear();
-//        $im->destroy();
-//    }
-//---------------------------------------------------------------------
-
-
-
-
-
 
 }elseif(isset($_GET['check_for_files']) && $_GET['check_for_files'] == true){
 

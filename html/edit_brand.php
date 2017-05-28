@@ -22,95 +22,82 @@ function build_form(&$formdata)
         <input type="hidden" id="flag_level" name="flag_level" value="<?php echo $flag_level; ?>"/>
         <?php
     }
-    if (array_item($_SESSION, 'userID') && !(array_item($_SESSION, 'userID') == '') && !(array_item($_SESSION, 'userID') == 'none')) {
-        $flag_userID = array_item($_SESSION, 'userID');
-        ?>
-        <input type="hidden" id="flag_userID" name="flag_userID" value="<?php echo $flag_userID; ?>"/>
-        <div id="brand_error" name="brand_error"></div>
-        <?php
-    }
     ?>
-<!--    <script language="javascript" src="--><?php //print JS_ADMIN_WWW ?><!--/treeview_forum.js" type="text/javascript"></script>-->
     <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js" type="text/javascript"></script>
-
-
     <div id="main">
-
-        <?php
-//-----------------------UPDATE---------------------------------------
-          if (array_item($formdata, 'brandID')) {
-        ?>
-
-        <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/dynamic_10_test.php"
+        <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/pdf_brand.php"
               onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
                         prepSelObject(document.getElementById('dest_publishers'));
                         prepSelObject(document.getElementById('dest_brandsType'));
                         prepSelObject(document.getElementById('dest_managersType'));" >
         <script  language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js"  type="text/javascript"></script>
-          <?php
-
-           }
-//-----------------------SAVE---------------------------------------
-           else{
-          ?>
-        <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/dynamic_10_test.php"
-                      onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
-                                prepSelObject(document.getElementById('dest_publishers'));
-                                prepSelObject(document.getElementById('dest_brandsType'));
-                                prepSelObject(document.getElementById('dest_managersType'));" >
-          <?php
-          }
-          ?>
                 <fieldset style="margin-right:4%;width:90%;color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;"  >
                     <legend> מלא את הטופס להוספת  BRAND :</legend>
                     <div class="wrapper_brand" style="width:100%">
+                     <div id="brand_error" name="brand_error"></div>
                     <?PHP
                     $page_input = isset($formdata['pages']) ? $formdata['pages'] : '';
                     ?>
                     <input type="hidden" name="pdf_page_num"  id="pdf_page_num" value="<?PHP echo $page_input; ?>">
                     <?php
-                    if (array_item($formdata, 'brandID')) {
-                        $brand = new brand();
-                        $brand->print_forum_entry_form_c($formdata['brandID']);
-                    }
+
                     $dates = getdate();
 //-----------------------------------------------------------
-   $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
-    $rows = $db->queryObjectArray($sql);
+    $sql = "SELECT brandName, brandID FROM brands ORDER BY brandName";
+    $rows1 = $db->queryArray($sql);
 
-    foreach ($rows as $row) {
-    $subcatsftype[$row->parentBrandID][] = $row->brandID;
-    $catNamesftype[$row->brandID] = $row->brandName;
+
+    $sql = "SELECT * FROM categories ORDER BY catName";
+    $rows2 = $db->queryObjectArray($sql);
+    foreach ($rows2 as $row) {
+    $subcatsftype2[$row->parentCatID][] = $row->catID;
+    $catNamesftype2[$row->catID] = $row->catName;
     }
-    $rows = build_category_array($subcatsftype[NULL], $subcatsftype, $catNamesftype);
+    $rows2 = build_category_array($subcatsftype2[NULL], $subcatsftype2, $catNamesftype2);
+
 //--------------------------------------------------------
-                    $arr_show = array();
-                    $arr_show[0][0] = "ציבורי";
-                    $arr_show[0][1] = "1";
-                    $arr_show[1][0] = "פרטי";
-                    $arr_show[1][1] = "2";
-                    $arr_show[2][0] = "סודי";
-                    $arr_show[2][1] = "3";
-
-                    $selected_show = array_item($formdata, 'brand_Allowed') ? array_item($formdata, 'brand_Allowed') : $arr_show[0][1];
-
-                    $arr = array();
-                    $arr[0][0] = "לא פעיל";
-                    $arr[0][1] = "1";
-                    $arr[1][0] = "פעיל";
-                    $arr[1][1] = "2";
-
                     for ($i = 1; $i <= 150; $i++) {
                             $pages[] = $i;
                         }
-
-                    $selected = array_item($formdata, 'brand_status') ? array_item($formdata, 'brand_status') : $arr[1][1];
-                    $tmp_insertID = '11';
-
-                    echo '<div class="myformtable1" style="width:60%;height: auto;"  data-module="שם הברנד:">';
+                    echo '<div class="myformtable1" style="width:60%;height: auto;"  data-module="שם תוכנית הברנד:">';
 //---------------------------------UPDATE------------------------------------------
                     if (array_item($formdata, 'brandID')) {
+
+                        $brand_sql = "SELECT b.*,c.* FROM brands b
+                        inner join categories c  
+                        on b.catID = c.catID              
+                        WHERE b.brandID = $brandID
+                        ORDER BY b.brandName ASC";
+                     $rows3 = $db->queryObjectArray($brand_sql);
+
+
+
+                      $brand_sql2 = "SELECT  * FROM brands          
+                                        WHERE brandID = $brandID
+                                        ORDER BY b.branName ASC";
+                      $rows4 = $db->queryObjectArray($brand_sql);
+
+                      $rows4 = array_shift($rows4);
+
+                      $brand_sql3 = "SELECT  * FROM brands          
+                                        WHERE brandID = $brandID
+                                        ORDER BY brandName ASC";
+                      $rows5 = $db->queryArray($brand_sql3);
+
+
+
    if($level) {
+                        echo '<div class="myformtd 1" style="width:60%;">';
+                        form_label_red1("שם תכנית הברנד:", true);
+                        form_list111("brand_pdf", $rows1, array_item($formdata, "brandID"),"id = brand_pdf");
+                        form_empty_cell_no_td(10);
+                        echo '</div>';
+
+                        echo '<div class="myformtd 1"   id="num_page">';
+                        form_label_red1("מספר עמודים:", TRUE);
+                        form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
+                        echo  '</div>';
+
                         echo '<div class="myformtd 1" style="width:60%;">';
                         form_label_red1("תאריך הפצה:", true);
                         form_text3("brand_date2", array_item($formdata, "brand_date2"), 15, 15, 1, 'brand_date2');
@@ -119,52 +106,25 @@ function build_form(&$formdata)
 
 
                         echo '<div class="myformtd 1" style="width:60%;">';
-                        form_label_red1("שם הברנד::", true);
-                        form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
-                       //form_text_a("brand_pdf", array_item($formdata, "brandName"), 15, 15, 1);
-                        form_empty_cell_no_td(10);
+                            form_url2("create_brand.php", "ערוך ברנדים", 2);
                         echo '</div>';
 
-                         echo '<div class="myformtd 1" style="width:60%;margin-top: 15px;">';
-                                 $connect = array_item($formdata, "insertID") ? array_item($formdata, "insertID") : '11';
-                                 form_label1("קשר לברנד:", TRUE);
-                                 form_list_find_notd("insert_forum", "insert_forum", $rows, $connect);
-                                 form_empty_cell_no_td(5);
-                         echo '</div>';
-
-                        echo '<div class="myformtd 1" style="width:60%;">';
-                        form_label_red1("סטטוס ברנד:", TRUE);
-                        form_list_find_notd_no_choose2('brand_status', $arr, $selected, $str = "");
-                        form_empty_cell_no_td(5);
-                        echo '</div>';
+                        $date_val = array_item($formdata, "brand_date2");
+                        echo '<input type="hidden" id="brand_date3" value='.$date_val.'" >';
 
 
-
-                          echo '<div class="myformtd 1" style="width:60%;">';
-                          form_label_red1("קידומת:", TRUE);
-                          form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 45, 45, 1, "brandPrefix");
-                          form_empty_cell_no_td(5);
-                          echo '</div>';
+                        $page_val = array_item($formdata, "paegs");
+                        echo '<input type="hidden" id="brandPage" value='.$page_val.'" >';
 
 
-                          echo '<div class="myformtd 1"   id="num_page">';
-                            form_label_red1("מספר עמודים:", TRUE);
-                            form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
-                            echo  '</div>';
-
-
-
-
-                        echo '<div class="myformtd 1" style="width:60%;">';
-                            form_url2("forum_demo_last8.php", "ערוך ברנדים", 2);
-                        echo '</div>';
                       }
+
 
                       else{
                              echo '<div class="myformtd 1" style="width:60%;">';
                                     form_label_red1("שם הברנד::", true);
-                                    form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
-                                   //form_text_a("brand_pdf", array_item($formdata, "brandName"), 15, 15, 1);
+                                //    form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
+                                     form_list111("brand_pdf", $rows1, array_item($formdata, "brandID"),"id = brand_pdf");
                                     form_empty_cell_no_td(10);
                              echo '</div>';
 
@@ -178,69 +138,39 @@ function build_form(&$formdata)
                       }
                     }
 //-----------------------SAVE--------------------------------------------
-                    else{
-                     if($level) {
+                  else{
+                    if($level) {
+                    echo '<div class="myformtd 1" style="width:60%;">';
+                            form_label_red1("תוכנית הברנד:", true);
+                            form_list_b("brand_pdf", $rows2, array_item($formdata, "brandID"),"id = brand_pdf");
+                            form_empty_cell_no_td(10);
+                     echo '</div>';
 
+                    echo '<div class="myformtd 1"   id="num_page">';
+                        form_label_red1("מספר עמודים:", TRUE);
+                        form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
+                    echo  '</div>';
 
-                     echo '<div class="myformtd 1" style="width:60%;">';
+                    echo '<div class="myformtd 1" style="width:60%;">';
                         form_label_red1("תאריך הפצה:", true);
                         form_text3("brand_date2", array_item($formdata, "brand_date2"), 15, 15, 1, 'brand_date2');
                         form_empty_cell_no_td(10);
                     echo '</div>';
 
+                     }else{
 
-
-                     echo '<div class="myformtd 1" style="width:60%;margin-top: 15px;">';
-                        form_label1("שם ברנד:", TRUE);
-                        form_text_a("newbrandName", array_item($formdata, "tmpName"), 20, 50, 1);
-                        form_empty_cell_no_td(5);
+                     echo '<div class="myformtd 1" style="width:60%;">';
+                            form_label_red1("שם הברנד::", true);
+                            form_list_b("brand_pdf", $rows1, array_item($formdata, "brandID"),"id = brand_pdf");
+                            form_empty_cell_no_td(10);
                      echo '</div>';
 
+                       $date_val = array_item($formdata, "brand_date2");
+                      echo '<input type="hidden" id="brand_date3" value='.$date_val.'" >';
 
 
-
-
-                    echo '<div class="myformtd 1" style="width:60%;margin-top: 15px;">';
-                     $connect = array_item($formdata, "insertID") ? array_item($formdata, "insertID") : '11';
-                     form_label1("קשר לברנד:", TRUE);
-                     form_list_find_notd("insert_forum", "insert_forum", $rows, $connect);
-                     form_empty_cell_no_td(5);
-                      echo '</div>';
-                     echo '<div class="myformtd 1" style="width:60%;">';
-                        form_label_red1("סטטוס ברנד:", TRUE);
-                        form_list_find_notd_no_choose2('brand_status', $arr, $selected, $str = "");
-                        form_empty_cell_no_td(5);
-                      echo '</div>';
-
-                        echo '<div class="myformtd 1" style="width:60%;">';
-                        form_label_red1("קידומת:", TRUE);
-                        //form_list_find_notd_no_choose2('brand_prefix', $arr_show, $selected_show, "id=brand_prefix");
-                        form_text_a("brandPrefix", array_item($formdata, "brandPrefix"), 20, 50, 1);
-                        form_empty_cell_no_td(5);
-                        echo '</div>';
-
-
-                         echo '<div class="myformtd 1"   id="num_page">';
-                        form_label_red1("מספר עמודים:", TRUE);
-                        form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
-                        echo  '</div>';
-
-                     }
-
-else{
-                             echo '<div class="myformtd 1" style="width:60%;">';
-                                    form_label_red1("שם הברנד::", true);
-                                    form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
-                                   //form_text_a("brand_pdf", array_item($formdata, "brandName"), 15, 15, 1);
-                                    form_empty_cell_no_td(10);
-                             echo '</div>';
-
-                             $date_val = array_item($formdata, "brand_date2");
-                              echo '<input type="hidden" id="brand_date3" value='.$date_val.'" >';
-
-
-                              $prefix_val = array_item($formdata, "brandPrefix");
-                              echo '<input type="hidden" id="brandPrefix" value='.$prefix_val.'" >';
+                      $prefix_val = array_item($formdata, "brandPrefix");
+                      echo '<input type="hidden" id="brandPrefix" value='.$prefix_val.'" >';
                       }
  }
                     echo '</div>';
@@ -297,7 +227,7 @@ global $dbc,$db;
   $sql = "SELECT * FROM brands WHERE brandID=$brandID";
     if( $rows1 = $db->queryObjectArray($sql)) {
         $brandPrefix = $rows1[0]-> brandPrefix;
-        $tmpName = $rows1[0]-> tmpName;
+
      }
 
 $sql = "SELECT * FROM pdfs ORDER BY date_created DESC";
@@ -341,11 +271,11 @@ if( isset($formdata['brand_date2']) ){
            $page_num =      isset($formdata['pages']) ? $formdata['pages'] : '';
            $brandPrefix =   $formdata['brandPrefix'];
 
-           if(trim($tmpName) == "חדשות"){
-           $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+           if($rows3[0]->catName == "חדשות"){
+               $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
            }
            $brandPrefixArr = array();
-            $html = '';
+           $html = '';
            $html .= '<div class="" id="display_div" >';
 
         for($i = 0; $i<$page_num ; $i++){
@@ -409,6 +339,12 @@ if( isset($formdata['brand_date2']) ){
 //---------------------------------------------------------------------------------
              echo '</div></fielset></form></div>';
 }//end build_form
+
+
+
+
+
+
 
 function build_form_ajx7(&$formdata)
 {
@@ -475,7 +411,7 @@ function build_form_ajx7(&$formdata)
 
 
         <h4 class="my_main_fieldset<?php echo $formdata['brandID'] ?>" style="height:15px;cursor:pointer;"></h4>
-        <form name="brand" id="brand" method="post" action="../admin/dynamic_10_test.php">
+        <form name="brand" id="brand" method="post" action="../admin/pdf_brand.php">
 
             <?php
             }else{
