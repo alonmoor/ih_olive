@@ -1586,7 +1586,8 @@ function print_brand_paging($brandID = "")
         printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
             htmlspecial_utf8($catName),
             build_href2("../admin/pdf_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
-            build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+            //build_href2("../admin/pdf_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
+            build_href2("../admin/pdf_brand.php", "mode=copy_files", "&updateID=$catID", "עדכן שם"),
             build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
             build_href5("", "", "הראה נתונים", $str));
     }
@@ -3693,11 +3694,8 @@ AND r.brandID =$brandID ORDER BY c.catName";
                         recurse_copy($src . '/' . $file,$dst . '/' . $file);
                     }
                     else {
-                        copy($src . '/' . $file,$dst . '/' . $file);
- //--------------------------------------------------------------------
-
-
-//------------------------------------------------------------------
+//                        copy($src . '/' . $file,$dst . '/' . $file);
+                        copy($src . '/' . $file,$dst.$file);
                     }
                 }
             }

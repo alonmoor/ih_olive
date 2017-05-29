@@ -34,76 +34,245 @@ if(isset($_POST['form']['brandID']) && array_item($_POST,'form') && is_numeric($
 //---------------------------------------------------------------------------------
 
 if(isset($_POST['brandID']) &&   isset($_POST['form']['newbrand ']) && isset($_POST['form']) &&  ( ($_POST['form']['brandID']  &&  isset($_POST['form']['brandID'])  && !empty($_POST['form']['brandID']) && $_POST['form']['brandID']!='none')
-    && !($_POST['form']['newbrand '] && !$_POST['form']['newbrand ']!='none') )
+        && !($_POST['form']['newbrand '] && !$_POST['form']['newbrand ']!='none') )
     && ($_REQUEST['mode']=='save')   ){
     $_POST['mode']="update";
     $_REQUEST['mode']="update";
 }
-//---------------------------------------------------------------------------------/
 
+
+
+
+function getFileMimeType($file) {
+    if (function_exists('finfo_file')) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $type = finfo_file($finfo, $file);
+        finfo_close($finfo);
+    } else {
+        require_once 'upgradephp/ext/mime.php';
+        $type = mime_content_type($file);
+    }
+
+    if (!$type || in_array($type, array('application/octet-stream', 'text/plain'))) {
+        $secondOpinion = exec('file -b --mime-type ' . escapeshellarg($file), $foo, $returnCode);
+        if ($returnCode === 0 && $secondOpinion) {
+            $type = $secondOpinion;
+        }
+    }
+
+    if (!$type || in_array($type, array('application/octet-stream', 'text/plain'))) {
+        require_once 'upgradephp/ext/mime.php';
+        $exifImageType = exif_imagetype($file);
+        if ($exifImageType !== false) {
+            $type = image_type_to_mime_type($exifImageType);
+        }
+    }
+
+    return $type;
+}
+
+function expert_toDate($str, $format = 'm/d/Y H:i')
+{
+    $time = explode(' ', $str);
+    $time[0] = explode('/', $time[0]);
+    return date('m/d/Y H:i:s', strtotime($time[0][1] . '/' . $time[0][0] . '/' . $time[0][2] . ' ' . $time[1]));
+}
+//---------------------------------------------------------------------------------
 $_REQUEST['mode']  = isset( $_REQUEST['mode'] ) ? $_REQUEST['mode'] : 'default';
 //---------------------------------------------------------------------------------
+?>
+    <script type="text/javascript">
+        turn_red_error();
+    </script>
+<?php
 switch ($_REQUEST['mode'] ) {
-
+//sdfasfasgsdgsdfgsdg
     case "copy_files":
 
         global $db;
+        $log ='';
         $pdf_file= PDF_DIR; //PDF FILE LOCATION
         $jpgloc=PDF_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
         $brand=new brand();
-
-
         $src = "/home/alon/Desktop/PROJECT/4.4.17";
         $dst = PDF_DIR;
         $brand-> recurse_copy($src,$dst);
-
         $files = new RecursiveDirectoryIterator(PDF_DIR);
         $files->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($files);
         foreach ($files as $file) {
+            if(pathinfo($file, PATHINFO_EXTENSION) == 'pdf'){
+                $name = $file->getFilename();
+                $file_name = explode('.',$name);
+                $file_name = $file_name[0];
+//------------------------------------------NEW--------------------------------------------------------------------
+//ayom2p001_new
+                $file_name1 = explode('_new',$file_name);
+                $tmp_file = $file_name1;
+                if (count($file_name1) > 1) {
+                    $file_name1 = $file_name1[0];
+                    $newname = $file_name1 . ".pdf";
+//file original+new exist
+                    $sql = "SELECT COUNT(*) FROM pdfs " .
+                        "WHERE pdfName='$newname'";
+                    if ($db->querySingleItem($sql) > 0) {
+//get the ID+modify
+                        $sql = "SELECT * FROM pdfs " .
+                            "WHERE pdfName='$newname'";
+
+                        $modify = '';
+                        if ($rows = $db->queryObjectArray($sql)) {
+                            $pdfID = $rows[0]->pdfID;
+                            $modify = $rows[0]->modify_date;
+                        }
 
 
-       if(pathinfo($file, PATHINFO_EXTENSION) == 'pdf'){
+                        if (count($tmp_file) > 1 && $file->getMTime() > strtotime($modify) && isset($modify)) {
+                            $sql = "DELETE FROM  pdfs  WHERE  pdfID = $pdfID  ";
+                            if (!$db->execute($sql)) {
+                                return FALSE;
+                            } else {
+                                unset($tmp_file);
+                            }
+                            $mime = "application/pdf";
+                            $mime = $file->getExtension();
+                            $mime = getFileMimeType($file);
+                            $data = file_get_contents(PDF_DIR . $name);
+                            $size = $file->getSize();
+                            // $pdf_date = date("F d Y H:i:s.", filemtime($file));
+                            $pdf_date = date("Y-m-d H:i:s");
+                            $modify_date = $file->getMTime();
+                            $modify_date = date('Y-m-d H:i:s', $file->getMTime());
 
+                            $path = $file->getRealPath();
+                            if (file_exists($path)) {
+                            }
+                            $sql = "SELECT COUNT(*) FROM pdfs " .
+                                "WHERE pdfName='$name'";
+                            if ( !($db->querySingleItem($sql) > 0) ) {
+                                $sql = "INSERT INTO pdfs (`pdfName`,`data`,`size`,`pdf_date`,`modify_date`,`mime`)VALUES ( " .
+                                    $db->sql_string($name) . ", " .
+                                    $db->sql_string($data) . ", " .
+                                    $db->sql_string($size) . ", " .
+                                    $db->sql_string($pdf_date) . ", " .
+                                    $db->sql_string($modify_date) . ", " .
+                                    $db->sql_string($mime) . " ) ";
 
-           $name = $file->getFilename();
-           $file_name = explode('.',$name);
-           $file_name = $file_name[0];
-           $jpgloc2=CONVERT_PDF_TO_IMG_DIR."$file_name.jpg";
-           if(!file_exists($jpgloc2)){
-               $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
-           }
-
-           $mime = "application/pdf";
-           $data = file_get_contents(PDF_DIR.$name);
-           $size = $file->getSize();
-
-
-           $sql = "SELECT COUNT(*) FROM pdfs " .
-               "WHERE pdfName='$name'";
-           if ($db->querySingleItem($sql) > 0) {
-               show_error_msg('כבר קיים PDF בשם הזה'.$name);
-               ?>
-               <script>
-                 var name = <?php echo $name; ?>
-                   $('#brand_error').append($('<p ID="bgchange" ><b style="color:blue;">'name +  כבר קיים PDF בשם הזה'!!!!!</b></p>\n' ));
-                   $('#brand_error').append($('<p ID="bgchange" ><b style="color:blue;">'.$name.'</b></p>\n' ));
-                   turn_red();
-               </script>
-               <?php
-               //return -1;
-           }else{
-           $sql = "INSERT INTO pdfs (`pdfName` , `data`,`size`)VALUES ( " .
-               $db->sql_string($name) . ", " .
-               $db->sql_string($data) . ", " .
-               $db->sql_string($size) . " ) " ;
-
-               if(!$db->execute ($sql) ){
-                   return false;
+                                if (!$db->execute($sql)) {
+                                    show_error_msg('כבר קיים PDF בשם הזה' . $name);
+                                    $log = "כבר קיים PDF בשם הזה :" . ' - ' . date("F j, Y, g:i a") . PHP_EOL . print_r($name, true) . PHP_EOL;
+                                    $log .= "---------------------------------------------------------------------------------------------------------------------------------------------------------" . PHP_EOL;
+                                    file_put_contents('/tmp/olive_log_last_' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
+                                }else{
+                                    ?>
+                                    <script type="javascript">
+                                        $('.my_task').css('width', '20%');
+                                        turn_red_task();
+                                    </script>
+                                    <?php
+                                }
+                            }
+                            $jpgloc2 = CONVERT_PDF_TO_IMG_DIR . "$file_name.jpg";
+                            if (!file_exists($jpgloc2)) {
+                                $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
+                            }
+                        }
+                    }
                 }
-               }
+//---------------------------------------------------------------------------------------------------------------------------------
+                elseif(!(count($tmp_file) > 1) ) {
+                    $jpgloc2 = CONVERT_PDF_TO_IMG_DIR . "$file_name.jpg";
+                    if (!file_exists($jpgloc2)) {
+                        $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
+                    }
+                    $sql_count = "SELECT COUNT(*) FROM pdfs " .
+                        "WHERE pdfName='$name'";
+
+
+                    $sql = "SELECT * FROM pdfs " .
+                        "WHERE pdfName='$name'";
+
+                    $modify = '';
+                    if ($rows = $db->queryObjectArray($sql)) {
+                        $pdfID = $rows[0]->pdfID;
+                        $modify = $rows[0]->modify_date ;
+
+
+
+                        if($file->getMTime() > strtotime($modify)){
+                            $mime = $file->getExtension();
+                            $mime = getFileMimeType($file);
+                            $data = file_get_contents(PDF_DIR . $name);
+                            $size = $file->getSize();
+
+                            $pdf_date = date("Y-m-d H:i:s", time());;
+                            $modify_date = $file->getMTime();
+                            $modify_date =  date('Y-m-d H:i:s',$file->getMTime());
+
+                            //   $pdf_date = date('Y-m-d H:i:s', strtotime($date));
+
+                            $sql = "INSERT INTO pdfs (`pdfName`,`data`,`size`,`pdf_date`,`modify_date`,`mime`)VALUES ( " .
+                                $db->sql_string($name) . ", " .
+                                $db->sql_string($data) . ", " .
+                                $db->sql_string($size) . ", " .
+                                $db->sql_string($pdf_date) . ", " .
+                                $db->sql_string($modify_date) . ", " .
+                                $db->sql_string($mime) . " ) ";
+
+                            if (!$db->execute($sql)) {
+                                return false;
+                            }else{
+
+                                ?>
+                                <script type="text/javascript">
+                                    turn_red_task();
+                                </script>
+                                <?PHP
+                            }
+                        }
+                    }else if ($db->querySingleItem($sql) > 0) {
+                        show_error_msg('כבר קיים PDF בשם הזה' . $name);
+                        $log  = "כבר קיים PDF בשם הזה :" . ' - ' . date("F j, Y, g:i a") .  PHP_EOL  . print_r($name, true) . PHP_EOL;
+                        $log .= "---------------------------------------------------------------------------------------------------------------------------------------------------------" . PHP_EOL ;
+                        file_put_contents('/tmp/olive_log_last_' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
+                    }
+//---------------------------------------------------------------------------------------------------
+                    else{
+                        $test_name = explode('.pdf',$name);
+                        $test_name =  $test_name[0];
+                        $test_name = $test_name.'_new.pdf';
+
+                        $sql_count = "SELECT COUNT(*) FROM pdfs " .
+                            "WHERE pdfName='$test_name'";
+
+                        if ( !($db->querySingleItem($sql) > 0)) {
+
+
+                            $mime = $file->getExtension();
+                            $mime = getFileMimeType($file);
+                            $data = file_get_contents(PDF_DIR . $name);
+                            $size = $file->getSize();
+
+                            $pdf_date = date("Y-m-d H:i:s", time());;
+                            $modify_date = $file->getMTime();
+                            $modify_date = date('Y-m-d H:i:s', $file->getMTime());
+
+                            $sql = "INSERT INTO pdfs (`pdfName`,`data`,`size`,`pdf_date`,`modify_date`,`mime`)VALUES ( " .
+                                $db->sql_string($name) . ", " .
+                                $db->sql_string($data) . ", " .
+                                $db->sql_string($size) . ", " .
+                                $db->sql_string($pdf_date) . ", " .
+                                $db->sql_string($modify_date) . ", " .
+                                $db->sql_string($mime) . " ) ";
+
+                            if (!$db->execute($sql)) {
+                                return false;
+                            }
+                        }
+                    }
+                }//end else
             }//end pdf files
-        }
+        }//end foreach
         break;
 //---------------------------------------------------------------------------------
     case "view_pdfs":
@@ -164,9 +333,9 @@ switch ($_REQUEST['mode'] ) {
         $formdata=$_POST['form'];
         $db->execute("START TRANSACTION");
         $result = true;
-                    if ($result = $brand->add_brand($formdata)) {
-                        $db->execute("COMMIT");
-                        return true;
+        if ($result = $brand->add_brand($formdata)) {
+            $db->execute("COMMIT");
+            return true;
         }
         $db->execute("ROLLBACK");
         $formdata['fail'] = true;
@@ -233,12 +402,12 @@ switch ($_REQUEST['mode'] ) {
 
             $formdata = isset($_POST['form']) ? $_POST['form'] : false;
             $formdata['brandID'] = $brandID;
-           if(isset($formdata['brand_date2'])) {
-               list($year_date, $month_date, $day_date) = explode('-', $formdata['brand_date2']);
-               if (strlen($year_date) > 3) {
-                   $formdata['brand_date'] = "$year_date-$month_date-$day_date";
-               }
-           }
+            if(isset($formdata['brand_date2'])) {
+                list($year_date, $month_date, $day_date) = explode('-', $formdata['brand_date2']);
+                if (strlen($year_date) > 3) {
+                    $formdata['brand_date'] = "$year_date-$month_date-$day_date";
+                }
+            }
 //----------------------------------------------------------------------
             $db->execute("START TRANSACTION");
             if(!$formdata=update_brand($formdata)){
@@ -269,7 +438,7 @@ switch ($_REQUEST['mode'] ) {
         }
 
         break;
-   //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
 
     default:
     case "list":
@@ -301,30 +470,11 @@ switch ($_REQUEST['mode'] ) {
             }
         }
 }
-
-/***************************************GET_DEC_FOR_THE_TREE_VIEW*******************************************************/
-function   get_dec($brandID){
-    $brand=new brand();
-    $brand->restore_tree($brandID);
-}
-/***************************************GET_DEC2_FOR_THE_TREE_VIEW*******************************************************/
-function   get_dec2($brandID){
-    $brand=new brand();
-    $brand->restore_tree_2($brandID);
-}
-
-
-/***************************************GET_DEC_FOR_THE_TREE_VIEW_MULTI*******************************************************/
-function   get_dec_multi($brandID,$count_form=""){
-    $brand=new brand();
-    $brand->restore_tree2($brandID,$count_form);
-}
 //-----------------------------------------------------------------
-function   get_dec_multi2($brandID,$count_form=""){
-    $brand=new brand();
-    $brand->restore_tree_win($brandID,$count_form);
-}
-//-----------------------------------------------------------------
+/**
+ * @param $formdata
+ * @return bool
+ */
 function update_brand($formdata){
     global $db;
     $brand=new brand();//($formdata);
@@ -353,8 +503,8 @@ function update_brand($formdata){
 
 
         if(array_item($formselect,'brand_date2') && !(array_item($formdata,'brand_date2')) ){
-        $brand_date = isset($formselect['brand_date2']) ? $formselect['brand_date2'] : '';
-        $formdata['brand_date2'] = $formselect['brand_date2'];
+            $brand_date = isset($formselect['brand_date2']) ? $formselect['brand_date2'] : '';
+            $formdata['brand_date2'] = $formselect['brand_date2'];
         }elseif(array_item($formdata,'brand_date2')){
             $brand_date = isset($formdata['brand_date2']) ? $formdata['brand_date2'] : '';
         }else{
@@ -375,43 +525,38 @@ function update_brand($formdata){
             return false;
         }
 //-------------------------------------------------------------------------
-       /// $formdata['pages'] = isset( $formselect['pages']) ?  $formselect['pages'] :'';
-
-
-
-
         if (array_item($formdata, "dest_pdfs")) {
             $pdfIDS = $formdata["dest_pdfs"];
         }
         if (array_item($formdata, "dest_publishers")) {
             $pubIDs = $formdata["dest_publishers"];
         }
-       // if ($brand->validate_data_ajx($formdata, $pdfIDS, $brand_date, $insertID = "", $formselect)) {
-            if ($result = $brand->update_brand1($formdata, $formselect)) {
-                            if ($result == -1) {
-                                echo "<p>Sorry, an error happened. Nothing was saved.</p>\n";
-                                return FALSE;
-                            }
-                            if(array_item($formdata,'dest_pdfs'))
-                                $brand->conn_brand_pdf($pdfIDS ,$brandID);
-                            if(array_item($formdata,'dest_publishers'))
-                                $brand->conn_brand_pub($pubIDs ,$brandID);
-                            if(isset($formdata['brandID']) && is_numeric($formdata['brandID'])) {
-                                $id = $formdata['brandID'];
-                            if (isset($formdata['brandID']) && isset($formdata['newbrand ']) && isset($brandID) ) {
-                                $formdata['brandID'] = $brandID;
-                                unset($formdata['newbrand']);
-                            }
-                            }
+        // if ($brand->validate_data_ajx($formdata, $pdfIDS, $brand_date, $insertID = "", $formselect)) {
+        if ($result = $brand->update_brand1($formdata, $formselect)) {
+            if ($result == -1) {
+                echo "<p>Sorry, an error happened. Nothing was saved.</p>\n";
+                return FALSE;
+            }
+            if(array_item($formdata,'dest_pdfs'))
+                $brand->conn_brand_pdf($pdfIDS ,$brandID);
+            if(array_item($formdata,'dest_publishers'))
+                $brand->conn_brand_pub($pubIDs ,$brandID);
+            if(isset($formdata['brandID']) && is_numeric($formdata['brandID'])) {
+                $id = $formdata['brandID'];
+                if (isset($formdata['brandID']) && isset($formdata['newbrand ']) && isset($brandID) ) {
+                    $formdata['brandID'] = $brandID;
+                    unset($formdata['newbrand']);
+                }
+            }
 
-                            return $formdata;
-                        } else{
-                            echo "נכשל בעדכון";
-                            return false;
-                        }
+            return $formdata;
+        } else{
+            echo "נכשל בעדכון";
+            return false;
+        }
 //----------------------------------------------------------
-                    }
-             //  }
+    }
+    //  }
     return false;
 }
 //-----------------------------------------------------------------
@@ -422,19 +567,19 @@ function validate($formdata){
     $formdata['dynamic_10']=1;
     $db->execute("START TRANSACTION");
     if ($publishersIDs = $brand->fetch_publisher($formdata)) {
-            if ($pdfIDS = $brand->fetch_pdf($formdata)) {
-                if($imgNams = $brand->convertPdfToImg($formdata) ){
+        if ($pdfIDS = $brand->fetch_pdf($formdata)) {
+            if($imgNams = $brand->convertPdfToImg($formdata) ){
                 //if ($brandIDS = $brand->update_brand($formdata)) {
-                    if ($brand->add_brand($formdata,$publishersIDs,$pdfIDS,$imgNams)) {
-                        $db->execute("COMMIT");
-                        return true;
-                    }
+                if ($brand->add_brand($formdata,$publishersIDs,$pdfIDS,$imgNams)) {
+                    $db->execute("COMMIT");
+                    return true;
                 }
             }
-}else{
-    $db->execute("ROLLBACK");
-    $formdata = FALSE;
-    return false;
+        }
+    }else{
+        $db->execute("ROLLBACK");
+        $formdata = FALSE;
+        return false;
     }
 }//end function validate
 //---------------------------------------------------
@@ -489,7 +634,7 @@ function read_brand($editID){
         }
     }
     $brandID=$formdata['brandID'];
-  //  $brand->message_update_b($formdata,$brandID);
+    //  $brand->message_update_b($formdata,$brandID);
     $formdata['brandID'] = $brandID;
     $brand->print_brand_paging();
 //    build_form_ajx7($formdata);

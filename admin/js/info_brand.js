@@ -40,8 +40,9 @@ function processJson(data) {
 }
 
 //------------------PULL THE DIV------------------------------
-    $('div#target_Brand').empty();
+
      $('form#brand_org fieldset').find('select#brand_pdf').change(function(){
+         $('div#display_div').empty();
      if($('#brandID').val())
          var brandID = $('#brandID').val();
 

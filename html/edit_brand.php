@@ -287,8 +287,13 @@ if( isset($formdata['brand_date2']) ){
                }elseif ($i>=100){
                 $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
                }
+                $test_name = explode('.pdf',$brandPrefixArr[$i]);
+                $test_name =  $test_name[0];
+                $test_name = $test_name.'_new.pdf';
+                $test_checkbox = $test_name.'_new';
+                if($formdata['brandPrefix'] == "ayom{{date}}"){
 //------------------------------------------------------------------------------
-               if( empty($pdf_names) ||  !(in_array($brandPrefixArr[$i],$pdf_names))  ){
+               if(empty($pdf_names) || ( !(in_array($brandPrefixArr[$i],$pdf_names)) &&  !(in_array($test_name,$pdf_names)) ) ){
                             $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
                                     $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
                                                     <div id='my_pdfs_$i'>
@@ -304,7 +309,14 @@ if( isset($formdata['brand_date2']) ){
 //------------------------------------------------------------------------------
                else{
                 foreach($rows as $row){
-                    if($brandPrefixArr[$i] == $row->pdfName){
+                    if($brandPrefixArr[$i] == $row->pdfName  || $test_name == $row->pdfName   ){
+                     if($test_name == $row->pdfName )   {
+                          ?>
+                                <script type="text/javascript">
+                                    turn_red_task();
+                                </script>
+                                <?PHP
+                     }
                      $pdf_names[] = $row-> pdfName;
                     $file_name = explode('.',$row->pdfName);
                         $file_name =  $file_name[0];
@@ -317,7 +329,7 @@ if( isset($formdata['brand_date2']) ){
                                                 <input type='checkbox' id=$tmp_name style='zoom: 1.7;'>
                                             </div>
                                       <div >    
-                                           <div id='my_pdfs{$row->pdfName}'>
+                                           <div  class='my_task'  id='my_pdfs{$row->pdfName}'>
                                             <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
                                            <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
                                                     <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
@@ -330,10 +342,67 @@ if( isset($formdata['brand_date2']) ){
                   }
                 }
              }
+         }
 //------------------------------------------------------------------------------
+          elseif ($brandPrefix == "ispo1" ||  $brandPrefix == "issh1") {
+           if(empty($pdf_names) || ( !(in_array($brandPrefixArr[$i],$pdf_names)) &&  !(in_array($test_name,$pdf_names)) ) ){
+                            $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
+                                    $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
+                                                    <div id='my_pdfs_$i'>
+                                                        <h4>
+                                                             <a class='my_href_li' href=\"#\">
+                                                             </a>
+                                                         </h4>
+                                                      </div>
+                                                      
+                                                      </div>\n";
+                                    $html .=  '<br/></div>';
+               }
+//------------------------------------------------------------------------------
+               else{
+
+               foreach($rows as $row){
+                    if($brandPrefixArr[$i] == $row->pdfName  || $test_name == $row->pdfName   ){
+                     if($test_name == $row->pdfName )   {
+                          ?>
+                                <script type="text/javascript">
+                                    turn_red_task();
+                                </script>
+                                <?PHP
+                     }
+                     $pdf_names[] = $row-> pdfName;
+                    $file_name = explode('.',$row->pdfName);
+                        $file_name =  $file_name[0];
+                        $tmp_name  =  $file_name;
+                        $file_name = $file_name.'.jpg';
+                         $html .=   '<div class="col-xs-3">';
+                         $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
+
+                                           <div  style='margin-right: 224px;'>
+                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;'>
+                                            </div>
+                                      <div >
+                                           <div  class='my_task'  id='my_pdfs{$row->pdfName}'>
+                                            <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                           <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                                </a>
+                                           </div>
+                                      </div>
+                                    </div>\n";
+                         $html .=   '<br/>
+                                   </div>';
+                  }
+                }//end foreach
+         }//end else
+        }
+//-------------------------------------------------------------------------------
        }//end for
      echo $html;
     }
+
+//------------------------------------------------------------------------------
+
   }
 }
 //---------------------------------------------------------------------------------

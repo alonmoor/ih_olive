@@ -679,19 +679,6 @@ class Pdfs extends DBObject3
     {
         global $db, $dbc;
 
-//        $dfpAllowed = $formdata['dfp_Allowed'];
-//        if ($formdata['dfp_Allowed'] == 1)
-//            $dfpAllowed = 'public';
-//        elseif ($formdata['dfp_Allowed'] == 2)
-//            $dfpAllowed = 'private';
-//        elseif ($formdata['dfp_Allowed'] == 3)
-//            $dfpAllowed = 'top_secret';
-        //$dfpAllowed = $db->sql_string($dfpAllowed);
-
-
-        //      $status = $formdata['dfp_status'];
-
-
         if (!$newPdfName) return 0;
         // test if newpdfName already exists
         $sql = "SELECT COUNT(*) FROM pdfs " .

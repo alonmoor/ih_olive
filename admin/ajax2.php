@@ -24,6 +24,13 @@
                 $pdf_names[] = $row-> pdfName;;
             }
         }
+
+        $brand_sql = "SELECT b.*,c.* FROM brands b
+                        inner join categories c  
+                        on b.catID = c.catID              
+                        WHERE b.brandID = $brandID
+                        ORDER BY b.brandName ASC";
+        $rows3 = $db->queryObjectArray($brand_sql);
 //---------------------------------------------------------------------------------
         //  hayom{{date}}p{{page}}.
         $dayOfWeek = date("l", strtotime($brand_date));
@@ -59,40 +66,40 @@
 
 
 
-//        $brand_sql = "SELECT b.*,c.* FROM brands b
-//                        inner join categories c
-//                        on b.catID = c.catID
-//                        WHERE b.brandID = $brandID
-//                        ORDER BY b.brandName ASC";
-//        $rows3 = $db->queryObjectArray($brand_sql);
-//
-//        if($rows3[0]->catName == "חדשות"){
-//            $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
-//        }
-
-
-        if(!empty($dayOfWeek) && $brandPrefix == "ayom{{date}}") {
-        $brandPrefix = str_replace("{{date}}", $dayOfWeek, $brandPrefix);
+        if(isset($brandPrefix))
+        $tmpPrefix = $brandPrefix;
+        if(isset($rows3[0]->catName))
+        if($rows3[0]->catName == "חדשות"){
+            $brandPrefix =  str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+        }
         $brandPrefixArr = array();
         $html = '';
         $html .= '<div class="" id="display_div" >';
-        for($i = 0; $i < $page_num ; $i++){
-            $m = $i +1;
-            if($i<10){
-                $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
-            }elseif ($i<100 && $i>=10 ){
-                $brandPrefixArr[$i] = $brandPrefix."p0".$m.".pdf";
-            }elseif ($i>=100){
-                $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
-            }
-            //  if (!(file_exists(CONVERT_PDF_TO_IMG_WWW_DIR.$brandPrefixArr[$i])) ) {
+        if(isset($page_num) && is_numeric($page_num)) {
+            for ($i = 0; $i < $page_num; $i++) {
+                $m = $i + 1;
+                if ($i < 10) {
+                    $brandPrefixArr[$i] = $brandPrefix . "p00" . $m . ".pdf";
+                } elseif ($i < 100 && $i >= 10) {
+                    $brandPrefixArr[$i] = $brandPrefix . "p0" . $m . ".pdf";
+                } elseif ($i >= 100) {
+                    $brandPrefixArr[$i] = $brandPrefix . "p" . $m . ".pdf";
+                }
+                //  if (!(file_exists(CONVERT_PDF_TO_IMG_WWW_DIR.$brandPrefixArr[$i])) ) {
 //------------------------------------------------------------------------------
 
-            $html .= '<input type="hidden" name="my_brand_date"  id="my_brand_date"  value='.$brand_date.' >';
-            $html .= '<input type="hidden" name="my_pageNum"  id="my_pageNum"  value='.$page_num.' >';
-            if( !(in_array($brandPrefixArr[$i],$pdf_names))  ){
-                $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
-                $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
+                $html .= '<input type="hidden" name="my_brand_date"  id="my_brand_date"  value=' . $brand_date . ' >';
+                $html .= '<input type="hidden" name="my_pageNum"  id="my_pageNum"  value=' . $page_num . ' >';
+                $test_name = explode('.pdf', $brandPrefixArr[$i]);
+                $test_name = $test_name[0];
+                $test_checkbox = $test_name . '_new';
+                $test_name = $test_name . '_new.pdf';
+
+               if ($tmpPrefix == "ayom{{date}}") {
+
+                   if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($test_name, $pdf_names)))) {
+                        $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
+                        $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
                                                     <div id='my_pdfs_$i'>
                                                         <h4>
                                                              <a class='my_href_li' href=\"#\">
@@ -101,42 +108,90 @@
                                                       </div>
                                                       
                                                       </div>\n";
-                $html .=  '<br/></div>';
-            }
-//-----------------------------------------------------------------------------------
-            else{
-                foreach($rows as $row){
-                    if($brandPrefixArr[$i] == $row->pdfName){
-                        $pdf_names[] = $row-> pdfName;
-                        $file_name = explode('.',$row->pdfName);
-                        $file_name =  $file_name[0];
-                        $tmp_name  =  $file_name;
-                        $file_name = $file_name.'.jpg';
-                        $html .=   '<div class="col-xs-3">';
-                        $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
-                                        
+                        $html .= '<br/></div>';
+                    } else {
+                        foreach ($rows as $row) {
+                            if ($brandPrefixArr[$i] == $row->pdfName || $test_name == $row->pdfName  ) {
+                                $pdf_names[] = $row->pdfName;
+                                $file_name = explode('.', $row->pdfName);
+                                $file_name = $file_name[0];
+                                $tmp_name = $file_name;
+                                $file_name = $file_name . '.jpg';
+                                $html .= '<div class="col-xs-3">';
+                                $html .= "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
+
                                            <div  style='margin-right: 224px;'>
                                                 <input type='checkbox' id=$tmp_name style='zoom: 1.7;' >
                                             </div>
-                                      <div >    
+                                      <div >
                                            <div id='my_pdfs{$row->pdfName}'>
-                                            <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                            <a class='my_href_li' href= '" . PDF_WWW_DIR . "{$row->pdfName}' >
                                            <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
-                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
-                                                </a> 
+                                                    <img src ='" . CONVERT_PDF_TO_IMG_WWW_DIR . "/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                                </a>
                                            </div>
-                                      </div>  
+                                      </div>
                                     </div>\n";
-                        $html .=   '<br/>
+                                $html .= '<br/>
                                    </div>';
+                            }
+                        }
                     }
-                }
-            }
-//------------------------------------------------------------------------------
-        }//end for
-        echo $html;
-    }
+//-----------------------------------------------------------------------------------
+                } elseif ($brandPrefix == "ispo1" || $brandPrefix == "issh1") {
+                    if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($test_name, $pdf_names)))) {
+                        $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
+                        $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
+                                                    <div id='my_pdfs_$i'>
+                                                        <h4>
+                                                             <a class='my_href_li' href=\"#\">
+                                                             </a>
+                                                         </h4>
+                                                      </div>
 
+                                                      </div>\n";
+                        $html .= '<br/></div>';
+                    } else {
+
+                        foreach ($rows as $row) {
+                            if ($brandPrefixArr[$i] == $row->pdfName || $test_name == $row->pdfName) {
+                                if ($test_name == $row->pdfName) {
+                                    ?>
+                                    <script type="text/javascript">
+                                        turn_red_task();
+                                    </script>
+                                    <?PHP
+                                }
+                                $pdf_names[] = $row->pdfName;
+                                $file_name = explode('.', $row->pdfName);
+                                $file_name = $file_name[0];
+                                $tmp_name = $file_name;
+                                $file_name = $file_name . '.jpg';
+                                $html .= '<div class="col-xs-3">';
+                                $html .= "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
+
+                                           <div  style='margin-right: 224px;'>
+                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;'>
+                                            </div>
+                                      <div >
+                                           <div  class='my_task'  id='my_pdfs{$row->pdfName}'>
+                                            <a class='my_href_li' href= '" . PDF_WWW_DIR . "{$row->pdfName}' >
+                                           <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
+                                                    <img src ='" . CONVERT_PDF_TO_IMG_WWW_DIR . "/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                                </a>
+                                           </div>
+                                      </div>
+                                    </div>\n";
+                                $html .= '<br/>
+                                   </div>';
+                            }
+                        }//end foreach
+                    }//end else
+                }
+            }//end for
+            echo $html;
+            exit;
+        }
 }elseif(isset($_GET['check_for_files']) && $_GET['check_for_files'] == true){
 
 //    $num_files = count(glob( '/home/alon/Desktop/4.4.17/REG/*'));
@@ -204,197 +259,197 @@ elseif( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'ch
 
 		// build assoc. arrays for name, parent and subcats
 		foreach($rows as $row) {
-			 
+
 			$parents[$row-> decID] = $row->parentDecID;
 			$parents_b[$row-> decID] = $row->parentDecID;
 			$subcats[$row->parentDecID][] = $row->decID;   }
-       if($subcats[$decID]){	
+       if($subcats[$decID]){
 			// build list of all parents for $insertID
 			$dec_ID = $insertID;
 			while($parents[$dec_ID]!=NULL) {
 				$dec_ID = $parents[$dec_ID];
-				$parentList[] = $dec_ID; 
+				$parentList[] = $dec_ID;
 			}
 
             $decisionID = $insertID;
 			while($parents_b[$decisionID]!=NULL && $parents_b[$decisionID]!=$decID) {
 				$decisionID = $parents_b[$decisionID];
-				$parentList_b[] = $decisionID; 
+				$parentList_b[] = $decisionID;
 			}
-			
-			
-			
-			if(   in_array($insertID, $subcats[$decID]) 
-			||    in_array($parents[$insertID],$subcats[$decID] ) 
+
+
+
+			if(   in_array($insertID, $subcats[$decID])
+			||    in_array($parents[$insertID],$subcats[$decID] )
 			||    in_array($decisionID,$subcats[$decID] )
 			||    $parents[$insertID]== $decID ){
-			 
-			 
-				$t['list'] = array();		
-				 
+
+
+				$t['list'] = array();
+
 					$t['list'][0]  = 'fail';
-					
+
 				echo json_encode($t);
 				exit;
-				
+
 			}
-			
-		} 
-		
-		
+
+		}
+
+
 		if($insertID==$decID){
 
-		
-			$t['list'] = array();		
-			
+
+			$t['list'] = array();
+
 				$t['list'][0] = 'fail';
-				
-		
-					
+
+
+
 			echo json_encode($t);
 			exit;
-		
-		
-		} 
-		
-		
-		
+
+
+		}
+
+
+
 				$t['list'][0] = 'succeeded';
 				$t['list']['insertID']=$insertID;
 				echo json_encode($t);
 				exit;
-			 	
-	
-	 
- 	
-}
-/*************************************************************************************************/ 
-elseif(isset($_GET['find_the_dec']  ))  {//משתמשים בעת קבלת ההחלטה קובץ ניהול הוספת משתמש חדש   
-     global $db;	
-   $decID=$_REQUEST['decID']; 
-	
-//	$t['total'] = 0;
-//	$t['list'] = array(); 
-			
 
-//$sql="SELECT decName,decID FROM decisions WHERE decID=$decID ";	
-	
-	
+
+
+
+}
+/*************************************************************************************************/
+elseif(isset($_GET['find_the_dec']  ))  {//משתמשים בעת קבלת ההחלטה קובץ ניהול הוספת משתמש חדש
+     global $db;
+   $decID=$_REQUEST['decID'];
+
+//	$t['total'] = 0;
+//	$t['list'] = array();
+
+
+//$sql="SELECT decName,decID FROM decisions WHERE decID=$decID ";
+
+
 $sql="SELECT decID,IF(CHAR_LENGTH(decName)>9, CONCAT(LEFT(decName,7), ' ... ', RIGHT(decName, 3)), decName) AS decName
 FROM decisions 
-WHERE decID=$decID ";	 
+WHERE decID=$decID ";
 	 if($rows=$db->queryObjectArray($sql)){
 
 	  	foreach($rows as $row)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  $row;
 
-	}		
+	}
 	echo json_encode($t);
 	 exit;
-}   
+}
 
-	
-   } 
 
-/**********************************************AUTO_COMPLETE_FORUMS*************************************************************/   
-elseif(isset($_GET['usrArr_frm']  ))  {   
-     global $db;	
-		
-$formdata=Array();	
-$sql="SELECT forum_decID,forum_decName  FROM forum_dec ORDER BY forum_decName";	 
+   }
+
+/**********************************************AUTO_COMPLETE_FORUMS*************************************************************/
+elseif(isset($_GET['usrArr_frm']  ))  {
+     global $db;
+
+$formdata=Array();
+$sql="SELECT forum_decID,forum_decName  FROM forum_dec ORDER BY forum_decName";
 	if($rows=$db->queryObjectArray($sql)){
-		
+
 	$i=0;
 		foreach($rows as $row){
-		
-		 
+
+
 			 $results[$i] = array($row->forum_decName,$row->forum_decID);
 		      $i++;
-		    
-		
-		  } 
-     
+
+
+		  }
+
 	}
 	echo json_encode($results);
 
 	exit;
 
-	
-   } 
-   
-/**********************************************AUTO_COMPLETE_DECISIONS*************************************************************/   
-elseif(isset($_GET['usrArr_dec']  ))  {   
-     global $db;	
-		
-	$formdata=Array();	
+
+   }
+
+/**********************************************AUTO_COMPLETE_DECISIONS*************************************************************/
+elseif(isset($_GET['usrArr_dec']  ))  {
+     global $db;
+
+	$formdata=Array();
 $sql="SELECT decID,decName  FROM decisions ORDER BY decName";	//getthe forums
 	if($rows=$db->queryObjectArray($sql)){
-		
+
 	$i=0;
 		foreach($rows as $row){
-		
-		 
+
+
 			 $results[$i] = array($row->decName,$row->decID);
 		      $i++;
-		    
-		
-		  } 
-     
+
+
+		  }
+
 	}
 	echo json_encode($results);
 
 	exit;
 
-	
-   } 
+
+   }
 /**********************************************AUTO_COMPLETE_USERS*************************************************************/
-   
-elseif(isset($_GET['usrArr']  ))  {   
-     global $db;	
-		
-	$formdata=Array();	
+
+elseif(isset($_GET['usrArr']  ))  {
+     global $db;
+
+	$formdata=Array();
 $sql="SELECT userID,full_name FROM users ORDER BY full_name";	//getthe forums
 	if($rows=$db->queryObjectArray($sql)){
-		
+
 	$i=0;
 		foreach($rows as $row){
-		
-		 
+
+
 			 $results[$i] = array($row->full_name,$row->userID);
 		      $i++;
-		    
-		
-		  } 
-     
+
+
+		  }
+
 	}
 	echo json_encode($results);
 
 	exit;
 
-	
-   } 
+
+   }
  /**********************************************FOR DELETE USERS IN PRINT_USERS.PHP*************************************************************/
 elseif(isset($_GET['mode2']  ))  {/******************************************************/
 /**************************************************************************************************/
- $userID=$_REQUEST['id'];	
+ $userID=$_REQUEST['id'];
 
  $formdata = array();
-global $db;	
-	
-$result=true;	
-		
+global $db;
+
+$result=true;
+
 $sql="SELECT forum_decID  from rel_user_forum  WHERE userID=$userID";	//getthe forums
-	
-	
-		
+
+
+
 /***************************************************/
-			 
+
 	if($rows=$db->queryObjectArray($sql)){
 	$frmName='';
-	$i=0;	
+	$i=0;
 		foreach($rows as $frm){
 		$sql="SELECT DISTINCT(f.forum_decID) ,f.forum_decName ,u.full_name FROM forum_dec  f 
 		LEFT JOIN rel_user_forum r
@@ -404,39 +459,39 @@ $sql="SELECT forum_decID  from rel_user_forum  WHERE userID=$userID";	//getthe f
          ON u.userID=r.userID
 		WHERE f.forum_decID=$frm->forum_decID
 		AND u.userID=$userID";
-		
+
 		     if($rows_frm=$db->queryObjectArray($sql)){
 		     	$forum_decName=$rows_frm[0]->forum_decName;
 		        $full_name=$rows_frm[0]->full_name;
 	    	}
-	
+
 	    	try {
-	            $result = FALSE;   
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name מתפקד בפורום $forum_decName אנא מחוק אותו משם ");
 	    	} catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
+
 	        }
 			    $i++;
  }//end foreach
-	 
 
-} 
-	    
-		
-		
+
+}
+
+
+
 /****************************************************/
-	    		
-$sql="SELECT forum_decID  from rel_user_Decforum  WHERE userID=$userID";	
-	
-	
-		
- 
-			 
+
+$sql="SELECT forum_decID  from rel_user_Decforum  WHERE userID=$userID";
+
+
+
+
+
 	if($rows=$db->queryObjectArray($sql)){
 	$frmName='';
-	$i=0;	
+	$i=0;
 		foreach($rows as $frm){
 		$sql="SELECT DISTINCT(f.forum_decID) ,f.forum_decName ,u.full_name FROM forum_dec  f 
 		LEFT JOIN rel_user_Decforum r
@@ -446,40 +501,40 @@ $sql="SELECT forum_decID  from rel_user_Decforum  WHERE userID=$userID";
          ON u.userID=r.userID
 		WHERE f.forum_decID=$frm->forum_decID
 		AND u.userID=$userID";
-		
+
      if($rows_frm=$db->queryObjectArray($sql)){
 		     	$forum_decName=$rows_frm[0]->forum_decName;
 		        $full_name=$rows_frm[0]->full_name;
 	    	}
-	
+
 	   try {
-	            $result = FALSE;   
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name תיפקד בעבר בפורום/ים $forum_decName אנא מחוק אותו משם ");
 	    	  }catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
+
 	    }
-	    	  
-	    	  
+
+
 	    	   $i++;
 	       }
-	
 
-} 	    
-	    
-/********************************************************************************************/	    
-		    		
+
+}
+
+/********************************************************************************************/
+
 $sql="SELECT DISTINCT(a.appointID) ,u.full_name FROM appoint_forum a 
 		LEFT JOIN users u 
 		ON u.userID=a.userID 
 		 
-		WHERE a.userID=$userID";	
-	 
-	
-		
+		WHERE a.userID=$userID";
 
-			 
+
+
+
+
 	if($rows=$db->queryObjectArray($sql)){// he is appoint
 	 $full_name=$rows[0]->full_name;
      $appointID=$rows[0]->appointID;
@@ -487,42 +542,42 @@ $sql="SELECT DISTINCT(a.appointID) ,u.full_name FROM appoint_forum a
 	    WHERE a.appointID=f.appointID
             AND a.appointID=$appointID  ";
 	  if($rows_app=$db->queryObjectArray($sql)){
-	 $i=0;	
+	 $i=0;
 		foreach($rows_app as $app){
 			try {
-		
-		    
+
+
 		     	$forum_decName=$app->forum_decName;
-		       
-	     
-	   
-	    	
-	            $result = FALSE;   
+
+
+
+
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name ממנה בפורום $forum_decName אנא מחוק אותו משם ");
 			}catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
+
 	    }
 			    $i++;
 	   }
-     }//end if  $rows_app   
-} 
-	        
-	    
-	    
-/*******************************************************/	
-		    		
+     }//end if  $rows_app
+}
+
+
+
+/*******************************************************/
+
 $sql="SELECT DISTINCT(m.managerID) ,u.full_name FROM managers m 
 		LEFT JOIN users u 
 		ON u.userID=m.userID 
 		 
-		WHERE m.userID=$userID";	
-	 
-	
-		
+		WHERE m.userID=$userID";
 
-			 
+
+
+
+
 	if($rows=$db->queryObjectArray($sql)){// he is appoint
 	 $full_name=$rows[0]->full_name;
      $managerID=$rows[0]->managerID;
@@ -530,31 +585,31 @@ $sql="SELECT DISTINCT(m.managerID) ,u.full_name FROM managers m
 	    WHERE m.managerID=f.managerID
             AND m.managerID=$managerID  ";
 	  if($rows_mgr=$db->queryObjectArray($sql)){
-	 $i=0;	
+	 $i=0;
 		foreach($rows_mgr as $mgr){
 			try {
-		
-		    
+
+
 		     	$forum_decName=$mgr->forum_decName;
-		       
-	     
-	   
-	    	
-	            $result = FALSE;   
+
+
+
+
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name מנהל בפורום $forum_decName אנא מחוק אותו משם ");
 			}catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
+
 	    }
 			    $i++;
 	   }
-     }//end if  $rows_app   
-} 
-	        
-	    
-	    
-/*******************************************************/	
+     }//end if  $rows_app
+}
+
+
+
+/*******************************************************/
 
 
 
@@ -562,57 +617,57 @@ $sql="SELECT DISTINCT(m.managerID) ,u.full_name FROM managers m
 
 
 if(!$result){
- 
+
 	$i=0;
- 
+
 	foreach($message as $row){
-		 
-	  $key="messageError_$i";	
+
+	  $key="messageError_$i";
 	 $message_name[$key]=$row ;
 	 $i++;
 	}
- 	 
-  
-   $message_name['userID']=$userID;
-   
 
-	 	
+
+   $message_name['userID']=$userID;
+
+
+
 	echo json_encode($message_name);
 	exit;
-	  	
+
    } else{
-   	
-   	
-   	
+
+
+
    $sql= "DELETE FROM users WHERE userID=$userID";
-   
-/***********************************************************************************************/   
- 
+
+/***********************************************************************************************/
+
 $query = "set foreign_key_checks=0";
 $query1 = "set foreign_key_checks=1";
  if(   $db->execute($query) ){
-/***********************************/ 	     
+/***********************************/
        if(!$db->execute($sql)){
 /**********************************/
-$str= "בעיות במערכת אנחנו מיתנצלים";	  	 
- $message[]= $str;	
+$str= "בעיות במערכת אנחנו מיתנצלים";
+ $message[]= $str;
 	$i=0;
- 
+
 	foreach($message as $row){
-		 
-	  $key="messageError_$i";	
+
+	  $key="messageError_$i";
 	 $message_name[$key]=$row ;
 	 $i++;
 	}
- 	 
-  
+
+
    $message_name['userID']=$userID;
     $db->execute($query1);
 
-	 	
+
 	echo json_encode($message_name);
 	exit;
-/**********************************/       	
+/**********************************/
        }else{
       	 $db->execute($query1);
       	 $formdata['type'] = 'success';
@@ -620,33 +675,33 @@ $str= "בעיות במערכת אנחנו מיתנצלים";
 	     $formdata['userID'] =$userID;
    	     echo json_encode($formdata);
 	     exit;
-        } 
-/*************/         	
-      } // if(   $db->execute($query) )  		
-/**********/	       
-   }    
-/********/	
+        }
+/*************/
+      } // if(   $db->execute($query) )
+/**********/
+   }
+/********/
 }//end functiom	  
 /*************************************************************************************/
 
-   
-   
-   
+
+
+
 /**********************************************FOR DELETE USERS IN PRINT_USERS_HISTORY.PHP*************************************************************/
 elseif(isset($_GET['mode_del']  ))  {
 
- $userID=$_REQUEST['id'];	
+ $userID=$_REQUEST['id'];
 $forum_decID=$_REQUEST['forum_decID'];
  $formdata = array();
-global $db;	
-	
-$result=true;	
-		
+global $db;
+
+$result=true;
+
 $sql="DELETE FROM  rel_user_forum_history  WHERE userID=$userID AND  forum_decID=$forum_decID ";	//get the forums
 if(!$db->execute($sql))
-return FALSE;	
-	
-		
+return FALSE;
+
+
       	 $formdata['type'] = 'success';
 	     $formdata['message'] = 'עודכן בהצלחה!';
 	     $formdata['userID'] =$userID;
@@ -657,19 +712,19 @@ return FALSE;
 /**********************************************FOR DELETE USERS IN PRINT_Decuser_frm.PHP*************************************************************/
 elseif(isset($_GET['mode_Dec_usrdel']  ))  {
 
- $userID=$_REQUEST['id'];	
+ $userID=$_REQUEST['id'];
 $forum_decID=$_REQUEST['forum_decID'];
 $decID=$_REQUEST['decID'];
  $formdata = array();
-global $db;	
-	
-$result=true;	
-		
+global $db;
+
+$result=true;
+
 $sql="DELETE FROM  rel_user_Decforum  WHERE userID=$userID AND  forum_decID=$forum_decID AND decID=$decID ";	//get the forums
 if(!$db->execute($sql))
-return FALSE;	
-	
-		
+return FALSE;
+
+
       	 $formdata['type'] = 'success';
 	     $formdata['message'] = 'עודכן בהצלחה!';
 	     $formdata['userID'] =$userID;
@@ -690,16 +745,16 @@ return FALSE;
 
 
 
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
 /************************************FORUM_CAT1********************************************************/
 elseif(isset($_POST['category1']) && $_POST['category1'] != ''){
 /****************
@@ -723,13 +778,13 @@ $sql= "select distinct(f.forum_decID),f.forum_decName,f.forum_date,f.managerID,f
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו פורומים '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
 
 
-} 
+}
 /*********************************FORUM_CAT2***********************************************************/
 elseif(isset($_POST['category1_dest']) && $_POST['category1_dest'] != ''){
 /****************
@@ -753,7 +808,7 @@ $sql= "select distinct(f.forum_decID),f.forum_decName,f.forum_date,f.managerID,f
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו פורומים '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
@@ -778,7 +833,7 @@ $sql= "select d.*, c.*
               	//$row=$rows[0];
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
        }//endif;//rows == 1
-} 
+}
 
 /******************************************CATEGORY_DEC2******************************************************/
 elseif(isset($_POST['category_dec_dest']) && $_POST['category_dec_dest'] != ''){
@@ -787,7 +842,7 @@ Sanitize the data
 ***************/
 $safeCat = (int)$_POST['category_dec_dest'];
 /****************/
- 
+
 
 $sql= "select d.*, c.* 
              FROM decisions d
@@ -800,31 +855,31 @@ $sql= "select d.*, c.*
               }else{
               	//$row=$rows[0];
               echo '<h1 id="my_cat_decH1" value="my_cat_decH1"> נמצאו החלטות '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
 
 
-} 
+}
 
-/****************************************PRECENT1*********************************************************/   
+/****************************************PRECENT1*********************************************************/
 
 elseif(isset($_POST['growth_dest']) && $_POST['growth_dest'] != ''){
- 
- 
+
+
 $safeCat_dest = (int)$_POST['growth_dest'];
- 
+
 if(isset($_POST['growth']) && $_POST['growth'] != ''){
-$safeCat = (int)$_POST['growth'];		
+$safeCat = (int)$_POST['growth'];
 }else{
 	$safeCat = (int)5;
 }
 
 if($safeCat_dest<$safeCat){
-  echo '<h2>אי אפשר לבצע חיפוש כשאחוז המקור גדול מהיעד.</h2>';	
+  echo '<h2>אי אפשר לבצע חיפוש כשאחוז המקור גדול מהיעד.</h2>';
   return;
-	
+
 }
 
 $sql= "select d.* 
@@ -835,29 +890,29 @@ $sql= "select d.*
             if( (!$rows) ){
                echo '<h1>לא אותרה אף החלטה חפש רף אחר.</h1>';
               }else{
-               
+
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
 }
-/****************************************PRECENT2*********************************************************/   
+/****************************************PRECENT2*********************************************************/
 elseif(isset($_POST['growth_precent_dest']) && $_POST['growth_precent_dest'] != ''){
- 
- 
+
+
 $safeCat_dest = (int)$_POST['growth_precent_dest'];
- 
+
 if(isset($_POST['growth_precent']) && $_POST['growth_precent'] != ''){
-$safeCat = (int)$_POST['growth_precent'];		
+$safeCat = (int)$_POST['growth_precent'];
 }else{
 	$safeCat = (int)5;
 }
 
 if($safeCat_dest<$safeCat){
-  echo '<h2>אי אפשר לבצע חיפוש כשאחוז המקור גדול מהיעד.</h2>';	
+  echo '<h2>אי אפשר לבצע חיפוש כשאחוז המקור גדול מהיעד.</h2>';
   return;
-	
+
 }
 
 $sql= "select d.* 
@@ -868,28 +923,28 @@ $sql= "select d.*
             if( (!$rows) ){
                echo '<h1>לא אותרה אף החלטה חפש רף אחר.</h1>';
               }else{
-               
+
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
-/******************************************FORUM_USER1**************************************************/ 
+/******************************************FORUM_USER1**************************************************/
 }elseif(isset($_POST['growth_frm_usr_dest']) && $_POST['growth_frm_usr_dest'] != ''){
- 
- 
+
+
 $safeCat_frm_usr_dest= (int)$_POST['growth_frm_usr_dest'];
- 
+
 if(isset($_POST['growth_frm_usr']) && $_POST['growth_frm_usr'] != ''){
-$safeCat_frm_usr = (int)$_POST['growth_frm_usr'];		
+$safeCat_frm_usr = (int)$_POST['growth_frm_usr'];
 }else{
 	$safeCat_frm_usr = (int)1;
 }
 
 if($safeCat_frm_usr_dest<$safeCat_frm_usr){
-  echo '<h2>אי אפשר לבצע חיפוש כשמספר חברי פורום המקור גדול מהיעד.</h2>';	
+  echo '<h2>אי אפשר לבצע חיפוש כשמספר חברי פורום המקור גדול מהיעד.</h2>';
   return;
-	
+
 }
 
 $sql= "SELECT f.forum_decName,f.forum_decID , COUNT(u.full_name) AS nrOfusers
@@ -907,24 +962,24 @@ ORDER BY nrOfusers DESC";
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו פורומים '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
-/******************************************FORUM_USER2**************************************************/ 
+/******************************************FORUM_USER2**************************************************/
 }elseif(isset($_POST['growth_frm_usr_dest_num']) && $_POST['growth_frm_usr_dest_num'] != ''){
- 
- 
+
+
 $safeCat_frm_usr_dest= (int)$_POST['growth_frm_usr_dest_num'];
- 
+
 if(isset($_POST['growth_frm_usr_src']) && $_POST['growth_frm_usr_src'] != ''){
-$safeCat_frm_usr_src = (int)$_POST['growth_frm_usr_src'];		
+$safeCat_frm_usr_src = (int)$_POST['growth_frm_usr_src'];
 }else{
 	$safeCat_frm_usr_src = (int)1;
 }
 
 if($safeCat_frm_usr_dest<$safeCat_frm_usr_src){
-  echo '<h2>אי אפשר לבצע חיפוש כשמספר חברי פורום המקור גדול מהיעד.</h2>';	
+  echo '<h2>אי אפשר לבצע חיפוש כשמספר חברי פורום המקור גדול מהיעד.</h2>';
   return;
-	
+
 }
 
 $sql= "SELECT f.forum_decName,f.forum_decID , COUNT(u.full_name) AS nrOfusers
@@ -942,14 +997,14 @@ ORDER BY nrOfusers DESC";
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו פורומים '. count($rows)  .'</h1>';
-               
-       }//endif;//rows == 1       
-/**********************************LEVEL1**********************************************************/ 
+
+       }//endif;//rows == 1
+/**********************************LEVEL1**********************************************************/
 }elseif(isset($_POST['growth_level']) && $_POST['growth_level'] != ''){
- 
- 
+
+
 $safeCat_level = (int)$_POST['growth_level'];
- 
+
 
 
 $sql= "select d.* 
@@ -962,19 +1017,19 @@ $sql= "select d.*
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
 
 
-}  
-/**********************************LEVEL2**********************************************************/ 
+}
+/**********************************LEVEL2**********************************************************/
 elseif(isset($_POST['growth_level_dest']) && $_POST['growth_level_dest'] != ''){
- 
- 
+
+
 $safeCat_level = (int)$_POST['growth_level_dest'];
- 
+
 
 
 $sql= "select d.* 
@@ -987,20 +1042,20 @@ $sql= "select d.*
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו החלטות '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
 
 
-}  
-/***********************************CATEGORY_MGR1*********************************************************/ 
+}
+/***********************************CATEGORY_MGR1*********************************************************/
  elseif(isset($_POST['category_mgr']) && $_POST['category_mgr'] != ''){
- 
- 
+
+
 $safeCat = (int)$_POST['category_mgr'];
- 
- 
+
+
 
 $sql= "SELECT DISTINCT(m.managerID), m.*, mt.* 
              FROM managers m
@@ -1021,18 +1076,18 @@ $sql= "SELECT DISTINCT(m.managerID), m.*, mt.*
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו מנהלים '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
 
-/***********************************CATEGORY_MGR2*********************************************************/ 
-  
+/***********************************CATEGORY_MGR2*********************************************************/
+
 } elseif(isset($_POST['category_mgr_dest']) && $_POST['category_mgr_dest'] != ''){
- 
- 
+
+
 $safeCat = (int)$_POST['category_mgr_dest'];
- 
- 
+
+
 
 $sql= "SELECT DISTINCT(m.managerID), m.*, mt.* 
              FROM managers m
@@ -1053,10 +1108,10 @@ $sql= "SELECT DISTINCT(m.managerID), m.*, mt.*
               }else{
               	//$row=$rows[0];
               echo '<h1> נמצאו מנהלים '. count($rows)  .'</h1>';
-               
+
        }//endif;//rows == 1
 
-}  
+}
 
 
 /********************************************************************************************/
@@ -1064,11 +1119,11 @@ $sql= "SELECT DISTINCT(m.managerID), m.*, mt.*
 /**********************************DECISIONS_CATEGORY**********************************************************/
 
 elseif(isset($_POST['rowCount']) && $_POST['rowCount'] != ''){
- 
+
 $safeCat = (int)$_POST['rowCount'];
- 
- 
- 
+
+
+
 
 $sql= "select distinct(d.decID), c.catID  
                FROM decisions d
@@ -1079,28 +1134,28 @@ $sql= "select distinct(d.decID), c.catID
 
 $t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 
 	 $rows = $db->queryObjectArray($sql);
-	
- 
+
+
 		$t['total']=count($rows);
-		 
+
 		// $t['list'][] = prepareuserTaskRow($r, $tz);
-	 
+
 	echo json_encode($t);
 	exit;
 
 
-} 
+}
 /**********************************FORUMS_CATEGORY**********************************************************/
 
 elseif(isset($_POST['forumCount']) && $_POST['forumCount'] != ''){
- 
+
 $safeCat = (int)$_POST['forumCount'];
- 
- 
- 
+
+
+
 
 $sql= "select f.forum_decID , c.catID  
                FROM forum_dec f
@@ -1132,55 +1187,55 @@ $sql1="select f.*,
            LEFT JOIN categories  c1 ON c1.catID=r.catID WHERE  c.catID IN (77)   ORDER BY f.forum_decNAME desc ";
 $t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 
 	 $rows = $db->queryObjectArray($sql);
-	
- 
+
+
 		$t['total']=count($rows);
-		 
+
 		// $t['list'][] = prepareuserTaskRow($r, $tz);
-	 
+
 	echo json_encode($t);
 	exit;
 
 
-} 
- 
+}
+
 /**********************************CONTROL_FORUM_USERS+HISTORY_FORUM_USERS_FOR DECISIONS**********************************************************/
 
 elseif(isset($_POST['src']) && $_POST['src'] != ''){
-global $db;	
+global $db;
 $src = (int)$_POST['src'];
 $dest = (int)$_POST['dest'];
 $decID = (int)$_POST['decID'];
-$forum_decID = (int)$_POST['forum_decID']; 
- 
+$forum_decID = (int)$_POST['forum_decID'];
+
     $t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 
 
-	
+
 $sql="select userID from rel_user_Decforum WHERE decID=$decID AND forum_decID=$forum_decID";
 IF($rows=$db->queryObjectArray($sql)){
-foreach ($rows as $row){	
+foreach ($rows as $row){
 	if($src== $row->userID){
-		
-$t['list'] ='fail';	 
-	
- 
+
+$t['list'] ='fail';
+
+
 		$t['total']=0;
-		 
+
 	echo json_encode($t);
 	exit;
-	   }	
-		
+	   }
+
 	}
 }
-	
-	
-	
+
+
+
 $sql= "UPDATE rel_user_Decforum  set userID=$src WHERE userID = '$dest' AND decID=$decID   AND forum_decID='$forum_decID'";
 if(!$db->execute($sql))
 return FALSE;
@@ -1189,201 +1244,201 @@ $arr_usr='';
 $sql1="select userID from  rel_user_Decforum WHERE decID=$decID AND forum_decID=$forum_decID";
 if($rows=$db->queryObjectArray($sql1))
 {
-$arr_usr=$rows ;	
+$arr_usr=$rows ;
 }
 
 
 $sql="select full_name,userID from users  WHERE userID=$src ";
 if($rows=$db->queryObjectArray($sql)){
 
-	
-	
+
+
 	$rows[0]->forum_decID="$forum_decID";
 	$rows[0]->arr_usr=$arr_usr;
-	$t['list'] =$rows[0];	 
+	$t['list'] =$rows[0];
 	$t['total']=1;
-$sql="select full_name,userID from users  WHERE userID=$src ";		 
-	
-	
-}	 
+$sql="select full_name,userID from users  WHERE userID=$src ";
+
+
+}
 	echo json_encode($t);
 	exit;
 
 
-}   	
+}
 /***********************************************************************************************************/
 /*********************************************************************************************/
 elseif(isset($_GET['start']  )){
 	global $db;
-	$sql =" SELECT * FROM event";// where id=6"; 
-           
-                
+	$sql =" SELECT * FROM event";// where id=6";
+
+
 
 	  if($rows=$db->queryObjectArray($sql)){
 
 	  	foreach($rows as $row)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  $row;
 
-	}		
+	}
 	echo json_encode($t);
 	 exit;
-}   
-   
-}  
+}
+
+}
 /***********************************************************************************************/
 elseif(isset($_GET['mode']  )){
 	global $db;
 	$full_name=trim(_get('mode'));//$_GET[mode];
 	$name=$db->sql_string($full_name);
-	$t['list'] = array(); 
-	 	 $i=0; 	
+	$t['list'] = array();
+	 	 $i=0;
 	 $sql = "SELECT userID FROM users  WHERE full_name=$name";
 	  if($rows=$db->queryObjectArray($sql)){
 
 foreach($rows as $row)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  $row;
 
-	}		
+	}
 	echo json_encode($t);
 	exit;
-	  	
-   }     	 
- 	
- } 
+
+   }
+
+ }
 /******************************************************************************************************************/
  elseif(isset($_GET['mode']  )){
 	global $db;
 	$full_name=trim(_get('mode'));//$_GET[mode];
 	$name=$db->sql_string($full_name);
-	$t['list'] = array(); 
-	 	 $i=0; 	
+	$t['list'] = array();
+	 	 $i=0;
 	 $sql = "SELECT userID FROM users  WHERE full_name=$name";
 	  if($rows=$db->queryObjectArray($sql)){
    foreach($rows as $row)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  $row;
 
-	}		
+	}
 	echo json_encode($t);
 	exit;
-	  	
-   }     	 
- 	
- } 
+
+   }
+
+ }
 /******************************************************************************************************************/
- 
+
 elseif(isset($_GET['read_prog']  )){
 	global $db;
-	$forum_decID=trim(_get('forum_decID')); 
-	$decID=trim(_get('decID'));  
-	$t['list'] = array(); 
-	 	 
+	$forum_decID=trim(_get('forum_decID'));
+	$decID=trim(_get('decID'));
+	$t['list'] = array();
+
 		$sql="SELECT ROUND(AVG(prog_bar)) as avg FROM todolist WHERE forum_decID=$forum_decID  AND decID=$decID ";
 		if($rows=$db->queryObjectArray($sql)  ){
-		 	
-		 
-	
- 
- 
+
+
+
+
+
 foreach($rows as $r)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  ($r);
 
-	}	
-	
-	
-	  	
-   } 
+	}
+
+
+
+   }
    echo json_encode($t);
-	exit;    	 
-}	
- 
+	exit;
+}
+
 /******************************************************************************************************************/
 
 elseif(isset($_GET['find_frmID']  )){
 	global $db;
-	$forum_decName=$db->sql_string(trim(_get('forum_decName')) ); 
+	$forum_decName=$db->sql_string(trim(_get('forum_decName')) );
 	$insertID=trim(_get('insertID')) ;
-	$t['list'] = array(); 
-	 	 
+	$t['list'] = array();
+
 		$sql="SELECT forum_decID FROM forum_dec WHERE forum_decName=$forum_decName  AND parentForumID=$insertID ";
 
 if($rows=$db->queryObjectArray($sql) ){
   foreach($rows as $r)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  ($r);
 
-	}		
+	}
 	echo json_encode($t);
 	exit;
-	  	
-   }     	 
-}	
+
+   }
+}
 /******************************************************************************************************************/
 elseif(isset($_GET['get_decNote']  )){
 	global $db;
-	$decID=(int)$_GET['decID']; 
-	 
-	$t['list'] = array(); 
-	 	 
+	$decID=(int)$_GET['decID'];
+
+	$t['list'] = array();
+
 		$sql="SELECT note FROM decisions WHERE decID=$decID  ";
-		
-		
+
+
 if($rows=$db->queryObjectArray($sql) ){
  foreach($rows as $r)
 	{
-		 
-		 
+
+
 		 $t['list'][] =  ($r);
 
-	}		
+	}
 	echo json_encode($t);
 	exit;
-	  	
-   }     	 
-}	
+
+   }
+}
 /******************************************************************************************************************/
 
  elseif(isset($_GET['loadTasks2user2']))//show tasks that i wrote in the web
 {
 	//check_read_access();
 	//stop_gpc($_GET);
-	 
-	
+
+
 	if(_get('compl')==0)      $sqlWhere = ' AND compl=0';
 	elseif(_get('compl')==1)  $sqlWhere = '';
 	elseif(_get('compl')==2)  $sqlWhere = ' AND compl=1';
-	
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
+
 	if($_REQUEST['userID'])
 	$userID=$_REQUEST['userID'];
 	else $userID=$userID;
-	
+
 	if($_REQUEST['dest_userID'] && $_REQUEST['dest_userID']!='undefined'  && $_REQUEST['dest_userID']!='NaN')
 	$dest_userID=$_REQUEST['dest_userID'];
-	 
-	
-	
+
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
-	$inner = '';	 
+
+	$inner = '';
 	$tag = trim(_get('t'));
 	if($tag != '') {
 		$tag_id = get_tag_id($tag);
@@ -1394,47 +1449,47 @@ if($rows=$db->queryObjectArray($sql) ){
 		}
 		$sqlWhere .= " AND tag2task.tagID=$tag_id ";
 	}
-	
-	
-	
+
+
+
 	$s = trim(_get('s'));
 	if($s != '') $sqlWhere .= " AND (title LIKE ". $db->quoteForLike("%%%s%%",$s). " OR note LIKE ". $db->quoteForLike("%%%s%%",$s). ")";
-	
-	
-	
+
+
+
 	$sort = (int)_get('sort');
 	if($sort == 1) $sqlSort = "ORDER BY prio DESC, ddn ASC, duedate ASC, ow ASC";
 	elseif($sort == 2) $sqlSort = "ORDER BY ddn ASC, duedate ASC, prio DESC, ow ASC";
 	else $sqlSort = "ORDER BY ow ASC";
-	
-	
-	
+
+
+
 	$tz = (int)_get('tz');
 	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 	$t['message'] = array();
 
 	$sql="                 
     SELECT u.userID  FROM users u          
                      WHERE u.userID=(SELECT m.userID FROM managers m
-                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";                     
-	
-	
-	
+                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
+
+
 	if($rows=$db->queryObjectArray($sql)){
 		$userID_mgr=$rows[0]->userID;
 	}
-	  
-	
+
+
 	if($userID==$userID_mgr ){
 		 if($dest_userID && $dest_userID!='undefined'){
-	
+
  $sql="SELECT t.* , u.userID ,u.full_name, rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -1450,9 +1505,9 @@ if($rows=$db->queryObjectArray($sql) ){
                                   AND t.decID=$decID 
                                   AND rt.dest_userID=$dest_userID 
                                    AND r.forum_decID=$forum_decID 
-                                  $sqlSort "; 	
+                                  $sqlSort ";
 }	else{
-        
+
                 $sql="SELECT t.* ,u.userID,u.full_name,rt.userID,rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -1468,17 +1523,17 @@ if($rows=$db->queryObjectArray($sql) ){
                                   AND t.decID=$decID 
                                   AND rt.userID= $userID
                                   AND t.forum_decID=$forum_decID
-                                  $sqlSort "; 	
-       
+                                  $sqlSort ";
+
        }
-        
-        
-}        
-        
-        
-        
+
+
+}
+
+
+
  if($dest_userID && $dest_userID!='undefined' && $userID!=$userID_mgr){
-	
+
  $sql="SELECT   DISTINCT t.*  , u.userID ,u.full_name, rt.dest_userID FROM todolist t
                                   
                                   left JOIN decisions  d
@@ -1498,9 +1553,9 @@ if($rows=$db->queryObjectArray($sql) ){
                                   AND t.decID=$decID 
                                   AND rt.dest_userID=$dest_userID 
                                   AND t.forum_decID=$forum_decID 
-                                  $sqlSort "; 	
+                                  $sqlSort ";
 }	elseif(  (!($dest_userID) || $dest_userID=='undefined') && $userID!=$userID_mgr){
-     
+
 $sql="SELECT  DISTINCT  t.*  ,u.userID,u.full_name,rt.userID,rt.dest_userID FROM todolist t
                                   
                                   left JOIN decisions  d
@@ -1520,48 +1575,48 @@ $sql="SELECT  DISTINCT  t.*  ,u.userID,u.full_name,rt.userID,rt.dest_userID FROM
                                   AND t.decID=$decID 
                                   AND rt.userID=$userID
                                   AND t.forum_decID=$forum_decID 
-                                  $sqlSort "; 	
-		 
-}	 
-	
+                                  $sqlSort ";
+
+}
+
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
 		 $t['list'][] =  prepareTask2userRow ($r, $tz);
-    }		
+    }
 	echo json_encode($t);
 	exit;
 }
-/************************************************************************************************/ 
+/************************************************************************************************/
 elseif (isset($_GET['setuserDuedate'])){
 //    $dest_userID = (int)$_GET['setuserDuedate']; 
 //	$decID=$_REQUEST['decID']; 
 //	$forum_decID=$_REQUEST['forum_decID'];
-	 
-	
-$dest_userID = (int)$_REQUEST['setuserDuedate']; 
-	$decID=$_REQUEST['decID']; 
-	$forum_decID=$_REQUEST['forum_decID'];	
-	
+
+
+$dest_userID = (int)$_REQUEST['setuserDuedate'];
+	$decID=$_REQUEST['decID'];
+	$forum_decID=$_REQUEST['forum_decID'];
+
 	$tz = (int)_get('tz');
 	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t1 = array();
 	$t1['total'] = 0;
-	$t1['list1'] = array(); 
-	
-	
+	$t1['list1'] = array();
+
+
  if($dest_userID && $dest_userID!='undefined'){
-	
- 
- 
- 
+
+
+
+
   $sql ="SELECT   MIN(t.duedate) AS duedate   , rt.dest_userID FROM todolist t
                                   
                                   left JOIN decisions  d
@@ -1583,19 +1638,19 @@ $dest_userID = (int)$_REQUEST['setuserDuedate'];
                                   AND t.forum_decID=$forum_decID 
                                   group by t.forum_decID ";
     }
-    
-    
+
+
     $q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t1['total']++;
-		 
+
 	     $t1['list1'][] =  prepareTask2userRow ($r, $tz);
 	     //$t['list'][] =  prepareuserDuedateRow ($r, $tz);
 
-	}		
+	}
 	  echo json_encode($t1);
 //$year = date('Y');
 //	$month = date('m');
@@ -1620,36 +1675,36 @@ $dest_userID = (int)$_REQUEST['setuserDuedate'];
 //	)
 //);
 	exit;
-	
+
 }
-/**************************************************************************************************/ 
+/**************************************************************************************************/
 elseif(isset($_GET['loadTasks2user']))
 {
-	 
-	 
-	
+
+
+
 	if(_get('compl')==0)      $sqlWhere = ' AND compl=0';
 	elseif(_get('compl')==1)  $sqlWhere = '';
 	elseif(_get('compl')==2)  $sqlWhere = ' AND compl=1';
-	
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
+
 	if($_REQUEST['userID'])
 	$userID=$_REQUEST['userID'];
 	else $userID=$userID;
-	
+
 	if($_REQUEST['dest_userID'] && $_REQUEST['dest_userID']!='undefined')
 	$dest_userID=$_REQUEST['dest_userID'];
-	 
-	
-	
+
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
-	$inner = '';	 
+
+	$inner = '';
 	$tag = trim(_get('t'));
 	if($tag != '') {
 		$tag_id = get_tag_id($tag);
@@ -1660,36 +1715,36 @@ elseif(isset($_GET['loadTasks2user']))
 		}
 		$sqlWhere .= " AND tag2task.tagID=$tag_id ";
 	}
-	
-	
-	
+
+
+
 	$s = trim(_get('s'));
 	if($s != '') $sqlWhere .= " AND (title LIKE ". $db->quoteForLike("%%%s%%",$s). " OR note LIKE ". $db->quoteForLike("%%%s%%",$s). ")";
-	
-	
-	
+
+
+
 	$sort = (int)_get('sort');
 	if($sort == 1) $sqlSort = "ORDER BY prio DESC, ddn ASC, duedate ASC, ow ASC";
 	elseif($sort == 2) $sqlSort = "ORDER BY ddn ASC, duedate ASC, prio DESC, ow ASC";
 	else $sqlSort = "ORDER BY ow ASC";
-	
-	
-	
+
+
+
 	$tz = (int)_get('tz');
 	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 	$t['message'] = array();
-	
-	
-	
+
+
+
  if($dest_userID && $dest_userID!='undefined'){
-	
+
  $sql="SELECT t.* , u.userID ,u.full_name, rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -1705,9 +1760,9 @@ elseif(isset($_GET['loadTasks2user']))
                                   AND t.decID=$decID 
                                   AND rt.dest_userID=$dest_userID 
                                   AND r.forum_decID=$forum_decID 
-                                  $sqlSort "; 	
+                                  $sqlSort ";
 }	else{
-     
+
 $sql="SELECT t.* ,u.userID,u.full_name,rt.userID,rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -1723,52 +1778,52 @@ $sql="SELECT t.* ,u.userID,u.full_name,rt.userID,rt.dest_userID FROM todolist t
                                   AND t.decID=$decID 
                                   AND rt.userID=$userID
                                   AND r.forum_decID=$forum_decID 
-                                  $sqlSort "; 	
-		 
-}	 
-	
+                                  $sqlSort ";
+
+}
+
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
-		 
+
 		// $t['list'][] = prepareuserTaskRow($r, $tz);
-		 
+
 		 $t['list'][] =  prepareTask2userRow ($r, $tz);
 
-	}		
+	}
 	echo json_encode($t);
 	exit;
 }
 /************************************************************************************************/
 
 /*************************************************************************************************/
-  
+
 elseif(isset($_GET['loadUsertask']))
 {
 	//check_read_access();
 	 stop_gpc($_GET);
-	 
-	
-	 
-	
+
+
+
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
- 
+
 	if($_REQUEST['userID'])
 	$userID=$_REQUEST['userID'];
 	else $userID=$userID;
-	
-	
-	 
-	
+
+
+
+
 	$sql="SELECT t.* ,u.userID,u.full_name,rt.userID FROM todolist t
                                  left JOIN decisions  d
 			            		 ON d.decID=t.decID 
@@ -1782,13 +1837,13 @@ elseif(isset($_GET['loadUsertask']))
                                  AND t.decID=$decID 
                                  AND rt.userID=$userID
                                  AND r.forum_decID=$forum_decID 
-                                 ORDER BY t.duedate ASC "; 
-	
-	
- 
-	
-	 
-	
+                                 ORDER BY t.duedate ASC ";
+
+
+
+
+
+
 	if($q = $db->queryObjectArray($sql))
 	foreach($q as $r)
 	{
@@ -1797,9 +1852,9 @@ elseif(isset($_GET['loadUsertask']))
 		$t['list'][] = prepareuserTaskRow($r, $tz);
 		else
 		$t['list'][] = prepareTaskRow($r, $tz);
-		
 
-	}		
+
+	}
 	echo json_encode($t);
 	exit;
 }
@@ -1811,18 +1866,18 @@ elseif(isset($_GET['loadUsertask']))
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
- 
+
 	if($_REQUEST['userID'])
 	$userID=$_REQUEST['userID'];
 	else $userID=$userID;
-	
-	
-	 
-	
+
+
+
+
 	$sql="SELECT t.* ,distinct(u.userID),u.full_name , rt.dest_userID   FROM todolist t
                                  left JOIN decisions  d
 			            		 ON d.decID=t.decID 
@@ -1836,13 +1891,13 @@ elseif(isset($_GET['loadUsertask']))
                                  AND t.decID=$decID 
                                  AND rt.userID=$userID
                                  AND r.forum_decID=$forum_decID 
-                                 ORDER BY t.duedate ASC "; 
-	
-	
- 
-	
-	 
-	
+                                 ORDER BY t.duedate ASC ";
+
+
+
+
+
+
 	if($q = $db->queryObjectArray($sql))
 	foreach($q as $r)
 	{
@@ -1851,17 +1906,17 @@ elseif(isset($_GET['loadUsertask']))
 		$t['list'][] = prepareuserTaskRow($r, $tz);
 		else
 		$t['list'][] = prepareTaskRow($r, $tz);
-		
 
-	}		
+
+	}
 	echo json_encode($t);
 	exit;
 }
-	
 
-/******************************************************************************************************************/ 
+
+/******************************************************************************************************************/
 elseif(isset($_GET['loadtaskusers'])){
-	
+
 $sql	=	"SELECT t.*  ,u.full_name   ,distinct(u.userID) ,rt.dest_userID
                     FROM todolist 
                      left JOIN rel_user_task  rt
@@ -1869,24 +1924,24 @@ $sql	=	"SELECT t.*  ,u.full_name   ,distinct(u.userID) ,rt.dest_userID
 			            		 LEFT JOIN users u
 			            		 ON rt.userID=u.userID  
 			            		 WHERE t.compl in(0,1) 
-			                    ORDER BY u.full_name ASC ";		
+			                    ORDER BY u.full_name ASC ";
            $rows		=	$db->queryObjectArray($sql);
            $getTask_Total	=	count($rows);
            $currentUser	=	"none";
    	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array();	
-	
+	$t['list'] = array();
 
- 
+
+
  if($rows && $rows!=null){
-/******************************************************************************************************/  	
+/******************************************************************************************************/
     foreach ($rows as $r) {
 /******************************************************************************************************/
     	 $t['total']++;
 		$t['list'][] = prepareuserTaskRow($r, $tz);
-          
-       
+
+
     }//end foreach
  }//end if
 
@@ -1894,17 +1949,17 @@ $sql	=	"SELECT t.*  ,u.full_name   ,distinct(u.userID) ,rt.dest_userID
 
 
 
- 
- echo json_encode($t); 
-	exit;	
-           
+
+ echo json_encode($t);
+	exit;
+
 }
 /******************************************************************************************************************/
 /******************************************************************************************************************/
- 
+
 elseif(isset($_GET['loadTasks']))
 {
-	 
+
 $orderBy=false;
 $orderBy_recive=false;
 
@@ -1913,37 +1968,37 @@ $orderBy_recive=false;
 	elseif(_get('compl')==1)  $sqlWhere = '';
 	elseif(_get('compl')==2)  $sqlWhere = ' AND t.compl=1';
 	elseif(_get('compl')==3){ $orderBy  =  true;}
-    elseif(_get('compl')==7){ $orderBy_recive  =  true;} 
+    elseif(_get('compl')==7){ $orderBy_recive  =  true;}
 	elseif(_get('compl')==4)  $sqlWhere = ' AND t.compl<>1  AND (t.duedate=CURRENT_DATE || t.duedate=DATE_ADD(CURRENT_DATE,INTERVAL 1 DAY ) )'  ;
 	elseif(_get('compl')==5)  $sqlWhere = ' AND t.compl<>1  AND (t.duedate<CURRENT_DATE)'  ;
 	elseif(_get('compl')==6)  $sqlWhere = ' AND t.compl<>1  AND  t.duedate>DATE_ADD(CURRENT_DATE,INTERVAL 1 DAY )  
-	 AND  t.duedate<DATE_ADD(CURRENT_DATE,INTERVAL 8 DAY )';     		
+	 AND  t.duedate<DATE_ADD(CURRENT_DATE,INTERVAL 8 DAY )';
 
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
-	
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
-	$inner = '';	
-	$tag = trim(_get('t')); 
+
+	$inner = '';
+	$tag = trim(_get('t'));
 
 	if($tag != '') {
 		$tag_id = get_tag_id($tag);
  		$inner = "INNER JOIN  tag2task t2t ON t.taskID=t2t.taskID";
 		$sqlWhere .= " AND t2t.tagID=$tag_id ";
 	}
-	
-	
-	
+
+
+
 	$s = trim(_get('s'));
 	if($s != '') $sqlWhere .= " AND (t.title LIKE ". $db->quoteForLike("%%%s%%",$s). " OR t.note LIKE ". $db->quoteForLike("%%%s%%",$s). ")";
-	
-	
- if(!($orderBy) && !($orderBy_recive) ){	
+
+
+ if(!($orderBy) && !($orderBy_recive) ){
 	$sort = (int)_get('sort');
 	if($sort == 1) $sqlSort = "ORDER BY t.prio DESC,  ddn ASC, t.duedate ASC, t.ow ASC";
 	elseif($sort == 2) $sqlSort = "ORDER BY t.ddn ASC, t.duedate ASC, t.prio DESC, t.ow ASC";
@@ -1954,21 +2009,21 @@ $orderBy_recive=false;
 }elseif($orderBy_recive){
  	$sqlSort = "ORDER BY rt.dest_userID ASC";
 }
-	
- 	
+
+
 	$tz = (int)_get('tz');
 	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 	$t['message'] = array();
-	
 
-	
+
+
 	$sql ="SELECT t.*,t.forum_decID, t.duedate IS NULL  AS ddn ,u.userID, u.full_name ,rt.dest_userID,rt.dest_name
                     FROM todolist t  
                                  
@@ -1987,21 +2042,21 @@ $orderBy_recive=false;
                                   
                                  AND t.decID=$decID 
                                  AND t.forum_decID=$forum_decID 
-                                 $sqlSort "; 
-  
-                
-                
+                                 $sqlSort ";
+
+
+
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
-	
-		$t['list'][] = prepareTaskRow($r, $tz);
-		
 
-	}		
+		$t['list'][] = prepareTaskRow($r, $tz);
+
+
+	}
 	echo json_encode($t);
 	exit;
 }
@@ -2011,7 +2066,7 @@ $orderBy_recive=false;
 
 
 elseif(isset($_GET['newTask']))
-{ 
+{
 	//check_write_access();
 	///stop_gpc($_POST);
 	$t = array();
@@ -2020,29 +2075,29 @@ elseif(isset($_GET['newTask']))
 	$userID= trim(_post('user'));
 	$decID= trim(_post('decID'));
 	$forum_decID= trim(_post('forum_decID'));
-	
+
 	if( trim(_post('user_dest'))=='none')
 	$dest_userID=$userID;
 	ELSE
 	$dest_userID= trim(_post('user_dest'));
-	
-	
+
+
 	if(trim(_post('task_allowed'))==0)
 	$task_allowed= 'public';
 	elseif(trim(_post(task_allowed))==1 )
 	 $task_allowed= 'private';
 	elseif(trim(_post('task_allowed'))==2 )
 	 $task_allowed= 'top_secret';
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	$prio = 0;
 	$tags = '';
-	
-	
+
+
 if(!isset($config['smartsyntax']) || $config['smartsyntax'] != 0)
 	{
 		$a = parse_smartsyntax($title);
@@ -2058,61 +2113,61 @@ if(!isset($config['smartsyntax']) || $config['smartsyntax'] != 0)
 		echo json_encode($t);
 		exit;
 	}
-	
-	
-	if(isset($config['autotag']) && $config['autotag']) 
+
+
+	if(isset($config['autotag']) && $config['autotag'])
 	$tags .= ','._post('tag');
-	
-	
+
+
 	$tz = (int)_post('tz');
-	if( (isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0 ) 
+	if( (isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0 )
 	$d = strftime("%Y-%m-%d %H:%M:%S");
-	else 
+	else
 	$d = gmdate("Y-m-d H:i:s", time()+$tz*60);
-	
-	
-	
+
+
+
 	$sql=("SELECT full_name from users  where userID=$userID");
 	    $full_name = $db->queryObjectArray($sql);
 	    $full_name=$full_name[0]->full_name;
-	     
+
         $sql=("SELECT full_name from users  where userID=$dest_userID");
 	    $destfull_name = $db->queryObjectArray($sql);
 		$destfull_name=$destfull_name[0]->full_name;
-		
-	    	
+
+
 		$message = " ==> ניכתבה ע י  " . $full_name . " אל " . $destfull_name;
-	
+
 	$sql=("SELECT MAX(ow) FROM todolist");
 	//$db->queryObjectArray($sql);
 	$ow = 1 + (int)$db->queryObjectArray($sql);
-	
+
 	$sql=("BEGIN");
 	$db->execute($sql);
-	
-	
+
+
 /***********************************CHECK IF DEST_USERID IS MaNaGar************************************/
 $now	=	date('Y-m-d H:i:s');
-	
+
 $sql="                 
     SELECT u.userID  FROM users u          
     WHERE u.userID=(SELECT m.userID FROM managers m
-    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";	
-	
+    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
 if($rows=$db->queryObjectArray($sql)){
 	$mgr_userID=$rows[0]->userID;
-}	
-/**********************************/	
+}
+/**********************************/
 if($dest_userID==$mgr_userID){
 /*********************************/
-/******************************************************/   	
+/******************************************************/
 	  $sql = "UPDATE forum_dec SET  " .
       	  "duedate="    .  $db->sql_string($now) . "  " .
 	  "WHERE  forum_decID=$forum_decID";
-	  
+
 	  if(!$db->execute($sql) )
 	   return false;
-/*****************************************************/	  
+/*****************************************************/
     }else{
 	     $sql = "UPDATE rel_user_forum  SET  " .
       	  "duedate="    .  $db->sql_string($now) . "  " .
@@ -2121,10 +2176,10 @@ if($dest_userID==$mgr_userID){
 	   return false;
 }
 
-/**********************************************************************/	
+/**********************************************************************/
 
 	   $sql = "INSERT INTO todolist (title,decID,forum_decID,message,task_date,duedate,ow,task_allowed,prio) VALUES ( " .
-        $db->sql_string($title) . ", " . 
+        $db->sql_string($title) . ", " .
         $db->sql_string($decID) . ", " .
 		$db->sql_string($forum_decID) . ", " .
 		//$db->sql_string($dest_userID) . ", " .
@@ -2133,19 +2188,19 @@ if($dest_userID==$mgr_userID){
 		$db->sql_string($now) . ", " .
 		$db->sql_string($ow) . ", " .
 		$db->sql_string($task_allowed) . ", " .
-		
+
 		$db->is_num($prio)  . " ) " ;
-	   
-	
+
+
 	if(!$db->execute ($sql) )
 	   return false;
-	
-	
+
+
 	$taskID = $db->insertId() ;
-	
+
 	$sql="insert into rel_user_task (userID,forum_decID, taskID,dest_name,decID,duedate, dest_userID)VALUES ( " .
-        $db->sql_string($userID) . ", " . 
-        $db->sql_string($forum_decID) . ", " . 
+        $db->sql_string($userID) . ", " .
+        $db->sql_string($forum_decID) . ", " .
         $db->sql_string($taskID) . ", " .
         $db->sql_string($destfull_name) . ", " .
         $db->sql_string($decID) . ", " .
@@ -2153,10 +2208,10 @@ if($dest_userID==$mgr_userID){
 	    $db->sql_string($dest_userID) . ") " ;
 
 
-	    
+
 	if(!$db->execute ($sql) )
-	   return false;    
-	
+	   return false;
+
 	if($tags)
 	{
 		$tag_ids = prepare_tags($tags);
@@ -2164,14 +2219,14 @@ if($dest_userID==$mgr_userID){
 			update_task_tags($id, $tag_ids);
 			//$sql= ("UPDATE todolist SET tags= ' .$db->sql_string($tags) . '  WHERE taskID=$taskID" );
 		     $sql= "UPDATE todolist SET " .
-                 "tags=".   $db->sql_string($tags) . " " .    
+                 "tags=".   $db->sql_string($tags) . " " .
                   "WHERE taskID=$taskID " ;
-                    		
-			
+
+
 			$db->execute($sql);
 		}
 	}
-	
+
 	$db->execute("COMMIT");
 
 	$sql="SELECT t.* , u.userID ,u.full_name, rt.dest_userID FROM todolist t
@@ -2187,13 +2242,13 @@ if($dest_userID==$mgr_userID){
 			            		  
 			            		  WHERE t.taskID=$taskID  
 			            		  AND d.decID=$decID ";
-     
+
 	$r = $db->queryObjectArray($sql);
 	$r=$r[0];
-	
+
 	$t['list'][] = prepareTaskRow($r);
 	$t['total'] = 1;
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -2210,44 +2265,44 @@ elseif(isset($_GET['editTask']))
 	$note = str_replace("\r\n", "\n", trim(_post('note')));
 	$prio = (int)_post('prio');
 
-	
-	
+
+
 	$userID=(int)_post('userselect');
 	if((int)_post('userselect1')=='none'  )
 	$dest_userID=$userID;
 	ELSE
 	$dest_userID=(int)_post('userselect1');
-	
-	
+
+
 	if($prio < -1) $prio = -1;
 	elseif($prio > 3) $prio = 3;
-	
-	
+
+
 	$duedate = parse_duedate(trim(_post('duedate')));
-	
-	
+
+
 	if(trim(_post('task_allowed'))==0)
 	$task_allowed= 'public';
 	elseif(trim(_post('task_allowed'))==1 )
 	 $task_allowed= 'private';
 	elseif(trim(_post('task_allowed'))==2 )
 	 $task_allowed= 'top_secret';
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
 	if($title == '') {
 		echo json_encode($t);
 		exit;
 	}
-	
-	
+
+
 	$tags = trim(_post('tags'));
 	$db->execute("BEGIN");
-	 
-	
-	
+
+
+
 	//$tags=trim($tags);
     $tag_ids = prepare_tags($tags);
 	//$tag_ids =$tag_ids [0];
@@ -2260,74 +2315,74 @@ elseif(isset($_GET['editTask']))
 	}
 	if($tag_ids) {
 
-		update_task_tags($id, $tag_ids);		
+		update_task_tags($id, $tag_ids);
 	}
-	
-	
+
+
 	$tags =$_POST['tags'] ;
 	$tags=trim($tags);
 	if(is_null($duedate)) $duedate = 'NULL'; else $duedate = $db->sql_string($duedate);
     if(is_null($note)) $note = 'NULL'; else $note = str_replace("\r\n", "\n", trim($note ));// $note = $db->sql_string($note);
 	if(is_null($tags) || $tags=="" ) $tags = 'NULL'; else $tags = $db->sql_string($tags);
-	
-	
+
+
 	$sql=("SELECT full_name from users where userID=$userID");
 	    $full_name = $db->queryObjectArray($sql);
 	    $full_name=$full_name[0]->full_name;
-	     
+
         $sql=("SELECT full_name from users where userID=$dest_userID");
 	    $destfull_name = $db->queryObjectArray($sql);
 		$destfull_name=$destfull_name[0]->full_name;
-		
-	    	
-		
-		
-	
+
+
+
+
+
 		$message = " ==> ניכתבה ע י  " . $full_name . " אל " . $destfull_name;
-	
+
 	$sql = "UPDATE rel_user_task SET  " .
 	  "userID="     .  $db->sql_string($userID) . ", " .
 	  "dest_userID="     .  $db->sql_string($dest_userID) . "  " .
 	  "WHERE taskID=$id";
-	
+
 	if(!$db->execute($sql) )
 	  return FALSE;
-	  
-	  
-/***********************************************************************/		
+
+
+/***********************************************************************/
 $sql="                 
     SELECT u.userID  FROM users u          
     WHERE u.userID=(SELECT m.userID FROM managers m
-    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";	
-	
+    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
 if($rows=$db->queryObjectArray($sql)){
 	$mgr_userID=$rows[0]->userID;
-}	
-/********************************************/	
+}
+/********************************************/
 if($dest_userID==$mgr_userID){//IF MANAGER
-/********************************************/	
-	
-		
+/********************************************/
+
+
 	$sql = "UPDATE forum_dec SET  " .
       	  "duedate="    .   $duedate  . "  " .
 	  "WHERE  forum_decID=$forum_decID  ";
-	 
- 	
-/********************************************/	
+
+
+/********************************************/
     }else{//IF USER
-/********************************************/    	
-    	if($duedate && $duedate!=NULL){	
+/********************************************/
+    	if($duedate && $duedate!=NULL){
        $sql = "UPDATE rel_user_forum  SET  " .
       	  "duedate="    .   $duedate  . "  " .
 	  "WHERE userID=$dest_userID  AND forum_decID=$forum_decID";
     	}
-    }	 
+    }
 
 if(!$db->execute($sql) )
 	   return false;
-/**********************************************************************/		  
-	  
-	
+/**********************************************************************/
+
+
 	$sql = "UPDATE todolist SET  " .
 	"title="     .  $db->sql_string($title) . ", " .
 	  "note="     .  $db->sql_string($note) . ", " .
@@ -2339,27 +2394,27 @@ if(!$db->execute($sql) )
 	  "duedate="    .  stripslashes($duedate) . " , " .
 	 "task_allowed="    .  stripslashes($db->sql_string($task_allowed)) . "  " .
 	  "WHERE taskID=$id";
-	
+
 	if(!$db->execute($sql) ){
 	   return FALSE;
-	   
-	}else{  
+
+	}else{
 	$db->execute("COMMIT");
 	}
-	
-	
+
+
 	$sql="SELECT t.*,r.userID,r.dest_userID  FROM todolist t
 			 LEFT JOIN rel_user_task r
 			 ON (r.taskID=t.taskID)
 			 WHERE t.taskID=$id";
 	$r = $db->queryObjectArray($sql);
-	
+
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareTaskRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -2373,34 +2428,34 @@ elseif(isset($_GET['loadUsers'])){
 
 
 
-	 
-	
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
+
 	if($forum_decID && !($forum_decID=='undefined')){
-	
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
-	
-	
-	
+
+
+
 	if($_REQUEST['mgr'])
 	$mgr=$_REQUEST['mgr'];
-	
+
 	if(_get('compl')==0)      $sqlWhere = ' AND r.compl=0';
 	elseif(_get('compl')==1)  $sqlWhere = '';
 	elseif(_get('compl')==2)  $sqlWhere = ' AND r.compl=1';
 
-	
+
 	elseif(_get('compl')==4)  $sqlWhere = ' AND r.compl<>1  AND (r.duedate=CURRENT_DATE || r.duedate=CURRENT_DATE+1)'  ;
 	elseif(_get('compl')==5)  $sqlWhere = ' AND r.compl<>1  AND (r.duedate<CURRENT_DATE)'  ;
 	elseif(_get('compl')==6)  $sqlWhere = ' AND r.compl<>1  AND (r.duedate>CURRENT_DATE+1 && r.duedate<CURRENT_DATE+8)'  ;
-	
-	
-	
-	
+
+
+
+
 
 	$inner = '';
 	$tag = trim(_get('t'));
@@ -2410,30 +2465,30 @@ elseif(isset($_GET['loadUsers'])){
 	}
 
 
-	
-	
+
+
 	$sort = (int)_get('sort');
      if($sort == 1) $sqlSort = "ORDER BY r.prio DESC,  r.duedate ASC, u.ow ASC";
 	elseif($sort == 2) $sqlSort = "ORDER BY  r.duedate ASC, r.prio DESC, u.ow ASC";
 	 else $sqlSort = "ORDER BY u.ow ASC";
-	 
-	
+
+
 	$tz = (int)_get('tz');
-	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0) 
+	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
 	$t['list'] = array();
-	
-	
- 
+
+
+
 
 /**************************************************************************************/
 if( (_get('compl')==1) || (_get('compl')==2) || (_get('compl')==4)  || (_get('compl')==5) || (_get('compl')==6)  || trim(_get('t'))  ){
-	
+
 	 $sql="SELECT   u.*,   r.forum_decID,r.tagID,r.tags,r.duedate,r.prio,r.compl,r.HireDate,f.managerID  FROM users u 
                      
                      LEFT JOIN rel_user_forum r  
@@ -2445,13 +2500,13 @@ if( (_get('compl')==1) || (_get('compl')==2) || (_get('compl')==4)  || (_get('co
                       WHERE 1=1
                       $sqlWhere
                      AND r.forum_decID=$forum_decID ";
-                      
-/************************************************************************/	 
+
+/************************************************************************/
 }else{
 
-  
-  
-  
+
+
+
  $sql=" SELECT  u.userID   FROM users u	                 
  	                 
 	
@@ -2464,12 +2519,12 @@ if( (_get('compl')==1) || (_get('compl')==2) || (_get('compl')==4)  || (_get('co
                                              
                               
                      WHERE r.forum_decID =$forum_decID  ";
-                       
-                       
+
+
       if($rows=$db->queryObjectArray($sql )){
-	
- 
-for($i=0; $i<count($rows); $i++){	
+
+
+for($i=0; $i<count($rows); $i++){
 				if($i==0){
 					$userIDs = $rows[$i]->userID;
 				}
@@ -2477,13 +2532,13 @@ for($i=0; $i<count($rows); $i++){
 					$userIDs .= "," . $rows[$i]->userID;
 
 				}
-			
+
 			}
- 	
-     	                 
-                       
+
+
+
   foreach ($rows as $row ){
-  	
+
      $sql_test ="SELECT   MIN(t.duedate) AS duedate   , rt.dest_userID FROM todolist t
                                   
                                   left JOIN decisions  d
@@ -2504,31 +2559,31 @@ for($i=0; $i<count($rows); $i++){
                                   AND rt.dest_userID=$row->userID 
                                   AND t.forum_decID=$forum_decID 
                                   group by t.forum_decID ";
-     
+
                 if($find_min=$db->queryObjectArray($sql_test)){
      	          $min_date=$find_min[0]->duedate;
      	         $sql= "UPDATE rel_user_forum SET " .
-                 "duedate=".   $db->sql_string($min_date) . " " .    
-                  "WHERE userID=$row->userID  AND  forum_decID=$forum_decID; " ; 
-     	         
+                 "duedate=".   $db->sql_string($min_date) . " " .
+                  "WHERE userID=$row->userID  AND  forum_decID=$forum_decID; " ;
+
      	         if(!($db->execute($sql)))
      	         return false;
-     	
+
           }
           else{
           	     $sql= "UPDATE rel_user_forum SET " .
-                  "duedate=  NULL   " .    
-                  "WHERE userID=$row->userID  AND  forum_decID=$forum_decID; " ; 
-     	         
+                  "duedate=  NULL   " .
+                  "WHERE userID=$row->userID  AND  forum_decID=$forum_decID; " ;
+
      	         if(!($db->execute($sql)))
      	         return false;
-          	
-          } 	
-  	
+
+          }
+
     }
-                       
+
   }//end if($rows=$db->queryObjectArray($sql )){
-                     
+
 
 
 
@@ -2572,59 +2627,59 @@ $sql=" SELECT   u.*, f.duedate,f.forum_decName,f.forum_decID,f.tagID,f.tags, f.p
                      
                      WHERE f.forum_decID=$forum_decID 
                      $sqlWhere ";
-                                         
-                    
-                       
-     }                       
-                       
-                       
-                
+
+
+
+     }
+
+
+
 	$getUser= $db->queryObjectArray($sql);
-	
+
 	if($getUser && $getUser!=0){
    $getUser_Total	=	count($getUser);
 
-	
-	foreach ($getUser as $r  ) 
-	
+
+	foreach ($getUser as $r  )
+
 	{
 			$t['total']++;
 			$t['list'][] = prepareUserRow($r);
 	}
  }
-echo json_encode($t); 
-	exit;	
-	}	
-}	
+echo json_encode($t);
+	exit;
+	}
+}
 /******************************************************************************************************************/
 
 elseif(isset($_GET['loadUsers3'])){
 	global $db;
 
 
- 
-$tag = trim(_get('t'));	 
+
+$tag = trim(_get('t'));
 	if($tag != '') {
-		
+
 $tag=$db->sql_string($tag);
 
-	
-	
+
+
 	$tz = (int)_get('tz');
-	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0) 
+	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
 	$t['list'] = array();
-	
-	
- 
 
- 
-	
+
+
+
+
+
 	 $sql="SELECT   u.*,   r.forum_decID,r.tagID,r.tags,r.duedate,r.prio,r.compl,r.HireDate,f.managerID  FROM users u 
                      
                      LEFT JOIN rel_user_forum r  
@@ -2634,57 +2689,57 @@ $tag=$db->sql_string($tag);
                      ON f.forum_decID = r.forum_decID
                     
                       WHERE r.tags=$tag ";
-                      
-/************************************************************************/	 
+
+/************************************************************************/
  	$getUser= $db->queryObjectArray($sql);
-	
+
 	if($getUser && $getUser!=0)
    $getUser_Total	=	count($getUser);
 
-	
-foreach ($getUser as $r  ) 
+
+foreach ($getUser as $r  )
 
 {
 		$t['total']++;
 		$t['list'][] = prepareUserRow($r);
 }
-echo json_encode($t); 
-	exit;	
-	
-  }	
+echo json_encode($t);
+	exit;
+
+  }
 }
 /******************************************************************************************************************/
 
 elseif(isset($_GET['loadUsersDec'])){  //get the users in time thay decided the decision from rel_user_Decforum
 	global $db;
- 
-	
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
-	
+
 	if(!$forum_decID)
 	$forum_decID=$_GET['loadUsersDec'];
-	
-	
+
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
-	
-	
-	
-	
+
+
+
+
 	$tz = (int)_get('tz');
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
 	$t['list'] = array();
-	
-	
- 
 
-  
-  
+
+
+
+
+
  $sql1="SELECT u.userID,u.full_name ,m.managerID,m.managerID,m.managerName FROM users u 
 		                     INNER join rel_user_Decforum r  
 		                     on u.userID = r.userID 
@@ -2701,8 +2756,8 @@ elseif(isset($_GET['loadUsersDec'])){  //get the users in time thay decided the 
 		                     WHERE f.forum_decID = $forum_decID
 		                     AND d.decID=$decID
 		                     ORDER BY u.full_name ASC";
-                       
-                       
+
+
  $sql="SELECT u.userID,u.full_name ,r.HireDate FROM users u 
 		                     INNER join rel_user_Decforum r  
 		                     on u.userID = r.userID 
@@ -2717,9 +2772,9 @@ elseif(isset($_GET['loadUsersDec'])){  //get the users in time thay decided the 
 		                     
 		                     WHERE f.forum_decID = $forum_decID
 		                     AND d.decID=$decID
-		                     ORDER BY u.full_name ASC";     
-	
- 
+		                     ORDER BY u.full_name ASC";
+
+
 //for($i=0; $i<count($rows); $i++){	
 //				if($i==0){
 //					$userIDs = $rows[$i]->userID;
@@ -2730,24 +2785,24 @@ elseif(isset($_GET['loadUsersDec'])){  //get the users in time thay decided the 
 //				}
 //			
 //			}
- 	
-     	                 
- 
-   
 
-   if($rows=$db->queryObjectArray($sql )){	
-   	
-foreach ($rows as $row  ) 
+
+
+
+
+   if($rows=$db->queryObjectArray($sql )){
+
+foreach ($rows as $row  )
 
    {
 		$t['total']++;
 		$t['list'][] =prepareUserRow($row) ;
    }
- }     
-echo json_encode($t); 
-	exit;	
-	
-}	
+ }
+echo json_encode($t);
+	exit;
+
+}
 /******************************************************************************************************************/
 /******************************************************************************************************************/
 
@@ -2758,54 +2813,54 @@ elseif(isset($_GET['pre_editUser']))
 	$id = (int)$_GET['userID'];
 	$forum_decID = (int)$_GET['forum_decID'];
 	$decID = (int)$_GET['decID'];
-	
-	
+
+
 	$sql="                 
     SELECT u.userID  FROM users u          
                      WHERE u.userID=(SELECT m.userID FROM managers m
-                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";                     
-	
-	
-	
+                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
+
+
 	if($rows=$db->queryObjectArray($sql)){
 		$userID=$rows[0]->userID;
 	}
-/*************************************/	
+/*************************************/
 	 if($userID==$id){//manager update
-/**************************************/       
-               
+/**************************************/
+
        $sql="SELECT tagID FROM rel_user_forum  	          
 	        WHERE u.userID=(SELECT m.userID FROM managers m
-            WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";          
-       
+            WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
            if($rows=$db->queryObjectArray($sql)){
 	          $tagID=$rows[0]->tagID;
                 }else
 	               $tagID=null;
-	        
+
 	          $t = array();
 	          $t['total'] = 0;
-/*****************************************************/	          
+/*****************************************************/
 $sql="SELECT u.* , r.forum_decID,r.tagID,r.tags,r.duedate,r.prio,r.HireDate FROM users u 
                      LEFT  JOIN rel_user_forum r  
                      ON r.userID = u.userID              
                       WHERE u.userID=(SELECT m.userID FROM managers m
-                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID) ) ";  	          
+                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID) ) ";
 	                    if($tagID)
 	                 $sql.=" AND r.tagID=$tagID";
-/*********************************************************/	          
+/*********************************************************/
 	          $r = $db->queryObjectArray($sql);
 					if($r) {
 						$r=$r[0];
-					
+
 						$t['list'][] = prepareUserRow($r);
 						$t['total'] = 1;
 					 }
-				echo json_encode($t); 
+				echo json_encode($t);
 				exit;
-/**************************************FORUM USERS*****************************************************/				
+/**************************************FORUM USERS*****************************************************/
 }else{
-	
+
 $sql="SELECT tagID FROM rel_user_forum  	          
       WHERE  forum_decID = $forum_decID
        AND  userID=$id ";
@@ -2818,26 +2873,26 @@ if($rows=$db->queryObjectArray($sql)){
 
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$sql= "SELECT u.* , r.forum_decID,r.tagID,r.tags,r.duedate,r.prio,r.HireDate  FROM users u 
                      LEFT  join rel_user_forum r  
                      ON u.userID = r.userID              
                      WHERE r.forum_decID = $forum_decID
                      AND r.userID=$id  ";
-	                 
+
 	                  if($tagID)
 	                 $sql.=" AND r.tagID=$tagID";
 
-	                      
-	                 
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareUserRow($r);
-		  
+
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
    }
 }
@@ -2848,59 +2903,59 @@ if($rows=$db->queryObjectArray($sql)){
 
 elseif(isset($_GET['update_active']))
 {
-	 
-  global  $db;	
+
+  global  $db;
 	$userID = (int)$_GET['userID'];
 	$forum_decID = (int)$_GET['forum_decID'];
 	$active = (int)$_GET['active'];
 	$status='';
 	if($active==2)
 	$status=1;
-	else 
+	else
 	$status=2;
-	
-	
+
+
 	 $t = array();
 	 $t['total'] = 0;
-		          
 
 
 
-$sql="UPDATE rel_user_forum set active='$status' WHERE forum_decID = $forum_decID AND userID=$userID  ";	  
+
+$sql="UPDATE rel_user_forum set active='$status' WHERE forum_decID = $forum_decID AND userID=$userID  ";
 if(!$db->execute($sql))
-  return FALSE;	
+  return FALSE;
 
 
 $sql= "SELECT  userID,forum_decID,active  FROM rel_user_forum
                      WHERE forum_decID = $forum_decID
                      AND  userID=$userID  ";
-	                 
-	                      
-	                 
+
+
+
 	if($r = $db->queryObjectArray($sql)){
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareUserRow($r);
-		  
+
 		$t['total'] = 1;
 	}
 }
 
 
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
    }
 
 
 /******************************************************************************************************************/
 elseif(isset($_GET['update_data_module'])){
-	global  $db;	
-	 
+	global  $db;
+
 	$forum_decID = (int)$_GET['forum_decID'];
-	
+
 	 $t = array();
 	 $t['total'] = 0;
-		          
+
 
 
 
@@ -2909,136 +2964,136 @@ elseif(isset($_GET['update_data_module'])){
 
 $sql= "SELECT  forum_decName  FROM forum_dec
                      WHERE forum_decID = $forum_decID";
-	                 
-	                      
-	                 
+
+
+
 	if($r = $db->queryObjectArray($sql)){
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = $r;
-		  
+
 		$t['total'] = 1;
 	}
 }
 
 
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
-	
-	
-}   
+
+
+}
 /********************************************************************************************************************/
 
 elseif(isset($_GET['editUser']))
 {
 	check_write_access();
 	$id = (int)$_GET['editUser'];
-	$forum_decID = trim(_post('forum_decID')); 
-	$decID = trim(_post('decID')); 
+	$forum_decID = trim(_post('forum_decID'));
+	$decID = trim(_post('decID'));
 //	if($forum_decID){
 //	phpinfo();die; 
 //	}
-	
+
 	 stop_gpc($_POST);
-	
+
 	$full_name = trim(_post('full_name'));
 	$note = str_replace("\r\n", "\n", trim(_post('note')));
-	
+
 	$prio = (int)_post('prio');
 	if($prio < -1) $prio = -1;
 	elseif($prio >3) $prio = 3;
-	
+
 	$level= trim(_post('level'));
 	if($level=='1'){
 	   $level='user';
-	}	
+	}
 	elseif($level=='2'){
 	   $level='admin';
 	   }
 	   elseif($level=='3'){
 	   $level='suppervizer';
 	   }
-	
-	  
+
+
 	$email = trim(_post('email'));
 	$upass=trim(_post('upass'));
 	$uname=trim(_post('uname'));
 	$phone=trim(_post('phone'));
 	$active=trim(_post('active'));
-	
+
 	$duedate = parse_duedate(trim(_post('duedate')));
     $HireDate = parse_duedate(trim(_post('HireDate')));
     $manager_date = parse_duedate(trim(_post('manager_date')));
-	
+
 	$t = array();
 	$t['total'] = 0;
 	if($full_name == '') {
 		echo json_encode($t);
 		exit;
 	}
-	
-	
+
+
 /*************************************************************************************/
-	$sql="SELECT managerID FROM forum_dec  WHERE forum_decID=$forum_decID"; 
+	$sql="SELECT managerID FROM forum_dec  WHERE forum_decID=$forum_decID";
          if($rows=$db->queryObjectArray($sql)){
 		      $mgr=$rows[0]->managerID;
 	     }
-	
-	
+
+
 	$sql="                 
     SELECT u.userID  FROM users u          
                      WHERE u.userID=(SELECT m.userID FROM managers m
-                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";                     
-	
-	
-	
+                     WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
+
+
 	if($rows=$db->queryObjectArray($sql)){
 		$userID=$rows[0]->userID;
 	}
-/******************************************MANAGER_UPDATE***************************************************/	
-  if($userID==$id){ 
-/********************************************************************************************/  	
+/******************************************MANAGER_UPDATE***************************************************/
+  if($userID==$id){
+/********************************************************************************************/
     $tags = trim(_post('tags'));
 	$db->execute("BEGIN");
-	 
+
 
     $tag_ids = prepare_usertags($tags);
     $tagID= $tag_ids[0];//get_taguser_id($tag);
 
-    //CHECK if it the currrentID 
-   	$cur_ids = get_user_tagsMgr($id,$forum_decID,$mgr);      
+    //CHECK if it the currrentID
+   	$cur_ids = get_user_tagsMgr($id,$forum_decID,$mgr);
 	if($cur_ids && $cur_ids[0]!=null) {
 		$ids = implode(',', $cur_ids);
 		$db->execute("UPDATE   forum_dec set tagID=NULL,tags=''  where tagID=$ids 
 		              AND forum_decID=$forum_decID AND managerID=$mgr");
-		 
+
 		$sql=("UPDATE user_tags SET tags_count=tags_count-1 WHERE tagID IN ($ids)");//dq
 		$db->execute($sql);
 	}
-	
+
 	if($tag_ids) {
 
-			update_user_tagsMgr($id, $tag_ids,$forum_decID,$tags,$mgr);		
-	
+			update_user_tagsMgr($id, $tag_ids,$forum_decID,$tags,$mgr);
+
     }
 /**********************************************************************************************************/
 if(is_null($duedate)) $duedate = 'NULL'; else $duedate = $db->sql_string($duedate);
 if(is_null($manager_date)) $manager_date = 'NULL'; else $manager_date = $db->sql_string($manager_date);
 if(is_null($note)) $note = 'NULL'; else $note = str_replace("\r\n", "\n", trim($note ));// $note = $db->sql_string($note);
-	 
+
 if($manager_date){
 	 $sql = "UPDATE forum_dec SET  " .
       "manager_date="     .  $manager_date . " , " .
 	  "duedate="     .  $duedate . " , " .
 	  "prio="     .  $db->sql_string($prio) . "  " .
-	  "WHERE forum_decID=$forum_decID"; 	
+	  "WHERE forum_decID=$forum_decID";
 	 	if(!($db->execute($sql)) ){
 	       return FALSE;
 	     }
-	   
-	 }	
-  
-	 
+
+	 }
+
+
 
 
 	$sql = "UPDATE users SET  " .
@@ -3050,9 +3105,9 @@ if($manager_date){
 	  "uname="     .  $db->sql_string($uname) . ", " .
 	  "phone_num="     .  $db->sql_string($phone) . ", " .
 	  "active="     .  $db->sql_string($active) . "  " .
-	
+
 	  "WHERE userID=$id";
-	
+
 		if($db->execute($sql) ){
 	      $db->execute("COMMIT");
 	     }
@@ -3070,30 +3125,30 @@ if($manager_date){
                      AND u.userID=$id ";
 	                  if($tagID)
 	                 $sql.=" AND f.tagID=$tagID";
-	        
-	                 
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareUserRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
-    
+
 /**********************************************************************************************************/
-} else{	
-/***************************************USER UPDATE****************************************************************/	
-	
+} else{
+/***************************************USER UPDATE****************************************************************/
+
 	$tags = trim(_post('tags'));
 	$db->execute("BEGIN");
-	 
+
 
     $tag_ids = prepare_usertags($tags);
     $tagID= $tag_ids[0];//get_taguser_id($tag);
 
-    //CHECK if it the currrentID 
-   	$cur_ids = get_user_tags($id,$forum_decID);      
+    //CHECK if it the currrentID
+   	$cur_ids = get_user_tags($id,$forum_decID);
 	if($cur_ids && $cur_ids[0]!=null) {
 		$ids = implode(',', $cur_ids);
 		$db->execute("UPDATE   rel_user_forum set tagID=NULL,tags=''  where tagID=$ids 
@@ -3102,22 +3157,22 @@ if($manager_date){
 		$sql=("UPDATE user_tags SET tags_count=tags_count-1 WHERE tagID IN ($ids)");//dq
 		$db->execute($sql);
 	}
-	
+
 	if($tag_ids) {
 
-			update_user_tags($id, $tag_ids,$forum_decID,$tags);		
-	
+			update_user_tags($id, $tag_ids,$forum_decID,$tags);
+
     }
 
 }//end else
-/**************************************/    	
-	 
+/**************************************/
+
 	if(is_null($duedate)) $duedate = 'NULL'; else $duedate = $db->sql_string($duedate);
 	if(is_null($HireDate)) $HireDate = 'NULL'; else $HireDate = $db->sql_string($HireDate);
     if(is_null($note)) $note = 'NULL'; else $note = str_replace("\r\n", "\n", trim($note ));// $note = $db->sql_string($note);
-	 
-	
-	
+
+
+
 
 	$sql = "UPDATE users SET  " .
       "full_name="     .  $db->sql_string($full_name) . ", " .
@@ -3128,45 +3183,45 @@ if($manager_date){
 	  "uname="     .  $db->sql_string($uname) . ", " .
 	  "phone_num="     .  $db->sql_string($phone) . ", " .
 	  "active="     .  $db->sql_string($active) . "  " .
-	 
+
 	  "WHERE userID=$id";
-	
+
 		if(!($db->execute($sql)) ){
 	      	      return false;
 	     }
 $sql = "UPDATE rel_user_forum SET  " .
       	  "duedate="    .  stripslashes($duedate) . " , " .
           "HireDate="    .  stripslashes($HireDate) . " , " .
-          "prio="     .  $db->sql_string($prio) . "  " .  
+          "prio="     .  $db->sql_string($prio) . "  " .
 	  	  "WHERE userID=$id  AND  forum_decID=$forum_decID";
-           
-	
+
+
 
 if(!($db->execute($sql)) ){
 	       return false;
 	     }else{
 	     	$db->execute("COMMIT");
-	     }  
+	     }
 
-	     
+
 	$sql= "SELECT u.* , r.forum_decID,r.tagID,r.tags,r.duedate,r.prio,r.HireDate  FROM users u 
                      LEFT  join rel_user_forum r  
                      ON u.userID = r.userID              
                      WHERE r.forum_decID = $forum_decID
                      
                      AND r.userID=$id ";
-	                 
+
 	                  if($tagID)
 	                 $sql.=" AND r.tagID=$tagID";
-	        
-	                 
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareUserRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 /******************************************************************************************************************/
@@ -3174,18 +3229,18 @@ elseif(isset($_GET['pre_editDec']))
 {
 	//check_write_access();
 	//$id = (int)$_GET['editUser'];
-	 
+
 	$forum_decID = (int)$_GET['forum_decID'];
 	$decID = (int)$_GET['decID'];
 	$catID = (int)$_GET['catID'];
-	
-	
-	
+
+
+
 
 
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$sql="SELECT d.*,v.grade_level,
 	       r.catID,c.catName,rf.forum_decID,rf.note,f.forum_decName
 	       FROM decisions d 
@@ -3197,17 +3252,17 @@ elseif(isset($_GET['pre_editDec']))
 	       WHERE d.decID=$decID
 	       AND rf.forum_decID=$forum_decID
                AND r.catID=$catID ";
-		                      
-	                 
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		  $r=$r[0];
-		$t['list'][] =$r; 
+		$t['list'][] =$r;
 		//prepareDecRow($r);
-		 
+
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
    }
 
@@ -3218,22 +3273,22 @@ elseif(isset($_GET['pre_editMgr']))
 {
 	$userID = (int)$_GET['userID'];
 	$forum_decID = (int)$_GET['forum_decID'];
-	
-	
-	              
+
+
+
        $sql="SELECT f.tagID FROM forum_dec  f	          
              WHERE f.forum_decID=$forum_decID";
 // 	        WHERE f.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)
-	       
-       
+
+
            if($rows=$db->queryObjectArray($sql)){
 	          $tagID=$rows[0]->tagID;
                 }else
 	               $tagID=null;
-	        
+
 	          $t = array();
 	          $t['total'] = 0;
-/*****************************************************/	  
+/*****************************************************/
 $sql="SELECT m.managerID,f.forum_decID,f.tagID,f.tags,f.manager_date,f.prio,f.duedate,u.*   FROM managers m
                  
                     LEFT  JOIN users  u  
@@ -3248,30 +3303,30 @@ $sql="SELECT m.managerID,f.forum_decID,f.tagID,f.tags,f.manager_date,f.prio,f.du
                       WHERE m.userID= $userID";
 	          if($tagID)
 	                 $sql.=" AND f.tagID=$tagID";
-	         
-/*********************************************************/	          
+
+/*********************************************************/
 	          $r = $db->queryObjectArray($sql);
 					if($r) {
 			$row=$r[0];
-					    
+
 			 $t['list'][] = prepareUserRow($row);
 			 $t['total'] = 1;
 		           $results[] = array('id'=>$row->userID,'forum_decID'=>$row->forum_decID,'full_name'=>$row->full_name,'manager_date'=>$row->manager_date,
 		                 'managerID'=>$row->managerID,'date'=>$row->date,'prio'=>$row->prio,'note'=>$row->note,'uname'=>$row->uname,
 		                 'email'=>$row->email,'level'=>$row->level,'phone_num'=>$row->phone_num,'tags'=>$row->tags,'upass'=>$row->upass);
 					}
-			 echo json_encode($t); 
+			 echo json_encode($t);
 				exit;
- 
-	      
+
+
 }
 
 /******************************************************************************************************************/
 elseif(isset($_GET['newNormalUser']))
-{ 
+{
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$userID = trim(_post('userID'));
 	$active =trim(_post('active'));
 	$level = trim(_post('level'));
@@ -3286,11 +3341,11 @@ elseif(isset($_GET['newNormalUser']))
 	$note= trim(_post('note'));
 	$user_date=substr($user_date, 0,10);
 
-	
+
 	$level= trim(_post('level'));
 	IF($level=='1'){
 	   $level='user';
-	}	
+	}
 	ELSEIF($level=='2'){
 	   $level='admin';
 	   }
@@ -3300,34 +3355,34 @@ elseif(isset($_GET['newNormalUser']))
     ELSEIF($level=='4'){
 	   $level='user_admin';
 	   }
-	   
+
 	$tz = (int)_post('tz');
-	if( (isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0 ) 
+	if( (isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0 )
 	$d = strftime("%Y-%m-%d %H:%M:%S");
-	else 
+	else
 	$d = gmdate("Y-m-d H:i:s", time()+$tz*60);
-	
-	
-	
-	
-	
+
+
+
+
+
 	$sql=("SELECT MAX(ow) FROM users");
 	//$db->queryObjectArray($sql);
 	$ow = 1 + (int)$db->queryObjectArray($sql);
-	
+
 	$sql=("BEGIN");
 	$db->execute($sql);
-	
+
 	$now	=	date('Y-m-d H:i:s');
-		
+
 /********************************************************************/
 
-/********************************************************************/	   
- 
-	
-	
+/********************************************************************/
+
+
+
 if($userID  ){
-	 
+
 $sql = "UPDATE users SET  " .
 	"active="     .  $db->sql_string($active) . ", " .
 	  "level="     . $db->sql_string($level) . ", " .
@@ -3341,13 +3396,13 @@ $sql = "UPDATE users SET  " .
 	"note="     .    $db->sql_string($note) . ", " .
 	  "email="    .  $db->sql_string($email)  . "  " .
 	  "WHERE userID=$userID";
-	
+
 	if(!$db->execute ($sql) )
 	   return false;
-	
-}else{	
+
+}else{
 $sql = "INSERT INTO users (active,level,user_date, full_name, fname, lname, uname, upass, phone_num, note, email,ow )VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
         $db->sql_string($level) . ", " .
 		$db->sql_string($user_date) . ", " .
 		$db->sql_string($full_name) . ", " .
@@ -3358,28 +3413,28 @@ $sql = "INSERT INTO users (active,level,user_date, full_name, fname, lname, unam
 		$db->sql_string($phone_num) . ", " .
 		$db->sql_string($note) . ", " .
 		$db->sql_string($email) . ", " .
-		$db->sql_string($ow) . " ) " ; 
-		
+		$db->sql_string($ow) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-	
+
 	   $userID = $db->insertId() ;
-}	     
-	
-	
-	
-	
-	
+}
+
+
+
+
+
 	$db->execute("COMMIT");
 
 	$sql="SELECT *  FROM users WHERE userID=$userID  ";
-     
+
 	$r = $db->queryObjectArray($sql);
 	$r=$r[0];
-	
+
 	$t['list'][] = prepareNormalUserRow($r);
 	$t['total'] = 1;
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -3471,10 +3526,10 @@ elseif(isset($_GET['pre_editUserPrint']))
 	$id = (int)$_GET['userID'];
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$sql= "SELECT * from users where userID=$id ";
-	                      
-	                 
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
@@ -3482,7 +3537,7 @@ elseif(isset($_GET['pre_editUserPrint']))
 		//$t['list'][] =$r;
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -3494,33 +3549,33 @@ elseif(isset($_GET['preEdit_past_user']))
 	$forum_decID= (int)$_GET['forum_decID'];
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$sql = "SELECT uh.*,u.full_name,u.fname,u.lname,u.level,u.note,f.forum_decName,f.forum_decID FROM rel_user_forum_history uh				 
 			INNER JOIN users u ON(uh.userID=u.userID)
 			INNER JOIN forum_dec f ON(f.forum_decID=uh.forum_decID) 
 			WHERE uh.userID=$userID AND f.forum_decID=$forum_decID
-            ORDER BY u.fname"; 
-	                      
-	                 
+            ORDER BY u.fname";
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = preparePastUserRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
 /******************************************************************************************************************/
 elseif(isset($_GET['submit_PastNormalUser']))
-{ 
+{
 	$t = array();
 	$t['total'] = 0;
-	$result=true;	
-	
-	
-	
+	$result=true;
+
+
+
 	$userID = trim(_post('userID'));
 	$forumID_src = trim(_post('forumID_src'));
 	$forum_decID = trim(_post('forum_decID'));
@@ -3531,15 +3586,15 @@ elseif(isset($_GET['submit_PastNormalUser']))
 	$full_name= trim(_post('full_name'));
 	$fname= trim(_post('fname'));
 	$lname= trim(_post('lname'));
-	
+
 	$mode= trim(_post('mode'));
- 
-	  
-	
+
+
+
 	$level= trim(_post('level'));
 	IF($level=='1'){
 	   $level='user';
-	}	
+	}
 	ELSEIF($level=='2'){
 	   $level='admin';
 	   }
@@ -3549,154 +3604,154 @@ elseif(isset($_GET['submit_PastNormalUser']))
     ELSEIF($level=='4'){
 	   $level='user_admin';
 	   }
-	   
-	$tz = (int)_post('tz');
-	
-	
-	$db->execute("START TRANSACTION");	
-	
-		
 
-	
+	$tz = (int)_post('tz');
+
+
+	$db->execute("START TRANSACTION");
+
+
+
+
 if($mode=='update' ){
-	 
-	
+
+
 $sql="DELETE FROM  rel_user_forum_history WHERE userID=$userID AND forum_decID=$forumID_src";
 if(!$db->execute($sql))
-return FALSE;	
-	
- 
+return FALSE;
+
+
 $sql = "INSERT INTO rel_user_forum_history (active,start_date,end_date, forum_decID,userID )VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($start_date) . ", " .
 		$db->sql_string($end_date) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
-	    $db->sql_string($userID) . " ) " ; 
-		
+	    $db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-   	
-   	
- 
 
-	
-	
-	
+
+
+
+
+
+
 }elseif($mode=='change_details'){
-	
+
 $sql = "UPDATE rel_user_forum_history SET  " .
 	  "active="     .  $db->sql_string($active) . ", " .
 	  "start_date=" . $db->sql_string($start_date) . ", " .
       "end_date=" . $db->sql_string($end_date) . "  " .
- 	 
+
 	  "WHERE userID=$userID AND forum_decID=$forum_decID";
-	
+
 	if(!$db->execute ($sql) )
 	   return false;
-	
-	
+
+
 }
-else{	
-	
+else{
+
 /****************************FAILURE****************************************/
 
-		
+
 $sql="SELECT forum_decID ,userID FROM rel_user_forum_history  WHERE userID=$userID AND  forum_decID=$forum_decID";	//getthe forums
-	
+
   if($db->querySingleItem($sql)>0) {
   	$sql="SELECT u.full_name ,f.forum_decName FROM  rel_user_forum_history r 
   LEFT JOIN users u ON u.userID=r.userID
     LEFT JOIN forum_dec f ON  f.forum_decID=r.forum_decID
   	       WHERE r.userID=$userID
-  	       AND   r.forum_decID=$forum_decID"; 
-  	
+  	       AND   r.forum_decID=$forum_decID";
+
   	if($rows=$db->queryObjectArray($sql)){
   	       $forum_decName=$rows[0]->forum_decName;
 		        $full_name=$rows[0]->full_name;
-  	        }    
-	  
-	
+  	        }
+
+
 	    	try {
-	            $result = FALSE;   
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name כבר קיים בפורום $forum_decName ");
 	    	} catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
-	        }	
+
+	        }
    }
-			     
+
 if(!$result){
- 
+
 	$i=0;
- 
+
 	foreach($message as $row){
-		 
-	  $key="messageError_$i";	
+
+	  $key="messageError_$i";
 	 $message_name[$key]=$row ;
 	 $i++;
 	}
- 	 
-  
-   $message_name['userID']=$userID;
-   
 
-	 	
+
+   $message_name['userID']=$userID;
+
+
+
 	echo json_encode($message_name);
 	exit;
-	  	
-   }  
-	 
 
- 
-	    
-		
-		
- 
-/********************************************************************/	   
- 
-		
-	
-	
-	
-	
-	
+   }
+
+
+
+
+
+
+
+/********************************************************************/
+
+
+
+
+
+
+
 $sql = "INSERT INTO rel_user_forum_history (active,start_date,end_date,forum_decID,userID)VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($start_date) . ", " .
 		$db->sql_string($end_date) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
-	   	$db->sql_string($userID) . " ) " ; 
-		
+	   	$db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-	
-	   
-}	     
-	
-	
-	
-	
-	
+
+
+}
+
+
+
+
+
 	$db->execute("COMMIT");
 
-	
+
 	$sql = "SELECT uh.*,u.full_name,u.fname,u.lname,u.level,u.note,f.forum_decName,f.forum_decID FROM rel_user_forum_history uh				 
 			INNER JOIN users u ON(uh.userID=u.userID)
 			INNER JOIN forum_dec f ON(f.forum_decID=uh.forum_decID) 
 			WHERE uh.userID=$userID AND f.forum_decID=$forum_decID
-            ORDER BY u.fname"; 
-     
+            ORDER BY u.fname";
+
 	if($r = $db->queryObjectArray($sql)){
 	$r=$r[0];
-	
+
 	$t['list'][] = preparePastUserRow($r);
 	$t['total'] = 1;
-	
+
 	$t['type'] = 'success';
 	$t['message'] = 'עודכן בהצלחה!';
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -3709,13 +3764,13 @@ $sql = "INSERT INTO rel_user_forum_history (active,start_date,end_date,forum_dec
 
 
 elseif(isset($_GET['submit_DecUser']))
-{ 
+{
 	$t = array();
 	$t['total'] = 0;
-	$result=true;	
-	
-	
-	
+	$result=true;
+
+
+
 	$userID = trim(_post('userID'));
 	$forumID_src = trim(_post('forumID_src'));
 	$forum_decID = trim(_post('forum_decID'));
@@ -3727,15 +3782,15 @@ elseif(isset($_GET['submit_DecUser']))
 //	$full_name= trim(_post('full_name'));
 //	$fname= trim(_post('fname'));
 //	$lname= trim(_post('lname'));
-	
+
 	//$mode= trim(_post('mode'));
- 
-	  
-	
+
+
+
 	$level= trim(_post('level'));
 	IF($level=='1'){
 	   $level='user';
-	}	
+	}
 	ELSEIF($level=='2'){
 	   $level='admin';
 	   }
@@ -3745,57 +3800,57 @@ elseif(isset($_GET['submit_DecUser']))
     ELSEIF($level=='4'){
 	   $level='user_admin';
 	   }
-	   
-	$tz = (int)_post('tz');
-	
-	
-	$db->execute("START TRANSACTION");	
-	
-		
 
-	
+	$tz = (int)_post('tz');
+
+
+	$db->execute("START TRANSACTION");
+
+
+
+
 if($mode=='update' ){
-	 
-	
+
+
 $sql="DELETE FROM  rel_user_Decforum WHERE userID=$userID AND forum_decID=$forum_decID AND decID=$decID ";
 if(!$db->execute($sql))
-return FALSE;	
-	
+return FALSE;
+
  $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date,decID, forum_decID,userID )VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($start_date) . ", " .
 		$db->sql_string($end_date) . ", " .
 		$db->sql_string($decID) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
-	    $db->sql_string($userID) . " ) " ; 
-		
+	    $db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-   	
- 	
-	
-	
+
+
+
+
 }elseif($mode=='change_details'){
-	
+
 $sql = "UPDATE rel_user_Decforum SET  " .
 	  "active="     .  $db->sql_string($active) . ", " .
 	  "start_date=" . $db->sql_string($start_date) . ", " .
       "end_date=" . $db->sql_string($end_date) . "  " .
- 	 
+
 	  "WHERE userID=$userID AND forum_decID=$forum_decID  AND decID=$decID ";
-	
+
 	if(!$db->execute ($sql) )
 	   return false;
-	
-	
+
+
 }
-else{	
-	
+else{
+
 /****************************FAILURE****************************************/
 
-		
-$sql="SELECT  decID ,forum_decID ,userID FROM rel_user_Decforum  WHERE userID=$userID AND  forum_decID=$forum_decID  AND  decID=$decID ";	
-	
+
+$sql="SELECT  decID ,forum_decID ,userID FROM rel_user_Decforum  WHERE userID=$userID AND  forum_decID=$forum_decID  AND  decID=$decID ";
+
   if($db->querySingleItem($sql)>0) {
   $sql="SELECT u.full_name ,f.forum_decName,
 IF(CHAR_LENGTH(d.decName)>11, CONCAT(LEFT(d.decName,9), ' ... ', RIGHT(d.decName, 4)), d.decName) AS decName
@@ -3806,78 +3861,78 @@ IF(CHAR_LENGTH(d.decName)>11, CONCAT(LEFT(d.decName,9), ' ... ', RIGHT(d.decName
   	       WHERE r.userID=$userID
   	       AND   r.forum_decID=$forum_decID
   	       AND   r.decID=$decID";
-  	 
-  	
+
+
   	if($rows=$db->queryObjectArray($sql)){
   	       $forum_decName=$rows[0]->forum_decName;
 		        $full_name=$rows[0]->full_name;
 		        $decName=$rows[0]->decName;
-		        
-  	        }    
-  	        
-	  
-	
+
+  	        }
+
+
+
 	    	try {
-	            $result = FALSE;   
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name שהיה שותף להחלטה $decName  כבר קיים בפורום $forum_decName ");
 	    	} catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
-	        }	
+
+	        }
    }
- 
-			     
+
+
 if(!$result){
- 
+
 	$i=0;
- 
+
 	foreach($message as $row){
-		 
-	  $key="messageError_$i";	
+
+	  $key="messageError_$i";
 	 $message_name[$key]=$row ;
 	 $i++;
 	}
- 	 
-  
-   $message_name['userID']=$userID;
-   
 
-	 	
+
+   $message_name['userID']=$userID;
+
+
+
 	echo json_encode($message_name);
 	exit;
-	  	
-   }  
-	 
 
- 
-	    
-		
-		
- 
-/********************************************************************/	   
- 	
+   }
+
+
+
+
+
+
+
+/********************************************************************/
+
 $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date,decID, forum_decID,userID )VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($start_date) . ", " .
 		$db->sql_string($end_date) . ", " .
 		$db->sql_string($decID) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
-	    $db->sql_string($userID) . " ) " ; 
-		
+	    $db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-	
-	   
-}	     
-	
-	
-	
-	
-	
+
+
+}
+
+
+
+
+
 	$db->execute("COMMIT");
 
-	
+
 	$sql = "SELECT r.*,u.full_name,u.fname,u.lname,u.level,u.note,f.forum_decName,f.forum_decID,d.decID,
 	         IF(CHAR_LENGTH(d.decName)>11, CONCAT(LEFT(d.decName,9), ' ... ', RIGHT(d.decName, 4)), d.decName) AS decName 
 	        FROM rel_user_Decforum r				 
@@ -3885,19 +3940,19 @@ $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date,decID, forum_dec
 			INNER JOIN forum_dec f ON(r.forum_decID=f.forum_decID)
 			INNER JOIN decisions d ON(r.decID=d.decID) 
 			WHERE r.userID=$userID AND f.forum_decID=$forum_decID AND d.decID=$decID
-            ORDER BY u.fname"; 
-     
-	
+            ORDER BY u.fname";
+
+
 	if($r = $db->queryObjectArray($sql)){
 	$r=$r[0];
-	
+
 	$t['list'][] = prepareDecUserRow($r);
 	$t['total'] = 1;
-	
+
 	$t['type'] = 'success';
 	$t['message'] = 'עודכן בהצלחה!';
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
@@ -3924,7 +3979,7 @@ elseif(isset($_GET['edit_dec_frm_user']))
 	$decID= (int)$_GET['decID'];
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$sql = "SELECT ud.*,ud.HireDate AS start_date, u.full_name,u.fname,u.lname,u.level,u.note,
 	        f.forum_decName,f.forum_decID,d.decID,IF(CHAR_LENGTH(d.decName)>14, CONCAT(LEFT(d.decName,9), ' ... ', RIGHT(d.decName, 6)), d.decName) AS decName 
 	         FROM rel_user_Decforum ud				 
@@ -3932,28 +3987,28 @@ elseif(isset($_GET['edit_dec_frm_user']))
 			INNER JOIN forum_dec f ON(f.forum_decID=ud.forum_decID)
 			INNER JOIN decisions d ON(d.decID=ud.decID) 
 			WHERE ud.userID=$userID AND ud.forum_decID=$forum_decID AND ud.decID=$decID
-            ORDER BY u.fname"; 
-	                      
-	                 
+            ORDER BY u.fname";
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareDecUserRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 
 /******************************************************************************************************************/
 elseif(isset($_GET['submitDecForumUser']))
-{ 
+{
 	$t = array();
 	$t['total'] = 0;
-	$result=true;	
-	
-	
-	
+	$result=true;
+
+
+
 	$userID = trim(_post('userID'));
 	$forumID_src = trim(_post('forumID_src'));
 	$forum_decID = trim(_post('forum_decID'));
@@ -3965,15 +4020,15 @@ elseif(isset($_GET['submitDecForumUser']))
 	$full_name= trim(_post('full_name'));
 	$fname= trim(_post('fname'));
 	$lname= trim(_post('lname'));
-	
+
 	$mode= trim(_post('mode'));
- 
-	  
-	
+
+
+
 	$level= trim(_post('level'));
 	IF($level=='1'){
 	   $level='user';
-	}	
+	}
 	ELSEIF($level=='2'){
 	   $level='admin';
 	   }
@@ -3983,55 +4038,55 @@ elseif(isset($_GET['submitDecForumUser']))
     ELSEIF($level=='4'){
 	   $level='user_admin';
 	   }
-	   
-	$tz = (int)_post('tz');
-	
-	
-	$db->execute("START TRANSACTION");	
-	
-		
 
-	
+	$tz = (int)_post('tz');
+
+
+	$db->execute("START TRANSACTION");
+
+
+
+
 if($mode=='update' ){
-	 
-	
+
+
 $sql="DELETE FROM  rel_user_Decforum WHERE userID=$userID AND forum_decID=$forumID_src AND decID=$decID";
 if(!$db->execute($sql))
-return FALSE;	
-	
- 
+return FALSE;
+
+
 $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date, forum_decID,decID,userID )VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($HireDate) . ", " .
 		$db->sql_string($end_date) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
 	    $db->sql_string($decID) . ", " .
-	    $db->sql_string($userID) . " ) " ; 
-		
+	    $db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
 
-	   
+
 }elseif($mode=='change_details'){
-	
+
 $sql = "UPDATE rel_user_Decforum SET  " .
 	  "active="     .  $db->sql_string($active) . ", " .
 	  "HireDate=" . $db->sql_string($HireDate) . ", " .
       "end_date=" . $db->sql_string($end_date) . "  " .
- 	 
+
 	  "WHERE userID=$userID AND forum_decID=$forum_decID AND decID=$decID";
-	
+
 	if(!$db->execute ($sql) )
 	   return false;
-	
-	
-}else{	
-	
+
+
+}else{
+
 /****************************FAILURE****************************************/
 
-		
+
 $sql="SELECT forum_decID ,userID ,decID FROM rel_user_Decforum  WHERE userID=$userID AND  forum_decID=$forum_decID AND decID=$decID";	//getthe forums
-	
+
   if($db->querySingleItem($sql)>0) {
   $sql="SELECT u.full_name ,f.forum_decName,IF(CHAR_LENGTH(d.decName)>14, CONCAT(LEFT(d.decName,9), ' ... ', RIGHT(d.decName, 6)), d.decName)
         FROM  rel_user_Decforum r 
@@ -4040,58 +4095,58 @@ $sql="SELECT forum_decID ,userID ,decID FROM rel_user_Decforum  WHERE userID=$us
         LEFT JOIN decisions d ON  d.decID=r.decID
   	    WHERE r.userID=$userID
   	    AND   r.forum_decID=$forum_decID
-  	    AND   d.decID=$decID"; 
-  	
+  	    AND   d.decID=$decID";
+
   	if($rows=$db->queryObjectArray($sql)){
   	       $forum_decName=$rows[0]->forum_decName;
 		   $full_name=$rows[0]->full_name;
-  	        }    
-	  
-	
+  	        }
+
+
 	    	try {
-	            $result = FALSE;   
+	            $result = FALSE;
 			    throw new Exception("משתמש $full_name כבר קיים בפורום $forum_decName ");
 	    	} catch(Exception $e){
  			 $result=FALSE;
 	         $message[]=$e->getMessage();
-	          
-	        }	
+
+	        }
    }
- 
-			     
+
+
 if(!$result){
- 
+
 	$i=0;
- 
+
 	foreach($message as $row){
-		 
-	  $key="messageError_$i";	
+
+	  $key="messageError_$i";
 	 $message_name[$key]=$row ;
 	 $i++;
 	}
- 	 
-  
-   $message_name['userID']=$userID;
-   
 
-	 	
+
+   $message_name['userID']=$userID;
+
+
+
 	echo json_encode($message_name);
 	exit;
-	  	
-   }  
-   
-/********************************************************************/	
+
+   }
+
+/********************************************************************/
 $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date,forum_decID,decID,userID)VALUES ( " .
-        $db->sql_string($active) . ", " . 
+        $db->sql_string($active) . ", " .
 		$db->sql_string($HireDate) . ", " .
 		$db->sql_string($end_date) . ", " .
 	    $db->sql_string($forum_decID) . ", " .
 	    $db->sql_string($decID) . ", " .
-	   	$db->sql_string($userID) . " ) " ; 
-		
+	   	$db->sql_string($userID) . " ) " ;
+
 		if(!$db->execute ($sql) )
 	   return false;
-}	     
+}
 
 
 
@@ -4106,18 +4161,18 @@ $sql = "INSERT INTO rel_user_Decforum (active,HireDate,end_date,forum_decID,decI
 	  	    WHERE r.userID=$userID
 	  	    AND   r.forum_decID=$forum_decID
 	  	    AND   d.decID=$decID 
-            ORDER BY u.fname";  
-	
+            ORDER BY u.fname";
+
 	if( $r = $db->queryObjectArray($sql) ){
 	$r=$r[0];
-	
+
 	$t['list'][] = prepareDecUserRow($r);
 	$t['total'] = 1;
-	
+
 	$t['type'] = 'success';
 	$t['message'] = 'עודכן בהצלחה!';
-	} 
-	echo json_encode($t); 
+	}
+	echo json_encode($t);
 	exit;
 }
 
@@ -4142,15 +4197,15 @@ else if( !empty($_REQUEST['deleteMultiTask']))
 //elseif(isset ($_GET  ['deleteMultiTask'] )	) 
 {
 $checbox=array();
-$checkbox=$_REQUEST['checkbox'];	
+$checkbox=$_REQUEST['checkbox'];
 
 $i=0;
 for($i=0;$i<count($checkbox);$i++){
-	
-	 
+
+
 if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
-	 
+
 	check_write_access();
 	$id = (int)$_REQUEST['checkbox'][$i];
 	$tags = get_task_tags($id);
@@ -4161,8 +4216,8 @@ if($_REQUEST['decID'])
 		$db->execute("UPDATE tags SET tags_count=tags_count-1 WHERE tagID IN ($s)");
 		$db->execute("DELETE FROM tags WHERE tags_count < 1");	# slow on large amount of tags
 	}
-	
-	
+
+
 	$sql="SELECT t.* , u.userID , rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -4172,31 +4227,31 @@ if($_REQUEST['decID'])
 			            		  ON u.userID=rt.userID 
 			            		  WHERE t.taskID=$id  
 			            		  AND d.decID=$decID ";
-     
+
 	$r = $db->queryObjectArray($sql);
 	$r=$r[0];
 	$userID=$r->userID;
-	
-	
-	
+
+
+
 	$sql=("DELETE FROM rel_user_task WHERE taskID=$id AND userID=$userID");
 	if(!$db->execute($sql) )
 	return false;
-	
-	
-	
-	
+
+
+
+
 	$sql=("DELETE FROM todolist WHERE taskID=$id AND decID=$decID");
 	if($db->execute($sql) )
 	$db->execute("COMMIT");
- 
+
 	$t = array();
 	$t['total'] = $i;//$affected;
 	$t['list'][] = array('id'=>$id);
 
 }
 	echo json_encode($t);
-   
+
  	exit;
 }
 /******************************************************************************************************************/
@@ -4206,11 +4261,11 @@ elseif(isset($_GET['deleteTask']))
 {
     if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
-	
-	
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
-	 
+
 	check_write_access();
 	$id = (int)$_GET['deleteTask'];
 	$tags = get_task_tags($id);
@@ -4221,20 +4276,20 @@ elseif(isset($_GET['deleteTask']))
 		$db->execute("UPDATE tags SET tags_count=tags_count-1 WHERE tagID IN ($s)");
 		$db->execute("DELETE FROM tags WHERE tags_count < 1");	# slow on large amount of tags
 	}
-	
-	
+
+
 /***********************************CHECK IF DEST_USERID IS MaNaGar************************************/
     	$sql="                 
          SELECT dest_userID from rel_user_task WHERE taskID=$id   AND forum_decID=$forum_decID";
     	if($rows=$db->queryObjectArray($sql)){
     		$dest_userID=$rows[0]->dest_userID;
     	}
-	
+
 $sql="                 
     SELECT u.userID  FROM users u          
     WHERE u.userID=(SELECT m.userID FROM managers m
-    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";	
-	
+    WHERE m.managerID=(SELECT f.managerID FROM forum_dec f WHERE f.forum_decID=$forum_decID)) ";
+
 if($rows=$db->queryObjectArray($sql)){
 	$mgr_userID=$rows[0]->userID;
 if($dest_userID==$mgr_userID){
@@ -4242,20 +4297,20 @@ if($dest_userID==$mgr_userID){
       	  "duedate=  NULL   " .
 	  "WHERE  forum_decID=$forum_decID";
     }else{
-	
+
        $sql = "UPDATE rel_user_forum  SET  " .
       	  "duedate= NULL   " .
 	  "WHERE userID=$dest_userID and forum_decID=$forum_decID";
 /***************************************************/
-    }	
+    }
 }
 
 if(!$db->execute($sql) )
 	   return false;
-/**********************************************************************/	
-		
-	
-	
+/**********************************************************************/
+
+
+
 	$sql="SELECT t.* , u.userID , rt.dest_userID FROM todolist t
                                   left JOIN decisions  d
 			            		  ON d.decID=t.decID 
@@ -4265,27 +4320,27 @@ if(!$db->execute($sql) )
 			            		  ON u.userID=rt.userID 
 			            		  WHERE t.taskID=$id  
 			            		  AND d.decID=$decID ";
-     
+
 	$r = $db->queryObjectArray($sql);
 	$r=$r[0];
 	$userID=$r->userID;
-	
-	
-	
+
+
+
 	$sql=("DELETE FROM rel_user_task WHERE taskID=$id AND userID=$userID");
 	if(!$db->execute($sql) )
 	return false;
-	
-	
-	
-	
+
+
+
+
 	$sql=("DELETE FROM todolist WHERE taskID=$id AND decID=$decID");
 	if($db->execute($sql) )
 	$db->execute("COMMIT");
 
 
-	
-	
+
+
 	$t = array();
 	$t['total'] = 1;//$affected;
 	$t['list'][] = array('id'=>$id);
@@ -4302,8 +4357,8 @@ elseif(isset($_GET['deleteUser']))
     $forum_decID=(int)$_GET['forum_decID'];
 	// $forum_ID= trim(_post('forum_decID'));
     //var_dump($forum_decID); die;
-    
-    
+
+
  	$tags = get_user_tags($id,$forum_decID);
 	$db->execute("BEGIN");
 if($tags && $tags[0] !=null) {
@@ -4312,8 +4367,8 @@ if($tags && $tags[0] !=null) {
 		$db->execute("UPDATE user_tags SET tags_count=tags_count-1 WHERE tagID IN ($s)");
 		$db->execute("DELETE FROM user_tags WHERE tags_count < 1");	# slow on large amount of tags
 	}
-	
-	
+
+
 $sql="SELECT t.taskID    FROM todolist t
                                
                                  left JOIN rel_user_task  rt
@@ -4325,29 +4380,29 @@ $sql="SELECT t.taskID    FROM todolist t
                      			 where t.compl in(0,1)
                                  AND rt.userID=$id
                                  AND r.forum_decID=$forum_decID 
-                                 ORDER BY t.duedate ASC "; 
-	     
+                                 ORDER BY t.duedate ASC ";
+
 	if($rows = $db->queryObjectArray($sql)){
 //		for($i=0; $i<count($rows); $i++)
 //		if($i==0)
 //		$taskIDs = $rows[$i]->taskID;
 //		else
 //		$taskIDs .= "," . $rows[$i]->taskID;
-          
+
 	foreach($rows as $row){
 				if(!$taskIDs)
 				$taskIDs  = $row->taskID;
 				else
 				$taskIDs .= ";" . $row->taskID;
 
-			}		
-	
+			}
+
 	$sql=("DELETE FROM rel_user_task WHERE userID=$id and taskID in($taskIDs)");
 	 if(!$db->execute($sql) )
 	    return FALSE;
-	  $sql=("DELETE FROM todolist WHERE taskID IN ($taskIDs)"); 
+	  $sql=("DELETE FROM todolist WHERE taskID IN ($taskIDs)");
 	  if($db->execute($sql) )
-	$db->execute("COMMIT"); 
+	$db->execute("COMMIT");
 	}
 //	else{
 //		$sql=("DELETE FROM rel_user_task WHERE userID=$id ");
@@ -4355,15 +4410,15 @@ $sql="SELECT t.taskID    FROM todolist t
 //	if($db->execute($sql) )
 //	$db->execute("COMMIT");
 //	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	$sql=("DELETE FROM rel_user_forum WHERE userID=$id AND   forum_decID=$forum_decID");
 	if($db->execute($sql) )
 	$db->execute("COMMIT");
-	
+
 	$t = array();
 	$t['total'] = 1;//$affected;
 	$t['list'][] = array('id'=>$id);
@@ -4379,7 +4434,7 @@ elseif(isset($_GET['completeTask']))
 	check_write_access();
 	$id = (int)$_GET['completeTask'];
 	$compl = _get('compl') ? 1 : 0;
-	
+
 	$sql=("UPDATE todolist SET compl= " .$db->sql_string($compl) . " WHERE taskID=$id");
 	if(!$db->execute($sql ) )
 	   return FALSE;
@@ -4398,7 +4453,7 @@ elseif(isset($_GET['completeUser2']))//new
 	$id = (int)$_GET['completeUser2'];
 	$forum_decID = (int)$_GET['forum_decID'];
 	$compl = _get('compl') ? 1 : 0;
-	
+
 	$sql=("UPDATE rel_user_forum SET compl= " .$db->sql_string($compl) . " WHERE userID=$id AND forum_decID=$forum_decID ");
 	if(!$db->execute($sql ) )
 	   return FALSE;
@@ -4417,11 +4472,11 @@ elseif(isset($_GET['editNote']))
 	$id = (int)$_GET['editNote'];
 	stop_gpc($_POST);
 	$note = str_replace("\r\n", "\n", trim(_post('note')));
-	
+
 	$sql=("UPDATE todolist SET note= " .$db->sql_string($note) . " WHERE taskID=$id" );
 	if(!$db->execute($sql ) )
 	   return FALSE;
-	   
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('id'=>$id, 'note'=>nl2br(htmlarray($note)), 'noteText'=>(string)$note);
@@ -4437,11 +4492,11 @@ elseif(isset($_GET['edituserNote']))
 	$id = (int)$_GET['edituserNote'];
 	stop_gpc($_POST);
 	$note = str_replace("\r\n", "\n", trim(_post('note')));
-	
+
 	$sql=("UPDATE users SET note= " .$db->sql_string($note) . " WHERE userID=$id" );
 	if(!$db->execute($sql ) )
 	   return FALSE;
-	   
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('id'=>$id, 'note'=>nl2br(htmlarray($note)), 'noteText'=>(string)$note);
@@ -4458,11 +4513,11 @@ elseif(isset($_GET['editDecFrmNote']))
 	$forum_decID = (int)$_POST['forum_decID'];
 	stop_gpc($_POST);
 	$note = str_replace("\r\n", "\n", trim(_post('note')));
-	
+
 	$sql=("UPDATE rel_forum_dec SET note= " .$db->sql_string($note) . " WHERE decID=$decID  AND forum_decID=$forum_decID" );
 	if(!$db->execute($sql ) )
 	   return FALSE;
-	   
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('decID'=>$decID, 'forum_decID'=>$forum_decID, 'note'=>nl2br(htmlarray($note)), 'noteText'=>(string)$note);
@@ -4473,23 +4528,23 @@ elseif(isset($_GET['editDecFrmNote']))
 /******************************************************************************************************************/
 elseif(isset($_GET['loadTask']))
 {
-	
+
    $taskID=$_REQUEST['id'];
-	
-	
+
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	else $decID=$decID;
-	
-	
-	
-	
-	
+
+
+
+
+
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
-	$inner = '';	 
+
+	$inner = '';
 	$tag = trim(_get('t'));
 	if($tag != '') {
 		$tag_id = get_tag_id($tag);
@@ -4500,26 +4555,26 @@ elseif(isset($_GET['loadTask']))
 		}
 		$sqlWhere .= " AND tag2task.tagID=$tag_id ";
 	}
-	
-	 
-	
-	 
-	
+
+
+
+
+
 	$tz = (int)_get('tz');
 	if((isset($config['autotz']) && $config['autotz']==0) || $tz<-720 || $tz>720 || $tz%30!=0)
 	$tz = null;
-	
-	
-	
+
+
+
 	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
+	$t['list'] = array();
 	$t['message'] = array();
-	
-	
-	
-	 
-	
+
+
+
+
+
 	$sql="SELECT t.*,u.userID, u.full_name ,rt.dest_userID,t.forum_decID
                     FROM todolist t  
                                  LEFT JOIN rel_user_task  rt
@@ -4538,21 +4593,21 @@ elseif(isset($_GET['loadTask']))
                                   
                                  AND t.decID=$decID 
                                  AND t.forum_decID=$forum_decID 
-                                 AND t.taskID=$taskID "; 
-	
- 
-	
+                                 AND t.taskID=$taskID ";
+
+
+
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
-		 
-		$t['list'][] = prepareTaskRow($r, $tz);
-		
 
-	}		
+		$t['list'][] = prepareTaskRow($r, $tz);
+
+
+	}
 	echo json_encode($t);
 	exit;
 }
@@ -4567,25 +4622,25 @@ elseif(isset($_GET['getTask']))
 	$t['total'] = 0;
 //	$sql=("SELECT * FROM todolist WHERE taskID=$id");
 
-	
+
 	$sql="SELECT t.* ,distinct(u.userID), rt.dest_userID   FROM todolist t
                                  LEFT JOIN rel_user_task  rt
 			            		 ON rt.taskID=t.taskID
 			            		 LEFT JOIN users u
 			            		 ON rt.userID=u.userID  
 			            		 WHERE t.compl in(0,1)
-                                 AND t.taskID=$id"; 
-	
-	
-	
-	
+                                 AND t.taskID=$id";
+
+
+
+
 	$r = $db->queryObjectArray($sql);
 	if($r) {
 		$r=$r[0];
 		$t['list'][] = prepareTaskRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 /******************************************************************************************************************/
@@ -4605,7 +4660,7 @@ elseif(isset($_GET['getUser']))
 		$t['list'][] = prepareUserRow($r);
 		$t['total'] = 1;
 	}
-	echo json_encode($t); 
+	echo json_encode($t);
 	exit;
 }
 /******************************************************************************************************************/
@@ -4618,10 +4673,10 @@ elseif(isset($_GET['changeOrder']))
 
 	$s = _post('order');
 	parse_str($s, $order);
-	
+
 	$t = array();
 	$t['total'] = 0;
-	
+
 	if($order)
 	{
 		$ad = array();
@@ -4638,7 +4693,7 @@ elseif(isset($_GET['changeOrder']))
 		$db->execute("COMMIT");
 		$t['total'] = 1;
 	}
-	
+
 	echo json_encode($t);
 	exit;
 }
@@ -4648,16 +4703,16 @@ elseif(isset($_GET['changeuserOrder']))
 {
 	check_write_access();
 	stop_gpc($_POST);
-	
-	
+
+
 	$s = _post('order');
 	parse_str($s, $order);
-	
-	
+
+
 	$t = array();
 	$t['total'] = 0;
-	
-	
+
+
 	if($order)
 	{
 		$ad = array();
@@ -4674,8 +4729,8 @@ elseif(isset($_GET['changeuserOrder']))
 		$db->execute("COMMIT");
 		$t['total'] = 1;
 	}
-	
-	
+
+
 	echo json_encode($t);
 	exit;
 }
@@ -4685,16 +4740,16 @@ elseif(isset($_GET['changeuserOrder2']))
 {
 	check_write_access();
 	stop_gpc($_POST);
-	
+
 	$forum_decID = _post('$forum_decID');
 	$s = _post('order');
 	parse_str($s, $order);
-	
-	
+
+
 	$t = array();
 	$t['total'] = 0;
-	
-	
+
+
 	if($order)
 	{
 		$ad = array();
@@ -4711,8 +4766,8 @@ elseif(isset($_GET['changeuserOrder2']))
 		$db->execute("COMMIT");
 		$t['total'] = 1;
 	}
-	
-	
+
+
 	echo json_encode($t);
 	exit;
 }
@@ -4724,14 +4779,14 @@ elseif(isset($_GET['changeOrder']))
 {
 	check_write_access();
 	stop_gpc($_POST);
-	
+
 	$s = _post('order');
 	parse_str($s, $order);
-	
+
 	$t = array();
 	$t['total'] = 0;
-	
-	
+
+
 	if($order)
 	{
 		$ad = array();
@@ -4747,8 +4802,8 @@ elseif(isset($_GET['changeOrder']))
 		$db->execute("COMMIT");
 		$t['total'] = 1;
 	}
-	
-	
+
+
 	echo json_encode($t);
 	exit;
 }
@@ -4758,13 +4813,13 @@ elseif(isset($_GET['changeuserOrder']))
 {
 	check_write_access();
 	stop_gpc($_POST);
-	
+
 	$s = _post('order');
 	parse_str($s, $order);
-	
+
 	$t = array();
 	$t['total'] = 0;
-	
+
 	if($order)
 	{
 		$ad = array();
@@ -4789,15 +4844,15 @@ elseif(isset($_GET['changeuserOrder']))
 elseif(isset($_GET['login']))
 {
 	$t = array('logged' => 0);
-	
+
 	if(!$needAuth) {
 		$t['disabled'] = 1;
 		echo json_encode($t);
 		exit;
 	}
-	
+
 	stop_gpc($_POST);
-	
+
 	$password = _post('password');
 	if($password == $config['password']) {
 		$t['logged'] = 1;
@@ -4828,22 +4883,22 @@ elseif(isset($_GET['suggestTags']))
 	$begin = trim(_get('q'));
 	$limit = (int)_get('limit');
 	if($limit<1) $limit = 8;
- 
-	
+
+
 	$sql=("SELECT name,tagID FROM tags WHERE name LIKE " . $db->sql_string($begin) . " AND tags_count>0 ORDER BY name LIMIT $limit");
 	$q=$db->queryObjectArray($sql);
-	 
+
 	$s = '';
- 
+
 if($q && $q!=null){
  foreach($q as $r){
- 	
+
     $s .= "$r->name |$r->tagID\n";
- 	
+
  }
 	echo $s;
-}	
-	exit; 
+}
+	exit;
 }
 /******************************************************************************************************************/
 elseif(isset($_GET['suggestuserTags']))
@@ -4853,21 +4908,21 @@ elseif(isset($_GET['suggestuserTags']))
 	$limit = (int)_get('limit');
 	if($limit<1) $limit = 8;
 	//$q = $db->dq("SELECT name,id FROM tags WHERE name LIKE " . $db->sql_string($begin) . " AND tags_count>0 ORDER BY name LIMIT $limit");
-	
-	
+
+
 	$sql=("SELECT name,tagID FROM user_tags WHERE name LIKE " . $db->sql_string($begin) . " AND tags_count>0 ORDER BY name LIMIT $limit");
 	$q=$db->queryObjectArray($sql);
-	 
+
 	$s = '';
   if($q && $q!=null){
      foreach($q as $r){
- 	
+
  	 (string)$s .= "$r->name |$r->tagID\n";
- 	
+
      }
 	  echo $s;
-   }	
-	exit; 
+   }
+	exit;
 }
 
 /******************************************************************************************************************/
@@ -4877,17 +4932,17 @@ elseif(isset($_GET['setPrio']))
 	check_write_access();
 	$id = (int)$_GET['setPrio'];
 	$prio = (int)_get('prio');
-	
+
 	if($prio < -1) $prio = -1;
 	elseif($prio >3) $prio = 3;
-	
+
 	$sql=("UPDATE todolist SET prio=$prio WHERE taskID=$id");
 	$db->execute($sql);
-	
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('id'=>$id, 'prio'=>$prio);
-	
+
 	echo json_encode($t);
 	exit;
 }
@@ -4895,20 +4950,20 @@ elseif(isset($_GET['setPrio']))
 elseif(isset($_GET['setuserPrio']))
 {
 	check_write_access();
-	
+
 	$id = (int)$_GET['setuserPrio'];
 	$forum_decID = (int)$_GET['forum_decID'];
 	$prio = (int)_get('prio');
 	if($prio < -1) $prio = -1;
 	elseif($prio >3) $prio = 3;
-	
+
 	$sql=("UPDATE rel_user_forum SET prio=$prio WHERE userID=$id and forum_decID=$forum_decID");
 	$db->execute($sql);
-	
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('id'=>$id, 'prio'=>$prio);
-	
+
 	echo json_encode($t);
 	exit;
 }
@@ -4916,20 +4971,20 @@ elseif(isset($_GET['setuserPrio']))
 elseif(isset($_GET['setmgrPrio']))
 {
 	check_write_access();
-	
+
 	$id = (int)$_GET['setuserPrio'];
 	$forum_decID = (int)$_GET['forum_decID'];
 	$prio = (int)_get('prio');
 	if($prio < -1) $prio = -1;
 	elseif($prio >3) $prio = 3;
-	
+
 	$sql=("UPDATE forum_dec SET prio=$prio WHERE  forum_decID=$forum_decID");
 	$db->execute($sql);
-	
+
 	$t = array();
 	$t['total'] = 1;
 	$t['list'][] = array('forum_decID'=>$forum_decID, 'prio'=>$prio);
-	
+
 	echo json_encode($t);
 	exit;
 }
@@ -4940,7 +4995,7 @@ elseif(isset($_GET['tagCloud']))
 	if($_REQUEST['forum_decID'])
 	$forum_decID=$_REQUEST['forum_decID'];
 	else $forum_decID=$forum_decID;
-	
+
 	if($_REQUEST['decID'])
 	$decID=$_REQUEST['decID'];
 	//AND t.decID=$decID
@@ -4952,37 +5007,37 @@ elseif(isset($_GET['tagCloud']))
              WHERE tg.tags_count>0 
              AND t.forum_decID=$forum_decID
              ORDER BY tg.tags_count ASC");
-	$q = $db->queryObjectArray($sql);	
+	$q = $db->queryObjectArray($sql);
 
-    if($q && $q !=null)	
+    if($q && $q !=null)
 	foreach($q as $r){
 	$a[$r->name] = $r->name	 ;
 	}
-	
-	
+
+
 	$t = array();
 	$t['total'] = 0;
-	
+
 	$count = sizeof($a);
 	if(!$count) {
 		echo json_encode($t);
 		exit;
 	}
-	
+
 	$qmax = max(array_values($a));
 	$qmin = min(array_values($a));
-	
+
 	if($count >= 10) $grades = 10;
 	else $grades = $count;
-	
+
 	$step = ($qmax - $qmin)/$grades;
-	
+
 	foreach($a as $tag=>$q) {
 		$t['cloud'][] = array('tag'=>$tag, 'w'=> tag_size($qmin,$q,$step) );
 	}
-	
+
 	$t['total'] = $count;
-	
+
 	echo json_encode($t);
 	exit;
 }
@@ -4997,13 +5052,13 @@ elseif(isset($_GET['taguserCloud']))
              WHERE ut.tags_count>0 
              AND r.forum_decID=$forum_decID
              ORDER BY ut.tags_count ASC");
-	$q = $db->queryObjectArray($sql);	
+	$q = $db->queryObjectArray($sql);
 
-	if($q && $q !=null)	
+	if($q && $q !=null)
 	foreach($q as $r){
 	$a[$r->name] = $r->name	 ;
 	}
-	
+
 	$t = array();
 	$t['total'] = 0;
 	$count = sizeof($a);
@@ -5015,12 +5070,12 @@ elseif(isset($_GET['taguserCloud']))
 	$qmin = min(array_values($a));
 	if($count >= 10) $grades = 10;
 	else $grades = $count;
-	
+
 	$step = ($qmax - $qmin)/$grades;
 	foreach($a as $tag=>$q) {
 		$t['cloud'][] = array('tag'=>$tag, 'w'=> tag_size($qmin,$q,$step) );
 	}
-	
+
 	$t['total'] = $count;
 
 	echo json_encode($t);
@@ -5039,13 +5094,13 @@ elseif(isset($_GET['taguserCloud_all']))
              
              ORDER BY ut.tags_count ASC");
 	//AND r.forum_decID=$forum_decID
-	$q = $db->queryObjectArray($sql);	
+	$q = $db->queryObjectArray($sql);
 
-	if($q && $q !=null)	
+	if($q && $q !=null)
 	foreach($q as $r){
 	$a[$r->name] = $r->name	 ;
 	}
-	
+
 	$t = array();
 	$t['total'] = 0;
 	$count = sizeof($a);
@@ -5057,12 +5112,12 @@ elseif(isset($_GET['taguserCloud_all']))
 	$qmin = min(array_values($a));
 	if($count >= 10) $grades = 10;
 	else $grades = $count;
-	
+
 	$step = ($qmax - $qmin)/$grades;
 	foreach($a as $tag=>$q) {
 		$t['cloud'][] = array('tag'=>$tag, 'w'=> tag_size($qmin,$q,$step) );
 	}
-	
+
 	$t['total'] = $count;
 
 	echo json_encode($t);
@@ -5074,35 +5129,35 @@ elseif(isset($_GET['load_DecFrmNote']))
 {
 	 global $db;
    $decID=$_REQUEST['decID'];
-	
-	
+
+
 	$t = array();
 	$t['total'] = 0;
-	$t['list'] = array(); 
-	
-	
-	
-	
-	 
-	
+	$t['list'] = array();
+
+
+
+
+
+
 	$sql="SELECT d.decName,d.decID, 
 	       rf.forum_decID,rf.note,f.forum_decName
 	       FROM decisions d 
 	       LEFT JOIN rel_forum_dec rf ON d.decID=rf.decID
 	       LEFT JOIN forum_dec f ON f.forum_decID=rf.forum_decID 
-	       WHERE d.decID=$decID"; 
-	
- 
-	
+	       WHERE d.decID=$decID";
+
+
+
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
-		 
+
 		$t['list'][] =  $r;
-	}		
+	}
 	echo json_encode($t);
 	exit;
 }
@@ -5162,10 +5217,10 @@ function prepareTaskRow($r, $tz=null)
 	return array(
 		'taskID' => $r->taskID,
 	    'decID' => $r->decID,
-	    'forum_decID' => $r->forum_decID,  
-	    'userID'=>$r->userID, 
-	    'dest_userID'=>$r->dest_userID, 
-	    'full_name' => htmlarray($r->full_name),  
+	    'forum_decID' => $r->forum_decID,
+	    'userID'=>$r->userID,
+	    'dest_userID'=>$r->dest_userID,
+	    'full_name' => htmlarray($r->full_name),
 	    'dest_name' => htmlarray($r->dest_name),
 		'title' => htmlarray($r->title),
 		'date' => htmlarray($r->task_date),
@@ -5176,10 +5231,10 @@ function prepareTaskRow($r, $tz=null)
 		'ow' => (int)$r->ow,
 		'tags' => htmlarray($r->tags),
 	    'message'=> htmlarray($r->message),
-	    'prog_bar' => (int)$r->prog_bar,    
-        'task_allowed' => htmlarray ($r->task_allowed),	
-	
-	
+	    'prog_bar' => (int)$r->prog_bar,
+        'task_allowed' => htmlarray ($r->task_allowed),
+
+
 	  'duedate' => $dueA['formatted'],
 	  'dueClass' => $dueA['class'],
 	  'dueStr' => $dueA['str'],
@@ -5190,7 +5245,7 @@ function prepareTaskRow($r, $tz=null)
 function prepareAvgRow($r){
 	return array(
 	'avg'=>(int)$r->avg,
-	
+
    );
 }
 /****************************************************************/
@@ -5198,8 +5253,8 @@ function prepareuserDuedateRow($r, $tz=null)
 {
 	$dueA = prepare_duedate($r->duedate, $tz);
 	return array(
-		  
-	
+
+
 	'duedate' => $dueA['formatted'],
 		'dueClass' => $dueA['class'],
 			'dueStr' => $dueA['str'],
@@ -5213,9 +5268,9 @@ function prepareTask2userRow($r, $tz=null)
 	$dueA = prepare_duedate($r->duedate, $tz);
 	return array(
 		'taskID' => $r->taskID,
-	    'decID' => $r->decID, 
-	    'userID'=>$r->userID, 
-	    'dest_userID'=>$r->dest_userID,  
+	    'decID' => $r->decID,
+	    'userID'=>$r->userID,
+	    'dest_userID'=>$r->dest_userID,
 		'title' => htmlarray($r->title),
 	    'full_name' => htmlarray($r->full_name),
 		'date' => htmlarray($r->task_date),
@@ -5226,8 +5281,8 @@ function prepareTask2userRow($r, $tz=null)
 		'ow' => (int)$r->ow,
 		'tags' => htmlarray($r->tags),
 	    'message'=> htmlarray($r->message),
-        'prog_bar' => (int)$r->prog_bar,     
-	
+        'prog_bar' => (int)$r->prog_bar,
+
 	'duedate' => $dueA['formatted'],
 		'dueClass' => $dueA['class'],
 			'dueStr' => $dueA['str'],
@@ -5237,12 +5292,12 @@ function prepareTask2userRow($r, $tz=null)
 /******************************************************************************************************************/
 function prepareUserRow($r)
 {
-	 
+
 	$dueA = prepare_duedate($r->duedate, $tz);
 	//$r->note = str_replace("\r\n", "\n", trim($r->note));
 		return array(
 		'userID' => $r->userID,
-		//'dest_userID' => $r->dest_userID, 
+		//'dest_userID' => $r->dest_userID,
 		'forum_decID' => $r->forum_decID,
 		'forum_decName' =>htmlarray($r->forum_decName),
 		'full_name' => htmlarray($r->full_name),
@@ -5255,19 +5310,19 @@ function prepareUserRow($r)
 		'prio' => $r->prio,
  		'note' => nl2br(htmlarray($r->note) ),
         'note' => nl2br($r->note ),
-		
+
 		//'note' =>(string) $r->note,
 		'noteText' =>(string) $r->note,
 		'ow' => (int)$r->ow,
-		'uname' =>  $r->uname , 
+		'uname' =>  $r->uname ,
 	    'tags' => htmlarray($r->tags),
 		'email' => htmlarray($r->email),
 		'upass' =>(string) $r->upass,
 		'level' =>(string) $r->level,
 		'phone_num' =>(string) $r->phone_num,
 		'active' =>  $r->active,
-		 
-         		  
+
+
 //		return array(
 //		'userID' => $r->userID,
 //		'dest_userID' => $r->dest_userID, 
@@ -5288,13 +5343,13 @@ function prepareUserRow($r)
 //		'level' =>htmlarray($r->level),
 //		'phone_num' =>htmlarray($r->phone_num),
 //		'active' =>  $r->active,
- 		
- 		
+
+
 		'duedate' => $dueA['formatted'],
 		'dueClass' => $dueA['class'],
 		'dueStr' => $dueA['str'],
 		'dueInt' => date2int($r->duedate),
-		
+
 	);
 }
 
@@ -5303,7 +5358,7 @@ function prepareNormalUserRow($r)
 {
 		return array(
 		'userID' => $r->userID,
-		'active' => $r->active, 
+		'active' => $r->active,
 	    'level' =>(string) $r->level,
 		'user_date' => htmlarray($r->user_date),
 		'full_name' => htmlarray($r->full_name),
@@ -5316,7 +5371,7 @@ function prepareNormalUserRow($r)
 		'phone_num' =>(string) $r->phone_num,
 		'email' => htmlarray($r->email),
 		'ow' => (int)$r->ow,
-	    		
+
 	);
 }
 
@@ -5327,7 +5382,7 @@ function preparePastUserRow($r)
 		'userID' => (int)$r->userID,
 		'forum_decID' =>(int) $r->forum_decID,
 		'forum_decName' => htmlarray($r->forum_decName),
-		'active' => $r->active, 
+		'active' => $r->active,
 	    'level' =>(string) $r->level,
 		'start_date' => substr(htmlarray($r->start_date),0,10),
 		'end_date' =>   substr(htmlarray($r->end_date),0,10),
@@ -5336,9 +5391,9 @@ function preparePastUserRow($r)
  		'lname' => htmlarray($r->lname),
 		'note' => nl2br(htmlarray($r->note) ),
 		'noteText' =>(string) $r->note,
-		
-		
-	    		
+
+
+
 	);
 }
 
@@ -5351,7 +5406,7 @@ function prepareDecUserRow($r)
 		'decID' =>(int) $r->decID,
 		'forum_decName' => htmlarray($r->forum_decName),
 		'decName' => htmlarray($r->decName),
-		'active' => $r->active, 
+		'active' => $r->active,
 	    'level' =>(string) $r->level,
 		'start_date' => substr(htmlarray($r->start_date),0,10),
 		'HireDate' => substr(htmlarray($r->HireDate),0,10),
@@ -5361,9 +5416,9 @@ function prepareDecUserRow($r)
  		'lname' => htmlarray($r->lname),
 		'note' => nl2br(htmlarray($r->note) ),
 		'noteText' =>(string) $r->note,
-		
-		
-	    		
+
+
+
 	);
 }
 
@@ -5384,8 +5439,8 @@ function prepareuserTaskRow($r, $tz=null)
 		'ow' => (int)$r->ow,
 		'tags' => htmlarray($r->tags),
         'message'=> htmlarray($r->message),
-	    'prog_bar' => (int)$r->prog_bar,   
-	
+	    'prog_bar' => (int)$r->prog_bar,
+
      	'duedate' => $dueA['formatted'],
 		'dueClass' => $dueA['class'],
 	    'dueStr' => $dueA['str'],
@@ -5420,7 +5475,7 @@ function prepare_tags($tags_str)
 	$tag_names = array();
 	$tags = explode(',', $tags_str);
 	foreach($tags as $v)
-	{ 
+	{
 		# remove duplicate tags?
 		$tag = str_replace(array('"',"'"),array('',''),trim($v));
 		if($tag == '') continue;
@@ -5441,7 +5496,7 @@ function prepare_usertags($tags_str)
 	$tag_names = array();
 	$tags = explode(',', $tags_str);
 	foreach($tags as $v)
-	{ 
+	{
 		# remove duplicate tags?
 		$tag = str_replace(array('"',"'"),array('',''),trim($v));
 		if($tag == '') continue;
@@ -5462,13 +5517,13 @@ function get_or_create_tag($name)
 	global $db;
 	$sql=("SELECT tagID,name FROM tags WHERE name= " .$db->sql_string($name) . " " );
 	$tag = $db->queryObjectArray($sql);
-	
+
 
 	 if($tag[0]->tagID && $tag[0]->tagID !=NULL && $tag[0]->name && $tag[0]->name !=NULL ) {
-	 
+
 	 $tag1[0]=$tag[0]->tagID;
 	 $tag1[1]=$tag[0]->name;
-	 
+
 	 return $tag1;
 	 }else// need to create tag
      $name=$db->sql_string($name);
@@ -5484,12 +5539,12 @@ function get_or_create_usertag($name)
 	global $db;
 	$sql=("SELECT tagID,name FROM user_tags WHERE name= " .$db->sql_string($name) . " " );
 	$tag = $db->queryObjectArray($sql);
-	
+
 	 //if($tag[0]->tagID && $tag[0]->tagID !=NULL && $tag[0]->name && $tag[0]->name !=NULL ) {
 	 if($tag = $db->queryObjectArray($sql)){
 	 $tag1[0]=$tag[0]->tagID;
 	 $tag1[1]=$tag[0]->name;
-	 
+
 	 return $tag1;
 	 }else// need to create tag
      $name=$db->sql_string($name);
@@ -5526,14 +5581,14 @@ function get_task_tags($id)
 {
 	global $db;
 	$sql=("SELECT tagID FROM tag2task WHERE taskID=$id");
-	
+
 	$q = $db->queryObjectArray($sql);
 	if($q && $q!=null){
 	$a = array();
 	foreach($q as $r) {
 		$a[] = $r->tagID;
 	}
- 
+
 	return $a;
 	}
 	return;
@@ -5543,15 +5598,15 @@ function get_task_tags($id)
 function get_user_tags($id,$forum_decID)
 {
 	global $db;
- 
+
 	$sql=("SELECT tagID FROM rel_user_forum WHERE userID=$id    AND  forum_decID=$forum_decID");
- 
+
 	if($q = $db->queryObjectArray($sql) ){
 	$a = array();
 	foreach($q as $r) {
 		$a[] = $r->tagID;
 	}
- 
+
 	return $a;
 	}
 	return;
@@ -5560,15 +5615,15 @@ function get_user_tags($id,$forum_decID)
 function get_user_tagsMgr($id,$forum_decID,$mgr)
 {
 	global $db;
- 
+
 	$sql=("SELECT tagID FROM forum_dec WHERE  forum_decID=$forum_decID AND managerID=$mgr");
- 
+
 	if($q = $db->queryObjectArray($sql) ){
 	$a = array();
 	foreach($q as $r) {
 		$a[] = $r->tagID;
 	}
- 
+
 	return $a;
 	}
 	return;
@@ -5581,10 +5636,10 @@ function update_task_tags($id, $tag_ids)
 	global $db;
 	foreach($tag_ids as $v) {
          //$id=$db->sql_string($id);
-       // if(is_array($v) ) 
-         // $v=$db->sql_string($v->id); 
-       //else  
-       //$v=$db->sql_string($v);		
+       // if(is_array($v) )
+         // $v=$db->sql_string($v->id);
+       //else
+       //$v=$db->sql_string($v);
 		$sql=("INSERT INTO tag2task (taskID,tagID) VALUES ($id,$v)");
 		$db->execute ($sql);
 	}
@@ -5599,24 +5654,24 @@ function update_task_tags($id, $tag_ids)
 function update_user_tags($userID, $tag_ids,$forum_decID,$tags)
 {
 	global $db;
-	
-	if(is_null($tags) || $tags=="" ) 
+
+	if(is_null($tags) || $tags=="" )
 	$tags = 'NULL';
-	 //else 
+	 //else
 	// $tags = $db->sql_string($tags);
-	
-	
+
+
 	foreach($tag_ids as $v) {
         $sql= "UPDATE rel_user_forum SET " .
         "tagID="  . $db->is_num($v) . ", " .
-      " tags="     .  stripslashes($db->sql_string($tags)) . "  " .//  "tags= $tags "      . "  " .// "tags="     .  stripslashes($tags) . "  " .    
+      " tags="     .  stripslashes($db->sql_string($tags)) . "  " .//  "tags= $tags "      . "  " .// "tags="     .  stripslashes($tags) . "  " .
          "WHERE userID=$userID " . " ".
-        "AND forum_decID=$forum_decID " ;		
-		
+        "AND forum_decID=$forum_decID " ;
+
 		$db->execute ($sql);
 	}
 
-       
+
     $tag_ids=$tag_ids[0];
 	$sql=("UPDATE user_tags SET tags_count=tags_count+1 WHERE tagID IN  ($tag_ids) ");
 	$db->execute($sql);
@@ -5628,25 +5683,25 @@ function update_user_tags($userID, $tag_ids,$forum_decID,$tags)
 function update_user_tagsMgr($userID, $tag_ids,$forum_decID,$tags,$mgr)
 {
 	global $db;
-	
-	if(is_null($tags) || $tags=="" ) 
+
+	if(is_null($tags) || $tags=="" )
 	$tags = 'NULL';
-	 
-	
+
+
 	foreach($tag_ids as $v) {
 
      $sql = "UPDATE forum_dec SET " .
        "tagID="  . $db->is_num($v) . ", " .
        "tags="     .  stripslashes($db->sql_string($tags)) . "  " .
-     
+
        " where managerID="    .  $db->sql_string($mgr) . "  " .
 
-       " AND forum_decID="      .  $db->sql_string($forum_decID) . "  " ;    
-        
+       " AND forum_decID="      .  $db->sql_string($forum_decID) . "  " ;
+
 		$db->execute ($sql);
 	}
 
-       
+
     $tag_ids=$tag_ids[0];
 	$sql=("UPDATE user_tags SET tags_count=tags_count+1 WHERE tagID IN  ($tag_ids) ");
 	$db->execute($sql);
@@ -5691,15 +5746,15 @@ function parse_duedate($s)
 		$d = (int)$ma[1]; $m = (int)$ma[2]; $y = (int)$ma[3];
 	}
 	elseif(preg_match("|^(\d+)\.(\d+)\b|", $s, $ma)) {
-		$d = (int)$ma[1]; $m = (int)$ma[2]; 
+		$d = (int)$ma[1]; $m = (int)$ma[2];
 		$a = explode(',', date('Y,m,d'));
-		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1; 
+		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1;
 		else $y = (int)$a[0];
 	}
 	elseif(preg_match("|^(\d+)\/(\d+)\b|", $s, $ma)) {
 		$m = (int)$ma[1]; $d = (int)$ma[2];
 		$a = explode(',', date('Y,m,d'));
-		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1; 
+		if( $m<(int)$a[1] || ($m==(int)$a[1] && $d<(int)$a[2]) ) $y = (int)$a[0]+1;
 		else $y = (int)$a[0];
 	}
 	else return null;
@@ -5796,11 +5851,11 @@ function myExceptionHandler($e)
 	if(-1 == $e->getCode()) {
 		echo $e->getMessage(); exit;
 	}
-	
-	
-echo '<p class="error">';	
+
+
+echo '<p class="error">';
 	echo 'Exception: \''. $e->getMessage() .'\' in '. $e->getFile() .':'. $e->getLine();
-echo '</p>';	
+echo '</p>';
 	exit;
 }
 /***************************************************************************************************************/
@@ -5817,8 +5872,8 @@ global $db;
 		$sqlWhere .= " AND tag2task.tagID=$tag_id ";
 	}
 	$s = trim(_get('s'));
-	
-	
+
+
 	if($s != '') $sqlWhere .= " AND (title LIKE ". $db->quoteForLike("%%%s%%",$s). " OR note LIKE ". $db->quoteForLike("%%%s%%",$s). ")";
 	$sort = (int)_get('sort');
 	if($sort == 1) $sqlSort = "ORDER BY prio DESC, ddn ASC, duedate ASC, ow ASC";
@@ -5831,16 +5886,16 @@ global $db;
 	$t['list'] = array();
 	$sql=("SELECT * , duedate IS NULL  AS ddn  FROM todolist $inner WHERE 1=1  and  taskID=$taskID $sqlWhere $sqlSort ");
 	$q = $db->queryObjectArray($sql);
-	
+
 	if($q && $q!=0)
 	foreach($q as $r)
 	{
 		$t['total']++;
 		$t['list'][] = prepareuserTaskRow($r, $tz);
 	}
-	echo json_encode($t); 	
-	
-	
+	echo json_encode($t);
+
+
 }
 
 
