@@ -82,13 +82,12 @@ $_REQUEST['mode']  = isset( $_REQUEST['mode'] ) ? $_REQUEST['mode'] : 'default';
 //---------------------------------------------------------------------------------
 ?>
     <script type="text/javascript">
-        turn_red_error();
+     //   turn_red_error();
     </script>
 <?php
 switch ($_REQUEST['mode'] ) {
 //sdfasfasgsdgsdfgsdg
     case "copy_files":
-
         global $db;
         $log ='';
         $pdf_file= PDF_DIR; //PDF FILE LOCATION
@@ -100,9 +99,14 @@ switch ($_REQUEST['mode'] ) {
         $files = new RecursiveDirectoryIterator(PDF_DIR);
         $files->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($files);
+        $name = '';
+
         foreach ($files as $file) {
             if(pathinfo($file, PATHINFO_EXTENSION) == 'pdf'){
                 $name = $file->getFilename();
+                if($file->getFilename() == 'ayom2p001.pdf' || $file->getFilename() == 'ayom2p001_new.pdf' ||  $file->getFilename() == 'ayom2p003.pdf' || $file->getFilename() == 'issh1p007.pdf' || $file->getFilename() == 'issh1p005_new.pdf'){
+                    $x =1;
+                }
                 $file_name = explode('.',$name);
                 $file_name = $file_name[0];
 //------------------------------------------NEW--------------------------------------------------------------------
@@ -125,9 +129,7 @@ switch ($_REQUEST['mode'] ) {
                             $pdfID = $rows[0]->pdfID;
                             $modify = $rows[0]->modify_date;
                         }
-
-
-                        if (count($tmp_file) > 1 && $file->getMTime() > strtotime($modify) && isset($modify)) {
+                        if (count($tmp_file) > 1 && isset($modify) && $file->getCTime() > strtotime($modify) ) {
                             $sql = "DELETE FROM  pdfs  WHERE  pdfID = $pdfID  ";
                             if (!$db->execute($sql)) {
                                 return FALSE;
@@ -185,9 +187,9 @@ switch ($_REQUEST['mode'] ) {
                     if (!file_exists($jpgloc2)) {
                         $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
                     }
+//check if file exist
                     $sql_count = "SELECT COUNT(*) FROM pdfs " .
                         "WHERE pdfName='$name'";
-
 
                     $sql = "SELECT * FROM pdfs " .
                         "WHERE pdfName='$name'";
@@ -244,8 +246,8 @@ switch ($_REQUEST['mode'] ) {
 
                         $sql_count = "SELECT COUNT(*) FROM pdfs " .
                             "WHERE pdfName='$test_name'";
-
-                        if ( !($db->querySingleItem($sql) > 0)) {
+//check if i dont have a file
+                        if ( !($db->querySingleItem($sql) > 0) ) {
 
 
                             $mime = $file->getExtension();

@@ -1,7 +1,7 @@
 <?php
- require_once ("../config/application.php");
-require_once ("../lib/model/DBobject3.php");
-require_once ("../lib/model/decisions_class.php");
+ require_once ('../config/application.php');
+require_once (LIB_DIR.'/model/DBobject3.php');
+require_once (LIB_DIR.'/model/decisions_class.php');
  require_once (LIB_DIR.'/model/find_class.php');
 
 global $lang;   

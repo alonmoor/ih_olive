@@ -1,4 +1,5 @@
 <?php
+session_start();
   require_once ("../config/application.php");
   require_once(LIB_DIR.'/model/class.default.php');
   require_once(LIB_DIR.'/model/en.php');
@@ -7,6 +8,11 @@
   set_exception_handler('myExceptionHandler');
   global $lang;
   global $db;
+
+
+if(isset($_GET['flag_level'] )){
+    $level = $_GET['flag_level'];
+}
 
     if(isset($_GET['brandName'] )) {
     $brandID = $_GET['brandName'];
@@ -85,19 +91,17 @@
                 } elseif ($i >= 100) {
                     $brandPrefixArr[$i] = $brandPrefix . "p" . $m . ".pdf";
                 }
-                //  if (!(file_exists(CONVERT_PDF_TO_IMG_WWW_DIR.$brandPrefixArr[$i])) ) {
 //------------------------------------------------------------------------------
-
                 $html .= '<input type="hidden" name="my_brand_date"  id="my_brand_date"  value=' . $brand_date . ' >';
                 $html .= '<input type="hidden" name="my_pageNum"  id="my_pageNum"  value=' . $page_num . ' >';
-                $test_name = explode('.pdf', $brandPrefixArr[$i]);
-                $test_name = $test_name[0];
-                $test_checkbox = $test_name . '_new';
-                $test_name = $test_name . '_new.pdf';
+                $new_name = explode('.pdf', $brandPrefixArr[$i]);
+                $new_name = $new_name[0];
+                $test_checkbox = $new_name . '_new';
+                $new_name = $new_name . '_new.pdf';
 
                if ($tmpPrefix == "ayom{{date}}") {
 
-                   if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($test_name, $pdf_names)))) {
+                   if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($new_name, $pdf_names)))) {
                         $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
                         $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
                                                     <div id='my_pdfs_$i'>
@@ -110,36 +114,54 @@
                                                       </div>\n";
                         $html .= '<br/></div>';
                     } else {
-                        foreach ($rows as $row) {
-                            if ($brandPrefixArr[$i] == $row->pdfName || $test_name == $row->pdfName  ) {
-                                $pdf_names[] = $row->pdfName;
-                                $file_name = explode('.', $row->pdfName);
-                                $file_name = $file_name[0];
-                                $tmp_name = $file_name;
-                                $file_name = $file_name . '.jpg';
-                                $html .= '<div class="col-xs-3">';
-                                $html .= "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
+                       foreach($rows as $row){
+                           if($brandPrefixArr[$i] == $row->pdfName  || $new_name == $row->pdfName   ){
+                               $pdf_names[] = $row-> pdfName;
+                               $file_name = explode('.',$row->pdfName);
+                               $file_name =  $file_name[0];
+                               $tmp_name  =  $file_name;
+                               $file_name = $file_name.'.jpg';
+                               $html .=   '<div class="col-xs-3">';
+                               $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">";
 
-                                           <div  style='margin-right: 224px;'>
-                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;' >
-                                            </div>
-                                      <div >
-                                           <div id='my_pdfs{$row->pdfName}'>
-                                            <a class='my_href_li' href= '" . PDF_WWW_DIR . "{$row->pdfName}' >
-                                           <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
-                                                    <img src ='" . CONVERT_PDF_TO_IMG_WWW_DIR . "/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                               if($level) {
+                                   $html .=  "<div  style='margin-right: 224px;'>
+                                                    <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled>
+                                                  </div>";
+                               }else{
+                                   $html .=  "<div  style='margin-right: 224px;'>
+                                                        <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' >
+                                                    </div>";
+                               }
+                               $pdf_name= explode('.pdf',$row->pdfName)  ;
+                               $pdf_name = $pdf_name[0];
+                               if($new_name == $row->pdfName )   {
+                                   $html .=  "<div >
+                                                <div  class='my_task'  id='my_pdfs{$pdf_name}'>
+                                                <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
                                                 </a>
                                            </div>
                                       </div>
                                     </div>\n";
-                                $html .= '<br/>
+                               }else{
+                                   $html .=  "<div >
+                                                <div  class=''  id='my_pdfs{$pdf_name}'>
+                                                <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                                </a>
+                                           </div>
+                                      </div>
+                                    </div>\n";
+                               }
+                               $html .=   '<br/>
                                    </div>';
-                            }
-                        }
+                           }
+                       }//end foreach
                     }
 //-----------------------------------------------------------------------------------
                 } elseif ($brandPrefix == "ispo1" || $brandPrefix == "issh1") {
-                    if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($test_name, $pdf_names)))) {
+                    if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($new_name, $pdf_names)))) {
                         $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
                         $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
                                                     <div id='my_pdfs_$i'>
@@ -153,36 +175,47 @@
                         $html .= '<br/></div>';
                     } else {
 
-                        foreach ($rows as $row) {
-                            if ($brandPrefixArr[$i] == $row->pdfName || $test_name == $row->pdfName) {
-                                if ($test_name == $row->pdfName) {
-                                    ?>
-                                    <script type="text/javascript">
-                                        turn_red_task();
-                                    </script>
-                                    <?PHP
-                                }
-                                $pdf_names[] = $row->pdfName;
-                                $file_name = explode('.', $row->pdfName);
-                                $file_name = $file_name[0];
-                                $tmp_name = $file_name;
-                                $file_name = $file_name . '.jpg';
-                                $html .= '<div class="col-xs-3">';
-                                $html .= "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">
+                        foreach($rows as $row){
+                            if($brandPrefixArr[$i] == $row->pdfName  || $new_name == $row->pdfName   ){
+                                $pdf_names[] = $row-> pdfName;
+                                $file_name = explode('.',$row->pdfName);
+                                $file_name =  $file_name[0];
+                                $tmp_name  =  $file_name;
+                                $file_name = $file_name.'.jpg';
+                                $html .=   '<div class="col-xs-3">';
+                                $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">";
 
-                                           <div  style='margin-right: 224px;'>
-                                                <input type='checkbox' id=$tmp_name style='zoom: 1.7;'>
-                                            </div>
-                                      <div >
-                                           <div  class='my_task'  id='my_pdfs{$row->pdfName}'>
-                                            <a class='my_href_li' href= '" . PDF_WWW_DIR . "{$row->pdfName}' >
-                                           <!--  <a class='my_href_li' href=\"dynamic_5_demo.php?mode=view_pdfs&id={$row->pdfName}\" style=''>  -->
-                                                    <img src ='" . CONVERT_PDF_TO_IMG_WWW_DIR . "/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                if($level) {
+                                    $html .=  "<div  style='margin-right: 224px;'>
+                                                    <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled>
+                                                  </div>";
+                                }else{
+                                    $html .=  "<div  style='margin-right: 224px;'>
+                                                        <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' >
+                                                    </div>";
+                                }
+                                $pdf_name= explode('.pdf',$row->pdfName)  ;
+                                $pdf_name = $pdf_name[0];
+                                if($new_name == $row->pdfName )   {
+                                    $html .=  "<div >
+                                                <div  class='my_task'  id='my_pdfs{$pdf_name}'>
+                                                <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
                                                 </a>
                                            </div>
                                       </div>
                                     </div>\n";
-                                $html .= '<br/>
+                                }else{
+                                    $html .=  "<div >
+                                                <div  class=''  id='my_pdfs{$pdf_name}'>
+                                                <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
+                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 300px;margin-top:-30px;' >
+                                                </a>
+                                           </div>
+                                      </div>
+                                    </div>\n";
+                                }
+                                $html .=   '<br/>
                                    </div>';
                             }
                         }//end foreach
@@ -236,7 +269,7 @@
                                      </a> 
                                  </h4>
                               </div>
-                                <input type='checkbox' id= improve_$i>
+                                <input type='checkbox' class='olive_cbx' id= improve_$i>
                               </div>\n";
                 echo '<br/></div>';
             } // End of WHILE loop.
