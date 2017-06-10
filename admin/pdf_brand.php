@@ -116,7 +116,7 @@ switch ($_REQUEST['mode'] ) {
                 if (count($file_name1) > 1) {
                     $file_name1 = $file_name1[0];
                     $newname = $file_name1 . ".pdf";
-//file original+new exist
+//file original+new exist check if origional exist
                     $sql = "SELECT COUNT(*) FROM pdfs " .
                         "WHERE pdfName='$newname'";
                     if ($db->querySingleItem($sql) > 0) {
@@ -201,7 +201,7 @@ switch ($_REQUEST['mode'] ) {
 
 
 
-                        if($file->getMTime() > strtotime($modify)){
+                        if($file->getCTime() > strtotime($modify)){
                             $mime = $file->getExtension();
                             $mime = getFileMimeType($file);
                             $data = file_get_contents(PDF_DIR . $name);
@@ -210,26 +210,19 @@ switch ($_REQUEST['mode'] ) {
                             $pdf_date = date("Y-m-d H:i:s", time());;
                             $modify_date = $file->getMTime();
                             $modify_date =  date('Y-m-d H:i:s',$file->getMTime());
+                            $modify_change_date =  date('Y-m-d H:i:s',$file->getCTime());
+                            $isChange = 'change';
 
-                            //   $pdf_date = date('Y-m-d H:i:s', strtotime($date));
 
-                            $sql = "INSERT INTO pdfs (`pdfName`,`data`,`size`,`pdf_date`,`modify_date`,`mime`)VALUES ( " .
-                                $db->sql_string($name) . ", " .
-                                $db->sql_string($data) . ", " .
-                                $db->sql_string($size) . ", " .
-                                $db->sql_string($pdf_date) . ", " .
-                                $db->sql_string($modify_date) . ", " .
-                                $db->sql_string($mime) . " ) ";
+                            $sql =  "UPDATE pdfs SET " .
+                                    "modify_date=" . $db->sql_string($modify_change_date) . " , " .
+                                    "ischange=" . $db->sql_string($isChange) . "  " .
+                                    "WHERE pdfID =  " . $db->sql_string($pdfID) . " ";
 
                             if (!$db->execute($sql)) {
                                 return false;
                             }else{
-
-                                ?>
-                                <script type="text/javascript">
-                                    turn_red_task();
-                                </script>
-                                <?PHP
+                                $x=1;
                             }
                         }
                     }else if ($db->querySingleItem($sql) > 0) {
@@ -240,12 +233,12 @@ switch ($_REQUEST['mode'] ) {
                     }
 //---------------------------------------------------------------------------------------------------
                     else{
-                        $test_name = explode('.pdf',$name);
-                        $test_name =  $test_name[0];
-                        $test_name = $test_name.'_new.pdf';
+                        $new_name = explode('.pdf',$name);
+                        $new_name =  $new_name[0];
+                        $new_name = $new_name.'_new.pdf';
 
                         $sql_count = "SELECT COUNT(*) FROM pdfs " .
-                            "WHERE pdfName='$test_name'";
+                            "WHERE pdfName='$new_name'";
 //check if i dont have a file
                         if ( !($db->querySingleItem($sql) > 0) ) {
 
