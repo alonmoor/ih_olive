@@ -25,11 +25,19 @@ function build_form(&$formdata)
     ?>
     <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js" type="text/javascript"></script>
     <div id="main">
+      <?PHP if($level) { ?>
         <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/pdf_brand.php"
               onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
                         prepSelObject(document.getElementById('dest_publishers'));
                         prepSelObject(document.getElementById('dest_brandsType'));
                         prepSelObject(document.getElementById('dest_managersType'));" >
+        <?PHP }else{ ?>
+               <form style="width:95%;" name="brand_org" id="brand_org" method="post"  action="../admin/sent_to_ftp.php"
+              onsubmit="prepSelObject(document.getElementById('dest_pdfs'));
+                        prepSelObject(document.getElementById('dest_publishers'));
+                        prepSelObject(document.getElementById('dest_brandsType'));
+                        prepSelObject(document.getElementById('dest_managersType'));" >
+        <?PHP } ?>
         <script  language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js"  type="text/javascript"></script>
                 <fieldset style="margin-right:4%;width:90%;color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;"  >
 
@@ -104,6 +112,8 @@ function build_form(&$formdata)
                         echo '<div class="myformtd 1"   id="num_page">';
                         form_label_red1("מספר עמודים:", TRUE);
                         form_list_demo("pages", $pages, array_item($formdata, "pages"),"id=pdf_page_num");
+                        $pdf_page_num = array_item($formdata, "pages");
+                        echo '<input type="hidden" id="pdf_page_num" value='.$pdf_page_num.'" >';
                         echo  '</div>';
 
                         echo '<div class="myformtd 1" style="width:60%;">';
@@ -130,7 +140,7 @@ function build_form(&$formdata)
 
                       else{
                              echo '<div class="myformtd 1" style="width:60%;">';
-                                    form_label_red1("שם הברנד::", true);
+                                    form_label_red1("שם הברנד:", true);
                                 //    form_list_b("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
                                      form_list111("brand_pdf", $rows1, array_item($formdata, "brandID"),"id = brand_pdf");
                                     form_empty_cell_no_td(10);
@@ -143,6 +153,9 @@ function build_form(&$formdata)
 
                               $prefix_val = array_item($formdata, "brandPrefix");
                               echo '<input type="hidden" id="brandPrefix" value='.$prefix_val.'" >';
+                              $pdf_page_num = array_item($formdata, "pages");
+                              echo '<input type="hidden" id="pdf_page_num" value='.$pdf_page_num.'" >';
+
                       }
                     }
 //-----------------------SAVE--------------------------------------------
@@ -168,7 +181,7 @@ function build_form(&$formdata)
                      }else{
 
                      echo '<div class="myformtd 1" style="width:60%;">';
-                            form_label_red1("שם הברנד::", true);
+                            form_label_red1("שם הברנד:", true);
                             form_list_b("brand_pdf", $rows1, array_item($formdata, "brandID"),"id = brand_pdf");
                             form_empty_cell_no_td(10);
                      echo '</div>';
@@ -182,7 +195,6 @@ function build_form(&$formdata)
                       }
  }
                     echo '</div>';
-
 //---------------------------BUTTON-------------------------------------------
            if ($level) {
                 echo '<div class="myformtd">';
@@ -193,16 +205,6 @@ function build_form(&$formdata)
                                             \";");
                 echo '</div>';
            }
-//                if (array_item($formdata, 'dynamic_6')) {
-//                    $x = $formdata['index'];
-//                    $formdata["brandID"] = $formdata["brandID"][$x];
-//                    $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
-//                    form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
-//                    echo '<div class="myformtd" style="width:60%;">';
-//                    form_hidden("brandID", $formdata["brandID"]);
-//                    form_hidden("insertID", $formdata["insertID"]);
-//                    echo '</div>';
-//                } else
                     $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
                 $formdata["brandID"] = isset($formdata["brandID"]) ? $formdata["brandID"] : '';
                 $formdata["insertID"] = isset($formdata["insertID"]) ? $formdata["insertID"] : '';
@@ -211,21 +213,6 @@ function build_form(&$formdata)
                 form_hidden("brandID", $formdata["brandID"]);
                 form_hidden("insertID", $formdata["insertID"]);
                 echo '</div>';
-
-//                if (!empty($formdata['fail']) && array_item($formdata, "brandID") && !$formdata['fail']) {
-//                    echo '<div class="myformtd" style="width:60%;">';
-//                    form_button_no_td2("btnLink1", "קשר לברנד");
-//                    form_hidden("brandID", $formdata["brandID"]);
-//                    form_button1("btnDelete", "מחק ברנד", "Submit", "OnClick=\"return document.getElementById('mode_".$formdata["brandID"]."').value='delete'\";");
-//                    form_empty_cell_no_td(20);
-//                    form_button_no_td2("btnDelete", "מחק ברנד", "Submit", "OnClick='return shalom(\"" . $formdata[brandID] . "\")'");
-//                    echo '</div>';
-//                }
-//
-//                $formdata["fail"] = isset($formdata["fail"]) ? $formdata["fail"] : '';
-//                if ($formdata['fail'])
-//                    unset($formdata['fail']);
-
                 ?>
                      <div id="loading">
                         <img src="loading4.gif" border="0" />
@@ -289,8 +276,9 @@ if( isset($formdata['brand_date2']) ){
            $html = '';
            $html .= '<div class="" id="display_div" >';
 
-        for($i = 0; $i<$page_num ; $i++){
+        for($k = 0,$i = 0; $i<$page_num ; $i++){
             $m = $i +1;
+
                if($i<10){
                $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
                }elseif ($i<100 && $i>=10 ){
@@ -298,10 +286,10 @@ if( isset($formdata['brand_date2']) ){
                }elseif ($i>=100){
                 $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
                }
+//template for new
                 $new_name = explode('.pdf',$brandPrefixArr[$i]);
                 $new_name =  $new_name[0];
                 $new_name = $new_name.'_new.pdf';
-
 
                 if($formdata['brandPrefix'] == "ayom{{date}}"){
 //------------------------------------------------------------------------------
@@ -321,9 +309,7 @@ if( isset($formdata['brand_date2']) ){
 //------------------------------------------------------------------------------
                else{
                  foreach($rows as $row){
-                    if($brandPrefixArr[$i] == $row->pdfName  /*|| in_array($brandPrefixArr[$i],$pdf_names)*/ || $new_name == $row->pdfName     ){
-
-                  //  $pdf_names[] = $row-> pdfName;
+                    if($brandPrefixArr[$i] == $row->pdfName  || $new_name == $row->pdfName     ){
                     $file_name = explode('.',$row->pdfName);
                         $file_name =  $file_name[0];
                         $tmp_name  =  $file_name;
@@ -334,21 +320,23 @@ if( isset($formdata['brand_date2']) ){
                                       if($level) {
                                                  if($row->isChange == 'unchange') {
                                                     $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
                                                           </div>";
+                                                    $k++;
                                                    }else{
                                                       $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
                                                           </div>";
                                                    }
                                                 }else{
                                                     if($row->isChange == 'unchange') {
                                                       $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
                                                         </div>";
+                                                      $k++;
                                                       }else{
                                                             $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
                                                         </div>";
                                                       }
                                                 }
@@ -364,9 +352,10 @@ if( isset($formdata['brand_date2']) ){
                                     </div>\n";
                          $html .=   '<br/>
                                    </div>';
-                              if( ($new_name == $row->pdfName  && !($row->isChange == 'unchange'))  || (!($row->isChange == 'unchange'))  )   {
+                         //change status will be highlighting
+                              if( ($new_name == $row->pdfName  && !($row->isChange == 'unchange')) ||  ($brandPrefixArr[$i] == $row->pdfName  && !($row->isChange == 'unchange'))   )   {
                              ?>
-                             <input type="hidden" name="modify_elem" id="modify_elem" value="modify">
+                             <input type="hidden" name="modify_elem" class="modify_elem" value="modify">
                                <script type="text/javascript">
                                  $(document).ready(function() {
                                 var brand_name = '<?php echo $pdf_name; ?>';
@@ -376,9 +365,7 @@ if( isset($formdata['brand_date2']) ){
                                 </script>
                                 <?PHP
                           }
-
-//                          elseif ($row->modify < date('Y-m-d H:i:s', filectime($file) )){
-//                          }
+                     break;
                   }
                 }//end foreach
              }
@@ -402,33 +389,32 @@ if( isset($formdata['brand_date2']) ){
                else{
                foreach($rows as $row){
                     if($brandPrefixArr[$i] == $row->pdfName  || $new_name == $row->pdfName   ){
-
-                     $pdf_names[] = $row-> pdfName;
                     $file_name = explode('.',$row->pdfName);
                         $file_name =  $file_name[0];
                         $tmp_name  =  $file_name;
                         $file_name = $file_name.'.jpg';
                          $html .=   '<div class="col-xs-3">';
                          $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">";
-
                                        if($level) {
                                                  if($row->isChange == 'unchange') {
                                                     $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
                                                           </div>";
+                                                    $k++;
                                                    }else{
                                                       $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
                                                           </div>";
                                                    }
                                                 }else{
                                                     if($row->isChange == 'unchange') {
                                                       $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
                                                         </div>";
+                                                      $k++;
                                                       }else{
                                                             $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
+                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
                                                         </div>";
                                                       }
                                                 }
@@ -446,7 +432,7 @@ if( isset($formdata['brand_date2']) ){
                                    </div>';
                          $pdf_name= explode('.pdf',$row->pdfName)  ;
                          $pdf_name = $pdf_name[0];
-                          if($new_name == $row->pdfName && !($row->isChange == 'unchange') )   {
+                          if(  $new_name == $row->pdfName && $row->isChange == 'change' ||  ($brandPrefixArr[$i] == $row->pdfName  && !($row->isChange == 'unchange') )  )  {
                              ?>
                              <input type="hidden" name="modify_elem" class="modify_elem" value="modify">
                                <script type="text/javascript">
@@ -458,13 +444,21 @@ if( isset($formdata['brand_date2']) ){
                                 </script>
                                 <?PHP
                      }
+                     break;
                   }
                 }//end foreach
          }//end else
         }//end ifelse
 //-------------------------------------------------------------------------------
        }//end for
-     echo $html;
+       if($k==$page_num){
+
+                    $html .=  "<div>
+                                  <button type='submit' class='mybutton'  id='send_pdf'  name=form['submitpdf']  style='margin: 10px 30px 20px 0;height: 38px;' >  SEND PDF TO FTP  </button>     
+                                  <br/>     
+                               </div>\n";
+                    }
+                    echo $html;
     }//end day of the week
 //------------------------------------------------------------------------------
   }//end brand_date2

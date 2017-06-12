@@ -96,22 +96,24 @@ switch ($_REQUEST['mode'] ) {
         $src = "/home/alon/Desktop/PROJECT/4.4.17";
         $dst = PDF_DIR;
         $brand-> recurse_copy($src,$dst);
-        $files = new RecursiveDirectoryIterator(PDF_DIR);
+       // $files = new RecursiveDirectoryIterator(PDF_DIR);
+        $files = new RecursiveDirectoryIterator($src);
         $files->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($files);
         $name = '';
 
         foreach ($files as $file) {
-            if(pathinfo($file, PATHINFO_EXTENSION) == 'pdf'){
+            if (file_exists($dst)) {
+            if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf') {
                 $name = $file->getFilename();
-                if($file->getFilename() == 'ayom2p001.pdf' || $file->getFilename() == 'ayom2p001_new.pdf' ||  $file->getFilename() == 'ayom2p003.pdf' || $file->getFilename() == 'issh1p007.pdf' || $file->getFilename() == 'issh1p005_new.pdf'){
-                    $x =1;
+                if ($file->getFilename() == 'ayom2p001_new.pdf') {
+                    $x = 1;
                 }
-                $file_name = explode('.',$name);
+                $file_name = explode('.', $name);
                 $file_name = $file_name[0];
 //------------------------------------------NEW--------------------------------------------------------------------
 //ayom2p001_new
-                $file_name1 = explode('_new',$file_name);
+                $file_name1 = explode('_new', $file_name);
                 $tmp_file = $file_name1;
                 if (count($file_name1) > 1) {
                     $file_name1 = $file_name1[0];
@@ -129,7 +131,7 @@ switch ($_REQUEST['mode'] ) {
                             $pdfID = $rows[0]->pdfID;
                             $modify = $rows[0]->modify_date;
                         }
-                        if (count($tmp_file) > 1 && isset($modify) && $file->getCTime() > strtotime($modify) ) {
+                        if (count($tmp_file) > 1 && isset($modify) && $file->getCTime() > strtotime($modify)) {
                             $sql = "DELETE FROM  pdfs  WHERE  pdfID = $pdfID  ";
                             if (!$db->execute($sql)) {
                                 return FALSE;
@@ -151,7 +153,7 @@ switch ($_REQUEST['mode'] ) {
                             }
                             $sql = "SELECT COUNT(*) FROM pdfs " .
                                 "WHERE pdfName='$name'";
-                            if ( !($db->querySingleItem($sql) > 0) ) {
+                            if (!($db->querySingleItem($sql) > 0)) {
                                 $sql = "INSERT INTO pdfs (`pdfName`,`data`,`size`,`pdf_date`,`modify_date`,`mime`)VALUES ( " .
                                     $db->sql_string($name) . ", " .
                                     $db->sql_string($data) . ", " .
@@ -165,7 +167,7 @@ switch ($_REQUEST['mode'] ) {
                                     $log = "כבר קיים PDF בשם הזה :" . ' - ' . date("F j, Y, g:i a") . PHP_EOL . print_r($name, true) . PHP_EOL;
                                     $log .= "---------------------------------------------------------------------------------------------------------------------------------------------------------" . PHP_EOL;
                                     file_put_contents('/tmp/olive_log_last_' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
-                                }else{
+                                } else {
                                     ?>
                                     <script type="javascript">
                                         $('.my_task').css('width', '20%');
@@ -179,17 +181,54 @@ switch ($_REQUEST['mode'] ) {
                                 $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
                             }
                         }
-                    }
-                }
+                    }else{
 //---------------------------------------------------------------------------------------------------------------------------------
-                elseif(!(count($tmp_file) > 1) ) {
+                        $jpgloc2 = CONVERT_PDF_TO_IMG_DIR . "$file_name.jpg";
+                        if (!file_exists($jpgloc2)) {
+                            $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
+                        }
+
+                        $sql = "SELECT * FROM pdfs " .
+                            "WHERE pdfName='$name'";
+
+                        $modify = '';
+                        if ($rows = $db->queryObjectArray($sql)) {
+                            $pdfID = $rows[0]->pdfID;
+                            $modify = $rows[0]->modify_date;
+
+
+                            if ($file->getATime() > strtotime($modify)) {
+                                $mime = $file->getExtension();
+                                $mime = getFileMimeType($file);
+                                $data = file_get_contents(PDF_DIR . $name);
+                                $size = $file->getSize();
+
+                                $pdf_date = date("Y-m-d H:i:s", time());;
+                                $modify_date = $file->getMTime();
+                                $modify_date = date('Y-m-d H:i:s', $file->getMTime());
+                                $modify_change_date = date('Y-m-d H:i:s', $file->getATime());
+                                $isChange = 'change';
+
+
+                                $sql = "UPDATE pdfs SET " .
+                                    "modify_date=" . $db->sql_string($modify_change_date) . " , " .
+                                    "ischange=" . $db->sql_string($isChange) . "  " .
+                                    "WHERE pdfID =  " . $db->sql_string($pdfID) . " ";
+
+                                if (!$db->execute($sql)) {
+                                    return false;
+                                }
+
+                            }
+                        }
+//---------------------------------------------------------------------------------------------------------------------------------
+                    }
+                }elseif (!(count($tmp_file) > 1)) {
                     $jpgloc2 = CONVERT_PDF_TO_IMG_DIR . "$file_name.jpg";
                     if (!file_exists($jpgloc2)) {
                         $brand->convertPDF2JPG($file->getRealPath(), $jpgloc2);
                     }
 //check if file exist
-                    $sql_count = "SELECT COUNT(*) FROM pdfs " .
-                        "WHERE pdfName='$name'";
 
                     $sql = "SELECT * FROM pdfs " .
                         "WHERE pdfName='$name'";
@@ -197,11 +236,10 @@ switch ($_REQUEST['mode'] ) {
                     $modify = '';
                     if ($rows = $db->queryObjectArray($sql)) {
                         $pdfID = $rows[0]->pdfID;
-                        $modify = $rows[0]->modify_date ;
+                        $modify = $rows[0]->modify_date;
 
 
-
-                        if($file->getCTime() > strtotime($modify)){
+                        if ($file->getATime() > strtotime($modify)) {
                             $mime = $file->getExtension();
                             $mime = getFileMimeType($file);
                             $data = file_get_contents(PDF_DIR . $name);
@@ -209,38 +247,40 @@ switch ($_REQUEST['mode'] ) {
 
                             $pdf_date = date("Y-m-d H:i:s", time());;
                             $modify_date = $file->getMTime();
-                            $modify_date =  date('Y-m-d H:i:s',$file->getMTime());
-                            $modify_change_date =  date('Y-m-d H:i:s',$file->getCTime());
+                            $modify_date = date('Y-m-d H:i:s', $file->getMTime());
+                            $modify_change_date = date('Y-m-d H:i:s', $file->getATime());
                             $isChange = 'change';
 
 
-                            $sql =  "UPDATE pdfs SET " .
-                                    "modify_date=" . $db->sql_string($modify_change_date) . " , " .
-                                    "ischange=" . $db->sql_string($isChange) . "  " .
-                                    "WHERE pdfID =  " . $db->sql_string($pdfID) . " ";
+                            $sql = "UPDATE pdfs SET " .
+                                "modify_date=" . $db->sql_string($modify_change_date) . " , " .
+                                "ischange=" . $db->sql_string($isChange) . "  " .
+                                "WHERE pdfID =  " . $db->sql_string($pdfID) . " ";
 
                             if (!$db->execute($sql)) {
                                 return false;
-                            }else{
-                                $x=1;
+                            } else {
+                                $x = 1;
                             }
                         }
-                    }else if ($db->querySingleItem($sql) > 0) {
+                    } else if ($db->querySingleItem($sql) > 0) {
                         show_error_msg('כבר קיים PDF בשם הזה' . $name);
-                        $log  = "כבר קיים PDF בשם הזה :" . ' - ' . date("F j, Y, g:i a") .  PHP_EOL  . print_r($name, true) . PHP_EOL;
-                        $log .= "---------------------------------------------------------------------------------------------------------------------------------------------------------" . PHP_EOL ;
+                        $log = "כבר קיים PDF בשם הזה :" . ' - ' . date("F j, Y, g:i a") . PHP_EOL . print_r($name, true) . PHP_EOL;
+                        $log .= "---------------------------------------------------------------------------------------------------------------------------------------------------------" . PHP_EOL;
                         file_put_contents('/tmp/olive_log_last_' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
-                    }
-//---------------------------------------------------------------------------------------------------
-                    else{
-                        $new_name = explode('.pdf',$name);
-                        $new_name =  $new_name[0];
-                        $new_name = $new_name.'_new.pdf';
+                    } //---------------------------------------------------------------------------------------------------
+                    else {
+                        $new_name = explode('.pdf', $name);
+                        $new_name = $new_name[0];
+                        $new_name = $new_name . '_new.pdf';
 
                         $sql_count = "SELECT COUNT(*) FROM pdfs " .
                             "WHERE pdfName='$new_name'";
-//check if i dont have a file
-                        if ( !($db->querySingleItem($sql) > 0) ) {
+
+                        $sql = "SELECT COUNT(*) FROM pdfs " .
+                            "WHERE pdfName='$name'";
+//check if i dont have a regular file and a new file
+                        if (!($db->querySingleItem($sql) > 0) && !($db->querySingleItem($sql_count) > 0)) {
 
 
                             $mime = $file->getExtension();
@@ -267,6 +307,7 @@ switch ($_REQUEST['mode'] ) {
                     }
                 }//end else
             }//end pdf files
+        }//end if file exist
         }//end foreach
         break;
 //---------------------------------------------------------------------------------

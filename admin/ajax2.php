@@ -274,15 +274,49 @@ if(isset($_GET['flag_level'] )){
                 echo '<br/></div>';
             } // End of WHILE loop.
         }
-    }else if(! isset($_GET['page_num'])){
-    echo '<h1> "need to input number of pdfs!!"</h1>';
+    }
+
+
+
+//    else if(! isset($_GET['page_num'])){
+//    echo '<h1> "need to input number of pdfs!!"</h1>';
+//}
+
+elseif( isset($_GET['isChange']) && ( array_item($_GET,'isChange')== 'checked') && isset($_GET['pdf_name'])  ) {
+
+    $name = ($_GET['pdf_name']).'.pdf';
+
+    $sql = "SELECT * FROM pdfs " .
+        "WHERE pdfName='$name'";
+
+    $modify = '';
+    if ($rows = $db->queryObjectArray($sql)) {
+        $pdfID =    $rows[0]->pdfID;
+//        $modify =   $rows[0]->modify_date;
+//        $isChange = $rows[0]->isChange;
+    }
+
+if ($rows[0]->isChange == 'change'){
+    $isChange ='unchange';
+}
+elseif ($rows[0]->isChange == 'unchange') {
+    $isChange = 'change';
 }
 
+    $sql = "UPDATE pdfs SET " .
+        "ischange=" . $db->sql_string($isChange) . "  " .
+        "WHERE pdfID =  " . $db->sql_string($pdfID) . " ";
+
+    if (!$db->execute($sql)) {
+        return false;
+    }
 
 
+    echo "change status has been update!";
+    exit;
 
 
-elseif( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות
+}elseif( isset($_GET['vlidInsert']) && ( array_item($_REQUEST,'vlidInsert')== 'chack_insert')   ){	//בדיקת חוקיות קישורים של החלטות
 	$insertID =$_REQUEST['insertID'];
 		$decID =$_REQUEST['decID'];
 
@@ -373,13 +407,13 @@ FROM decisions
 WHERE decID=$decID ";
 	 if($rows=$db->queryObjectArray($sql)){
 
-	  	foreach($rows as $row)
-	{
+    foreach($rows as $row)
+        {
 
 
-		 $t['list'][] =  $row;
+             $t['list'][] =  $row;
 
-	}
+        }
 	echo json_encode($t);
 	 exit;
 }

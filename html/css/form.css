@@ -658,3 +658,5 @@ scrollbar-arrow-color : red;
 .leftCap,.rightCap {
     height: 22px !important;
 }
+
+.ui-datepicker-title{color:black;}
