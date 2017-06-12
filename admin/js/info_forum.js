@@ -61,7 +61,7 @@ $('form#find_cat fieldset').append('<div id="targetDiv"></div>').find('select#ca
 $.ajax({
    type: "POST",
   
-   url: "ajax2.php",
+   url: "ajax.php",
    data: "category1="+this.value,
    success: function(msg){
 $('div#targetDiv').html(' ').append('<p>'+msg+'</p>');

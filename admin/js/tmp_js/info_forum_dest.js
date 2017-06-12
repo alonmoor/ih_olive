@@ -74,7 +74,7 @@ $('form#find_cat_dest fieldset').append('<div id="targetDiv_dest"></div>').find(
 $.ajax({
    type: "POST",
    //url: "forum_count.php",
-   url: "ajax2.php",
+   url: "ajax.php",
    data: "category1_dest="+this.value,
    success: function(msg){
 $('div#targetDiv_dest').html(' ').append('<p>'+msg+'</p>');

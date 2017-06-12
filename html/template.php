@@ -40,7 +40,11 @@ function html_header($arr_sublinks=""){
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title>מערכת ניהול PDF</title>
         <link rel="stylesheet" type="text/css" media="all"  href="<?php echo CSS_DIR ?>/themes/start/jquery-ui-1.8.16.custom.css" />
-        <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/jquery-1.3.2.min.js"           type="text/javascript"> </script>
+<!--        <script  language="JavaScript" src="--><?php //print JQ_ADMIN_WWW ?><!--/jquery-1.3.2.min.js"           type="text/javascript"> </script>-->
+
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript"></script>
+
+
         <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/jquery-ui-1.8.16.custom.min.js"           type="text/javascript"> </script>
         <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/jquery.autocomplete.min.js"  charset="utf-8"   type="text/javascript"></script>
 
@@ -59,6 +63,20 @@ function html_header($arr_sublinks=""){
         <script  language=javascript" src="<?php print  JQ_ADMIN_WWW ?>/date_picker.js"           charset="utf-8"        type="text/javascript"></script>
         <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/fullcalendar.js" charset="utf-8" type="text/javascript"></script>
         <!--    <script  language="JavaScript" src="--><?php //print JQ_ADMIN_WWW ?><!--/jquery-1.11.2.min.js" charset="utf-8" type="text/javascript"></script>-->
+
+
+
+
+
+
+
+
+
+
+        <!--    <script  language="JavaScript" src="--><?php //print JQ_ADMIN_WWW ?><!--/jquery-1.11.2.min.js" charset="utf-8" type="text/javascript"></script>-->
+
+        <!--        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>-->
+        <!--        <script src="http://code.jquery.com/jquery-latest.min.js "></script>-->
 
 
 

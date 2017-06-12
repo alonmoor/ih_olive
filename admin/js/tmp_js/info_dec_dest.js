@@ -68,7 +68,7 @@ function processJson(data) {
 $('form#find_cat_dec_dest fieldset').append('<div id="targetDiv_dec_dest"></div>').find('select#category_dec_dest').change(function(){
 $.ajax({
    type: "POST",
-    url: "../admin/ajax2.php",
+    url: "../admin/ajax.php",
    data: "category_dec_dest="+this.value,
    success: function(msg){
   

@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 tz = -1 * (new Date()).getTimezoneOffset();
 nocache = '&rnd='+Math.random();
- $.getJSON('../admin/ajax2.php?usrArr=get_arr&tz='+tz+nocache, function(json){
+ $.getJSON('../admin/ajax.php?usrArr=get_arr&tz='+tz+nocache, function(json){
 var url='../admin';
 $('.ac_results').css('background-color','blue');
 scriptAr_template = new Array(); 

@@ -63,7 +63,7 @@ $('form#find_cat_level fieldset').append('<div id="targetDiv_level_dest"></div>'
 
 $.ajax({
    type: "POST",
-   url: "ajax2.php",
+   url: "ajax.php",
    data: "growth_level="+this.value,
    success: function(msg){
   

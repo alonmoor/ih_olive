@@ -62,7 +62,7 @@ $('form#find_cat_dec fieldset').append('<div id="targetDiv_dec1"></div>').find('
 $.ajax({
    type: "POST",
 //   url: "../admin/dec_count.php",
-   url: "../admin/ajax2.php",
+   url: "../admin/ajax.php",
    data: "category_dec="+this.value,
    success: function(msg){
   

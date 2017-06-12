@@ -1,11 +1,9 @@
 <?php
 require_once ("../config/application.php");
 require_once (LIB_DIR.'/model/Brand.php');
-require_once ("../lib/model/DBobject3.php");
+require_once (LIB_DIR.'/model/DBobject3.php');
 require_once(LIB_DIR.'/model/class.handler.php');
-//require_once(LIB_DIR.'/model/class.uploader.php');
 
-//require_once ("getproducts.php");
 $showform=TRUE;
 global $db;
 $_POST['form']['dynamic_ajx']=FALSE;
@@ -410,9 +408,9 @@ switch ($_REQUEST['mode'] ) {
         if( array_item($_POST, 'brandID') && count($_POST)==1 && !$_GET){
             $_REQUEST['editID']= array_item($_POST, 'brandID');
         }
-        if($_REQUEST['editID']){
+        if($_REQUEST['editID'] && !($_REQUEST['editID'] == 'none') ){
             $formdata =read_brand($_GET['editID']);
-        }else{
+        }elseif(isset($_GET['brandID'])){
             $formdata =read_brand($_GET['brandID']);
         }
         break;

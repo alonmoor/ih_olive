@@ -4,7 +4,7 @@ require_once(LIB_DIR . '/model/DBobject3.php');
 require_once(LIB_DIR . '/model/class.handler.php');
 require_once(LIB_DIR . '/model/dbtreeview.php');
 require_once HTML_DIR . '/edit_category.php';
-require_once(ADMIN_DIR . '/ajax2.php');
+require_once(ADMIN_DIR . '/ajax.php');
 
 
 class Category extends DBObject3{

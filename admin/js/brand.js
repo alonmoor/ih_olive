@@ -732,7 +732,7 @@ $('#btnLink6_'+decID).click(function(){ //conn first on the file
         	  dataType:'json',
     		   type: "GET",
 //    		   url: "../admin/dynamic_5b.php",
-    		   url: "../admin/ajax2.php",
+    		   url: "../admin/ajax.php",
     		   data: "insertID=" + insertID + "&decID=" + decID + "&vlidInsert=" + str_a ,   
 
 
@@ -1466,7 +1466,7 @@ $('#submitbutton1_'+decID).click(function(){
 		 $.ajax({
 			
 		   type: "POST",
-		   url:url+ "ajax2.php",
+		   url:url+ "ajax.php",
 		   dataType: 'json',
 		   data: "src="+ this.value + "&dest=" + $(this).parent().find(':first').val() + "&forum_decID=" + forum_decID + "&decID=" + decID ,
 		   success: function(json){
@@ -1560,7 +1560,7 @@ $("#tasklist"+decID+forum_decID).bind("click", tasklistClick2);
 
 
 
-$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax2.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 $("#priopopup"+decID+forum_decID).mouseleave(function(){$(this).hide();});
 
 
@@ -1886,8 +1886,8 @@ $('#duedate'+decID+forum_decID).datepicker( $.extend({}, {showOn: 'button',
 $("#usertabs"+decID+forum_decID).tabs({});
 $("#userlist"+decID+forum_decID).sortable({cancel:'span,input,a,textarea', delay: 150, update:orderuserChanged2 , start:sortuserStart});
 $("#userlist"+decID+forum_decID).bind("click", userlistClick);
-$("#edittags1"+decID+forum_decID).autocomplete('../admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
-$("#tags"+forum_decID).autocomplete('../admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+$("#edittags1"+decID+forum_decID).autocomplete('../admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+$("#tags"+forum_decID).autocomplete('../admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 $("#userpriopopup"+decID+forum_decID).mouseleave(function(){$(this).hide()});
 
 
@@ -2166,7 +2166,7 @@ $('#submitbuttont_'+decID).bind('click',function(){
 	 	
 	 	$("#tasklist"+decID+forum_decID).sortable({cancel:'span,input,a,textarea', delay: 100, update:orderChanged, start:sortStart});
 	 	$("#tasklist"+decID+forum_decID).bind("click", tasklistClick2);
-	 	$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax2.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+	 	$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 	  	$("#priopopup"+decID+forum_decID).mouseleave(function(){$(this).hide();});
 
 		 

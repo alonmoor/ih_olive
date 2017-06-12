@@ -1,3 +1,41 @@
+// $('#display_div').find(".olive_cbx").bind('click' ,function(){
+//     if( $(this).is(':checked') &&  $(".modify_elem").val() == 'modify') {
+//         var div_id = 'my_'+ this.id;
+//         $('.wrapper_brand').find('#my_pdfs'+this.id).removeClass('my_task').attr('style', '');
+//         var isChange = true;
+//         $.ajax
+//         ({
+//             url: '../admin/ajax.php',
+//             data: "isChange=" + "checked" + "&flag_level="+flag_level+ "&pdf_name="+this.id,
+//             cache: false,
+//             success: function (r) {
+//                 $("#display_div").html(r);
+//                 var page_num = $('#pdf_page_num').val();
+//                 var check_num =$(":checkbox:checked").length;
+//                 var my_button = $('#send_pdf').val();
+//                 if(page_num == check_num ){
+//
+//                     if(my_button == undefined || my_button == null){
+//                         $('<div><button type="submit" class="mybutton"  id="send_pdf"  name=form["submitpdf"]  style="margin: 10px 30px 20px 0;height: 38px;" >SEND PDF TO FTP</button><br/></div>\n').appendTo($("#display_div"));
+//                     }
+//                 }
+//             }
+//         });
+// //-------------------------------------------------
+//     }else if($('.wrapper_brand').find('#my_pdfs'+this.id).hasClass('change_elem')){
+//         var ischecked= $(this).is(':checked');
+//         if(!ischecked)
+//             $('.wrapper_brand').find('#my_pdfs'+this.id).addClass('my_task')
+//     }
+// });
+//--------------------------------------
+
+
+
+
+
+
+
 
 theme = {
 	newTaskFlashColor: '#ffffaa',
@@ -81,7 +119,7 @@ function editDec (decID,forum_decID,catID,url)
 	var tz = -1 * (new Date()).getTimezoneOffset();
 
 
-$.getJSON(url+'ajax2.php?pre_editDec&decID='+decID+'&forum_decID='+forum_decID+'&catID='+catID+'&tz='+tz+nocache, function(json){
+$.getJSON(url+'ajax.php?pre_editDec&decID='+decID+'&forum_decID='+forum_decID+'&catID='+catID+'&tz='+tz+nocache, function(json){
  	 item =json.list[0];
  ////////////////////////////		
 		$('<div id="dec_edit_form" title="הצג נתונים" dir="rtl">'+
@@ -188,7 +226,7 @@ $.getJSON(url+'ajax2.php?pre_editDec&decID='+decID+'&forum_decID='+forum_decID+'
 //	            
 //	             $.ajax({
 //	                  type: "POST",
-//	                       url: url+'ajax2.php?editDec='+item.decID,
+//	                       url: url+'ajax.php?editDec='+item.decID,
 //	                       dataType: 'json',
 //	                       data: {
 //        		            decName:decName,    forum_decName:forum_decName,     note:note, 
@@ -280,7 +318,7 @@ function loadUsers2send2(url,decID,forum_decID,mgr_userID,mgr)
 	if(filter.tag) tag = '&t='+encodeURIComponent(filter.tag); else tag = '';
 	nocache = '&rnd='+Math.random();
 	   
-	 $.getJSON(url+'ajax2.php?loadUsers&compl='+filter.compl+'&forum_decID='+forum_decID+'&decID='+decID+'&mgr_userID='+mgr_userID+'&mgr='+mgr+'&sort1='+sortBy+search+tag+'&tz='+tz+nocache, function(json){
+	 $.getJSON(url+'ajax.php?loadUsers&compl='+filter.compl+'&forum_decID='+forum_decID+'&decID='+decID+'&mgr_userID='+mgr_userID+'&mgr='+mgr+'&sort1='+sortBy+search+tag+'&tz='+tz+nocache, function(json){
 		
 	    resetAjaxErrorTrigger(decID,forum_decID);
  		$('#total1'+decID+forum_decID).html(json.total);
@@ -411,7 +449,7 @@ for(var i=0;i<arr.length;i++){
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();	
 	
-     $.post(url+'ajax2.php?newTask',  { title: title ,user: user ,user_dest: user_dest,forum_decID:forum_decID ,decID:decID,task_allowed:task_allowed, tz:tz, tag:filter.tag }, function(json){		
+     $.post(url+'ajax.php?newTask',  { title: title ,user: user ,user_dest: user_dest,forum_decID:forum_decID ,decID:decID,task_allowed:task_allowed, tz:tz, tag:filter.tag }, function(json){
 
     	resetAjaxErrorTrigger();
 		if(!parseInt(json.total))  return;
@@ -673,7 +711,7 @@ function loadTasks2del2(url,decID,forum_decID)
 	if(filter.tag) tag = '&t='+encodeURIComponent(filter.tag); else tag = '';
 	nocache = '&rnd='+Math.random();
 	
-	$.getJSON(url+'ajax2.php?loadTasks&compl='+filter.compl+'&sort='+sortBy+search+tag+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?loadTasks&compl='+filter.compl+'&sort='+sortBy+search+tag+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		 
 		 
 		 resetAjaxErrorTrigger();
@@ -841,7 +879,7 @@ function deleteMultiTask2(form,url,decID,forum_decID)
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();
 	
-	$.getJSON(url+'ajax2.php?deleteTask='+ids+'&decID='+decID+'&forum_decID='+forum_decID+nocache, function(json){
+	$.getJSON(url+'ajax.php?deleteTask='+ids+'&decID='+decID+'&forum_decID='+forum_decID+nocache, function(json){
 		resetAjaxErrorTrigger();
 		if(!parseInt(json.total)) return;
 		$('#total'+decID+forum_decID).text( parseInt($('#total'+decID+forum_decID).text()) - 1 );
@@ -979,7 +1017,7 @@ function loadTasks2(url,forum_decID,decID)
  	nocache = '&rnd='+Math.random();
 	var globl = new Array();
 	
- $.getJSON(url+'ajax2.php?loadTasks&compl='+filter.compl+'&sort='+sortBy+search+tag+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+ $.getJSON(url+'ajax.php?loadTasks&compl='+filter.compl+'&sort='+sortBy+search+tag+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
  
  
 	 resetAjaxErrorTrigger(decID,forum_decID);
@@ -1096,7 +1134,7 @@ function loadProgbar(decID,forum_decID){
     var url='../admin/';
 
     
-  $.getJSON(url+'ajax2.php?read_prog='+read_prog+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
+  $.getJSON(url+'ajax.php?read_prog='+read_prog+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
 	  
 	  var myProg_bar='';	
   ////////////////////////////////////////////////////////
@@ -1217,7 +1255,7 @@ function submitNewTask_2 (form,decID,forum_decID ,url,mgr_userID,mgr)
 	var tz = -1 * (new Date()).getTimezoneOffset();
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();
-	$.post(url+'ajax2.php?newTask', { title: title ,user: user ,task_allowed:task_allowed,user_dest: user_dest,forum_decID:forum_decID ,decID:decID,mgr_userID:mgr_userID, tz:tz, tag:filter.tag }, function(json){		
+	$.post(url+'ajax.php?newTask', { title: title ,user: user ,task_allowed:task_allowed,user_dest: user_dest,forum_decID:forum_decID ,decID:decID,mgr_userID:mgr_userID, tz:tz, tag:filter.tag }, function(json){
  		 
 		
 		
@@ -1267,7 +1305,7 @@ function deleteTask2(id,decID,forum_decID,url)
 	}
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();
-	$.getJSON(url+'ajax2.php?deleteTask='+id+'&decID='+decID+'&forum_decID='+forum_decID+nocache, function(json){
+	$.getJSON(url+'ajax.php?deleteTask='+id+'&decID='+decID+'&forum_decID='+forum_decID+nocache, function(json){
 		resetAjaxErrorTrigger();
 		if(!parseInt(json.total)) return;
 		$('#total').text( parseInt($('#total').text()) - 1 );
@@ -1746,7 +1784,7 @@ function editTask3(id,decID,forum_decID,url )
 	tz = -1 * (new Date()).getTimezoneOffset();
 	document.forms['edittask'+decID+forum_decID].elements['Request_Tracking_Number1'+decID+forum_decID].value=id; 
      
-	$.getJSON(url+'ajax2.php?loadTask&compl='+filter.compl+'&sort='+sortBy+search+tag+'&id='+id+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?loadTask&compl='+filter.compl+'&sort='+sortBy+search+tag+'&id='+id+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
 		    resetAjaxErrorTrigger();
 			taskCnt.past = taskCnt.today = taskCnt.soon = 0;
@@ -2001,7 +2039,7 @@ var task_allowed=document.getElementById('catTask'+decID+forum_decID).value;
 				
 			   type: "POST",
 			   
-			   url: "../admin/ajax2.php?editTask="+ID+nocache,
+			   url: "../admin/ajax.php?editTask="+ID+nocache,
 			   dataType: 'json',
 
 			   data:  "&title=" + title +"&decID=" + decID + "&forum_decID=" + forum_decID + "&userselect=" +user+ "&userselect1=" +user_dest+ "&prog_bar=" +prog_bar+ "&note=" +note+ "&prio=" +prio+ "&duedate=" +duedate+ "&task_allowed=" +task_allowed,
@@ -2095,7 +2133,7 @@ function saveTask2(form,url,decID,forum_decID,mgr_userID,mgr)
 	//document.forms['edittask'+decID+forum_decID].elements['tags'+decID+forum_decID].value
 /*************************/	
 	
- $.post(url+'ajax2.php?editTask='+ID+nocache, 
+ $.post(url+'ajax.php?editTask='+ID+nocache,
    { title: title,forum_decID:forum_decID,decID:decID,userselect:user,userselect1:user_dest,prog_bar:prog_bar, note:note, prio:prio, 
 	 tags:document.forms['edittask'+decID+forum_decID].elements['tags'+decID+forum_decID].value, duedate:duedate,task_allowed:task_allowed }, function(json){
 		resetAjaxErrorTrigger(decID,forum_decID);
@@ -2580,7 +2618,7 @@ function prioClick2(prio, el,url,decID,forum_decID){
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();
 	//var forum_decID = document.getElementById('forum_decID').value;
-	$.getJSON(url+'ajax2.php?setPrio='+objPrio.taskID+'&prio='+prio+nocache, function(json){
+	$.getJSON(url+'ajax.php?setPrio='+objPrio.taskID+'&prio='+prio+nocache, function(json){
 		resetAjaxErrorTrigger();
 	});
 	
@@ -2631,7 +2669,7 @@ function setAjaxErrorTrigger(url,decID,forum_decID)
 	.css({'font-weight':'bold'}).css({'cursor':'pointer'}).ajaxError(function(event, request, settings){
 		var errtxt;
 		if(request.status == 0) errtxt = 'Bad connection';
-		else if(request.status != 200) errtxt = 'HTTP (\''+url+'\'+ajax2.php): '+request.status+'/'+request.statusText;
+		else if(request.status != 200) errtxt = 'HTTP (\''+url+'\'+ajax.php): '+request.status+'/'+request.statusText;
 		else errtxt = request.responseText;
 		flashError("Some error occurred (click for details	)", errtxt);
 	});
@@ -2819,7 +2857,7 @@ function orderChanged(event,ui)
 	
 	nocache = '&rnd='+Math.random();
 	
-	$.post(url+'ajax2.php?changeOrder'+nocache, { order: s }, function(json){
+	$.post(url+'ajax.php?changeOrder'+nocache, { order: s }, function(json){
 		resetAjaxErrorTrigger();
 	},'json');  
 }
@@ -3353,7 +3391,7 @@ function showTagCloud2(el,url,decID,forum_decID)
 			setAjaxErrorTrigger(url,decID,forum_decID);
 			nocache = '&rnd='+Math.random();
 		 
-			$.getJSON(url+'ajax2.php?tagCloud&forum_decID='+forum_decID+nocache, function(json){
+			$.getJSON(url+'ajax.php?tagCloud&forum_decID='+forum_decID+nocache, function(json){
 					
 				resetAjaxErrorTrigger();
 				$('#tagcloudload'+decID+forum_decID).hide();
@@ -3995,7 +4033,7 @@ function loadDecFrm_note_mult(url,decID)
  	 
  	nocache = '&rnd='+Math.random();
 	 
- $.getJSON(url+'ajax2.php?load_DecFrmNote&decID='+decID+'&tz='+tz+nocache, function(json){
+ $.getJSON(url+'ajax.php?load_DecFrmNote&decID='+decID+'&tz='+tz+nocache, function(json){
  
  
 	  
@@ -4116,7 +4154,7 @@ function loadDecFrm_note(url,decID)
 
     	
  	nocache = '&rnd='+Math.random();
-// 	$.getJSON('../admin/ajax2.php?load_DecFrmNote&decID='+decID+'&tz='+tz+'&format=json&jsoncallback=?'+nocache,null,function(data) {
+// 	$.getJSON('../admin/ajax.php?load_DecFrmNote&decID='+decID+'&tz='+tz+'&format=json&jsoncallback=?'+nocache,null,function(data) {
 // 		  alert(data);
 // 		});
  	
@@ -4125,7 +4163,7 @@ function loadDecFrm_note(url,decID)
 //  	  dataType:'json',
 //		   type: "GET",
 //
-//		   url: "../admin/ajax2.php",
+//		   url: "../admin/ajax.php",
 //		   data: "load_DecFrmNote=" + decID ,   
 //
 //
@@ -4135,7 +4173,7 @@ function loadDecFrm_note(url,decID)
 // });	
 
 	 
- $.getJSON('../admin/ajax2.php?load_DecFrmNote&decID='+decID+'&tz='+tz+nocache, function(json){
+ $.getJSON('../admin/ajax.php?load_DecFrmNote&decID='+decID+'&tz='+tz+nocache, function(json){
  
  //    noteList   = new Array();
 		
@@ -4210,8 +4248,8 @@ function saveDecFrmNote(decID,forum_decID,url)
 {
 	 setAjaxErrorTrigger(url,decID,forum_decID);
 	nocache = '&rnd='+Math.random();
-//	$.post(url+'ajax2.php?editDecFrmNote='+decID+nocache, {forum_decID:forum_decID,note: $('#noteDecFrm_text'+decID+forum_decID).val()}, function(json){
-	$.post('../admin/ajax2.php?editDecFrmNote='+decID+nocache, {forum_decID:forum_decID,note: $('#noteDecFrm_text'+decID+forum_decID).val()}, function(json){	
+//	$.post(url+'ajax.php?editDecFrmNote='+decID+nocache, {forum_decID:forum_decID,note: $('#noteDecFrm_text'+decID+forum_decID).val()}, function(json){
+	$.post('../admin/ajax.php?editDecFrmNote='+decID+nocache, {forum_decID:forum_decID,note: $('#noteDecFrm_text'+decID+forum_decID).val()}, function(json){
 			
 	 	resetAjaxErrorTrigger(decID,forum_decID);
 		if(!parseInt(json.total)) return;

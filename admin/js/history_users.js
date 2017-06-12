@@ -278,7 +278,7 @@ if($.browser.mozilla==true){
 		            	
   $.ajax({
      type: "POST",
-            url: url+'ajax2.php?submit_PastNormalUser',
+            url: url+'ajax.php?submit_PastNormalUser',
             dataType: 'json',
             data: {
 	            level: level ,active: active ,start_date: $('#user_date2').val(),end_date: $('#user_date1').val(),

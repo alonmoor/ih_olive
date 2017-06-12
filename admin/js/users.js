@@ -280,7 +280,7 @@ if($.browser.mozilla==true){
 //		                                            
 		              $.ajax({
 		                 type: "POST",
-		                        url: url+'ajax2.php?newNormalUser',
+		                        url: url+'ajax.php?newNormalUser',
 		                        dataType: 'json',
 		                        data: {
 		            	            level: level ,active: active ,user_date: $('#user_date2').val(),

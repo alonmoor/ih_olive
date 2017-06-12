@@ -289,7 +289,7 @@ var $dialog=$("#page_DecNewUser").dialog({
  		            	// $('#Request_Tracking_Number_dec').val
   $.ajax({
      type: "POST",
-            url: url+'ajax2.php?submit_DecUser',
+            url: url+'ajax.php?submit_DecUser',
             dataType: 'json',
             data: {
 	            decID:decID,level: level ,active: active ,start_date: $('#user_date2').val(),end_date: $('#user_date1').val(),

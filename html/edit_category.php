@@ -93,7 +93,7 @@ function build_form(&$formdata)
 
                       else{
                              echo '<div class="myformtd 1" style="width:60%;">';
-                                    form_label_red1("שם הברנד::", true);
+                                    form_label_red1("שם הברנד:", true);
                                     form_list_b("cat_brand", $rows, array_item($formdata, "catID"),"id = cat_brand");
                                     form_empty_cell_no_td(10);
                              echo '</div>';

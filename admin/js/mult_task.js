@@ -313,7 +313,7 @@ $(this).removeClass('containerHover');
  $("#tabs"+decID+forum_decID).tabs({ select: tabSelected });
 $("#tasklist"+decID+forum_decID).sortable({cancel:'span,input,a,textarea', delay: 100, update:orderChanged, start:sortStart});
 $("#tasklist"+decID+forum_decID).bind("click", tasklistClick2);
-$("#edittags"+decID+forum_decID).autocomplete('/alon-web/olive_prj/admin/ajax2.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+$("#edittags"+decID+forum_decID).autocomplete('/alon-web/olive_prj/admin/ajax.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 $("#priopopup"+decID+forum_decID).mouseleave(function(){$(this).hide();});
 	 
    setSort2( 0 , decID , forum_decID  ,1);

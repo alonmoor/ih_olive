@@ -62,7 +62,7 @@ $('form#find_cat_mgr fieldset').append('<div id="targetDiv_mgr"></div>').find('s
 $.ajax({
    type: "POST",
 //   url: "../admin/mgr_count.php",
-   url: "ajax2.php",
+   url: "ajax.php",
    data: "category_mgr="+this.value,
    success: function(msg){
   

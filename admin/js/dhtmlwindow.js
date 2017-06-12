@@ -708,7 +708,7 @@ $(this).append('<div id="div#decision_a_'+decID+'"></div>');
     $.ajax({
     	  dataType:'json',
 		   type: "GET",
-		   url: "../admin/ajax2.php",
+		   url: "../admin/ajax.php",
 	 
 		   data: "&decID=" + decID + "&find_the_dec=" + str_b ,   
 

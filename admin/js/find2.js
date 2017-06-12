@@ -18,7 +18,7 @@ $(document).ready(function() {
 //		 var url='../admin/';
 //		 $.ajax({
 //			   type: "POST",
-//			   url: url+"ajax2.php",
+//			   url: url+"ajax.php",
 //			   dataType: 'json',
 //			   data: "rowCount="+id,
 //			   success: function(data){

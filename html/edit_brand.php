@@ -84,7 +84,7 @@ function build_form(&$formdata)
                         on b.catID = c.catID              
                         WHERE b.brandID = $brandID
                         ORDER BY b.brandName ASC";
-                     $rows3 = $db->queryObjectArray($brand_sql);
+                        $rows3 = $db->queryObjectArray($brand_sql);
 
 
 
@@ -217,7 +217,6 @@ function build_form(&$formdata)
                      <div id="loading">
                         <img src="loading4.gif" border="0" />
                     </div>
-                    <div id="display_div" class="image_block"> </div>
                 <?php
  if (array_item($formdata, 'brandID')) {
 global $dbc,$db;
@@ -265,7 +264,7 @@ if( isset($formdata['brand_date2']) ){
         case "":
             break;
     }
- if(!empty($dayOfWeek)  ) {
+ if(!empty($dayOfWeek) && isset($formdata['brandPrefix']) ) {
            $page_num =      isset($formdata['pages']) ? $formdata['pages'] : '';
            $brandPrefix =   $formdata['brandPrefix'];
 
@@ -274,7 +273,7 @@ if( isset($formdata['brand_date2']) ){
            }
            $brandPrefixArr = array();
            $html = '';
-           $html .= '<div class="" id="display_div" >';
+           $html .= '<div class="image_block" id="display_div" >';
 
         for($k = 0,$i = 0; $i<$page_num ; $i++){
             $m = $i +1;
@@ -466,6 +465,57 @@ if( isset($formdata['brand_date2']) ){
 //---------------------------------------------------------------------------------
              echo '</div></fielset></form></div>';
 }//end build_form
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

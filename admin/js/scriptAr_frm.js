@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 tz = -1 * (new Date()).getTimezoneOffset();
 nocache = '&rnd='+Math.random();
- $.getJSON('../admin/ajax2.php?usrArr_frm=get_arr_frm&tz='+tz+nocache, function(json){
+ $.getJSON('../admin/ajax.php?usrArr_frm=get_arr_frm&tz='+tz+nocache, function(json){
  
 
 scriptAr_frm = new Array(); 

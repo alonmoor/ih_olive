@@ -973,7 +973,7 @@ $(document).ready(function () {
 
 
 
-    $("#edittags1").autocomplete('/alon-web/olive_prj/admin/ajax2.php?suggestuserTags', {
+    $("#edittags1").autocomplete('/alon-web/olive_prj/admin/ajax.php?suggestuserTags', {
         scroll: false,
         multiple: true,
         selectFirst: false,

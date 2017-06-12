@@ -8,7 +8,7 @@ require_once(LIB_DIR . '/model/class.handler.php');
 
 
 
-require_once(ADMIN_DIR . '/ajax2.php');
+require_once(ADMIN_DIR . '/ajax.php');
 
 require_once HTML_DIR . '/edit_dec.php';
 

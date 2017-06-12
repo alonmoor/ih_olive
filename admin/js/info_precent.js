@@ -65,7 +65,7 @@ var precent=$('#growth').val();
 $.ajax({
    type: "POST",
 //   url: "../admin/dec_count.php",
-   url: "../admin/ajax2.php",
+   url: "../admin/ajax.php",
    data: "growth_dest="+this.value+ "&growth=" +precent,
    success: function(msg){
   

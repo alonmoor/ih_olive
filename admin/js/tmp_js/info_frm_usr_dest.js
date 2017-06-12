@@ -69,7 +69,7 @@ $('form#find_frm_usr_dest fieldset').append('<div id="targetDiv_frm_usr_dest"></
 	$.ajax({
 	   type: "POST",
 	 
-	   url: "../admin/ajax2.php",
+	   url: "../admin/ajax.php",
 	   data: "growth_frm_usr_dest_num="+this.value+ "&growth_frm_usr_src=" +num,
 	   success: function(msg){
 	  

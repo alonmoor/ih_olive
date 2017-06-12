@@ -44,7 +44,7 @@ function processJson(data) {
 // $.ajax({
 //    type: "POST",
 // //   url: "../admin/dec_count.php",
-//    url: "../admin/ajax2.php",
+//    url: "../admin/ajax.php",
 //    data: "category_dec="+this.value+ "&page_num=" +page_num ,
 //    success: function(msg){
 //
@@ -54,14 +54,14 @@ function processJson(data) {
 //
 // });
 //----------------------------------------------------------------------------
-    $('form#find_cat_dec fieldset').append('<div id="targetDiv_dec1"></div>').find('select#category_dec').change(function(){
+    $('form#find_cat_dec fieldset').append('<div id="targetDiv_dec1"></div>').find('select#brand_pdf').change(function(){
         var page_num = $("#num_page").find('select').val();
         if(page_num == 'none' || page_num == '' || page_num == undefined  ) {
 
 //------------------------------------------
             $.ajax
             ({
-                url: '../admin/ajax2.php',
+                url: '../admin/ajax.php',
                 data: 'action=showAllSqure',
                 cache: false,
                 success: function(r)

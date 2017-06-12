@@ -57,15 +57,26 @@ $formdata=array();
                         <?php
                         global $db;
                         form_new_line();
-                        form_label("קטגוריות של קבצים:",TRUE);
+                     //   form_label("קטגוריות של קבצים:",TRUE);
                         // get all categories
-                        $sql = "SELECT brandName, brandID, parentBrandID FROM brands ORDER BY brandName";
-                        $rows = $db->queryObjectArray($sql);
-                        foreach($rows as $row) {
-                            $subcats_a[$row->parentBrandID][] = $row->brandID;
-                            $catNames_a[$row->brandID] = $row->brandName; }
-                        $rows = build_category_array($subcats_a[NULL], $subcats_a, $catNames_a);
-                        form_list_find("category_dec","category_dec", $rows , array_item($formdata, "category_dec"));
+                        $sql = "SELECT  brandName, brandID FROM brands ORDER BY brandName";
+                        $rows = $db->queryArray($sql);
+//                        foreach($rows as $row) {
+//                            $subcats_a[$row->parentBrandID][] = $row->brandID;
+//                            $catNames_a[$row->brandID] = $row->brandName; }
+//                        $rows = build_category_array($subcats_a[NULL], $subcats_a, $catNames_a);
+                        //form_list_find("category_dec","category_dec", $rows , array_item($formdata, "category_dec"));
+                      //  form_list111("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
+
+
+                        echo '<div class="myformtd 1" style="width:60%;">';
+                        form_label_red1("שם תכנית הברנד:", true);
+                        form_list111("brand_pdf", $rows, array_item($formdata, "brandID"),"id = brand_pdf");
+                        form_empty_cell_no_td(10);
+                        echo '</div>';
+
+
+
                         form_button ("btnTitle", "הראה נתונים");
                         form_end_line();
                         ?>

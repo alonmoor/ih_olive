@@ -304,7 +304,7 @@ $('#priopopup'+decID+forum_decID+':btnstr').css("border", "1px solid red")
  	
  	$("#tasklist"+decID+forum_decID).sortable({cancel:'span,input,a,textarea', delay: 100, update:orderChanged, start:sortStart});
  	$("#tasklist"+decID+forum_decID).bind("click", tasklistClick2);
- 	$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax2.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+ 	$("#edittags"+decID+forum_decID).autocomplete('../admin/ajax.php?suggestTags', {scroll: false, multiple: true, selectFirst:false, max:8});
   	$("#priopopup"+decID+forum_decID).mouseleave(function(){$(this).hide();});
 
 	 
@@ -584,8 +584,8 @@ $('#my_button_win_user'+decID+forum_decID).css({'background':'#B4D9D7'}).bind('c
 	$("#usertabs"+decID+forum_decID).tabs({});
 	$("#userlist"+decID+forum_decID).sortable({cancel:'span,input,a,textarea', delay: 150, update:orderuserChanged2 , start:sortuserStart});
 	$("#userlist"+decID+forum_decID).bind("click", userlistClick);
-     $("#edittags1"+decID+forum_decID).autocomplete('../admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
-     $("#tags"+forum_decID).autocomplete('../admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+     $("#edittags1"+decID+forum_decID).autocomplete('../admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+     $("#tags"+forum_decID).autocomplete('../admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 	 $("#userpriopopup"+decID+forum_decID).mouseleave(function(){$(this).hide()});
 	 
 			 

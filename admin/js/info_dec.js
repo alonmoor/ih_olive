@@ -46,7 +46,7 @@ $(document).ready(function() {
         var page_num = $("#num_page").find('select').val();
         $.ajax({
             type: "POST",
-            url: "../admin/ajax2.php",
+            url: "../admin/ajax.php",
             data: "category_pdf="+this.value+ "&page_num=" +page_num ,
             success: function(msg){
                 $('div#targetDiv_dec1').html(' ').append('<p>'+msg+'</p>');

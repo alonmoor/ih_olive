@@ -1,378 +1,102 @@
 $(document).ready(function() {
 
-// $('#tree_content_target').hide();
-//$('form#forum').append('<div id="targetDiv"></div>').find('select#insert_forumType').change(function(){
-//	 
-//});
-	//$(".my_title_users").css({'cursor':'pointer'}).addClass('link'); 
-//$(".my_title_users").toggle( 
-// function(){ 
-// 
-//    
-//	 $(this).addClass('hover');
-//     $('#my_table').slideToggle();
-//   
-// },  
-// function(){ 
-//	$(this) .removeClass('hover'); 
-//	 $('#my_table').slideToggle();
-// } 
-//);   
 
-
-
-
-/*************************************************************************/	 
-//if(($.browser.msie==true) ){
-	// $('.my_users_panel h4').click(function() {
-	//$('#users_fieldset h3').click(function() {
-	
-		//$(this).parent().find('table#my_table').slideToggle();
-		//$(this).parent().find('#content_users').slideToggle();
-		 //$(this).parent().find('#my_div_table').slideToggle();
-		// $(this).parent().find('#users_fieldset').slideToggle();
-		
-	//  });
-
-	 
-// 	$(".my_title_users").css({'cursor':'pointer'}).addClass('link'); 
-//	   $(".my_title_users").toggle( 
-//	    function(){ 
-//	    
-//	       
-//	      $(this).addClass('hover');
-//	      $(this).parent().find('#my_div_table').slideToggle();
-//	    },  
-//	    function(){ 
-//	      $(this).removeClass('hover'); 
-//	      $(this).parent().find('#my_div_table').slideToggle();	    } 
-//	  );  
-	 
-// }else if(($.browser.mozilla==true) ){
-//	 
-//	 $('.my_users_panel h3').click(function() {
-//			
-//			$(this).parent().find('table#my_table').slideToggle();
-////			$(this).parent().find('.content_users').slideToggle();
-//		  });
+//     $('form#brand_org fieldset').append('<div id="targetDiv"></div>').find('select#brand_pdf').change(function(){
 //
-//	 
-//	 $(".my_title_users").css({'cursor':'pointer'}).addClass('link'); 
-//	   $(".my_title_users").toggle( 
-//	    function(){ 
-//	    
-//	       
-//	      $(this).addClass('hover');
-//	      
-//	    },  
-//	    function(){ 
-//	      $(this).removeClass('hover'); 
-//	      
-//	    } 
-//	  );   
-// } 
-/**************************************************************/
-
-/******************************************************************/   	 
-//$(".my_title_trees").css({'cursor':'pointer'}).addClass('link'); 
-//  $(".my_title_trees").toggle( 
-//   function(){ 
-//   
-//      
-//     $(this).addClass('hover');
-//      $("#tree_content").slideToggle();
-//   },  
-//   function(){ 
-//     $(this).removeClass('hover'); 
-//    $("#tree_content").slideToggle();
-//   } 
-// );  
-//  
+//         if($('#brandID').val())
+//             var brandID = $('#brandID').val();
+//         //$("#display_div").empty();
+//         $('div#display_div').remove();
+//         $.ajax
+//         ({
+//             url: '../admin/ajax.php',
+//             data: "brandName=" + this.value + "&flag_level="+flag_level,
+//             cache: false,
+//             success: function (r) {
+//                 // $("#display_div").html(r);
 //
-//  
-//  $(".my_title_trees2").css({'cursor':'pointer'}).addClass('link'); 
-//  $(".my_title_trees2").toggle( 
-//   function(){ 
-//   
-//      
-//     $(this).addClass('hover');
-//      $("#tree_content2").slideToggle();
-//   },  
-//   function(){ 
-//     $(this).removeClass('hover'); 
-//    $("#tree_content2").slideToggle();
-//   } 
-// );   	  
-  
-/**********************TOOGLE_HISTORY_PAST_USER************************************************/
-  
-//  $('.page_Pastuseredit h4').click(function() {
-//	    $(this).parent().find('.contentPast_2').slideToggle();
-//	  });
+//                 //  $("#display_div").html(' ').append('<p>'+r+'</p>');
 //
-//	
-//	$(".myPast_title").css({'cursor':'pointer'}).addClass('link'); 
-//	  $(".myPast_title").toggle( 
-//	    function(){ 
-//	    
-//	       
-//	      $(this).addClass('hover');
-//	     $("#contentPast_2").slideToggle();
-//	    },  
-//	    function(){ 
-//	      $(this).removeClass('hover'); 
-//	      $("#contentPast_2").slideToggle();
-//	    } 
-//	  );  
+//                 $("#targetDiv").html(r);
+//                 var page_val= $("#my_pageNum").val();
+//                 $('#num_page').find('#pdf_page_num').val(page_val);
+//                 var brand_date_val= $("#my_brand_date").val();
+//                 $("#brand_date2").val(brand_date_val);
+//             }
+//         });
+//     });
 //
-//$('#edit_Pastusr').bind('click',function(){
+//     $('body').on('click', '.olive_cbx', function () {
+//         console.log("yeahhhh!!! but this doesn't work for me :(");
+//     });
+// //-----------------------------------------------------------------------
 //
-//$("#page_Pastuseredit").hide();
+//        $('body').on('click', '.olive_cbx', function () {
+//         if( $(this).is(':checked') &&  $(".modify_elem").val() == 'modify') {
+//             var div_id = 'my_'+ this.id;
+//             if($('#targetDiv').children().length > 0) {
+//                 $('#targetDiv').find('#my_pdfs' + this.id).removeClass('my_task').attr('style', '');
+//             }else{
+//                 $('#display_div').find('#my_pdfs' + this.id).removeClass('my_task').attr('style', '');
+// 			}
+//             var isChange = true;
+//             $.ajax
+//             ({
+//                 url: '../admin/ajax.php',
+//                 data: "isChange=" + "checked" + "&flag_level="+flag_level+ "&pdf_name="+this.id,
+//                 cache: false,
+//                 success: function (msg) {
+//                     $('.wrapper_brand')..append('<p>'+msg+'</p>');
+//                     var page_num = $('#pdf_page_num').val();
+//                     var check_num =$(":checkbox:checked").length;
+//                     var my_button = $('#send_pdf').val();
+//                     if(page_num == check_num ){
 //
+//                         if(my_button == undefined || my_button == null){
+//                             $('<div><button type="submit" class="mybutton"  id="send_pdf"  name=form["submitpdf"]  style="margin: 10px 30px 20px 0;height: 38px;" >SEND PDF TO FTP</button><br/></div>\n').appendTo($("#display_div"));
+//                         }
+//                     }
+//                 }
+//             });
+//         }else if($('.wrapper_brand').find('#my_pdfs'+this.id).hasClass('change_elem')){
+//             var ischecked= $(this).is(':checked');
+//             if(!ischecked)
+//                 $('.wrapper_brand').find('#my_pdfs'+this.id).addClass('my_task')
+//         }
+//     });
+//-------------------------------------------------------------------
+//          $(".olive_cbx").click( function(){
+//              if( $(this).is(':checked') &&  $(".modify_elem").val() == 'modify') {
+//                  var div_id = 'my_'+ this.id;
+//                  $('.wrapper_brand').find('#my_pdfs'+this.id).removeClass('my_task').attr('style', '');
+//                  var isChange = true;
+//                  $.ajax
+//                  ({
+//                      url: '../admin/ajax.php',
+//                      data: "isChange=" + "checked" + "&flag_level="+flag_level+ "&pdf_name="+this.id,
+//                      cache: false,
+//                      success: function (msg) {
+//                          //$("#display_div").html(r);
+//                          $('.wrapper_brand')..append('<p>'+msg+'</p>');
+//                          var page_num = $('#pdf_page_num').val();
+//                          var check_num =$(":checkbox:checked").length;
+//                          var my_button = $('#send_pdf').val();
+//                          if(page_num == check_num ){
 //
-//
-// });
-// 
-  
-///*******************************************************/
-// //TOGGLE DIV IE 
-///******************************************************************/  
-//  if(!($.browser.mozilla==true) ){
-//	  $(".my_title_trees_ajx_tab").hide(); 
-//	  $(".my_title_trees_ajx_tab2").hide(); 
-//	  $(".my_title_trees_ajx").show();
-//	  $(".my_title_trees2_ajx").show();
-//  $(".my_title_trees_ajx").css({'cursor':'pointer'}).addClass('link'); 
-//    $(".my_title_trees_ajx").toggle( 
-//     function(){ 
-//     
-//        
-//       $(this).addClass('hover');
-//        $("#tree_content_ajx").slideToggle('slow');
-//     },  
-//     function(){ 
-//       $(this).removeClass('hover'); 
-//      $("#tree_content_ajx").slideToggle('slow');
-//     } 
-//   );  
-//    
-//
-//    
-//    $(".my_title_trees2_ajx").css({'cursor':'pointer'}).addClass('link'); 
-//    $(".my_title_trees2_ajx").toggle( 
-//     function(){ 
-//     
-//        
-//       $(this).addClass('hover');
-//        $("#tree_content_ajx2").slideToggle('slow');
-//     },  
-//     function(){ 
-//       $(this).removeClass('hover'); 
-//      $("#tree_content_ajx2").slideToggle('slow');
-//     } 
-//   ); 
-//  } else{   
-///*******************************************************/
-////TOGGLE TABLE  FF 
-///******************************************************************/   
-//	 
-//	  $(".my_title_trees_ajx").hide();
-//	  $(".my_title_trees2_ajx").hide();
-//	  $(".my_title_trees_ajx_tab").show(); 
-//	  $(".my_title_trees_ajx_tab2").show(); 
-//	  
-// $(".my_title_trees_ajx_tab").css({'cursor':'pointer'}).addClass('link'); 
-//   $(".my_title_trees_ajx_tab").toggle( 
-//function(){ 
-//
-//   
-//  $(this).addClass('hover');
-//   $("#tree_content1").slideToggle('slow');
-//},  
-//function(){ 
-//  $(this).removeClass('hover'); 
-// $("#tree_content1").slideToggle('slow');
-//    } 
-//  );  
-//   
-//
-//   
-//   $(".my_title_trees_ajx_tab2").css({'cursor':'pointer'}).addClass('link'); 
-//   $(".my_title_trees_ajx_tab2").toggle( 
-//function(){ 
-//
-//   
-//  $(this).addClass('hover');
-//   $("#tree_content2").slideToggle('slow');
-//},  
-//function(){ 
-//  $(this).removeClass('hover'); 
-// $("#tree_content2").slideToggle('slow');
-//        } 
-//      );  
-//   
-//  }//end else  
-///*************************CHANGE HREF FOR EDIT dynamic5b******************************/	  
- //$('div#treev1') .find('a.href_modal2').find('td.nodeText').css("border", "3px solid red");     //attr("class",'no_modal');
- //$('div#treev1').find('table.tvNodeTable').find('tr').find('td.nodeText').css("border", "3px solid red");//.find('a.href_modal2').css("border", "3px solid red");
- 
-  
- // $('table.tvNodeTable').css("border", "3px solid red");
-  
- // $('div#treev1').css("border", "3px solid red");
-// $('div#treev2').css("border", "3px solid red");
- // $("ul").find("li.b").css("border", "3px solid red");
-	
-	
-	
-	
-	  
-//	  $('.page_DecNewUser h4').click(function() { 
-//		    $(this).parent().find('#content_DecNewUsr').slideToggle();
-//		  });
+//                              if(my_button == undefined || my_button == null){
+//                                  $('<div><button type="submit" class="mybutton"  id="send_pdf"  name=form["submitpdf"]  style="margin: 10px 30px 20px 0;height: 38px;" >SEND PDF TO FTP</button><br/></div>\n').appendTo($("#display_div"));
+//                              }
+//                          }
+//                      }
+//                  });
+//              }else if($('.wrapper_brand').find('#my_pdfs'+this.id).hasClass('change_elem')){
+//                  var ischecked= $(this).is(':checked');
+//                  if(!ischecked)
+//                      $('.wrapper_brand').find('#my_pdfs'+this.id).addClass('my_task')
+//              }
+//          });
+//--------------------------------------------------------------------
 
-		
-//	$(".my_title_DecNewUsr1").css({'cursor':'pointer'}).addClass('link'); //for chang plus and minus
-//		  $(".my_title_DecNewUsr").toggle( 
-//		    function(){ 
-//		      $(this).addClass('hover');
-//		      $('#content_DecNewUsr').slideToggle();
-//		    },  
-//		    function(){ 
-//		      $(this).removeClass('hover'); 
-//		      $('#content_DecNewUsr').slideToggle();
-//		    } 
-//		  );  
-	  
-
-	/******************************************************************/
-
-	  
-	  
-//		$(".my_dialog").css({'cursor':'pointer'}).addClass('link'); //for chang plus and minus
-//		  $(".my_dialog").toggle( 
-//		    function(){ 
-//		      $(this).addClass('hover');
-//		      $('#content_DecNewUsr').slideToggle();
-//		    },  
-//		    function(){ 
-//		      $(this).removeClass('hover'); 
-//		      $('#content_DecNewUsr').slideToggle();
-//		    } 
-//		  );  	
-	  
-	  
-	  
-//		  $('.my_dialog').click(function() {    
-//			  $(this).next().slideToggle(250);
-//			  return false;     
-//			  }).next().hide();
-	  
-	  
-	  
-//$('.my_dialog h4').click(function() { 
-//	    $(this).parent().find('.ui-dialog ').slideToggle();
-//	  });
-
-//	
-//	$(".ui-dialog-titlebar").css({'cursor':'pointer'}).addClass('link'); //for chang plus and minus
-//	  $(".ui-dialog").toggle( 
-//	    function(){ 
-//	      $(this).addClass('hover');
-//	    },  
-//	    function(){ 
-//	      $(this).removeClass('hover'); 
-//	    } 
-//	  );  	
-/*********************************************************************/
-//if( window.location.pathname == "/admin/dynamic_5_demo.php" || window.location.pathname == "/admin/create_brand.php" ||  window.location  ==  "/admin/dynamic_10_demo.php"){
-    //
-    // function getAll() {
-    //     // var num = 5;//document.getElementById('pdf_page_num').value;
-    //     //  if (('#num_page').val()) {
-    //     $.ajax
-    //     ({
-    //         url: 'getproducts.php',
-    //         // data: 'action=showAll' + "&num=" + num,
-    //         data: 'action=showAll',
-    //         cache: false,
-    //         success: function (r) {
-    //             $("#display").html(r);
-    //         }
-    //     });
-    //     }
-    //
-    //  getAll();
-    // }
-    // }
-
-	show2();	
-	  var resizeOpts = {
-		      autoHide: true,
-			  minHeight: 170,
-			  minWidth: 400
-		    };
-	
-	$('#page_useredit').resizable( resizeOpts );  
-	$('#page_useredit').css({'margin-right': '120px'}).draggable();
-	
-	//$('#data_table').draggable();
-	$('#my_manager').draggable();
-
-	$('.page_useredit h3').click(function() {
-	    $(this).parent().find('.content').slideToggle();
-	  });
-
-	
-	$(".my_title").css({'cursor':'pointer'}).addClass('link'); 
-	  $(".my_title").toggle( 
-	    function(){ 
-	    
-	       
-	      $(this).addClass('hover');
-	     
-	    },  
-	    function(){ 
-	      $(this).removeClass('hover'); 
-	      
-	    } 
-	  );  
-
-$('#edit_usr').bind('click',function(){
-
-$("#page_useredit").hide();
-
-
-
- });
-  /**********************TOOGLE_edit_Dec_user************************************************/
-  
-  $('.page_Decuseredit h4').click(function() { 
-	    $(this).parent().find('.contentDec_usr').slideToggle();
-	  });
-
-	
-	$(".myDecuser_title").css({'cursor':'pointer'}).addClass('link'); //for chang plus and minus
-	  $(".myDecuser_title").toggle( 
-	    function(){ 
-	      $(this).addClass('hover');
-	    },  
-	    function(){ 
-	      $(this).removeClass('hover'); 
-	    } 
-	  );  
-	  
-	  
-	  
-	  
-	  
-	  
-
-	  
-	  
-	  
-	  
-  
-///////////////////// 	  
+/////////////////////
 });//END READY//////
 ///////////////////	

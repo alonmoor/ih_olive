@@ -5,7 +5,9 @@
 //  var xmlHttp = false;
 
 
-
+// $("#ispo1p003").bind('click' ,function() {
+//     alert("asdfasdf");
+// });
  // var xmlHttp = createXmlHttpRequestObject();
 
 // creates an XMLHttpRequest instance
@@ -427,7 +429,7 @@ function loadUsers2(url,forum_decID,decID,mgr_userID,mgr)
 	nocache = '&rnd='+Math.random();
 	 var userIDD=66;
 	 
- $.getJSON(url+'ajax2.php?loadUsers&compl='+filter.compl+'&forum_decID='+forum_decID+'&mgr='+mgr+'&mgr_userID='+mgr_userID+'&decID='+decID+'&sort1='+sortBy+tag+'&tz='+tz+nocache, function(json){
+ $.getJSON(url+'ajax.php?loadUsers&compl='+filter.compl+'&forum_decID='+forum_decID+'&mgr='+mgr+'&mgr_userID='+mgr_userID+'&decID='+decID+'&sort1='+sortBy+tag+'&tz='+tz+nocache, function(json){
 		 
 	    resetAjaxErrorTrigger();
  		$('#total1'+decID+forum_decID).html(json.total);
@@ -532,7 +534,7 @@ function loadUsers3(url,forum_decID,decID,mgr_userID,mgr)
 	nocache = '&rnd='+Math.random();
 	 var userIDD=66;
 	 
- $.getJSON(url+'ajax2.php?loadUsers3&compl='+filter.compl+'&forum_decID='+forum_decID+'&mgr='+mgr+'&mgr_userID='+mgr_userID+'&decID='+decID+'&sort1='+sortBy+search+tag+'&tz='+tz+nocache, function(json){
+ $.getJSON(url+'ajax.php?loadUsers3&compl='+filter.compl+'&forum_decID='+forum_decID+'&mgr='+mgr+'&mgr_userID='+mgr_userID+'&decID='+decID+'&sort1='+sortBy+search+tag+'&tz='+tz+nocache, function(json){
 		 
 	    resetAjaxErrorTrigger();
  		$('#total1'+decID+forum_decID).html(json.total);
@@ -665,7 +667,7 @@ function sendData(url,userID,decID,forum_decID) {
   //	setTimeout("loadUsers(" + url + "," + forum_decID + "," +decID + " ," +userID + ")",7000);
 	var params =  "setuserDuedate="+userID+"&forum_decID="+forum_decID+"&decID="+decID+nocache;
  
-	  url2 = url+"ajax2.php?" + params;
+	  url2 = url+"ajax.php?" + params;
 	 
  
 
@@ -1253,7 +1255,7 @@ function prepareDuedate3(url,userID,forum_decID,decID)
 //				$('#total1'+decID+forum_decID).html(json.total);
 //alert("ddddddddddd");		 	 
 
-$.getJSON(url+'ajax2.php?setuserDuedate='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){	
+$.getJSON(url+'ajax.php?setuserDuedate='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
 		objDuedate.duedate=json.list1[0].duedate;
 /**************************************************************************************/		
 //				$.each(json.list1, function(i,item){
@@ -1269,7 +1271,7 @@ $.getJSON(url+'ajax2.php?setuserDuedate='+userID+'&forum_decID='+forum_decID+'&d
 	
 //	  $.ajax({
 //          type: "GET" ,
-//                 url: url+"ajax2.php",
+//                 url: url+"ajax.php",
 //                  dataType: 'json',
 //                 data: "setuserDuedate="+userID+"&forum_decID="+forum_decID+"&decID="+decID+nocache,
 //                 success: function(data) {
@@ -1295,7 +1297,7 @@ function prepareDuedate4(url,userID,forum_decID,decID)
 
 
 
-//$.getJSON(url+'ajax2.php?setuserDuedate='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
+//$.getJSON(url+'ajax.php?setuserDuedate='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
 //	
 //	if(json && json.list[0])
 //	objDuedate.duedate=json.list[0].duedate;
@@ -1314,7 +1316,7 @@ function prepareDuedate4(url,userID,forum_decID,decID)
 	
 	$.ajax({
         type: "GET" ,
-           url: url+"ajax2.php",
+           url: url+"ajax.php",
             dataType: 'json',
            data: "setuserDuedate="+userID+"&forum_decID="+forum_decID+"&decID="+decID+nocache,
            success: function(json) {
@@ -1378,11 +1380,11 @@ function priouserClick2(prio, el,url,decID,forum_decID,mgr_userID){
 		setAjaxErrorTrigger(url);
 		nocache = '&rnd='+Math.random();
 if(!(objPrio.userID==mgr_userID)){ 		
-		$.getJSON(url+'ajax2.php?setuserPrio='+objPrio.userID+'&forum_decID='+forum_decID+'&prio='+prio+nocache, function(json){
+		$.getJSON(url+'ajax.php?setuserPrio='+objPrio.userID+'&forum_decID='+forum_decID+'&prio='+prio+nocache, function(json){
 			resetAjaxErrorTrigger(decID,forum_decID);
 		});
 }else{
-	$.getJSON(url+'ajax2.php?setmgrPrio='+objPrio.userID+'&forum_decID='+forum_decID+'&prio='+prio+nocache, function(json){
+	$.getJSON(url+'ajax.php?setmgrPrio='+objPrio.userID+'&forum_decID='+forum_decID+'&prio='+prio+nocache, function(json){
 		resetAjaxErrorTrigger(decID,forum_decID);
 	});
 	
@@ -1444,7 +1446,7 @@ function loadTasks2user2(userID,url,decID,forum_decID,dest_userID)//show tasks t
 	
 	nocache = '&rnd='+Math.random();
 	
-	$.getJSON(url+'ajax2.php?loadTasks2user2&compl='+filter.compl+'&sort='+sortBy+search+tag+'&forum_decID='+forum_decID+'&decID='+decID+'&userID='+userID+'&dest_userID='+dest_userID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?loadTasks2user2&compl='+filter.compl+'&sort='+sortBy+search+tag+'&forum_decID='+forum_decID+'&decID='+decID+'&userID='+userID+'&dest_userID='+dest_userID+'&tz='+tz+nocache, function(json){
 	//	resetAjaxErrorTrigger();
 				
 		  if(!json.total){
@@ -1509,7 +1511,7 @@ function editUsertask_pop (id,url,decID,forum_decID,dest_userID)//show tasks tha
 	nocache = '&rnd='+Math.random();
 	
  	 
-	 $.getJSON(url+'ajax2.php?loadTasks2user2&userID='+id+'&forum_decID='+forum_decID+'&dest_userID='+dest_userID+'&decID='+decID+nocache, function(json){
+	 $.getJSON(url+'ajax.php?loadTasks2user2&userID='+id+'&forum_decID='+forum_decID+'&dest_userID='+dest_userID+'&decID='+decID+nocache, function(json){
  	 //  resetAjaxErrorTrigger(url,decID,forum_decID);
  	    if(!json || json.total==0){
  	    	 alert('!!אין משימות כרגע');	
@@ -1625,7 +1627,7 @@ function editUsertask_pop4me (id,url,decID,forum_decID,dest_userID)//task outher
 	nocache = '&rnd='+Math.random();1
 	
  	 
-	 $.getJSON(url+'ajax2.php?loadTasks2user2&userID='+id+' &forum_decID='+forum_decID+'&dest_userID='+dest_userID+'&decID='+decID+nocache, function(json){
+	 $.getJSON(url+'ajax.php?loadTasks2user2&userID='+id+' &forum_decID='+forum_decID+'&dest_userID='+dest_userID+'&decID='+decID+nocache, function(json){
  	    resetAjaxErrorTrigger();
  	    if(!json || json.total==0){
  	    	 alert('!!אין משימות כרגע');	
@@ -2292,7 +2294,7 @@ function submitNewUser(form,url)
 	var tz = -1 * (new Date()).getTimezoneOffset();
 	setAjaxErrorTrigger(url);
 	nocache = '&rnd='+Math.random();
-	$.post(url+'ajax2.php?newUser'+nocache, { title: form.user.value, tz:tz, tag:filter.tag }, function(json){
+	$.post(url+'ajax.php?newUser'+nocache, { title: form.user.value, tz:tz, tag:filter.tag }, function(json){
 		resetAjaxErrorTrigger();
 		if(!parseInt(json.total)) return;
 		$('#total').text( parseInt($('#total1').text()) + parseInt(json.total) );
@@ -2657,7 +2659,7 @@ function checkRegexp(o,regexp,n) {
 		
 	
 
-		$.getJSON(url+'ajax2.php?pre_editMgr&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+		$.getJSON(url+'ajax.php?pre_editMgr&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
  	//	$('.date').datepicker({'dateFormat':"yy-mm-dd",'yearRange': '-10:+50','buttonImage': "../../images/calendar.gif" ,'changeYear':true}); 		
 // 		$("#duedate4").datepicker({dateFormat: 'dd.mm.yy', firstDay: 1, showOn: 'button', buttonImage:'../../../images/calendar.png', buttonImageOnly: true, 
 // 			changeMonth:true, changeYear:true, constrainInput: false, duration:'', nextText:'&gt;', prevText:'&lt;', dayNamesMin:lang.daysMin, 
@@ -2831,10 +2833,10 @@ function checkRegexp(o,regexp,n) {
 	             $.ajax({
 	                  type: "POST",
 /***************************************************************************************/
-	                  //$.post(url+'ajax2.php?editUser='+form.Request_Tracking_Number1.value+nocache,{ 
+	                  //$.post(url+'ajax.php?editUser='+form.Request_Tracking_Number1.value+nocache,{
 	              		   	                  
 /***************************************************************************************/	                  
-	                       url: url+'ajax2.php?editUser='+item.userID,
+	                       url: url+'ajax.php?editUser='+item.userID,
 	                       dataType: 'json',
 	                       data: {
 	            	        full_name:full_name,    uname:uname,     note:note, 
@@ -2958,7 +2960,7 @@ function checkRegexp(o,regexp,n) {
 				
 		    $("#date1"+decID+forum_decID).datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
 		    $("#date2"+decID+forum_decID).datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
-		    $("#tagsMgr"+decID+forum_decID).autocomplete('/alon-web/olive_prj/admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+		    $("#tagsMgr"+decID+forum_decID).autocomplete('/alon-web/olive_prj/admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 /*********************************************************************************************************/			
 		});//end get_json
 	return false;
@@ -2970,7 +2972,7 @@ function editReg_user (id,url)
 	nocache = '&rnd='+Math.random();
 	var tz = -1 * (new Date()).getTimezoneOffset();
 	  
-	$.getJSON(url+'ajax2.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
  	 item =json.list[0];
  	 flag_level=$('#flag_level').val();	
  	 
@@ -3111,7 +3113,7 @@ function editReg_user (id,url)
 	             $.ajax({
 	                  type: "POST",
 /***************************************************************************************/
-	                       url: url+'ajax2.php?newNormalUser='+item.userID,
+	                       url: url+'ajax.php?newNormalUser='+item.userID,
 	                       dataType: 'json',
 	                       data: {
 	            	        full_name:full_name,fname:fname,lname:lname,    uname:uname,     note:note, 
@@ -3226,7 +3228,7 @@ function editReg_user (id,url)
  	    $("#date1").datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
 
 		   // $("#date2").datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
-		    $("#tagsUsr").autocomplete('/alon-web/olive_prj/admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+		    $("#tagsUsr").autocomplete('/alon-web/olive_prj/admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 /*********************************************************************************************************/			
 		});//end get_json
 	return false;
@@ -3249,7 +3251,7 @@ function editUser4 (id,url)
 	
  document.getElementById('Request_Tracking_Number1').value=id;
 
-	$.getJSON(url+'ajax2.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		 
@@ -3363,7 +3365,7 @@ function editUser5 (id,url)
 	 document.getElementById('Request_Tracking_Number1').value=id;
 	 
   
-	$.getJSON(url+'ajax2.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUserPrint&userID='+id+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		 
@@ -3496,7 +3498,7 @@ function submitNewNormalUser(form,url)//wrok with insert= pre_submitUser and upd
 		
 		
 		if(userID)	{//the hidden field Request_Tracking_Number1	
-		$.post(url+'ajax2.php?newNormalUser', {userID:userID, level: level ,active: active ,user_date: user_date,full_name:full_name ,fname:fname,
+		$.post(url+'ajax.php?newNormalUser', {userID:userID, level: level ,active: active ,user_date: user_date,full_name:full_name ,fname:fname,
 			lname:lname,uname:uname,upass:upass,email:email,phone_num:phone_num,note:note,tz:tz }, function(json){	
 				var item = json.list[0];
 				$('tr#user_'+item.userID).removeClass('border_print');	
@@ -3506,7 +3508,7 @@ function submitNewNormalUser(form,url)//wrok with insert= pre_submitUser and upd
 		}, 'json');
 	  
 	}else{
-		$.post(url+'ajax2.php?newNormalUser', { level: level ,active: active ,user_date: user_date,full_name:full_name ,fname:fname,
+		$.post(url+'ajax.php?newNormalUser', { level: level ,active: active ,user_date: user_date,full_name:full_name ,fname:fname,
 			lname:lname,uname:uname,upass:upass,email:email,phone_num:phone_num,note:note,tz:tz }, function(json){		
 	 		 
 			 
@@ -3560,7 +3562,7 @@ function editPastUser (id,forum_decID,url)
  document.getElementById('Request_Tracking_Number_user').value=id;
  document.getElementById('Request_Tracking_Number_forum').value=forum_decID;
 //pre_editUserPrint
-	$.getJSON(url+'ajax2.php?preEdit_past_user&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?preEdit_past_user&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		 
@@ -3691,7 +3693,7 @@ function submitNewPastNormalUser(form,url)//wrok with insert= pre_submitUser and
 		
 		
 		if(!(forum_decID==forumID_src))	{//the hidden field Request_Tracking_Number1	
-		$.post(url+'ajax2.php?submit_PastNormalUser', {mode:'update',userID:userID,forum_decID:forum_decID,forumID_src:forumID_src, level: level ,active: active ,
+		$.post(url+'ajax.php?submit_PastNormalUser', {mode:'update',userID:userID,forum_decID:forum_decID,forumID_src:forumID_src, level: level ,active: active ,
 		start_date: start_date,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){
 			var forumID_src=document.getElementById('Request_Tracking_Number_forum').value;	
 				var item = json.list[0];
@@ -3705,7 +3707,7 @@ function submitNewPastNormalUser(form,url)//wrok with insert= pre_submitUser and
 		}, 'json');
 		}else if(userID &&  forum_decID==forumID_src){
 			
-			$.post(url+'ajax2.php?submit_PastNormalUser', {mode:'change_details',userID:userID,forum_decID:forum_decID,forumID_src:forumID_src, level: level ,active: active ,
+			$.post(url+'ajax.php?submit_PastNormalUser', {mode:'change_details',userID:userID,forum_decID:forum_decID,forumID_src:forumID_src, level: level ,active: active ,
 				start_date: start_date,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){
 					
 						var item = json.list[0];
@@ -3726,7 +3728,7 @@ function submitNewPastNormalUser(form,url)//wrok with insert= pre_submitUser and
 			
 			 
 		}else{
-		$.post(url+'ajax2.php?submit_PastNormalUser',{mode:'save',userID:userID,forum_decID:forum_decID, level: level ,active: active ,
+		$.post(url+'ajax.php?submit_PastNormalUser',{mode:'save',userID:userID,forum_decID:forum_decID, level: level ,active: active ,
 		 start_date: start_date,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){		
 	 		  
 			if(!parseInt(json.total))  return;
@@ -3762,7 +3764,7 @@ function editUserDec_frm (id,forum_decID,decID,url)//work with print_Decuser_frm
  document.getElementById('Request_Tracking_Number_forum').value=forum_decID;
  document.getElementById('Request_Tracking_Number_dec').value=decID;
 //pre_editUserPrint
-	$.getJSON(url+'ajax2.php?edit_dec_frm_user&userID='+id+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?edit_dec_frm_user&userID='+id+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		  
@@ -3887,7 +3889,7 @@ function submitDecForumUser(form,url)//editUserDec_frm (id,forum_decID,url)//wor
 		
 		
 if(!(forum_decID==forumID_src))	{//the hidden field Request_Tracking_Number1	
-$.post(url+'ajax2.php?submitDecForumUser', {mode:'update',userID:userID,forum_decID:forum_decID,decID:decID,forumID_src:forumID_src,
+$.post(url+'ajax.php?submitDecForumUser', {mode:'update',userID:userID,forum_decID:forum_decID,decID:decID,forumID_src:forumID_src,
 	level: level ,active: active ,HireDate: HireDate,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){
             
 		var userID=document.getElementById('Request_Tracking_Number_user').value;
@@ -3905,7 +3907,7 @@ $.post(url+'ajax2.php?submitDecForumUser', {mode:'update',userID:userID,forum_de
 
 }else if(userID &&  forum_decID==forumID_src){
 	
-	$.post(url+'ajax2.php?submitDecForumUser', {mode:'change_details',userID:userID,forum_decID:forum_decID,decID:decID,forumID_src:forumID_src,
+	$.post(url+'ajax.php?submitDecForumUser', {mode:'change_details',userID:userID,forum_decID:forum_decID,decID:decID,forumID_src:forumID_src,
 		level: level ,active: active ,HireDate: HireDate,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){
 					
 						var item = json.list[0];			
@@ -3913,7 +3915,7 @@ $.post(url+'ajax2.php?submitDecForumUser', {mode:'update',userID:userID,forum_de
 
 
 }else{
-		$.post(url+'ajax2.php?submitDecForumUser',{mode:'save',userID:userID,forum_decID:forum_decID,decID:decID, level: level ,active: active ,
+		$.post(url+'ajax.php?submitDecForumUser',{mode:'save',userID:userID,forum_decID:forum_decID,decID:decID, level: level ,active: active ,
 			HireDate: HireDate,end_date: end_date,full_name:full_name ,fname:fname,lname:lname,note:note,tz:tz }, function(json){		
 	 		  
 			if(!parseInt(json.total))  return;
@@ -4495,7 +4497,7 @@ function editUser2 (id,decID,forum_decID,url,mgr_userID)
 	
 	 document.getElementById('Request_Tracking_Number1').value=id;
   
-	$.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUser&userID='+id+'&decID='+decID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
 	  resetAjaxErrorTrigger();
 		 
@@ -4643,7 +4645,7 @@ function saveUser2(form,url,decID,forum_decID,mgr_userID,mgr)
 	nocache = '&rnd='+Math.random();
  
 	
-	$.post(url+'ajax2.php?editUser='+form.Request_Tracking_Number1.value+nocache,{ 
+	$.post(url+'ajax.php?editUser='+form.Request_Tracking_Number1.value+nocache,{
 		full_name:full_name,    uname:uname,     note:document.forms['edituser'+decID+forum_decID].elements['note'+decID+forum_decID].value, 
 	    prio:prio,tags:document.forms['edituser'+decID+forum_decID].elements['tags'+decID+forum_decID].value, duedate:duedate,
 	    HireDate:HireDate, upass:upass,phone:phone, level:level,email:email ,   forum_decID:forum_decID,   decID:decID  }, 	   
@@ -4694,7 +4696,7 @@ function editUser_frmID (id,forum_decID,url,num)
 	document.getElementById('Request_Tracking_Number1').value=id;
 	document.getElementById('Request_Tracking_Number2').value=forum_decID;
      document.getElementById('Request_Tracking_Number_1').value=num;
-	$.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		 
@@ -4826,7 +4828,7 @@ function saveUser4forum(form,url,forum_decID)
 	 
 	
 	
-	$.post(url+'ajax2.php?editUser='+ID+nocache,{ 
+	$.post(url+'ajax.php?editUser='+ID+nocache,{
 		full_name:full_name,    uname:uname,     note:note, 
 	    prio:prio,              tags:tags,      HireDate:HireDate,duedate:duedate,
 		upass:upass,            phone:phone,    active:active,
@@ -4863,7 +4865,7 @@ function editUser3 (id,forum_decID,url,num)
 	document.getElementById('Request_Tracking_Number1').value=id;
 	document.getElementById('Request_Tracking_Number2').value=forum_decID;
      document.getElementById('Request_Tracking_Number_1').value=num;
-	$.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
 	 // resetAjaxErrorTrigger();
 		 
@@ -5029,8 +5031,8 @@ function saveUser3(form,url)
 	//if(flag.needAuth && !flag.isLogged && flag.canAllRead) return false;
 	 setAjaxErrorTrigger2(url);
 	nocache = '&rnd='+Math.random();
-	 $.post(url+'ajax2.php?editUser='+ID+nocache,{
-	// $.post('../admin/ajax2.php?editUser='+ID+nocache,{ 
+	 $.post(url+'ajax.php?editUser='+ID+nocache,{
+	// $.post('../admin/ajax.php?editUser='+ID+nocache,{
     	full_name:full_name,    uname:uname,     note:note, 
 	    prio:prio,              tags:tags,      HireDate:HireDate,duedate:duedate,
 		upass:upass,            phone:phone,    active:active,
@@ -5061,7 +5063,7 @@ function saveUser3(form,url)
 				upass:upass,            phone:phone,    active:active,
 				level:level,            email:email ,   forum_decID:forum_decID }, 
            
-            url: url+'ajax2.php?editUser='+ID+nocache, 
+            url: url+'ajax.php?editUser='+ID+nocache,
              dataType: 'json',
              //async: false,
             
@@ -5146,7 +5148,7 @@ function saveUser4(form,url,forum_decID)
 	 
 	
 	
-	$.post(url+'ajax2.php?editUser='+form.Request_Tracking_Number1.value+nocache,{ 
+	$.post(url+'ajax.php?editUser='+form.Request_Tracking_Number1.value+nocache,{
 		full_name:full_name,    uname:uname,     note:note, 
 	    prio:prio,              tags:tags,      HireDate:HireDate,duedate:duedate,
 		upass:upass,            phone:phone,    active:active,
@@ -5182,7 +5184,7 @@ function edit_userForum (id,forum_decID,url,member_date)
 /********************************************************************************************/
 /*******************************************************************************************/	
 
-$.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+$.getJSON(url+'ajax.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 //	 taskList = new Array();
 /////////////////////////////////////////////////////			
 //			$.each(json.list, function(i,item){
@@ -5317,7 +5319,7 @@ $.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&
 	            
 	             $.ajax({
 	                  type: "POST",
-	                       url: url+'ajax2.php?editUser='+item.userID,
+	                       url: url+'ajax.php?editUser='+item.userID,
 	                       dataType: 'json',
 	                       data: {
 	            	        full_name:full_name,    uname:uname,     note:note, 
@@ -5390,7 +5392,7 @@ $.getJSON(url+'ajax2.php?pre_editUser&userID='+id+'&forum_decID='+forum_decID+'&
 				
 		    $("#date1").datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
 		    $("#date2").datepicker({ firstDay: 1, showOn: 'button', buttonImage:'../images/calendar.png', buttonImageOnly: true});
-		    $("#tags").autocomplete('/alon-web/olive_prj/admin/ajax2.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
+		    $("#tags").autocomplete('/alon-web/olive_prj/admin/ajax.php?suggestuserTags', {scroll: false, multiple: true, selectFirst:false, max:8});
 /*********************************************************************************************************/			
 		});//end get_json
 	
@@ -5588,7 +5590,7 @@ function completeUser2(id,ch,url,decID,forum_decID)
 	compl = 0;
 	if(ch.checked) compl = 1;
 	setAjaxErrorTrigger(url);
-	$.getJSON(url+'ajax2.php?completeUser2='+id+'&compl='+compl+'&decID='+compl+'&forum_decID='+forum_decID+nocache, function(json){
+	$.getJSON(url+'ajax.php?completeUser2='+id+'&compl='+compl+'&decID='+compl+'&forum_decID='+forum_decID+nocache, function(json){
 		resetAjaxErrorTrigger();
 		if(!parseInt(json.total)) return;
 		var item = json.list[0];
@@ -5785,7 +5787,7 @@ function showuserTagCloud2(el,url,decID,forum_decID,mgr_userID)
 			setAjaxErrorTrigger(url);
 			nocache = '&rnd='+Math.random();
 			
-			$.getJSON(url+'ajax2.php?taguserCloud&forum_decID='+forum_decID+nocache, function(json){
+			$.getJSON(url+'ajax.php?taguserCloud&forum_decID='+forum_decID+nocache, function(json){
 				resetAjaxErrorTrigger();
 				$('#tagusercloudload'+decID+forum_decID).hide();
 				
@@ -5866,7 +5868,7 @@ function showuserTagCloud_all(el,url,decID,forum_decID,mgr_userID)
 			setAjaxErrorTrigger(url);
 			nocache = '&rnd='+Math.random();
 			
-			$.getJSON(url+'ajax2.php?taguserCloud_all&forum_decID='+forum_decID+nocache, function(json){
+			$.getJSON(url+'ajax.php?taguserCloud_all&forum_decID='+forum_decID+nocache, function(json){
 				resetAjaxErrorTrigger();
 				$('#tagusercloudload_all'+decID+forum_decID).hide();
 				
@@ -6276,7 +6278,7 @@ function orderuserChanged2(event,ui)//new
 	
 	nocache = '&rnd='+Math.random();
 	
-	$.post(url+'ajax2.php?changeuserOrder2'+nocache, { order: s,forum_decID:forum_decID }, function(json){
+	$.post(url+'ajax.php?changeuserOrder2'+nocache, { order: s,forum_decID:forum_decID }, function(json){
 		resetAjaxErrorTrigger();
 	},'json');  
 }
@@ -6457,7 +6459,7 @@ function setAjaxErrorTrigger2(url)
 	$("#msg").ajaxError(function(event, request, settings){
 		var errtxt;
 		if(request.status == 0) errtxt = 'Bad connection';
-		else if(request.status != 200) errtxt = 'HTTP (\''+url+'\'+ajax2.php): '+request.status+'/'+request.statusText;
+		else if(request.status != 200) errtxt = 'HTTP (\''+url+'\'+ajax.php): '+request.status+'/'+request.statusText;
 		else errtxt = request.responseText;
 		flashError("Some error occurred (click for details	)", errtxt);
 	});
@@ -6488,8 +6490,8 @@ var str='delete';
 	 
 	tz = -1 * (new Date()).getTimezoneOffset();
 	nocache = '&rnd='+Math.random();
-	//NO_DC I AHAVE TO USE AJAX2.php 
- 	$.getJSON(url+'ajax2.php?mode2='+str+'&id='+userID+'&tz='+tz+nocache, function(json){
+	//NO_DC I AHAVE TO USE ajax.php
+ 	$.getJSON(url+'ajax.php?mode2='+str+'&id='+userID+'&tz='+tz+nocache, function(json){
 		
  	    if(json.type == 'success' &&  !(json.type ==undefined)){ 
 		
@@ -6545,8 +6547,8 @@ var str='delete';
 	
 		tz = -1 * (new Date()).getTimezoneOffset();
 	nocache = '&rnd='+Math.random();
-	//NO_DC I AHAVE TO USE AJAX2.php 
- 	$.getJSON(url+'ajax2.php?mode_del='+str+'&id='+userID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
+	//NO_DC I AHAVE TO USE ajax.php
+ 	$.getJSON(url+'ajax.php?mode_del='+str+'&id='+userID+'&forum_decID='+forum_decID+'&tz='+tz+nocache, function(json){
 		
  	    if(json.type == 'success' &&  !(json.type ==undefined)){ 
 		
@@ -6573,8 +6575,8 @@ function del_Decuser_frm(userID,forum_decID,decID,url){
 		var str='delete';
 		tz = -1 * (new Date()).getTimezoneOffset();
 		nocache = '&rnd='+Math.random();
-		//NO_DC I AHAVE TO USE AJAX2.php  
-	 	$.getJSON(url+'ajax2.php?mode_Dec_usrdel='+str+'&id='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
+		//NO_DC I AHAVE TO USE ajax.php
+	 	$.getJSON(url+'ajax.php?mode_Dec_usrdel='+str+'&id='+userID+'&forum_decID='+forum_decID+'&decID='+decID+'&tz='+tz+nocache, function(json){
 			
 	 	    if(json.type == 'success' &&  !(json.type ==undefined)){ 
 			
@@ -6624,7 +6626,7 @@ function get_json(){
 	  data_users=new Array();
 	
 
-	 $.getJSON(url+'ajax2.php?mode='+def, function(json){
+	 $.getJSON(url+'ajax.php?mode='+def, function(json){
 		 
 						 
 		 
@@ -6896,7 +6898,7 @@ function edituserTasks (userID,decID,forum_decID,url,dest_userID)
 	nocache = '&rnd='+Math.random();
 	var tz = -1 * (new Date()).getTimezoneOffset();
 /********************************************************************************************/
-$.getJSON(url+'ajax2.php?loadTasks2user2&compl='+filter.compl+'&sort='+sortBy+'&forum_decID='+forum_decID+'&decID='+decID+'&userID='+userID+'&dest_userID='+dest_userID+'&tz='+tz+nocache, function(json){
+$.getJSON(url+'ajax.php?loadTasks2user2&compl='+filter.compl+'&sort='+sortBy+'&forum_decID='+forum_decID+'&decID='+decID+'&userID='+userID+'&dest_userID='+dest_userID+'&tz='+tz+nocache, function(json){
 		
 					
   if(!json.total){
@@ -7322,7 +7324,7 @@ function submit_new_user(url, allFields ){
 			                                            
 			              $.ajax({
 			                 type: "POST",
-			                        url: url+'ajax2.php?newNormalUser',
+			                        url: url+'ajax.php?newNormalUser',
 			                        dataType: 'json',
 			                        data: {
 			            	           level: level ,active: active ,user_date: user_date,full_name:full_name ,fname:fname,
@@ -7418,7 +7420,7 @@ function edit_active (userID,forum_decID,url,active)
 	nocache = '&rnd='+Math.random();
 	
 /**********************************************************/	
-	$.getJSON(url+'ajax2.php?update_active&userID='+userID+'&forum_decID='+forum_decID+'&active='+active+'&tz='+tz+nocache, function(json){
+	$.getJSON(url+'ajax.php?update_active&userID='+userID+'&forum_decID='+forum_decID+'&active='+active+'&tz='+tz+nocache, function(json){
 		
 	 
 		 
@@ -7455,7 +7457,7 @@ function edit_frmName (frmID){
 nocache = '&rnd='+Math.random();
 	
 	tz = -1 * (new Date()).getTimezoneOffset();
-$.getJSON('../admin/ajax2.php?update_data_module&forum_decID='+frmID+'&tz='+tz+nocache, function(json){
+$.getJSON('../admin/ajax.php?update_data_module&forum_decID='+frmID+'&tz='+tz+nocache, function(json){
 			
 		 
 			 
