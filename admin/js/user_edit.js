@@ -1,30 +1,48 @@
 $(document).ready(function() {
+    // ('form#brand_org fieldset').append('<div id="display_div" ></div>').find('select#brand_pdf').change(function(){
+    //
+    //     if($('#brandID').val())
+    //         var brandID = $('#brandID').val();
+    //
+    //     $.ajax
+    //     ({
+    //         url: '../admin/ajax.php',
+    //         data: "brandName=" + this.value + "&flag_level="+flag_level,
+    //         cache: false,
+    //         success: function (r) {
+    //             $("#display_div").html(r);
+    //             var page_val= $("#my_pageNum").val();
+    //             $('#num_page').find('#pdf_page_num').val(page_val);
+    //             var brand_date_val= $("#my_brand_date").val();
+    //             $("#brand_date2").val(brand_date_val);
+    //         }
+    //     });
+    // });
 
-
-//     $('form#brand_org fieldset').append('<div id="targetDiv"></div>').find('select#brand_pdf').change(function(){
-//
-//         if($('#brandID').val())
-//             var brandID = $('#brandID').val();
-//         //$("#display_div").empty();
-//         $('div#display_div').remove();
-//         $.ajax
-//         ({
-//             url: '../admin/ajax.php',
-//             data: "brandName=" + this.value + "&flag_level="+flag_level,
-//             cache: false,
-//             success: function (r) {
-//                 // $("#display_div").html(r);
-//
-//                 //  $("#display_div").html(' ').append('<p>'+r+'</p>');
-//
-//                 $("#targetDiv").html(r);
-//                 var page_val= $("#my_pageNum").val();
-//                 $('#num_page').find('#pdf_page_num').val(page_val);
-//                 var brand_date_val= $("#my_brand_date").val();
-//                 $("#brand_date2").val(brand_date_val);
-//             }
-//         });
-//     });
+    // $('form#brand_org fieldset').append('<div id="targetDiv"></div>').find('select#brand_pdf').change(function(){
+    //
+    //     if($('#brandID').val())
+    //         var brandID = $('#brandID').val();
+    //     //$("#display_div").empty();
+    //     $('div#display_div').remove();
+    //     $.ajax
+    //     ({
+    //         url: '../admin/ajax.php',
+    //         data: "brandName=" + this.value + "&flag_level="+flag_level,
+    //         cache: false,
+    //         success: function (r) {
+    //             // $("#display_div").html(r);
+    //
+    //             //  $("#display_div").html(' ').append('<p>'+r+'</p>');
+    //
+    //             $("#targetDiv").html(r);
+    //             var page_val= $("#my_pageNum").val();
+    //             $('#num_page').find('#pdf_page_num').val(page_val);
+    //             var brand_date_val= $("#my_brand_date").val();
+    //             $("#brand_date2").val(brand_date_val);
+    //         }
+    //     });
+    // });
 //
 //     $('body').on('click', '.olive_cbx', function () {
 //         console.log("yeahhhh!!! but this doesn't work for me :(");

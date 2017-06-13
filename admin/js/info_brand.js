@@ -39,20 +39,20 @@ function processJson(data) {
 		return false;
    });
 }
-
-//------------------PULL THE DIV------------------------------
-     $('form#brand_org fieldset').find('select#brand_pdf').change(function(){
-         $('div#display_div').empty();
+    // $("#display_div").remove();
+//------------------EVENT CHANGE PULL THE DIV------------------------------
+     $('form#brand_org fieldset').append('<div id="target_div" ></div>').find('select#brand_pdf').change(function(){
+     $("#display_div").remove();
      if($('#brandID').val())
          var brandID = $('#brandID').val();
-           $("#display_div").empty();
+
            $.ajax
            ({
                url: '../admin/ajax.php',
                data: "brandName=" + this.value + "&flag_level="+flag_level,
                cache: false,
                success: function (r) {
-                   $("#display_div").html(r);
+                   $("#target_div").html(r);
                    var page_val= $("#my_pageNum").val();
                    $('#num_page').find('#pdf_page_num').val(page_val);
                    var brand_date_val= $("#my_brand_date").val();
@@ -61,15 +61,12 @@ function processJson(data) {
            });
     });
 
-
-    // $('body').on('click', '.olive_cbx', function () {
-    //     console.log("yeahhhh!!! but this doesn't work for me :(");
-    // });
 //-------------------------------------------------------------
     $('body').on('click', '.olive_cbx', function () {
         if( $(this).is(':checked') &&  $(".modify_elem").val() == 'modify') {
             var div_id = 'my_'+ this.id;
-            $('.wrapper_brand').find('#my_pdfs'+this.id).removeClass('my_task').attr('style', '');
+           // $('.wrapper_brand').find("#display_div").find('#my_pdfs'+this.id).removeClass('my_task').attr('style', '');
+            $('#my_pdfs'+this.id).removeClass('my_task').attr('style', '');
             var isChange = true;
             $.ajax
             ({
@@ -128,6 +125,63 @@ function processJson(data) {
 //         }
 //     });
 //---------------------------------------------------
+
+//------------------PULL THE DIV------------------------------
+    // setInterval(callAjax,30000);
+    var check_exist_files = 1;
+
+
+    var callAjax = function(){
+        var editID = $('form#brand_org fieldset').find('select#brand_pdf').val();
+        // $.ajax({
+        //     dataType:'json',
+        //     type: "GET",
+        //     cache: false,
+        //     url: '../admin/pdf_brand.php',
+        //     // data: "src="+ this.value
+        //     data: "mode=" + 'read_data' + "&editID="+editID,
+        //     success:function(json){
+        //         if(json.list[0]=='fail') {
+        //             // alert("files been added to ftp!!!!");
+        //             return false;
+        //         }
+        //     }
+        // });
+
+
+        $('div#display_div').remove();
+        if($('#brandID').val())
+            var brandID = $('#brandID').val();
+    //    $("#display_div").empty();
+        $.ajax
+        ({
+            url: '../admin/ajax.php',
+            data: "brandName=" + editID + "&flag_level="+flag_level,
+            cache: false,
+            success: function (msg) {
+                $("#target_div").html(msg);
+                var page_val= $("#my_pageNum").val();
+                $('#num_page').find('#pdf_page_num').val(page_val);
+                var brand_date_val= $("#my_brand_date").val();
+                $("#brand_date2").val(brand_date_val);
+            }
+        });
+
+
+
+
+
+    }
+   setInterval(callAjax,30000);
+
+
+    //  alert( $('form#brand_org fieldset').find('select#brand_pdf').val());
+
+
+//------------------------------------------------------------------
+
+
+
 });//end DCR
  $("#loading img").ajaxStart(function(){
    $(this).show();

@@ -23,7 +23,7 @@ function build_form(&$formdata)
         <?php
     }
     ?>
-    <script language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js" type="text/javascript"></script>
+<!--    <script language="JavaScript" src="--><?php //print JS_ADMIN_WWW ?><!--/info_brand.js" type="text/javascript"></script>-->
     <div id="main">
       <?PHP if($level) { ?>
         <form style="width:95%;" name="brand_org" id="brand_org" method="post" action="../admin/pdf_brand.php"
@@ -38,7 +38,7 @@ function build_form(&$formdata)
                         prepSelObject(document.getElementById('dest_brandsType'));
                         prepSelObject(document.getElementById('dest_managersType'));" >
         <?PHP } ?>
-        <script  language="JavaScript" src="<?php print JS_ADMIN_WWW ?>/info_brand.js"  type="text/javascript"></script>
+<!--        <script  language="JavaScript" src="--><?php //print JS_ADMIN_WWW ?><!--/info_brand.js"  type="text/javascript"></script>-->
                 <fieldset style="margin-right:4%;width:90%;color:#000000; background: #94C5EB url(../../images/background-grad.png) repeat-x;"  >
 
                    <?php if($level){ ?>
@@ -278,11 +278,11 @@ if( isset($formdata['brand_date2']) ){
         for($k = 0,$i = 0; $i<$page_num ; $i++){
             $m = $i +1;
 
-               if($i<10){
+               if($m<10){
                $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
-               }elseif ($i<100 && $i>=10 ){
+               }elseif ($m<100 && $m>=10 ){
                 $brandPrefixArr[$i] = $brandPrefix."p0".$m.".pdf";
-               }elseif ($i>=100){
+               }elseif ($m>=100){
                 $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
                }
 //template for new

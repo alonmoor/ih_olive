@@ -104,7 +104,7 @@ switch ($_REQUEST['mode'] ) {
             if (file_exists($dst)) {
             if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf') {
                 $name = $file->getFilename();
-                if ($file->getFilename() == 'ayom2p001_new.pdf') {
+                if ($file->getFilename() == 'issh1p010_new.pdf' || $file->getFilename() == 'issh1p010.pdf') {
                     $x = 1;
                 }
                 $file_name = explode('.', $name);

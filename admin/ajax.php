@@ -86,11 +86,11 @@ if(isset($_GET['flag_level'] )){
         if(isset($page_num) && is_numeric($page_num)) {
             for ($k = 0,$i = 0; $i < $page_num; $i++) {
                 $m = $i + 1;
-                if ($i < 10) {
+                if ($m < 10) {
                     $brandPrefixArr[$i] = $brandPrefix . "p00" . $m . ".pdf";
-                } elseif ($i < 100 && $i >= 10) {
+                } elseif ($m < 100 && $m >= 10) {
                     $brandPrefixArr[$i] = $brandPrefix . "p0" . $m . ".pdf";
-                } elseif ($i >= 100) {
+                } elseif ($m >= 100) {
                     $brandPrefixArr[$i] = $brandPrefix . "p" . $m . ".pdf";
                 }
 //------------------------------------------------------------------------------
@@ -267,7 +267,7 @@ if(isset($_GET['flag_level'] )){
                                </div>\n";
             }
             echo $html;
-            exit;
+           exit;
         }
 }elseif(isset($_GET['check_for_files']) && $_GET['check_for_files'] == true){
 

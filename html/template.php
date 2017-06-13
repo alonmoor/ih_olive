@@ -23,27 +23,62 @@ function html_header($arr_sublinks=""){
 
     <!DOCTYPE html>
     <html style="direction: rtl;">
-    <?PHP
-    $GLOBALS['TEMPLATE']['content'] = ob_get_contents();
-    ob_end_clean();
-    ob_start();
+<?PHP
+$GLOBALS['TEMPLATE']['content'] = ob_get_contents();
+ob_end_clean();
+ob_start();
 
 
 
 
-    ?>
-    <!--  -->
-    <meta http-equiv='cache-control' content='no-cache'>
-    <meta http-equiv='expires' content='-1'>
-    <meta http-equiv='pragma' content='no-cache'>
+?>
     <head id="my_header" >
+
+        <meta http-equiv='cache-control' content='no-cache'>
+        <meta http-equiv='expires' content='-1'>
+        <meta http-equiv='pragma' content='no-cache'>
+
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/styles.css">
+
+
+
+
+
+
+
+
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title>מערכת ניהול PDF</title>
         <link rel="stylesheet" type="text/css" media="all"  href="<?php echo CSS_DIR ?>/themes/start/jquery-ui-1.8.16.custom.css" />
-<!--        <script  language="JavaScript" src="--><?php //print JQ_ADMIN_WWW ?><!--/jquery-1.3.2.min.js"           type="text/javascript"> </script>-->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--        <script  language="JavaScript" src="--><?php //print JQ_ADMIN_WWW ?><!--/jquery-1.3.2.min.js"           type="text/javascript"> </script>-->
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript"></script>
-
 
         <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/jquery-ui-1.8.16.custom.min.js"           type="text/javascript"> </script>
         <script  language="JavaScript" src="<?php print JQ_ADMIN_WWW ?>/jquery.autocomplete.min.js"  charset="utf-8"   type="text/javascript"></script>
@@ -160,6 +195,9 @@ function html_header($arr_sublinks=""){
     </head>
 
     <body id="my_body" style="direction: rtl;">
+
+
+    <script src="js/script.js"></script>
     <div id=my_header2>
         <div class="page" id="template_page">
 
@@ -201,8 +239,8 @@ function html_header($arr_sublinks=""){
                         <li id="navMenu2" class="menuHeader" style="margin-top:90px;"><a href="#">ניהול קבצים</a></li>
                         <li id="navMenu3" class="menuHeader" style="margin-top:90px;"><a href="#">ניהול ברנדים</a></li>
                         <li id="navMenu4" class="menuHeader" style="margin-top:90px;"><a href="#">ניהול משתמשים</a></li>
-<!--                        <li id="navMenu5" class="menuHeader" style="margin-top:90px;"><a href="#">חיפושים</a></li>-->
-<!--                        <li id="navMenu6" class="menuHeader" style="margin-top:90px;"><a href="#">ניהול ובקרה</a></li>-->
+                        <!--                        <li id="navMenu5" class="menuHeader" style="margin-top:90px;"><a href="#">חיפושים</a></li>-->
+                        <!--                        <li id="navMenu6" class="menuHeader" style="margin-top:90px;"><a href="#">ניהול ובקרה</a></li>-->
 
                     </ul>
 
@@ -228,21 +266,21 @@ function html_header($arr_sublinks=""){
 
 
                     <div id="dropMenu2" class="menuDrop">
-<!--                        <a href="database.php" onfocus="if (this.blur) this.blur();">עץ ההחלטות</a>-->
-<!--                        <a href="database7.php" onfocus="if (this.blur) this.blur();">עץ פתוח של החלטות</a>-->
-<!--                        <a href="category_tree.php" onfocus="if (this.blur) this.blur();">צפייה בעץ סוגי החלטות</a>-->
-<!---->
-<!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
-<!--                            <a href="categories.php" onfocus="if (this.blur) this.blur();">ערוך סוגי החלטות</a>-->
+                        <!--                        <a href="database.php" onfocus="if (this.blur) this.blur();">עץ ההחלטות</a>-->
+                        <!--                        <a href="database7.php" onfocus="if (this.blur) this.blur();">עץ פתוח של החלטות</a>-->
+                        <!--                        <a href="category_tree.php" onfocus="if (this.blur) this.blur();">צפייה בעץ סוגי החלטות</a>-->
+                        <!---->
+                        <!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
+                        <!--                            <a href="categories.php" onfocus="if (this.blur) this.blur();">ערוך סוגי החלטות</a>-->
 
 
-                            <a href="dynamic_5_demo.php" onfocus="if (this.blur) this.blur();">ניהול של  PDF</a>
-<!--                            <a href="mult_dec_ajx.php" onfocus="if (this.blur) this.blur();">ניהול מורכב של החלטות (online)</a>-->
-<!--                        --><?php //}else{?>
-<!--                            <a href="dynamic_5_demo.php" onfocus="if (this.blur) this.blur();">ניהול של  PDF</a>-->
-<!--                            <a href="mult_dec_ajx.php" onfocus="if (this.blur) this.blur();">מבנה מורכב של החלטה</a>-->
-<!---->
-<!--                        --><?php //}?>
+                        <a href="dynamic_5_demo.php" onfocus="if (this.blur) this.blur();">ניהול של  PDF</a>
+                        <!--                            <a href="mult_dec_ajx.php" onfocus="if (this.blur) this.blur();">ניהול מורכב של החלטות (online)</a>-->
+                        <!--                        --><?php //}else{?>
+                        <!--                            <a href="dynamic_5_demo.php" onfocus="if (this.blur) this.blur();">ניהול של  PDF</a>-->
+                        <!--                            <a href="mult_dec_ajx.php" onfocus="if (this.blur) this.blur();">מבנה מורכב של החלטה</a>-->
+                        <!---->
+                        <!--                        --><?php //}?>
 
                     </div>
 
@@ -250,54 +288,54 @@ function html_header($arr_sublinks=""){
 
 
                     <div id="dropMenu3" class="menuDrop">
-                       <?php if($level) { ?>
-<!--                           <a href="categories.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>-->
-                        <a href="create_brand.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>
+                        <?php if($level) { ?>
+                            <!--                           <a href="categories.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>-->
+                            <a href="create_brand.php" onfocus="if (this.blur) this.blur();">הקמה של ברנד</a>
 
-                        <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">בניית תוכנית עבודה </a>
+                            <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">בניית תוכנית עבודה </a>
 
-                      <?php }else{ ?>
-                           <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">צפייה ואישור תוכנית עבודה </a>
-                          <?php } ?>
+                        <?php }else{ ?>
+                            <a href="brand_plan.php" onfocus="if (this.blur) this.blur();">צפייה ואישור תוכנית עבודה </a>
+                        <?php } ?>
                     </div>
 
 
 
                     <div id="dropMenu4" class="menuDrop">
-<!--                        <a href="manager_tree.php" onfocus="if (this.blur) this.blur();"> עץ המנהלים</a>-->
-<!--                        <a href="database6.php" onfocus="if (this.blur) this.blur();"> עץ סוגי המנהלים</a>-->
-<!--                        <a href="appoint_tree.php" onfocus="if (this.blur) this.blur();">עץ ממני פורומים</a>-->
-<!---->
-<!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
-<!--                            <a href="manager.php" onfocus="if (this.blur) this.blur();"> ערוך מנהלים</a>-->
-<!---->
-<!--                            <a href="manager_category.php" onfocus="if (this.blur) this.blur();"> ערוך סוגי מנהלים</a>-->
-<!---->
-<!--                            <a href="appoint_edit.php" onfocus="if (this.blur) this.blur();">ערוך ממני פורומים</a>-->
-<!--                        --><?php //}?>
+                        <!--                        <a href="manager_tree.php" onfocus="if (this.blur) this.blur();"> עץ המנהלים</a>-->
+                        <!--                        <a href="database6.php" onfocus="if (this.blur) this.blur();"> עץ סוגי המנהלים</a>-->
+                        <!--                        <a href="appoint_tree.php" onfocus="if (this.blur) this.blur();">עץ ממני פורומים</a>-->
+                        <!---->
+                        <!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
+                        <!--                            <a href="manager.php" onfocus="if (this.blur) this.blur();"> ערוך מנהלים</a>-->
+                        <!---->
+                        <!--                            <a href="manager_category.php" onfocus="if (this.blur) this.blur();"> ערוך סוגי מנהלים</a>-->
+                        <!---->
+                        <!--                            <a href="appoint_edit.php" onfocus="if (this.blur) this.blur();">ערוך ממני פורומים</a>-->
+                        <!--                        --><?php //}?>
                     </div>
 
 
 
                     <div id="dropMenu5" class="menuDrop">
-<!--                        <a href="find3.php" onfocus="if (this.blur) this.blur();">חיפוש מורכב</a>-->
-<!--                        <a href="forum_demo12.php" onfocus="if (this.blur) this.blur();">חיפוש לפי קטגוריות</a>-->
-<!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">צוואר בקבוק</a>-->
+                        <!--                        <a href="find3.php" onfocus="if (this.blur) this.blur();">חיפוש מורכב</a>-->
+                        <!--                        <a href="forum_demo12.php" onfocus="if (this.blur) this.blur();">חיפוש לפי קטגוריות</a>-->
+                        <!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">צוואר בקבוק</a>-->
                     </div>
 
 
 
                     <div id="dropMenu6" class="menuDrop">
-<!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
-<!--                            <a href="print_users.php" onfocus="if (this.blur) this.blur();">מיון+ ניהול טבלת המישתמשים</a>-->
-<!--                        --><?php //}else{?>
-<!--                            <a href="print_users.php" onfocus="if (this.blur) this.blur();">מידע כללי על משתמשים</a>-->
-<!--                        --><?php //}?>
-<!--                        <a href="print_history_users.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית משתמשים</a>-->
-<!--                        <!--<a href="print_Decuser_frm.php" onfocus="if (this.blur) this.blur();">ניהול משתמשים בעת קבלת ההחלטה</a>-->-->
-<!--                        <a href="print_Decuser_frm_check.php" onfocus="if (this.blur) this.blur();">ניהול משתמשים בעת קבלת ההחלטה</a>-->
-<!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית מנהלים</a>-->
-<!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית ממנים</a>-->
+                        <!--                        --><?php //if(!empty($_SESSION['level']) && !($_SESSION['level']=='user')){?>
+                        <!--                            <a href="print_users.php" onfocus="if (this.blur) this.blur();">מיון+ ניהול טבלת המישתמשים</a>-->
+                        <!--                        --><?php //}else{?>
+                        <!--                            <a href="print_users.php" onfocus="if (this.blur) this.blur();">מידע כללי על משתמשים</a>-->
+                        <!--                        --><?php //}?>
+                        <!--                        <a href="print_history_users.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית משתמשים</a>-->
+                        <!--                        <!--<a href="print_Decuser_frm.php" onfocus="if (this.blur) this.blur();">ניהול משתמשים בעת קבלת ההחלטה</a>-->-->
+                        <!--                        <a href="print_Decuser_frm_check.php" onfocus="if (this.blur) this.blur();">ניהול משתמשים בעת קבלת ההחלטה</a>-->
+                        <!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית מנהלים</a>-->
+                        <!--                        <a href="bottle_neck.php" onfocus="if (this.blur) this.blur();">ניהול טבלת היסטורית ממנים</a>-->
                     </div>
                     <canvas id="logo" width="350" height="60" style="float: left">
 
