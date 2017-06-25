@@ -2,6 +2,10 @@
 
 function build_form(&$formdata)
 {
+    $minimal = FALSE;
+    if(isset($_GET['no_header']) &&  $_GET['no_header'] == TRUE){
+        $minimal = TRUE;
+    }
     global $db;
        if (array_item($formdata, 'brandID')) {
             $brandID = array_item($formdata, 'brandID');
@@ -103,7 +107,30 @@ function build_form(&$formdata)
                     for ($i = 1; $i <= 150; $i++) {
                             $pages[] = $i;
                         }
+if($minimal  && array_item($formdata, 'brandID')){
+      $brand_sql = "SELECT b.*,c.* FROM brands b
+                        inner join categories c  
+                        on b.catID = c.catID              
+                        WHERE b.brandID = $brandID
+                        ORDER BY b.brandName ASC";
+                        $rows3 = $db->queryObjectArray($brand_sql);
 
+
+
+                      $brand_sql2 = "SELECT  * FROM brands          
+                                        WHERE brandID = $brandID
+                                        ORDER BY b.branName ASC";
+                      $rows4 = $db->queryObjectArray($brand_sql);
+
+                      $rows4 = array_shift($rows4);
+
+                      $brand_sql3 = "SELECT  * FROM brands          
+                                        WHERE brandID = $brandID
+                                        ORDER BY brandName ASC";
+                      $rows5 = $db->queryArray($brand_sql3);
+
+}
+if(!$minimal){
 //---------------------------------UPDATE------------------------------------------
                     if (array_item($formdata, 'brandID')) {
 
@@ -182,7 +209,7 @@ $selected = array_item($formdata, "brandID");
 $date_value =  array_item($formdata, "brand_date2");
 //-----------------------------------------------------------------------
 
-$url = htmlspecial_utf8('create_brand.php');
+$url = htmlspecial_utf8('create_brandType.php');
 ?>
 <!--                          <div class="form-group" >-->
 <!--                              <label for="brand_date2" > תאריך הפצה: </label>-->
@@ -385,7 +412,7 @@ $date_value =  array_item($formdata, "brand_date2");
                 form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
                 form_hidden("brandID", $formdata["brandID"]);
                 form_hidden("insertID", $formdata["insertID"]);
-                echo '</div>';
+  }              echo '</div>';
 
 //------------------------------------------------------------------------------
  if (array_item($formdata, 'brandID')) {

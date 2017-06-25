@@ -836,18 +836,19 @@ function insert_new_cat(&$formdata)
 
             $db->execute("COMMIT");
 
-
-            $formdata['subcategories'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-            $formdata['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-
-
-
-            $formdata['new_name'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-            $form['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-            //check it out
-            $form['insert_category'] = isset($formdata['insert_category'][0]) ? $formdata['insert_category'][0] : '';
-            $submit = "submitbutton_$catID";
-            $_SESSION['catID'] = $catID;
+            $formdata['newcatName'] = '';
+            $formdata['catPrefix'] = '';
+//            $formdata['subcategories'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
+//            $formdata['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
+//
+//
+//
+//            $formdata['new_name'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
+//            $form['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
+//            //check it out
+//            $form['insert_category'] = isset($formdata['insert_category'][0]) ? $formdata['insert_category'][0] : '';
+//            $submit = "submitbutton_$catID";
+//            $_SESSION['catID'] = $catID;
             show_list($formdata);
             echo "<p class='error'>ברנד עודכן/נוסף.</p>\n";
         }
@@ -1594,29 +1595,29 @@ function print_categories_forum_paging_b($catIDs, $subcategories, $catNames, $pa
                     build_href2("../admin/category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
                     build_href2("category_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"));
             } elseif ($parent[$catID][0] == '11' && !(array_item($subcategories, $catID))) {
-                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)</li>\n",
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)</li>\n",
                     htmlspecial_utf8($catNames[$catID]),
                     build_href2("../admin/category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
                     build_href2("../admin/category_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
                     build_href2("../admin/category_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"));
+                    //build_href5("", "", "הראה נתונים", $str));
             } elseif ($parent[$catID][0] == '11' && array_item($subcategories, $catID)) {
-                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
                     build_href2("../admin/category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
                     build_href2("../admin/category_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
                     build_href2("../admin/category_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"));
+                   // build_href5("", "", "הראה נתונים", $str));
             } else {
-                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s,%s)\n",
+                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
                     build_href2("../admin/category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
                     build_href2("../admin/category_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();'class=href_modal1"),
                     build_href2("../admin/category_brand.php", "mode=update", "&updateID=$catID", "עדכן שם"),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"));
+                   // build_href5("", "", "הראה נתונים", $str));
             }
             if (array_key_exists($catID, $subcategories))
                 $this->print_categories_forum_paging_b($subcategories[$catID], $subcategories, $catNames, $parent);
@@ -1631,20 +1632,20 @@ function print_categories_forum_paging_b($catIDs, $subcategories, $catNames, $pa
                 printf("<li style='font-weight:bold;color:red;font-size:30px;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','red').css('font-size', '15px')\">%s </li>\n",
                     htmlspecial_utf8($catNames[$catID]));
             } elseif ($parent[$catID][0] == '11' && !(array_item($subcategories, $catID))) {
-                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)</li>\n",
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s)</li>\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"));
+                   // build_href5("", "", "הראה נתונים", $str));
             } elseif ($parent[$catID][0] == '11' && array_item($subcategories, $catID)) {
-                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
+                printf("<li class='li_page' style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"));
+                    //build_href5("", "", "הראה נתונים", $str));
             } else {
-                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s)\n",
+                printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s)\n",
                     htmlspecial_utf8($catNames[$catID]),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
+                    build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "מידע מורחב"));
+                    //build_href5("", "", "הראה נתונים", $str));
             }
             if (array_key_exists($catID, $subcategories))
                 $this->print_categories_forum_paging_b($subcategories[$catID], $subcategories, $catNames, $parent);

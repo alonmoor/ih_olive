@@ -6,8 +6,14 @@ require_once(LIB_DIR.'/model/class.handler.php');
 
 $showform=TRUE;
 global $db;
+$minimal = FALSE;
+
+if(isset($_GET['no_header']) &&  $_GET['no_header'] == TRUE){
+    $minimal = TRUE;
+}
+
 $_POST['form']['dynamic_ajx']=FALSE;
-if(  !(isAjax())){
+if(  !(isAjax()) && !($minimal)){
     html_header();
 }
 if( array_item($_POST, 'brandID') && count($_POST)==1 && !$_GET ){
@@ -656,6 +662,12 @@ function  show_list_fail($formdata=""){
 }
 //---------------------------------------------------
 function read_brand($editID){
+
+    $minimal = FALSE;
+    if(isset($_GET['no_header']) &&  $_GET['no_header'] == TRUE){
+        $minimal = TRUE;
+    }
+
     global $db;
     $brand=new brand();
     if($_REQUEST['editID']){
@@ -670,6 +682,7 @@ function read_brand($editID){
     $brandID=$formdata['brandID'];
     //  $brand->message_update_b($formdata,$brandID);
     $formdata['brandID'] = $brandID;
+    if(!$minimal)
     $brand->print_brand_paging();
 //    build_form_ajx7($formdata);
     build_form($formdata);

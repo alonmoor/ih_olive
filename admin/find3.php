@@ -96,7 +96,7 @@ echo '</div></form><br/>', "\n";
 
  
 
-echo '<input type="hidden" name="search_type2" id="search_type2"  value="">';
+echo '<input type="hidden" name="search_ytpe2" id="search_type2"  value="">';
 
    
 

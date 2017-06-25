@@ -105,7 +105,7 @@ function build_form(&$formdata)
             <?php
 
             $value = array_item($formdata, "catPrefix");
-            $url = htmlspecial_utf8('create_brand.php');
+            $url = htmlspecial_utf8('create_brandType.php');
             ?>
 
 

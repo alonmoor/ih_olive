@@ -1584,7 +1584,11 @@ function print_brand_paging($brandID = "")
     foreach ($rows as $row) {
         $catID = $row->brandID;
         $catName = $row->brandName;
-        $url = "../admin/find3.php?brandID=$catID";
+        //$url = "../admin/find3.php?brandID=$catID";
+        //$url = "../admin/brand_plan.php?brandID=$catID";
+        $url = "../admin/pdf_brand.php?mode=read_data&editID=$catID&no_header=true";
+        //admin/pdf_brand.php?mode=read_data&editID=52
+
         $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 id="' . $catID . '"   ';
         printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
             htmlspecial_utf8($catName),
