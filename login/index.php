@@ -1,6 +1,7 @@
 <?PHP
  //unset session_set_save_handler in class dbsession func register
 require '../includes/master.inc.php';
+
   session_start();
 	// Kick out user if already logged in
 if($auth->ok()) {
@@ -19,7 +20,7 @@ redirect(WEB_ROOT);
 			redirect(WEB_ROOT);
 		}else{
 			$alert = "<div class='alert'>מצטערים סיסמא או שם משתמש לא נכונים</div>";
-			echo $alert;
+			//echo $alert;
         }
 	}
 
@@ -35,16 +36,29 @@ redirect(WEB_ROOT);
 	<title>index</title>
 
 	<link rel="stylesheet" href="<?PHP WEBROOT();?>/html/css/table.css" type="text/css" media="screen" title="Screen" charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?PHP WEBROOT();?>/html/css/bootstrap.min.css" />
 </head>
 
-<body>
+<body class="container">
 
 	<form action="<?php echo $_SERVER['SCRIPT_NAME']?>"  method="post">
-		<?PHP echo '<table class="table">', "\n";   echo $alert;?>
-		<p><label for="username">שם משתמש:</label> <input type="text" name="username" value="<?PHP echo $username;?>" id="username" /></p>
-		<p><label for="password">סיסמא:    </label> <input type="password" name="password" value="" id="password" /></p>
-		<p><input type="submit" name="btnlogin" value="לחץ לרישום" id="btnlogin" /></p>
-		<?php  echo '</table>' ?>
+		 <?PHP   echo $alert;?>
+        <div class="form-group" >
+            <label for="username">שם משתמש:</label>
+            <input type="text" class="form-control input-group" name="username" value="<?PHP echo $username;?>" id="username" style="width:160px;" />
+        </div>
+
+        <div class="form-group" >
+            <label for="password">סיסמא: </label>
+            <input class="form-control input-group" type="password" name="password" value="" id="password" style="width:160px;" />
+        </div>
+
+        <div class="form-group" >
+            <input class="btn btn-primary" type="submit" name="btnlogin" value="לחץ לרישום" id="btnlogin" />
+        </div>
+
 	</form>
 
 </body>

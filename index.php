@@ -11,15 +11,18 @@
 <html dir=rtl xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head >
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
 	<title>index</title>
    <link rel="stylesheet" href="html/css/table.css" type="text/css" media="screen" title="Screen" charset="utf-8" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo CSS_DIR ?>/bootstrap.min.css" />
+
 </head>
 
-<body>
+<body class="container">
     <table>
 	<h1>מערכת ניהול - pdf </h1>
-
 	<?PHP echo '<table class="table">', "\n"; if($auth->ok()) : ?>
 	<?PHP if (($auth->level)=='admin'){
 		unset($_SESSION['level']);

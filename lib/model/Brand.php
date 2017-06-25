@@ -902,8 +902,11 @@ function insert_brand( $newbrandNamename,  $brandPrefix, $formdata)
             $pages = isset($formdata['pages']) ? $formdata['pages'] : '';
             $pages =  isset($pages) ? $db->sql_string($pages) : '';
             $brand_date = isset($formdata['brand_date2'])  ? $formdata['brand_date2'] : NULL ;
-           if(!empty($brand_date))
-            $brand_date  = $db->sql_string($brand_date);
+           if(!empty($brand_date)) {
+               $brand_date = $db->sql_string($brand_date);
+           }else{
+               return -1;
+           }
             $catID = $formdata['catID'];
 
             $sql = "INSERT INTO brands (`brandName`,`numPage`, `brand_date`, `brandPrefix`, `catID`) " .
@@ -1574,7 +1577,7 @@ function print_brand_paging($brandID = "")
 //        $catNames[$row->brandID] = $row->brandName;
 //        $parent[$row->brandID][] = $row->parentBrandID;
 //    }
-    echo '<fieldset class="my_pageCount"  style="margin-right:32px;">';
+    echo '<fieldset class="my_pageCount"  style="margin-right:300px;">';
 
 
     echo '<ul class="paginated" style=left:100px;  >';
@@ -1591,7 +1594,6 @@ function print_brand_paging($brandID = "")
             build_href2("pdf_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
             build_href5("", "", "הראה נתונים", $str));
     }
-
     echo '</ul class="paginated"></fieldset>';
     echo '<BR><BR>';
 }

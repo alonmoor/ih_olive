@@ -1553,7 +1553,7 @@ function print_forum_paging_b($catID = "")
             $catNames[$row->catID] = $row->catName;
             $parent[$row->catID][] = $row->parentCatID;
         }
-        echo '<fieldset class="my_pageCount"  style="margin-right:32px;">';
+        echo '<fieldset class="my_pageCount"  style="margin-right:250px;">';
 
 
         echo '<ul class="paginated" style=left:100px;  >';

@@ -35,8 +35,10 @@ switch ($_REQUEST['mode'] ) {
                         return true;
         }
         $db->execute("ROLLBACK");
-        $formdata['fail'] = true;
-        $formdata['dynamic_10'] = 1;
+
+        $formdata['newcatName'] = '';
+        $formdata['catPrefix'] = '';
+
         show_list($formdata);
         return;
         break;

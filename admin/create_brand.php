@@ -4,7 +4,8 @@ require_once '../config/application.php';
 require_once (LIB_DIR.'/model/Categories.class.php');
 require_once (LIB_DIR."/model/DBobject3.php");
 if(!isAjax() ){
-    html_header();
+
+      html_header();
 }
 if(array_item($_SESSION, 'level')=='user'){
     $flag_level=0;

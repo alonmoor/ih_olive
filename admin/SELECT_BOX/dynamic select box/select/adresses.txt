@@ -1,2 +1,0 @@
-http://talkerscode.com/webtricks/dynamic-select-option-menu-using-ajax-and-php.php
-

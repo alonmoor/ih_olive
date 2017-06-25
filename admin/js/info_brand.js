@@ -3,45 +3,48 @@ var countJson_dec;
 
 // prepare the form when the DOM is ready 
 $(document).ready(function() {
+
+
+    $("#create_brand a:contains('הקמה של ברנד')").parent().hover().addClass('active');
+    $("#brand_plan a:contains('בניית תוכנית עבודה')").parent().hover().addClass('active');
+
+
+
+    //Use smooth scrolling when clicking on navigation
+    $('.navbar a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') ===
+            this.pathname.replace(/^\//,'') &&
+            location.hostname === this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top-topoffset+2
+                }, 500);
+                return false;
+            } //target.length
+        } //click function
+    }); //smooth scrolling
+
+
     flag_level=$('#flag_level').val();
 	$('#my_find_ol').css('list-style','none');	
 	$('#find_cat_dec_dest').hide();
-   var options = { 
-        beforeSubmit:  showRequest,  // pre-submit callback
-        success:  processJson,
-        dataType: 'json'
-    }; 
-    // bind form using 'ajaxForm'
-    $('#find_cat_dec').ajaxForm(options); 
 
- function showRequest(formData, jqForm) {
- var extra = [ { name: 'json', value: '1' }];
- $.merge( formData, extra)
-    return true;
-} 
-//---------------------// post-submit callback//
-function processJson(data) {
-	countJson_dec = data;
-    var countList_dec_1 = '';
-    // 'data' is the json object returned from the server
-   $.each(data, function(i){
- countList_dec_1 += '<li><a href="find3.php?decID='+this.decID+'"   class=href_modal3 >'+this.decName+'</a></li>';
- });
 
- $('#targetDiv_dec1').html('<ul id="countList_dec">'+countList_dec_1+'</ul>').find('a.href_modal3').each(function(i){
-    var index = $('a.href_modal3').index(this);
-    var v = countJson_dec[i].decName;
-    var id=countJson_dec[i].decID;
-   });
- $('a.href_modal3').css({'background':'#B4D9D7'}).bind('click', function() {
-	  	var link=$(this).attr('href') ;
-	   	 openmypage3(link); 
-		return false;
-   });
-}
+
+
+        $('.input-group.date').datetimepicker({
+            locale: 'he',
+            format: 'YYYY-MM-DD',
+        });
+
+
+
+
     // $("#display_div").remove();
 //------------------EVENT CHANGE PULL THE DIV------------------------------
-     $('form#brand_org fieldset').append('<div id="target_div" ></div>').find('select#brand_pdf').change(function(){
+     $('form#brand_org fieldset').append('<div id="target_div" class="row" ></div>').find('select#brand_pdf').on('change',function(){
      $("#display_div").remove();
      if($('#brandID').val())
          var brandID = $('#brandID').val();
@@ -60,7 +63,6 @@ function processJson(data) {
                }
            });
     });
-
 //-------------------------------------------------------------
     $('body').on('click', '.olive_cbx', function () {
         if( $(this).is(':checked') &&  $(".modify_elem").val() == 'modify') {
@@ -82,7 +84,7 @@ function processJson(data) {
                     if(page_num == check_num ){
 
                         if(my_button == undefined || my_button == null){
-                            $('<div><button type="submit" class="mybutton"  id="send_pdf"  name=form["submitpdf"]  style="margin: 10px 30px 20px 0;height: 38px;" >SEND PDF TO FTP</button><br/></div>\n').appendTo($("#display_div"));
+                            $('<div><button type="submit" class="mybutton btn btn-primary"  id="send_pdf"  name=form["submitpdf"]  style="margin: 10px 30px 20px 0;height: 38px;" >SEND PDF TO FTP</button><br/></div>\n').appendTo($("#display_div"));
                         }
                     }
                 }
@@ -133,26 +135,11 @@ function processJson(data) {
 
     var callAjax = function(){
         var editID = $('form#brand_org fieldset').find('select#brand_pdf').val();
-        // $.ajax({
-        //     dataType:'json',
-        //     type: "GET",
-        //     cache: false,
-        //     url: '../admin/pdf_brand.php',
-        //     // data: "src="+ this.value
-        //     data: "mode=" + 'read_data' + "&editID="+editID,
-        //     success:function(json){
-        //         if(json.list[0]=='fail') {
-        //             // alert("files been added to ftp!!!!");
-        //             return false;
-        //         }
-        //     }
-        // });
 
 
         $('div#display_div').remove();
         if($('#brandID').val())
             var brandID = $('#brandID').val();
-    //    $("#display_div").empty();
         $.ajax
         ({
             url: '../admin/ajax.php',
@@ -166,28 +153,42 @@ function processJson(data) {
                 $("#brand_date2").val(brand_date_val);
             }
         });
-
-
-
-
-
     }
-   setInterval(callAjax,30000);
+//   setInterval(callAjax,30000);
 
 
     //  alert( $('form#brand_org fieldset').find('select#brand_pdf').val());
 
 
+
+
+
+
 //------------------------------------------------------------------
+//     $(".wrapper_brand").css('border','3px sloid red');
+    $("#brand_org").find("#loading").css('border','3px sloid red');
+    $(".wrapper_brand").find("#loading img").ajaxStart(function(){
+        $(this).show();
+    }).ajaxStop(function(){
+        $(this).hide();
+    });
 
 
+    $('#loading').bind('ajaxStart', function(){
+        $(this).show();
+    }).bind('ajaxStop', function(){
+        $(this).hide();
+    });
+
+
+    // $(document).ajaxStart(function(){
+    //     $("#wait").css("display", "block");
+    // });
+    // $(document).ajaxComplete(function(){
+    //     $("#wait").css("display", "none");
+    // });
 
 });//end DCR
- $("#loading img").ajaxStart(function(){
-   $(this).show();
- }).ajaxStop(function(){
-   $(this).hide();
- });
 
 
 

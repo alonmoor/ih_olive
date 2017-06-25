@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    //highlight menu
+    //$("#template_page a:contains('הקמה של ברנד')").parent().addClass('active');
     // ('form#brand_org fieldset').append('<div id="display_div" ></div>').find('select#brand_pdf').change(function(){
     //
     //     if($('#brandID').val())

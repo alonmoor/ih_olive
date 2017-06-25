@@ -14,7 +14,7 @@
 
 }
 #content thead th {
-  background-color: #15b;    
+  background-color: #15b;
 }
 #content .sortable thead th {
   padding-left: 18px;
@@ -39,7 +39,7 @@ tr.second {
   background-color: #ddd;
 }
 tr.third {
-  background-color: #ccc;  
+  background-color: #ccc;
 }
 
 td.sorted {
@@ -53,7 +53,7 @@ td.error {
 
 th.clickable {
   background: transparent url(../../images/sort-arrows.png) no-repeat 0 0 ;
-  
+
 }
 
 
@@ -72,13 +72,13 @@ th.sorted-desc {
 
 #content table.filterable {
   width: 78%;
-  
+
 }
 
- 
+
 
 #content .filters {
-  float: right; 
+  float: right;
  width: 19%;
  padding-left:5px;
 }

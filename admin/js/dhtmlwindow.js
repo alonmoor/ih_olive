@@ -22,7 +22,7 @@ init:function(t){
  	var domwindowdata='';
 		var infoList='' ;		
 	domwindowdata='<div class="drag-handle" style="text-align: center;">';
-	domwindowdata+='DHTML Window <div class="drag-controls"><img src="'+this.imagefiles[0]+'" title="Minimize" /><img src="'+this.imagefiles[1]+'" id="my_closeButton" title="Close"  /></div>';
+	domwindowdata+='DHTML Window <div class="drag-controls"><img src="'+this.imagefiles[1]+'" id="my_closeButton" title="Close"  /><img src="'+this.imagefiles[0]+'" title="Minimize" /></div>';
 	domwindowdata+='</div>';
 	domwindowdata+='<div class="drag-contentarea" id="modal_window" style="background: #94C5EB url(../../../images/background-grad.png) repeat-x"></div>';
 	domwindowdata+='<div class="drag-statusarea"><div class="drag-resizearea" style="background: transparent url('+this.imagefiles[3]+') top right no-repeat;">&nbsp;</div></div>';

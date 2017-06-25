@@ -1,3 +1,122 @@
+<!DOCTYPE html>
+<head runat="server">
+    <title>Test Zone</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="Css/datepicker.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="../Js/bootstrap-datepicker.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script>
+
+
+
+        jQuery(document).ready(function(){
+
+            jQuery(window).resize(function(){
+
+                if (jQuery(window).width() >= 800) {
+                    var cor_top = jQuery('.mquery-hp-6').position();
+                    var cor_bottom = jQuery('.mquery-hp-12').position();
+                    var margin_diff = cor_bottom.top - ( cor_top.top + jQuery('.mquery-hp-6').innerHeight() );
+                    jQuery('.mquery-hp-12').css({'margin-top': -1 * margin_diff,'position':'relative','zIndex':2});
+                } else {
+                    jQuery('.mquery-hp-12').css('margin-top', 0);
+                }
+            });
+//if (jQuery(window).width() >= 800) {
+            setTimeout(function(){jQuery(window).trigger('resize');}, 1000);
+        });
+        //}
+
+
+        (function($) {
+            if($(window).width() > 1200){
+                var ref = $("body:eq(0)"),js;
+                js = document.createElement("script");
+                js.src = "http://live.sekindo.com/live/liveView.php?s=66201";
+                ref.append(js);
+            }})(jQuery);
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+        jQuery(document).ready(function(){
+
+            jQuery(window).resize(function(){
+
+                if (jQuery(window).width() >= 800) {
+                    var cor_top = jQuery('.mquery-hp-6').position();
+                    var cor_bottom = jQuery('.mquery-hp-12').position();
+                    var margin_diff = cor_bottom.top - ( cor_top.top + jQuery('.mquery-hp-6').innerHeight() );
+                    jQuery('.mquery-hp-12').css({'margin-top': -1 * margin_diff,'position':'relative','zIndex':2});
+                } else {
+                    jQuery('.mquery-hp-12').css('margin-top', 0);
+                }
+            });
+//if (jQuery(window).width() >= 800) {
+            setTimeout(function(){jQuery(window).trigger('resize');}, 1000);
+        });
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $('.input-group.date').datepicker({
+            format: "yyyy/mm/dd",
+            startDate: "2012-01-01",
+            endDate: "2015-01-01",
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true
+        });
+    </script>
+
+
+    <div class="input-append date" id="datepicker" data-date="dateValue: Customer.DateOfBirth" data-date-format="dd-mm-yyyy">
+        <input class="span2" size="16" type="text" data-bind="value: Customer.DateOfBirth" readonly="readonly" />
+        <span class="add-on"><i class="icon-calendar"></i></span>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
 
 //phpinfo();
