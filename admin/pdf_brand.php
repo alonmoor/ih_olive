@@ -95,7 +95,7 @@ switch ($_REQUEST['mode'] ) {
         global $db;
         $log ='';
         $pdf_file= PDF_DIR; //PDF FILE LOCATION
-        $jpgloc=PDF_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
+     //   $jpgloc=PDF_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
         $brand=new brand();
         $src = "/home/alon/Desktop/PROJECT/4.4.17";
         $dst = PDF_DIR;
@@ -110,7 +110,7 @@ switch ($_REQUEST['mode'] ) {
             if (file_exists($dst)) {
             if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf') {
                 $name = $file->getFilename();
-                if ($file->getFilename() == 'issh1p010_new.pdf' || $file->getFilename() == 'issh1p010.pdf') {
+                if ($file->getFilename() == 'ayom2p004.pdf' || $file->getFilename() == 'ayom2p001_new.pdf') {
                     $x = 1;
                 }
                 $file_name = explode('.', $name);
@@ -375,6 +375,8 @@ switch ($_REQUEST['mode'] ) {
         $result = true;
         if ($result = $brand->add_brand($formdata)) {
             $db->execute("COMMIT");
+            $formdata = false;
+            show_list($formdata);
             return true;
         }
         $db->execute("ROLLBACK");

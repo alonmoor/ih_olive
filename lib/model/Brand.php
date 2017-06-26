@@ -817,13 +817,13 @@ function add_brand(&$formdata = "", &$publishersIDs = "", &$pdfIDS = "", &$imgNa
     $rows = $db->queryObjectArray($sql);
 
     $formdata['newbrandName'] = $rows[0]->catName;
-    if( trim($rows[0]->catName) == 'חדשות'){
-        if (!isset($formdata['brand_date2']) &&  array_item($formdata, 'brand_date2') || (!$brand->check_date($formdata['brand_date2']))) {
+    //if( trim($rows[0]->catName) == 'חדשות'){
+        if (!isset($formdata['brand_date2']) &&  !(array_item($formdata, 'brand_date2')) || (!$brand->check_date($formdata['brand_date2']))) {
             return false;
         }else{
             $formdata['newbrandName'] = $formdata['newbrandName']."-".$formdata['brand_date2'];
         }
-    }
+   // }
 
 
 
@@ -873,7 +873,7 @@ function insert_new_brand(&$formdata)
 
 
             $_SESSION['brandID'] = $brandID;
-            show_list($formdata);
+           // show_list($formdata);
             echo "<p class='error'>ברנד עודכן/נוסף.</p>\n";
         }
         return TRUE;

@@ -2337,12 +2337,10 @@ function  XXXXXXXXX(){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function openmypage3(link){  
-  
-	 ajaxwin=dhtmlwindow.open("ajaxbox", "ajax", link, "נתונים מהמערכת", "width=1000px,height=600px,left=100px,top=100px,resize=1,scrolling=1");
+	 ajaxwin=dhtmlwindow.open("ajaxbox", "ajax", link, "נתונים מהמערכת", "width=1140px,height=600px,left=100px,top=100px,resize=1,scrolling=1");
 	 ajaxwin.onclose=function(){ //Run custom code when window is about to be closed
 	  return true;
-	 
-  } 
+  }
 }
 
 /*****************************************************************************************************/

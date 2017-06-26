@@ -27,3 +27,24 @@ function print_brand_paging($brandID = "") -. 1568
 
 
 http://olive/admin/create_brandType.php -> lib/model/Categories.class.php 1541
+
+
+
+ayom2p004.pdf
+ayom2p001_new.pdf
+
+
+
+save working plan:
+----------------
+admin/pdf_brand.php
+
+
+818
+lib/model/Brand.php -> 848
+---------------
+function insert_new_brand(&$formdata)
+
+end of insert:
+------------
+lib/model/Brand.php -> 858
