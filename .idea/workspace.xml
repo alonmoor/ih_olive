@@ -8,211 +8,401 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="change the insert">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/admin/js/bootstrap-datepicker.he.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/admin/js/bootstrap-datepicker.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/admin/js/datepicker.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/admin/js/he.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/html/css/bootstrap-datepicker.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/html/css/datepicker.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/html/css/datepicker1.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/adresses.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-responsive.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-responsive.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-theme.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-theme.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-theme.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap-theme.min.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/bootstrap.min.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/css/font-awesome.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/fonts/glyphicons-halflings-regular.eot" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/fonts/glyphicons-halflings-regular.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/fonts/glyphicons-halflings-regular.woff" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/img/glyphicons-halflings-white.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/img/glyphicons-halflings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/js/bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/js/bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/js/jquery-1.9.1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/bootstrap/js/npm.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/config.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/dbdropdown.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/getproducts.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/index.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/Load-MySQL-Data-on-select-Box-Change/jquery-1.11.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/addresses.txt." afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/ajax.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/css/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/database.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/dependent_select_box.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/4.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/checked.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/error.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/images/user.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/index.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/jquery.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/js/jquery-2.1.3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dependent_select_box/js/sliding.form.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/addresses.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/config-mysqli.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/config.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/dd-check.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/dd-mysqli.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/dd.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/dump_dd.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down-disable/readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/config-mysqli.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/config.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/dd-check.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/dd-mysqli.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/dd.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/dump_dd.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dropdown1/drop_down/readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option Menu Using Ajax And PHP./fetch_data.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option Menu Using Ajax And PHP./select.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option Menu Using Ajax And PHP./select_style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option/fetch_data.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option/select.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/Dynamic Select Option/select_style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/responsive navigation menu/menu.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/responsive navigation menu/menu.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/select/adresses.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/select/fetch_data.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/select/select.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/SELECT_BOX/dynamic select box/select/select.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/modal-window.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/modal2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/my_dialog.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/progressbar.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/tables.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/thickbox-compressed.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/thickbox.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.core.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.dialog.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.draggable.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.progressbar.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.resizable.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.selectable.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.slider.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/jquery/ui.tabs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/401.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/DropDownMenu.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/ajax_print.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/answere.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/application.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/application.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/blog_admin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/brand.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/calendar.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/check.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/clock.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/confirmy.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/corner.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/decision.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/edit_forumdec.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/enhance.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/find_by_cat_forum.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/find_dhtml.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/functions.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/getDate.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/history_users.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_dec.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_forum.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_forums.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_frm_usr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_level.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_mgr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_pdf.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/info_precent.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/insert_ajx4_test.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/jquery.fancybox-1.2.6.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/log_inout.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/menu.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/menu_base.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/mult_task.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/my_load.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/my_pdf.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/my_task.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/paging.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/prevent_submit.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/print_Decuser_frm.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/quickmenu.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/scriptAr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/scriptAr_dec.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/scriptAr_frm.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/script_find.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/task.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_dec_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_forum_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_forums_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_frm_usr_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_level_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_mgr_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/tmp_js/info_precent_dest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/treeview_forum_dem_9.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/treeview_forum_multi.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/treeview_test.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/treeview_test1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/js/users1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/Reports_Presentation_2.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/Reports_Presentationnnnnnnnnnn_22.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/book/img/fox.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/book/img/next.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/book/img/previous.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/book/index.htm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/config.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/demo.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/digiBook.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/pdfToimage/readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/ajax2.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/application.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/category_select.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/forum_demo12.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/info_dec.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/search_category/results_forum9.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/serialize/insert.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/serialize/serialize.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/html/dec_edit.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/html/edit_dec.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/html/edit_forumdec.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/html/testblob_i.pdf" afterPath="$PROJECT_DIR$/README.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/ajax.php" afterPath="$PROJECT_DIR$/admin/ajax.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/category_brand.php" afterPath="$PROJECT_DIR$/admin/category_brand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/create_brand.php" afterPath="$PROJECT_DIR$/admin/create_brand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/jquery/date_picker.js" afterPath="$PROJECT_DIR$/admin/jquery/date_picker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/js/ajx_multi.js" afterPath="$PROJECT_DIR$/admin/js/ajx_multi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/js/dhtmlwindow.js" afterPath="$PROJECT_DIR$/admin/js/dhtmlwindow.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/js/info_brand.js" afterPath="$PROJECT_DIR$/admin/js/info_brand.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/js/treeview.js" afterPath="$PROJECT_DIR$/admin/js/treeview.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/js/user_edit.js" afterPath="$PROJECT_DIR$/admin/js/user_edit.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/css/dhtmlwindow.css" afterPath="$PROJECT_DIR$/html/css/dhtmlwindow.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/css/form.css" afterPath="$PROJECT_DIR$/html/css/form.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/css/table.css" afterPath="$PROJECT_DIR$/html/css/table.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/css/tables.css" afterPath="$PROJECT_DIR$/html/css/tables.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/edit_brand.php" afterPath="$PROJECT_DIR$/html/edit_brand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/edit_category.php" afterPath="$PROJECT_DIR$/html/edit_category.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/template.php" afterPath="$PROJECT_DIR$/html/template.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/model/Brand.php" afterPath="$PROJECT_DIR$/lib/model/Brand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/model/Categories.class.php" afterPath="$PROJECT_DIR$/lib/model/Categories.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/login/index.php" afterPath="$PROJECT_DIR$/login/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.php" afterPath="$PROJECT_DIR$/test.php" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/.github/FUNDING.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/.github/workflows/lint-docs.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/.github/workflows/tests.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/CHANGELOG.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/VERSION" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/config/tcpdf_config.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_1d_html.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_1d_png.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_1d_svg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_1d_svgi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_datamatrix_html.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_datamatrix_png.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_datamatrix_svg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_datamatrix_svgi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_pdf417_html.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_pdf417_png.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_pdf417_svg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_pdf417_svgi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_qrcode_html.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_qrcode_png.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_qrcode_svg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/example_2d_qrcode_svgi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/tcpdf_barcodes_1d_include.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/barcodes/tcpdf_barcodes_2d_include.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/config/tcpdf_config_alt.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/cert/tcpdf.crt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/cert/tcpdf.fdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/cert/tcpdf.p12" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/chapter_demo_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/chapter_demo_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/table_data_demo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/data/utf8test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_001.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_002.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_003.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_004.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_005.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_006.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_007.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_008.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_009.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_010.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_011.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_012.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_012.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_013.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_014.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_015.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_016.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_017.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_018.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_019.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_020.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_021.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_022.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_023.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_024.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_025.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_026.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_027.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_028.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_029.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_030.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_031.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_032.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_033.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_034.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_035.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_036.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_037.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_038.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_039.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_040.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_041.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_042.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_043.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_044.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_045.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_046.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_047.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_048.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_049.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_050.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_051.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_052.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_053.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_054.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_055.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_056.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_057.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_058.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_059.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_060.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_061.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_062.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_063.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_064.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_065.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/example_066.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/_blank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/alpha.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/image_demo.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/image_with_alpha.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/logo_example.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/logo_example.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/logo_example.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tcpdf_box.ai" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tcpdf_box.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tcpdf_cell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tcpdf_logo.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tcpdf_signature.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/testsvg.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/images/tux.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/afr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ara.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/aze.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/bel.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/bra.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/bul.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/cat.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ces.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/chi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/cym.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/dan.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/eng.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/est.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/eus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/far.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/fra.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ger.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/gle.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/glg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/hat.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/heb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/hrv.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/hun.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/hye.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ind.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ita.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/jpn.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/kat.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/kor.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/mkd.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/mlt.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/msa.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/nld.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/nob.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/pol.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/por.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ron.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/rus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/slv.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/spa.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/sqi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/srp.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/swa.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/swe.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/ukr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/urd.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/yid.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/lang/zho.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/examples/tcpdf_include.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/ae_fonts_2.0/COPYING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/ae_fonts_2.0/ChangeLog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/ae_fonts_2.0/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aealarabiya.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aealarabiya.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aealarabiya.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aefurat.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aefurat.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/aefurat.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/cid0cs.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/cid0ct.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/cid0jp.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/cid0kr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/courier.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/courierb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/courierbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/courieri.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/AUTHORS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/BUGS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/NEWS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/langcover.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.33/unicover.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/AUTHORS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/BUGS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/NEWS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/langcover.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavu-fonts-ttf-2.34/unicover.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusans.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusans.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusans.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensed.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensed.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensed.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusanscondensedi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansextralight.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansextralight.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansextralight.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmono.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmono.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmono.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonob.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonob.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonob.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonobi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonobi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonobi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonoi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonoi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavusansmonoi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserif.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserif.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserif.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensed.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensed.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensed.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifcondensedi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/dejavuserifi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/AUTHORS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/COPYING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/CREDITS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/ChangeLog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/INSTALL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20100919/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/AUTHORS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/COPYING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/CREDITS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/ChangeLog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/INSTALL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/TROUBLESHOOTING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freefont-20120503/USAGE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemono.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemono.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemono.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonob.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonob.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonob.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonobi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonobi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonobi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonoi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonoi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freemonoi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesans.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesans.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesans.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freesansi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserif.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserif.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserif.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifb.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifbi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifi.ctg.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/freeserifi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/helvetica.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/helveticab.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/helveticabi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/helveticai.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/hysmyeongjostdmedium.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/kozgopromedium.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/kozminproregular.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/msungstdlight.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourier.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourier.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourierb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourierb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourierbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourierbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourieri.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfacourieri.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelvetica.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelvetica.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticab.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticab.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticabi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticabi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticai.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfahelveticai.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfasymbol.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfasymbol.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimes.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimes.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesb.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesbi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfatimesi.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfazapfdingbats.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/pdfazapfdingbats.z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/stsongstdlight.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/symbol.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/times.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/timesb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/timesbi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/timesi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/uni2cid_ac15.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/uni2cid_ag15.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/uni2cid_aj16.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/uni2cid_ak12.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/fonts/zapfdingbats.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/barcodes/datamatrix.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/barcodes/pdf417.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/barcodes/qrcode.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/sRGB.icc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_colors.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_filters.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_font_data.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_fonts.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_images.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/include/tcpdf_static.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/scripts/doctum.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf_autoconfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf_barcodes_1d.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf_barcodes_2d.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf_import.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tcpdf_parser.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tests/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tests/coverage.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tests/launch.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tools/.htaccess" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tools/convert_fonts_examples.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/TCPDF/tools/tcpdf_addfont.php" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -223,320 +413,8 @@
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="olive" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="edit_brand.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/html/edit_brand.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="187" column="61" lean-forward="false" selection-start-line="187" selection-start-column="61" selection-end-line="187" selection-end-column="61" />
-              <folding>
-                <element signature="e#1337#1355#0#HTML" expanded="true" />
-                <marker date="1498386298731" expanded="false" signature="1262:1291" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="3067:3123" ph="SELECT brand... brands" />
-                <marker date="1498386298731" expanded="true" signature="3176:3217" ph="SELECT * FRO... categories" />
-                <marker date="1498386298731" expanded="true" signature="3390:3448" ph="UPDATE categ... " />
-                <marker date="1498386298731" expanded="true" signature="4117:4354" ph="SELECT b.*,c... brands" />
-                <marker date="1498386298731" expanded="true" signature="4465:4625" ph="SELECT * FRO... brands" />
-                <marker date="1498386298731" expanded="true" signature="4785:4944" ph="SELECT * FRO... brands" />
-                <marker date="1498386298731" expanded="false" signature="7649:7661" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="17616:17651" ph="SELECT * FRO... brands" />
-                <marker date="1498386298731" expanded="true" signature="17775:17820" ph="SELECT * FRO... pdfs" />
-                <marker date="1498386298731" expanded="true" signature="20174:20191" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="20257:20343" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="20345:20881" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="20419:20765" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="20480:20704" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="20575:20641" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="21553:21582" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="21616:21685" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="21903:21923" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="21924:22161" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22067:22077" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22359:22379" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22380:22610" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22523:22533" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22887:22907" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="22908:23134" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23051:23061" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23343:23363" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23364:23583" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23507:23517" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23905:24429" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="23985:24384" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="24095:24334" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="24213:24279" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="25900:25917" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="25983:26069" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="26071:26607" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="26145:26491" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="26206:26430" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="26301:26367" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="27277:27306" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="27340:27409" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="27627:27647" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="27648:27885" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="27791:27801" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28083:28103" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28104:28334" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28247:28257" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28611:28631" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28632:28858" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="28775:28785" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29067:29087" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29088:29307" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29231:29241" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29613:30138" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29694:30093" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29804:30043" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="29922:29988" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="31477:31762" ph="..." />
-                <marker date="1498386298731" expanded="true" signature="31606:31644" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="brand_plan.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin/brand_plan.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="process.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ajax-setup/process.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1233">
-              <caret line="94" column="5" lean-forward="true" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ajax-form/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="4" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="category_brand.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin/category_brand.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="55" lean-forward="true" selection-start-line="20" selection-start-column="55" selection-end-line="20" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="edit_category.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/html/edit_category.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-              <folding>
-                <marker date="1498384814969" expanded="true" signature="2184:2251" ph="SELECT catNa... categories" />
-                <marker date="1498384814969" expanded="true" signature="8642:8652" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Categories.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/model/Categories.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="2519" column="17" lean-forward="true" selection-start-line="2518" selection-start-column="60" selection-end-line="2519" selection-end-column="17" />
-              <folding>
-                <marker date="1497728794465" expanded="true" signature="862:900" ph="SELECT * FRO... categories" />
-                <marker date="1497728794465" expanded="true" signature="3097:3145" ph="select paren... forum_dec" />
-                <marker date="1497728794465" expanded="true" signature="3497:3544" ph="select paren... categories" />
-                <marker date="1497728794465" expanded="true" signature="7332:7404" ph="SELECT * FRO... categories" />
-                <marker date="1497728794465" expanded="true" signature="9326:9344" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="9813:9830" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="10692:10702" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="11222:11239" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="11251:11261" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="12312:12329" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="14590:14608" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="14822:14839" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="15302:15312" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="15629:15646" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="15658:15668" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="16362:16379" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="17450:17505" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="22890:22984" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="23144:23202" ph="update categ... " />
-                <marker date="1497728794465" expanded="true" signature="24470:24488" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="24932:24950" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="25763:25781" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="25793:25803" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="26295:26313" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="26325:26335" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="27363:27381" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="29113:29169" ph="UPDATE categ... " />
-                <marker date="1497728794465" expanded="true" signature="29626:29938" ph="INSERT INTO categories... " />
-                <marker date="1497728794465" expanded="true" signature="34482:34645" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="34930:35079" ph="INSERT INTO categories... " />
-                <marker date="1497728794465" expanded="true" signature="37021:37079" ph="select catID... categories" />
-                <marker date="1497728794465" expanded="true" signature="37754:37952" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="37842:37945" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="37873:37901" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="37902:37941" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="37923:37941" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="37981:38039" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="38040:38192" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="38054:38174" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="38058:38169" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="38069:38103" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="38139:38164" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="54090:54101" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="54182:54249" ph="SELECT catNa... categories" />
-                <marker date="1497728794465" expanded="true" signature="54694:54705" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="61699:61766" ph="SELECT catNa... categories" />
-                <marker date="1497728794465" expanded="true" signature="62111:62130" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="62179:62190" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="63495:63552" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="64151:64195" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="65134:65178" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="66027:66071" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="67418:67475" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="67858:67902" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="68459:68503" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="68970:69014" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="70161:70179" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="70599:70617" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="71449:71467" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="72210:72228" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="74731:74811" ph="SELECT forum... forum_dec" />
-                <marker date="1497728794465" expanded="true" signature="77674:77754" ph="SELECT forum... forum_dec" />
-                <marker date="1497728794465" expanded="true" signature="79851:79869" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="80256:80274" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="81101:81111" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="81590:81600" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="82705:82723" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="85009:85027" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="85217:85235" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="85754:85764" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="86271:86281" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="87070:87088" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="89857:89875" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="90392:90410" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="91377:91387" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="91960:91970" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="93157:93175" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="95776:95794" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="96032:96050" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="96597:96607" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="97180:97190" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="97961:97979" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="100939:100957" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="101498:101515" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="102532:102542" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="103141:103158" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="103170:103180" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="104430:104447" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="107302:107320" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="107582:107599" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="108220:108230" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="108619:108636" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="108648:108658" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="109563:109580" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="111999:112017" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="112509:112527" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="113442:113460" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="113472:113482" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="114024:114042" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="114054:114064" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="115157:115175" ph="..." />
-                <marker date="1497728794465" expanded="true" signature="117566:117605" ph="select * fro... categories" />
-                <marker date="1497728794465" expanded="true" signature="118443:118572" ph="select b.* ,... categories" />
-                <marker date="1497728794465" expanded="true" signature="121018:121234" ph="SELECT u.use... users" />
-                <marker date="1497728794465" expanded="true" signature="122503:122696" ph="SELECT u.use... users" />
-                <marker date="1497728794465" expanded="true" signature="123461:123575" ph="SELECT c.cat... categories1" />
-                <marker date="1497728794465" expanded="true" signature="124001:124156" ph="SELECT m.man... manager_type" />
-                <marker date="1497728794465" expanded="true" signature="124902:124938" ph="select * fro... forum_dec" />
-                <marker date="1497728794465" expanded="true" signature="127317:127461" ph="SELECT u.ful... users" />
-                <marker date="1497728794465" expanded="true" signature="128037:128151" ph="SELECT c.cat... categories1" />
-                <marker date="1497728794465" expanded="true" signature="128988:129168" ph="SELECT u.use... users" />
-                <marker date="1497728794465" expanded="true" signature="130439:130568" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="134269:134341" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="135510:135582" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="138208:138294" ph="INSERT INTO rel_cat_pub... " />
-                <marker date="1497728794465" expanded="true" signature="138826:138874" ph="UPDATE pdfs " />
-                <marker date="1497728794465" expanded="true" signature="139326:139413" ph="SELECT * FRO... pdfs" />
-                <marker date="1497728794465" expanded="true" signature="148083:148400" ph="UPDATE categ... " />
-                <marker date="1497728794465" expanded="true" signature="149226:149270" ph="SELECT COUNT... categories" />
-                <marker date="1497728794465" expanded="true" signature="150091:150167" ph="SELECT catID... categories" />
-                <marker date="1497728794465" expanded="true" signature="150998:151049" ph="DELETE FROM " />
-                <marker date="1497728794465" expanded="true" signature="151353:151389" ph="delete from " />
-                <marker date="1497728794465" expanded="true" signature="155791:155867" ph="SELECT catID... categories" />
-                <marker date="1497728794465" expanded="true" signature="156747:156798" ph="DELETE FROM " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pdf_brand.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin/pdf_brand.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding>
-                <marker date="1497348648972" expanded="true" signature="4887:4966" ph="SELECT COUNT... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="5079:5155" ph="SELECT * FRO... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="5553:5587" ph="DELETE FROM " />
-                <marker date="1497348648972" expanded="true" signature="6584:6668" ph="SELECT COUNT... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="6780:7282" ph="INSERT INTO pdfs... " />
-                <marker date="1497348648972" expanded="true" signature="8049:8093" ph="..." />
-                <marker date="1497348648972" expanded="true" signature="9053:9126" ph="SELECT * FRO... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="10105:10363" ph="UPDATE pdfs " />
-                <marker date="1497348648972" expanded="true" signature="11082:11151" ph="SELECT * FRO... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="12070:12219" ph="UPDATE brand... " />
-                <marker date="1497348648972" expanded="true" signature="12070:12316" ph="UPDATE brand... " />
-                <marker date="1497348648972" expanded="true" signature="13525:13609" ph="SELECT COUNT... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="13603:13609" ph="SELECT COUNT... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="13645:13725" ph="SELECT COUNT... pdfs" />
-                <marker date="1497348648972" expanded="true" signature="14389:14867" ph="INSERT INTO pdfs... " />
-                <marker date="1497348648972" expanded="true" signature="15762:15849" ph="SELECT * FRO... pdfs" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create_brand.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin/create_brand.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -691,7 +569,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="PhpDebugGeneral" xdebug_debug_port="9900" xdebug_show_addresses="true" break_at_first_line="true" ignore_connections_through_unregistered_servers="true" notify_if_session_was_finished_without_being_paused="false" />
+  <component name="PhpDebugGeneral" xdebug_debug_port="9900" xdebug_show_addresses="true" break_at_first_line="true" ignore_connections_through_unregistered_servers="true" notify_if_session_was_finished_without_being_paused="false">
+    <xdebug_debug_ports port="9900" />
+    <xdebug_debug_ports port="9003" />
+  </component>
   <component name="PhpServers">
     <servers>
       <server host="olive_prj" id="a692ea58-8d2b-4d59-a034-56e63f74a987" name="olive" />
@@ -712,13 +593,23 @@
       </server>
     </servers>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP 7" />
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+    </include_path>
+  </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1959" />
     <option name="y" value="-4" />
     <option name="width" value="1881" />
     <option name="height" value="1084" />
   </component>
+  <component name="ProjectId" id="1xrtYg5gyGO0xzlGPdRg29K5YjL" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -811,16 +702,25 @@
       <pane id="Scratches" />
     </panes>
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="nodejs.protractor.protractor_package" value="" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php.debug" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../israelhayom" />
-    <property name="js.buildTools.grunt.grunt-cli.package" value="" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="Constants" value="false" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.buildTools.grunt.grunt-cli.package" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs.protractor.protractor_package" value="" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php.debug" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -838,109 +738,71 @@
       <recent name="$PROJECT_DIR$/_/js" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager" selected="PHP Script.pdf_brand.php">
-    <configuration default="false" name="index.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://olive/index.php">
-      <method />
-    </configuration>
-    <configuration default="false" name="dynamic_5_demo.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://olive/admin/dynamic_5_demo.php">
-      <method />
-    </configuration>
-    <configuration default="false" name="forum_demo12.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://olive/admin/search_category/forum_demo12.php">
-      <method />
-    </configuration>
-    <configuration default="false" name="ajax.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://olive/admin/ajax.php">
-      <method />
-    </configuration>
-    <configuration default="false" name="pdf_brand.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/admin/pdf_brand.php">
-      <method />
-    </configuration>
     <configuration default="true" type="AppEnginePhpConfigurationType" factoryName="App Engine for PHP" session_id="PHPSTORM  KEY">
-      <method />
-    </configuration>
-    <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote">
-      <method />
-    </configuration>
-    <configuration default="true" type="CodeceptionConfigurationType" factoryName="Codeception">
-      <PhpTestRunnerSettings method="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="CompoundRunConfigurationType" factoryName="Compound Run Configuration">
-      <method />
-    </configuration>
-    <configuration default="true" type="FirefoxRemoteDebugType" factoryName="Firefox Remote">
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
-      <node-interpreter value="project" />
-      <working-dir value="" />
-      <envs />
-      <scope-kind value="ALL" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
-      <config-file value="" />
-      <node-interpreter value="project" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
       <method />
     </configuration>
     <configuration default="true" type="NodeJSRemoteDebug" factoryName="Node.js Remote Debug">
       <node-js-remote-debug />
       <method />
     </configuration>
-    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <TestRunner />
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
-      <BehatRunner scenario="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" document_root="$PROJECT_DIR$" host="olive">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="pdf">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" server_name="pdf" session_id="PHPSTORM KEY">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpSpecConfigurationType" factoryName="PHPSpec">
-      <PhpTestRunnerSettings method="" />
-      <method />
-    </configuration>
     <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" path="" server_id="54c0e22f-e678-40a2-a76d-a18e4f765e0c" server_name="olive">
       <method />
     </configuration>
-    <configuration default="true" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="pdf">
+    <configuration default="true" type="docker-deploy" factoryName="Docker Deployment">
       <method />
+    </configuration>
+    <configuration default="true" type="CodeceptionConfigurationType" factoryName="Codeception">
+      <PhpTestRunnerSettings method="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ajax.php" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://olive/admin/ajax.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="dynamic_5_demo.php" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://olive/admin/dynamic_5_demo.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="forum_demo12.php" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://olive/admin/search_category/forum_demo12.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.php" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://olive/index.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="pdf_brand.php" type="JavascriptDebugType" nameIsGenerated="true" uri="http://olive/admin/pdf_brand.php">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType">
+      <BehatRunner scenario="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" document_root="$PROJECT_DIR$" host="olive">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="pdf">
+      <method v="2" />
+    </configuration>
+    <configuration name="pdf_brand.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/admin/pdf_brand.php">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" server_name="pdf" session_id="PHPSTORM KEY">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpSpecConfigurationType" factoryName="PHPSpec">
+      <PhpTestRunnerSettings method="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="pdf">
+      <method v="2" />
     </configuration>
     <configuration default="true" type="ReactNative" factoryName="React Native">
       <node-interpreter value="project" />
       <react-native value="" />
       <platform value="ANDROID" />
       <envs />
-      <method />
+      <only-packager />
+      <method v="2">
+        <option name="ReactNativePackager" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="XSLT" factoryName="XSLT">
       <option name="myOutputFile" value="" />
@@ -956,69 +818,41 @@
       <OutputType value="CONSOLE" save-to-file="false" />
       <FileType name="XML" />
       <JdkChoice value="FROM_MODULE" />
-      <method />
+      <method v="2" />
     </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="Docker Deployment">
-      <method />
-    </configuration>
-    <configuration default="true" type="js.build_tools.grunt" factoryName="Grunt.js">
+    <configuration default="true" type="js.build_tools.grunt">
       <node-interpreter value="$USER_HOME$/.nvm/versions/node/v7.7.4/bin/node" />
       <envs />
-      <method />
+      <method v="2" />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+    <configuration default="true" type="js.build_tools.gulp">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <gulpfile />
       <tasks />
       <arguments />
       <envs />
-      <method />
+      <method v="2" />
     </configuration>
-    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
-      <command value="run" />
-      <scripts />
-      <node-interpreter value="project" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory />
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui />
-      <extra-mocha-options />
-      <test-kind>DIRECTORY</test-kind>
-      <test-directory />
-      <recursive>false</recursive>
-      <method />
-    </configuration>
-    <configuration default="false" name="pdf_brand.php" type="JavascriptDebugType" factoryName="JavaScript Debug" nameIsGenerated="true" uri="http://olive/admin/pdf_brand.php">
-      <method />
-    </configuration>
-    <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.pdf_brand.php" />
-      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.index.php" />
-      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.dynamic_5_demo.php" />
-      <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.forum_demo12.php" />
-      <item index="4" class="java.lang.String" itemvalue="JavaScript Debug.ajax.php" />
-      <item index="5" class="java.lang.String" itemvalue="PHP Script.pdf_brand.php" />
+    <list>
+      <item itemvalue="JavaScript Debug.pdf_brand.php" />
+      <item itemvalue="JavaScript Debug.index.php" />
+      <item itemvalue="JavaScript Debug.dynamic_5_demo.php" />
+      <item itemvalue="JavaScript Debug.forum_demo12.php" />
+      <item itemvalue="JavaScript Debug.ajax.php" />
+      <item itemvalue="PHP Script.pdf_brand.php" />
     </list>
     <recent_temporary>
-      <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="PHP Script.pdf_brand.php" />
-        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.ajax.php" />
-        <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.forum_demo12.php" />
-        <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.dynamic_5_demo.php" />
-        <item index="4" class="java.lang.String" itemvalue="JavaScript Debug.index.php" />
+      <list>
+        <item itemvalue="PHP Script.pdf_brand.php" />
+        <item itemvalue="JavaScript Debug.ajax.php" />
+        <item itemvalue="JavaScript Debug.forum_demo12.php" />
+        <item itemvalue="JavaScript Debug.dynamic_5_demo.php" />
+        <item itemvalue="JavaScript Debug.index.php" />
       </list>
     </recent_temporary>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StructureViewFactory">
     <option name="ACTIVE_ACTIONS" value=",Show Private Members,Show Includes,Show Constants,VISIBILITY_SORTER" />
   </component>
@@ -1163,6 +997,8 @@
       <workItem from="1498122974156" duration="14556000" />
       <workItem from="1498160531746" duration="1238000" />
       <workItem from="1498376647006" duration="3954000" />
+      <workItem from="1631125089246" duration="62000" />
+      <workItem from="1631133875878" duration="950000" />
     </task>
     <task id="LOCAL-00001" summary="add argument">
       <created>1493686068154</created>
@@ -1280,7 +1116,7 @@
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -2477,10 +2313,6 @@
           <option name="timeStamp" value="1100" />
         </line-breakpoint>
       </breakpoints>
-      <breakpoints-dialog>
-        <breakpoints-dialog />
-      </breakpoints-dialog>
-      <option name="time" value="1144" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="dynamic_5cdemo.php">
