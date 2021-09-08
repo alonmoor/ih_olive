@@ -112,7 +112,7 @@ function build_form(&$formdata)
 
             <div class="form-group">
                 <label for="catPrefix"> קידומת: </label>
-                <input class="form-control input-group" style="width: 160px;" type="text" id="catPrefix" value=<?PHP echo $value; ?> >
+                <input class="form-control input-group" style="width: 160px;"  name="form[catPrefix]"  type="text" id="catPrefix" value=<?PHP echo $value; ?> >
                 <a href=<?PHP echo $url; ?>  class='form_href'> ערוך ברנדים: </a>
             </div>
             <?php

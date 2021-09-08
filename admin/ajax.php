@@ -22,6 +22,7 @@ if(isset($_GET['flag_level'] )){
         $brandID =    $rows[0]->brandID ;
         $brand_date = $rows[0]->brand_date;
         $page_num =  $rows[0]->numPage ;
+        $brandName = $rows[0]-> brandName;
 //-----------------------------------------------------------------
         $sql = "SELECT * FROM pdfs ORDER BY date_created DESC";
         if( $rows = $db->queryObjectArray($sql)) {
@@ -74,10 +75,10 @@ if(isset($_GET['flag_level'] )){
 
         if(isset($brandPrefix))
         $tmpPrefix = $brandPrefix;
-        if(isset($rows3[0]->catName))
-        if($rows3[0]->catName == "חדשות"){
-            $brandPrefix =  str_replace("{{date}}", $dayOfWeek , $brandPrefix);
-        }
+//        if(isset($rows3[0]->catName))
+//        if($rows3[0]->catName == "חדשות"){
+//            $brandPrefix =  str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+//        }
         $brandPrefixArr = array();
         $html = '';
        // $html .= '<div class="" id="display_div" >';
@@ -85,22 +86,38 @@ if(isset($_GET['flag_level'] )){
         $html .= '<input type="hidden" name="my_pageNum"  id="my_pageNum"  value=' . $page_num . ' >';
         if(isset($page_num) && is_numeric($page_num)) {
             for ($k = 0, $i = 0; $i < $page_num; $i++) {
-                $m = $i + 1;
-                if ($m < 10) {
-                    $brandPrefixArr[$i] = $brandPrefix . "p00" . $m . ".pdf";
-                } elseif ($m < 100 && $m >= 10) {
-                    $brandPrefixArr[$i] = $brandPrefix . "p0" . $m . ".pdf";
-                } elseif ($m >= 100) {
-                    $brandPrefixArr[$i] = $brandPrefix . "p" . $m . ".pdf";
+                //---------------------------------------------------------
+                if(isset($brandName)){
+                    $m = $i +1;
+
+                    if($m<10){
+                        $brandPrefixArr[$i] = $brandName."p00".$m.".pdf";
+                    }elseif ($m<100 && $m>=10 ){
+                        $brandPrefixArr[$i] = $brandName."p0".$m.".pdf";
+                    }elseif ($m>=100){
+                        $brandPrefixArr[$i] = $brandName."p".$m.".pdf";
+                    }
+//template for new
+                    $new_name = explode('.pdf',$brandPrefixArr[$i]);
+                    $new_name =  $new_name[0];
+                    $new_name = $new_name.'_new.pdf';
+                } else{
+                    $m = $i +1;
+                    if($m<10){
+                        $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
+                    }elseif ($m<100 && $m>=10 ){
+                        $brandPrefixArr[$i] = $brandPrefix."p0".$m.".pdf";
+                    }elseif ($m>=100){
+                        $brandPrefixArr[$i] = $brandPrefix."p".$m.".pdf";
+                    }
+//template for new
+                    $new_name = explode('.pdf',$brandPrefixArr[$i]);
+                    $new_name =  $new_name[0];
+                    $new_name = $new_name.'_new.pdf';
                 }
-//------------------------------------------------------------------------------
-
-                $new_name = explode('.pdf', $brandPrefixArr[$i]);
-                $new_name = $new_name[0];
-                $new_name = $new_name . '_new.pdf';
-
-                if ($tmpPrefix == "ayom{{date}}") {
-
+//----------------------------------------------------------
+             //   if($formdata['brandPrefix'] == "ayom"){
+//----------------------------------------------------------
                     if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($new_name, $pdf_names)))) {
                         $html .= '<div class="col-xs-3"   style="margin-top: 50px;" >';
                         $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
@@ -177,98 +194,17 @@ if(isset($_GET['flag_level'] )){
                             }
                         }//end foreach
                     }
-                } //-----------------------------------------------------------------------------------
-                elseif ($brandPrefix == "ispo1" || $brandPrefix == "issh1") {
-                    if (empty($pdf_names) || (!(in_array($brandPrefixArr[$i], $pdf_names)) && !(in_array($new_name, $pdf_names)))) {
-                        $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
-                        $html .= "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
-                                                    <div id='my_pdfs_$i'>
-                                                        <h4>
-                                                             <a class='my_href_li' href=\"#\">
-                                                             </a>
-                                                         </h4>
-                                                      </div>
-
-                                                      </div>\n";
-                        $html .= '<br/></div>';
-                    } //------------------------------------------------------------------------------
-                    else {
-                        foreach ($rows as $row) {
-                            if ($brandPrefixArr[$i] == $row->pdfName || $new_name == $row->pdfName) {
-                                $file_name = explode('.', $row->pdfName);
-                                $file_name = $file_name[0];
-                                $tmp_name = $file_name;
-                                $file_name = $file_name . '.jpg';
-                                $html .= '<div class="col-xs-3">';
-                                $html .= "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">";
-
-                                if ($level) {
-                                    if ($row->isChange == 'unchange') {
-                                        $html .= "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
-                                                          </div>";
-                                        $k++;
-                                    } else {
-                                        $html .= "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
-                                                          </div>";
-                                    }
-                                } else {
-                                    if ($row->isChange == 'unchange') {
-                                        $html .= "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
-                                                        </div>";
-                                        $k++;
-                                    } else {
-                                        $html .= "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
-                                                        </div>";
-                                    }
-                                }
-                                $pdf_name = explode('.pdf', $row->pdfName);
-                                $pdf_name = $pdf_name[0];
-                                $html .= "<div >
-                                                <div   id='my_pdfs{$pdf_name}'>
-                                                <a class='my_href_li' href= '" . PDF_WWW_DIR . "{$row->pdfName}' >
-                                                    <img src ='" . CONVERT_PDF_TO_IMG_WWW_DIR . "/{$file_name}' style='box-sizing: border-box;widht:100%; height: 297px;margin-top:-28px;' >
-                                                </a>
-                                           </div>
-                                      </div>
-                                    </div>\n";
-                                $html .= '<br/>
-                                   </div>';
-                                $pdf_name = explode('.pdf', $row->pdfName);
-                                $pdf_name = $pdf_name[0];
-                                if ($new_name == $row->pdfName && $row->isChange == 'change' || ($brandPrefixArr[$i] == $row->pdfName && !($row->isChange == 'unchange'))) {
-                                    ?>
-                                    <input type="hidden" name="modify_elem" class="modify_elem" value="modify">
-                                    <script type="text/javascript">
-                                        $(document).ready(function () {
-                                            var brand_name = '<?php echo $pdf_name; ?>';
-                                            $('#my_pdfs' + brand_name).addClass('my_task change_elem');
-                                            turn_red_task();
-                                        });
-                                    </script>
-                                    <?PHP
-                                }
-                                break;
-                            }
-                        }//end foreach
-                    }//end else
-                }
             }//end for
             if ($k == $page_num) {
 
                 $html .= "<div>
-                                  <button type='submit' class='btn btn-primary'    id='send_pdf'  name=form['submitpdf']  style='margin: 10px 30px 20px 0;height: 38px;' >  SEND PDF TO FTP  </button>     
-                                  <br/>     
-                               </div>\n";
+                              <button type='submit' class='btn btn-primary'    id='send_pdf'  name=form['submitpdf']  style='margin: 10px 30px 20px 0;height: 38px;' >  SEND PDF TO FTP  </button>     
+                              <br/>     
+                          </div>\n";
             }
-
-
             echo $html;
             exit;
-        }
+          }
         }
 }elseif(isset($_GET['check_for_files']) && $_GET['check_for_files'] == true){
 

@@ -817,11 +817,14 @@ function add_brand(&$formdata = "", &$publishersIDs = "", &$pdfIDS = "", &$imgNa
     $rows = $db->queryObjectArray($sql);
 
     $formdata['newbrandName'] = $rows[0]->catName;
+    $formdata['brandPrefix'] = $rows[0]->catPrefix;
     //if( trim($rows[0]->catName) == 'חדשות'){
         if (!isset($formdata['brand_date2']) &&  !(array_item($formdata, 'brand_date2')) || (!$brand->check_date($formdata['brand_date2']))) {
             return false;
         }else{
-            $formdata['newbrandName'] = $formdata['newbrandName']."-".$formdata['brand_date2'];
+            $formdata['brand_date2'] = explode('-',$formdata['brand_date2']);
+            $formdata['brand_date2'] =  $formdata['brand_date2'][0].$formdata['brand_date2'][1].$formdata['brand_date2'][2]  ;
+            $formdata['newbrandName'] =  $formdata['brandPrefix'].$formdata['brand_date2'];//."-".$formdata['brand_date2'];
         }
    // }
 
@@ -3686,8 +3689,8 @@ AND r.brandID =$brandID ORDER BY c.catName";
             }
             return $listDir;
 
-        }
 
+        }
  //------------------------------------------------------------------
 
         function recurse_copy($src,$dst) {

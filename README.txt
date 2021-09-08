@@ -48,3 +48,9 @@ function insert_new_brand(&$formdata)
 end of insert:
 ------------
 lib/model/Brand.php -> 858
+
+
+
+lib/model/Brand.php:
+------------------
+function print_brand_paging($brandID = "") -> 1571

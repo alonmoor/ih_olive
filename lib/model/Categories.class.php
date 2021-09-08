@@ -135,45 +135,6 @@ function set($insertID = "", $submitbutton = "", $subcategories = "", $deleteID 
     $this->setsubcategories($subcategories);
     $this->setupdateID($updateID);
 }
-/**********************************************************************************************/
-//
-//	function setFormdata($formdata){
-//		$this->active=$formdata['active'];
-//
-//
-//		if($formdata['newcatName']){
-//		$this->forum_decName=$formdata['newcatName'];
-//		$subcategories=$formdata['newcatName'];
-//		}elseif($formdata['forum_decName']){
-//		$catID=$formdata["forum_decision"];
-//			$sql = "SELECT forum_decName  FROM forum_dec WHERE catID = " .
-//				$db->sql_string($$catID);
-//				$rows = $db->queryObjectArray($sql);
-//			if($rows)
-//			// existing cat
-//			$this->forum_decName=$rows[0]->forum_decName;
-//			$subcategories=$rows[0]->forum_decName;
-//		}
-//
-//
-//
-//
-//		$this->catID=$formdata['catID'];
-//		$this->managerID=$formdata['managerID'];
-//		$this->appointID=$formdata['appointID'];
-//		$this->parentForumID=$formdata['insertID'];
-//		$this->year_date=$formdata['year_date'];
-//		$this->month_date=$formdata['month_date'];
-//		$this->day_date=$formdata['day_date'];
-//		if(is_numeric ($formdata['multi_year'])&& is_numeric ($formdata['multi_month'])&& is_numeric ($formdata['multi_day'])){
-//			$this->year_date=$formdata['multi_year'];
-//			$this->month_date=$formdata['multi_month'];
-//			$this->day_date=$formdata['multi_day'];
-//		}
-//		$this->catID=$formdata['category'];
-//		//$this->catID=$formdata['catID'];
-//		//$this->newforumName=$formdata['newcatName'];
-//	}
 /************************************************************************************************/
 function array_item($ar, $key)
 {
@@ -213,7 +174,6 @@ function setParent($parentcatid)
 
 
 /**********************************************************************************************/
-
 function getdeleteID()
 {
     return $this->deleteID;
@@ -506,74 +466,7 @@ function update_cat_general()
 //	       $this->print_form_paging_b();
     }
 }//end func///
-/////////////
-//------------------------------------------------------------------------------------
 
-function link_div()
-{
-
-    echo "<table><tr class='menu4'><td><p><b> ", build_href2("find3.php", "", "", "חזרה לטופס החיפוש", "class=my_decLink_root title= 'חיפוש כללי'") . " </b></p></td>\n";
-
-
-    echo "<td><p><b> ", build_href2("forum_demo12.php", "", "", "חיפוש קטגוריות בדף", "class=my_decLink_root title='חיפוש כללי לפי קטגורייה בדף'") . " </b></p></td>\n";
-
-
-    $url = "../admin/forum_demo12_2.php";
-    $str = 'onclick=\'openmypage2("' . $url . '"); return false;\' title=\'חיפוש כללי לפי קטגורייה בחלון\'  class=my_decLink_root id=popup_frm ';
-    echo "<td><p><b> ", build_href5("", "", "חיפוש קטגוריות בחלון", $str) . " </b></p></td>\n";
-
-    echo "<td><p><b> ", build_href2("../admin/database5.php", "", "", "עץ הפורומים", "class=my_decLink_root title='כול הפורומים במיבנה עץ'") . " </b></p></td></tr></table>\n";
-
-    ?>
-
-    <table style="width:50%;">
-        <tr>
-            <td>
-                <?php form_label1('חתכי סוגי החלטות:', TRUE); ?>
-                <a href='#' title='חתכי סוגי החלטות' class="tTip"
-                   OnClick="return  opengoog2(<?php echo " '" . ROOT_WWW . "/admin/PHP/AJX_CAT_DEC/Default.php'"; ?> ,'סוגי פורומים');this.blur();return false;"
-                   ;>
-                    <img src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png' onMouseOver="this.src=img.edit[1]"
-                         onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'" title='הצג נתונים'/>
-
-                </a>
-            </td>
-
-
-            <td>
-                <?php form_label1('חתכי סוגי פורומים:', TRUE); ?>
-                <a href='#' title='חתכי סוגי פורומים' class="tTip"
-                   OnClick="return  opengoog2(<?php echo " '" . ROOT_WWW . "/admin/PHP/AJX_CAT_FORUM/default_ajx2.php'"; ?> ,'סוגי פורומים');this.blur();return false;"
-                   ;>
-                    <img src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png' onMouseOver="this.src=img.edit[1]"
-                         onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'" title='הצג נתונים'/>
-
-                </a>
-            </td>
-
-
-            <td>
-                <?php form_label1('חתכי סוגי מנהלים:', TRUE); ?>
-
-                <a href='#' title='חתכי סוגי מנהלים' class="tTip"
-                   OnClick="return  opengoog2(<?php echo " '" . ROOT_WWW . "/admin/PHP/AJAX/default.php'"; ?> ,'סוגי המנהלים');this.blur();return false;"
-                   ;>
-                    <img src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png' onMouseOver="this.src=img.edit[1]"
-                         onMouseOut="src='<?php echo ROOT_WWW; ?>/images/pie-chart-icon.png'" title='הצג נתונים'/>
-
-                </a>
-
-            </td>
-        </tr>
-    </table>
-
-
-    <?php
-
-    echo '</div>';
-
-
-}
 //update a new category in the categories table
 //======================================================
 // returns -1, if error
@@ -838,17 +731,7 @@ function insert_new_cat(&$formdata)
 
             $formdata['newcatName'] = '';
             $formdata['catPrefix'] = '';
-//            $formdata['subcategories'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-//            $formdata['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-//
-//
-//
-//            $formdata['new_name'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-//            $form['catName'] = isset($formdata['newcatName']) ? $formdata['newcatName'] : "no name found";
-//            //check it out
-//            $form['insert_category'] = isset($formdata['insert_category'][0]) ? $formdata['insert_category'][0] : '';
-//            $submit = "submitbutton_$catID";
-//            $_SESSION['catID'] = $catID;
+
             show_list($formdata);
             echo "<p class='error'>ברנד עודכן/נוסף.</p>\n";
         }
@@ -963,438 +846,6 @@ function message_update_b($formdata, $catID)
     return TRUE;
 }
 //-----------------------------------------------------------------------
-
-function link()
-{
-
-    printf("<p><b><br />%s</b></p>\n",
-        build_href2("../admin/find3.php", "", "", "חפש פורומים", "class=href_modal1"));
-
-
-    printf("<p><b>%s</b></p>\n",
-        //	build_href("category_brand.php", "", " הוסף/ערוך פורום " ));
-        build_href2("../admin/category_brand.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
-    return true;
-}
-
-
-/**********************************************************************************************/
-
-function link_b()
-{
-
-    printf("<p><b><br />%s</b></p>\n",
-        //build_href("find3.php", "", "חפש פורומים"));
-        build_href2("../admin/find3.php", "", "", "חפש פורומים", "class=href_modal1"));
-
-    printf("<p><b>%s</b></p>\n",
-        build_href2("../admin/category_brand.php", "", "", "הוסף/ערוך פורום", "class=href_modal1"));
-    return true;
-}
-/**************************************************************/
-
-/***************************************************************************/
-
-function show_page_links($page, $pagesize, $results, $query)
-{
-
-    if (($page == 1 && $results <= $pagesize) || $results == 0)
-        // nothing to do
-        return;
-    echo "<p>Goto page: ";
-    if ($page > 1) {
-        for ($i = 1; $i < $page; $i++)
-            echo build_href("dynamic_8.php", $query . "&page=$i", $i), " ";
-        echo "$page ";
-    }
-    if ($results > $pagesize) {
-        $nextpage = $page + 1;
-        echo build_href("dynamic_8.php", $query . "&page=$nextpage", $nextpage);
-    }
-    echo "</p>\n";
-}
-/**************************************************************/
-
-function build_date(&$formdata)
-{
-
-
-    if (isset($formdata['dynamic_9']) && $formdata['dynamic_9'] == 1) {
-        if (array_item($formdata, 'catID') || is_numeric($catID)) {
-            $catID = array_item($formdata, 'catID') ? array_item($formdata, 'catID') : $catID;
-            $formdata["dest_users"] = $formdata["dest_users$catID"];
-        }
-    }
-
-    if (  // array_item($formdata,'member')
-        array_item($formdata, 'member_date0')
-        && array_item($formdata, 'dest_users')
-        && count($formdata['dest_users']) > 0
-        && !is_numeric($formdata['member'])
-        && (!array_item($formdata, 'multi_month') || ($formdata['multi_month'][0] == 'none'))
-        && (!array_item($formdata, 'multi_year') || ($formdata['multi_year'][0] == 'none'))
-        && !is_numeric($formdata['multi_year'][0])
-        && !is_numeric($formdata['multi_month'][0])
-        && !is_numeric($formdata['multi_day'][0])
-        && !array_item($formdata, 'year_date')
-        && !is_numeric($formdata['month_date'])
-        && !is_numeric($formdata['day_date'])
-    ) {
-
-        $i = 0;
-
-        foreach ($formdata['dest_users'] as $row) {
-            $member_date = "member_date$i";
-            list($day_date_the_date, $month_date_the_date, $year_date_the_date) = explode('-', $formdata[$member_date]);
-            if (strlen($year_date_the_date) < 3) {
-                $formdata[$member_date] = "$year_date_the_date-$month_date_the_date-$day_date_the_date";
-            } else {
-                $formdata[$member_date] = "$day_date_the_date-$month_date_the_date-$year_date_the_date";
-            }
-            $rows['full_date'][$i] = $formdata[$member_date];
-
-            $i++;
-        }
-
-
-        $fields = array('year_date' => 'integer', 'month_date' => 'integer', 'day_date' => 'intger', 'full_date' => 'string');
-
-
-    } elseif (array_item($formdata, 'year_date')
-        && is_numeric($formdata['month_date'])
-        && is_numeric($formdata['day_date'])
-        && !array_item($formdata, 'multi_year')
-        && !is_numeric($formdata['multi_month'][0])
-        && !is_numeric($formdata['multi_day'][0])
-    ) {
-
-
-        foreach ($fields as $key => $type) {
-            $rows[$key] = $this->safify($formdata[$key], $type);
-        }
-        $rows['full_date'] = "$rows[year_date]-$rows[month_date]-$rows[day_date]";
-        $rows['full_date'] = $this->safify($rows['full_date'], $type);
-
-
-    } elseif (array_item($formdata, 'multi_day')
-        && array_item($formdata, 'multi_month')
-        && array_item($formdata, 'multi_year')
-        && is_numeric($formdata['multi_year'][0])
-        && is_numeric($formdata['multi_month'][0])
-        && is_numeric($formdata['multi_day'][0])
-    ) {
-        $fields = array('multi_year' => 'integer', 'multi_month' => 'integer', 'multi_day' => 'intger', 'full_date' => 'string');
-        foreach ($fields as $key => $type) {
-            for ($i = 0; $i < count($formdata['multi_day']); $i++) {
-
-                if (!$formdata[$key][$i])
-                    $formdata[$key][$i] = $formdata[$key][$i - 1];
-                $rows[$key][$i] = $this->safify($formdata[$key][$i], $type);
-
-            }
-        }
-
-
-        for ($i = 0; $i < count($formdata['multi_day']); $i++) {
-            $multi_tmp_year = $rows[multi_year][$i];
-
-            $multi_tmp_month = $rows[multi_month][$i];
-            $multi_tmp_day = $rows[multi_day][$i];
-            $rows['full_date'][$i] = "$multi_tmp_year-$multi_tmp_month-$multi_tmp_day";
-
-            //unset($row['multi_year']); unset($row['multi_month']);   unset($row['multi_day']);
-            //	 $rows['full_date'][$i] =$this-> safify($rows['full_date'][$i] , $type);
-
-        }
-
-
-    } else {
-        $now = date('Y-m-d H:i:s');
-        $dates = getdate();
-        $dates['mon'] = str_pad($dates['mon'], 2, "0", STR_PAD_LEFT);
-        $dates['mday'] = str_pad($dates['mday'], 2, "0", STR_PAD_LEFT);
-
-        $today = $this->build_date5($dates);
-        $rows['today'] = $today['full_date'];
-
-    }
-
-//    	 var_dump($rows['full_date']);die;
-    //return $rows['full_date'];
-    return $rows;
-
-}                        // $results  .. no. of search results
-/************************************************************************************************/
-
-function build_date5(&$formdata)
-{
-
-//    $fields = array( 'year' => 'integer', 'mon' => 'integer','mday' => 'intger','full_date'=>'string');
-//
-//
-//
-//    foreach ($fields as $key => $type) {
-//        $rows[$key] = $this-> safify($formdata[$key], $type);
-//    }
-//    $rows['full_date'] = "$rows[year]-$rows[mon]-$rows[mday]";
-//    // $rows['full_date'] =$this-> safify($rows['full_date'] , $type);
-//
-//
-//
-//
-//    return $rows;
-}
-/**********************************************************************************************/
-
-function build_date_appoint(&$formdata)
-{
-
-
-    $fields = array('year_date' => 'integer', 'month_date' => 'integer', 'day_date' => 'intger', 'full_date' => 'string');
-
-
-    if (array_item($formdata, 'year_date')
-        && is_numeric($formdata['month_date'])
-        && is_numeric($formdata['day_date'])
-        && !array_item($formdata, 'multi_year_appoint')
-        && !is_numeric($formdata['multi_month_appoint'][0])
-        && !is_numeric($formdata['multi_day_appoint'][0])
-    ) {
-
-
-        foreach ($fields as $key => $type) {
-            $rows[$key] = $this->safify($formdata[$key], $type);
-        }
-        $rows['full_date'] = "$rows[year_date]-$rows[month_date]-$rows[day_date]";
-        $rows['full_date'] = $this->safify($rows['full_date'], $type);
-
-
-    } elseif (array_item($formdata, 'multi_day_appoint')
-        && array_item($formdata, 'multi_month_appoint')
-        && array_item($formdata, 'multi_year_appoint')
-        && is_numeric($formdata['multi_year_appoint'][0])
-        && is_numeric($formdata['multi_month_appoint'][0])
-        && is_numeric($formdata['multi_day_appoint'][0])
-    ) {
-        $fields = array('multi_year_appoint' => 'integer', 'multi_month_appoint' => 'integer', 'multi_day_appoint' => 'intger', 'full_date' => 'string');
-        foreach ($fields as $key => $type) {
-            for ($i = 0; $i < count($formdata['multi_day_appoint']); $i++) {
-
-                if (!$formdata[$key][$i])
-                    $formdata[$key][$i] = $formdata[$key][$i - 1];
-                $rows[$key][$i] = $this->safify($formdata[$key][$i], $type);
-            }
-        }
-
-
-        for ($i = 0; $i < count($formdata['multi_day_appoint']); $i++) {
-            $multi_tmp_year = $rows[multi_year_appoint][$i];
-
-            $multi_tmp_month = $rows[multi_month_appoint][$i];
-            $multi_tmp_day = $rows[multi_day_appoint][$i];
-            $rows['full_date'][$i] = "$multi_tmp_year-$multi_tmp_month-$multi_tmp_day";
-            //unset($row['multi_year']); unset($row['multi_month']);   unset($row['multi_day']);
-            //$rows['full_date'][$i] =$this-> safify($rows['full_date'][$i] , $type);
-
-        }
-
-
-    }
-    //return $rows['full_date'];
-    return $rows;
-
-}
-/**********************************************************************************************/
-function build_date_manager(&$formdata)
-{
-
-
-    $fields = array('year_date' => 'integer', 'month_date' => 'integer', 'day_date' => 'intger', 'full_date' => 'string');
-
-
-    if (array_item($formdata, 'year_date')
-        && is_numeric($formdata['month_date'])
-        && is_numeric($formdata['day_date'])
-        && !array_item($formdata, 'multi_year_manager')
-        && !is_numeric($formdata['multi_month_manager'][0])
-        && !is_numeric($formdata['multi_day_manager'][0])
-    ) {
-
-
-        foreach ($fields as $key => $type) {
-            $rows[$key] = $this->safify($formdata[$key], $type);
-        }
-        $rows['full_date'] = "$rows[year_date]-$rows[month_date]-$rows[day_date]";
-        $rows['full_date'] = $this->safify($rows['full_date'], $type);
-
-
-    } elseif (array_item($formdata, 'multi_day_manager')
-        && array_item($formdata, 'multi_month_manager')
-        && array_item($formdata, 'multi_year_manager')
-        && is_numeric($formdata['multi_year_manager'][0])
-        && is_numeric($formdata['multi_month_manager'][0])
-        && is_numeric($formdata['multi_day_manager'][0])
-    ) {
-        $fields = array('multi_year_manager' => 'integer', 'multi_month_manager' => 'integer', 'multi_day_manager' => 'intger', 'full_date' => 'string');
-        foreach ($fields as $key => $type) {
-            for ($i = 0; $i < count($formdata['multi_day_manager']); $i++) {
-
-                if (!$formdata[$key][$i])
-                    $formdata[$key][$i] = $formdata[$key][$i - 1];
-                $rows[$key][$i] = $this->safify($formdata[$key][$i], $type);
-            }
-        }
-
-
-        for ($i = 0; $i < count($formdata['multi_day_manager']); $i++) {
-            $multi_tmp_year = $rows[multi_year_manager][$i];
-
-            $multi_tmp_month = $rows[multi_month_manager][$i];
-            $multi_tmp_day = $rows[multi_day_manager][$i];
-            $rows['full_date'][$i] = "$multi_tmp_year-$multi_tmp_month-$multi_tmp_day";
-            //unset($row['multi_year']); unset($row['multi_month']);   unset($row['multi_day']);
-            //$rows['full_date'][$i] =$this-> safify($rows['full_date'][$i] , $type);
-
-        }
-
-
-    }
-
-    return $rows;
-
-}
-/**********************************************************************************************/
-
-
-function build_date3(&$formdata)
-{
-    if (array_item($formdata, 'multi_day')
-        && array_item($formdata, 'multi_month_2')
-        && array_item($formdata, 'multi_year_2')
-        && is_numeric($formdata['multi_year_2'][0])
-        && is_numeric($formdata['multi_month_2'][0])
-        && is_numeric($formdata['multi_day_2'][0])
-    ) {
-        $fields = array('multi_year_2' => 'integer', 'multi_month_2' => 'integer', 'multi_day_2' => 'intger', 'full_date_2' => 'string');
-        foreach ($fields as $key => $type) {
-            for ($i = 0; $i < count($formdata['multi_day_2']); $i++) {
-
-                if (!$formdata[$key][$i])
-                    $formdata[$key][$i] = $formdata[$key][$i - 1];
-                $rows[$key][$i] = $this->safify($formdata[$key][$i], $type);
-            }
-        }
-
-
-        for ($i = 0; $i < count($formdata['multi_day_2']); $i++) {
-            $multi_tmp_year = $rows[multi_year_2][$i];
-
-            $multi_tmp_month = $rows[multi_month_2][$i];
-            $multi_tmp_day = $rows[multi_day_2][$i];
-            $rows['full_date'][$i] = "$multi_tmp_year-$multi_tmp_month-$multi_tmp_day";
-            //unset($row['multi_year']); unset($row['multi_month']);   unset($row['multi_day']);
-            $rows['full_date_2'][$i] = $this->safify($rows['full_date_2'][$i], $type);
-
-        }
-
-
-    }
-    return $rows;
-
-}
-/****************************************************************************************************************************************/
-
-function build_date1(&$formdata)
-{
-
-    $fields = array('year_date' => 'integer', 'month_date' => 'integer', 'day_date' => 'intger', 'full_date' => 'string');
-
-
-    foreach ($fields as $key => $type) {
-        $rows[$key] = $this->safify($formdata[$key], $type);
-    }
-    $rows['full_date'] = "$rows[year_date]-$rows[month_date]-$rows[day_date]";
-    $rows['full_date'] = $this->safify($rows['full_date'], $type);
-
-    return $rows;
-
-}
-
-/**********************************************************************************************/
-function build_date2(&$formdata)
-{
-
-    $fields = array('year_date_forum' => 'integer', 'month_date_forum' => 'integer', 'day_date_forum' => 'intger', 'full_date' => 'string');
-
-
-    foreach ($fields as $key => $type) {
-        $rows[$key] = $this->safify($formdata[$key], $type);
-    }
-    $rows['full_date'] = "$rows[year_date_forum]-$rows[month_date_forum]-$rows[day_date_forum]";
-    // $rows['full_date'] =$this-> safify($rows['full_date'] , $type);
-
-
-    return $rows;
-}
-/****************************************************************************************************/
-function build_date_single_usr(&$formdata)
-{
-
-    $fields = array('year_date_usr' => 'integer', 'month_date_usr' => 'integer', 'day_date_usr' => 'intger', 'full_date_usr' => 'string');
-
-
-    foreach ($fields as $key => $type) {
-        $rows[$key] = $this->safify($formdata[$key], $type);
-    }
-    $rows['full_date_usr'] = "$rows[year_date_usr]-$rows[month_date_usr]-$rows[day_date_usr]";
-    //$rows1['full_date_usr'] = "$formdata[year_date_usr]-$formdata[month_date_usr]-$formdata[day_date_usr]";
-    $rows['full_date_usr'] = $this->safify($rows['full_date_usr'], $type);
-
-    return $rows;
-
-}
-/***************************************************************************************************/
-function build_date33(&$formdata)
-{
-
-    $fields = array('year_date_addusr' => 'integer', 'month_date_addusr' => 'integer', 'day_date_addusr' => 'intger', 'full_date_addusr' => 'string');
-
-
-    foreach ($fields as $key => $type) {
-        $rows[$key] = $this->safify($formdata[$key], $type);
-    }
-    $rows['full_date_addusr'] = "$rows[year_date_addusr]-$rows[month_date_addusr]-$rows[day_date_addusr]";
-    $rows['full_date_addusr'] = $this->safify($rows['full_date_addusr'], $type);
-
-    return $rows['full_date_addusr'];
-
-}
-/*****************************************************************************************************/
-function build_date4(&$formdata)
-{
-
-    $fields = array('year_date_forum' => 'integer', 'month_date_forum' => 'integer', 'day_date_forum' => 'intger', 'full_date' => 'string');
-
-
-    foreach ($fields as $key => $type) {
-        $rows[$key] = $this->safify($formdata[$key], $type);
-    }
-    $rows['full_date'] = "$rows[year_date_forum]-$rows[month_date_forum]-$rows[day_date_forum]";
-    // $rows['full_date'] =$this-> safify($rows['full_date'] , $type);
-
-
-    return $rows;
-}
-/**************************************************************************************************/
-
-function redirect($url = null)
-{
-
-    if (is_null($url)) $url = $_SERVER['SCRIPT_NAME'];
-    header("Location: $url");
-    exit();
-}
-/**************************************************************************************************/
 
 function print_forum_paging($catID = "")
 {
@@ -2256,13 +1707,13 @@ $i--){
                                     build_href2("category_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
                                 );
                             } else {
-                                printf("<ul><li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
+                                printf("<ul><li style='font-weight:bold;'> %s (%s, %s, %s, %s) </li>\n",
                                     htmlspecial_utf8($forumNames[$parentList[$i]]),
                                     build_href2("category_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
                                     build_href2("category_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
                                     build_href2("category_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                                    build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
-                                    build_href5("", "", "הראה נתונים", $str));
+                                    build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"));
+                                   // build_href5("", "", "הראה נתונים", $str));
                             }
 
                         }
@@ -2278,13 +1729,13 @@ $i--){
                     } else {
                         $url = "../admin/find3.php?catID=$updateID";
                         $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                        printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
+                        printf("<ul><li class='bgchange_tree' style='font-weight:bold;'><b style='color:red;'> %s (%s, %s, %s, %s )</b> </li>\n",
                             htmlspecial_utf8($forumNames[$updateID]),
                             build_href2("category_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
                             build_href2("category_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
                             build_href2("category_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                            build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
-                            build_href5("", "", "הראה נתונים", $str));
+                            build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"));
+                          //  build_href5("", "", "הראה נתונים", $str));
                     }
                     echo "<ul>";
                     $i = 0;
@@ -2293,13 +1744,13 @@ $i--){
                             foreach ($subcategories[$updateID] as $catID) {
                                 $url = "../admin/find3.php?catID=$catID";
                                 $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                                printf("<li style='font-weight:bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
+                                printf("<li style='font-weight:bold;'> %s (%s, %s, %s, %s ) </li>\n",
                                     htmlspecial_utf8($forumNames[$catID]),
                                     build_href2("category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
                                     build_href2("category_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();' class='href_modal1'"),
                                     build_href2("category_brand.php", "mode=update", "&updateID=$catID", "עדכן"),
-                                    build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
-                                    build_href5("", "", "הראה נתונים", $str));
+                                    build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"));
+                                  //  build_href5("", "", "הראה נתונים", $str));
                             }
                             echo "<ul>";
                             $updateID = $catID;
@@ -2368,10 +1819,10 @@ $i--){
                                 foreach ($subcategories[$updateID] as $catID) {
                                     $url = "../admin/find3.php?catID=$catID";
                                     $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                                    printf("<li style='font-weight:bold;'> %s (%s, %s) </li>\n",
+                                    printf("<li style='font-weight:bold;'> %s (%s) </li>\n",
                                         htmlspecial_utf8($forumNames[$catID]),
-                                        build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"),
-                                        build_href5("", "", "הראה נתונים", $str));
+                                        build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "מידע מורחב"));
+                                     //   build_href5("", "", "הראה נתונים", $str));
                                 }
                                 echo "<ul>";
                                 $updateID = $catID;
@@ -2392,105 +1843,6 @@ $i--){
             }
         }//end func///
 
-        function print_forum_entry_form_d($updateID, $mode = '')
-        {
-            $insertID = $updateID;
-            global $db;
-            $sql = "SELECT catName, catID, parentcatID " .
-                " FROM categories ORDER BY catName";
-            $rows = $db->queryObjectArray($sql);
-            // build assoc. arrays for name, parent and subcategories
-            foreach ($rows as $row) {
-                $forumNames[$row->catID] = $row->catName;
-                $parents[$row->catID] = $row->parentcatID;
-                $subcategories[$row->parentcatID][] = $row->catID;
-            }
-            // build list of all parents for $insertID
-            $catID = $updateID;
-            while ($parents[$catID] != NULL) {
-                $catID = $parents[$catID];
-                $parentList[] = $catID;
-            }
-            echo '<div id="my_forum_entry_b">';
-            //display all exept the choozen
-            if (isset($parentList)) {
-                for ($i = sizeof($parentList) - 1; $i >= 0; $i--) {
-                    $url = "../admin/find3.php?catID=$parentList[$i]";
-                    $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                    if ($parentList[$i] == '11') {
-                        printf("<ul><li style='font-weight :bold;'> <img src='" . TAMPLATE_IMAGES_DIR . "/star.gif'><b> %s (%s, %s )</b></li>\n",
-                            htmlspecial_utf8($forumNames[$parentList[$i]]),
-                            build_href2("category_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                            build_href2("category_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם")
-                        );
-                    } else {
-                        printf("<ul><li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
-                            htmlspecial_utf8($forumNames[$parentList[$i]]),
-                            build_href2("category_brand.php", "mode=insert", "&insertID=$parentList[$i]", "הוסף"),
-                            build_href2("category_brand.php", "mode=delete", "&deleteID=$parentList[$i]", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                            build_href2("category_brand.php", "mode=update", "&updateID=$parentList[$i]", "עדכן שם"),
-                            build_href2("category_brand.php", "mode=read_data", "&editID=$parentList[$i]", "עידכון מורחב"),
-                            build_href5("", "", "הראה נתונים", $str));
-                    }
-                }
-            }
-            // display choosen cat  * BOLD *
-            //display the last on
-            if ($insertID == '11') {
-                printf("<ul><li style='font-weight :bold;'><b style='color:red;'> %s (%s, %s)</b> </li>\n",
-                    htmlspecial_utf8($forumNames[$updateID]),
-                    build_href2("category_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                    build_href2("category_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"));
-            } else {
-                $url = "../admin/find3.php?catID=$updateID";
-                $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                printf("<ul><li class='bgchange_tree' style='font-weight :bold;'><b style='color:red;'> %s (%s, %s, %s, %s, %s )</b> </li>\n",
-                    htmlspecial_utf8($forumNames[$updateID]),
-                    build_href2("category_brand.php", "mode=insert", "&insertID=$updateID", "הוסף"),
-                    build_href2("category_brand.php", "mode=delete", "&deleteID=$updateID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                    build_href2("category_brand.php", "mode=update", "&updateID=$updateID", "עדכן שם"),
-                    build_href2("category_brand.php", "mode=read_data", "&editID=$updateID", "עידכון מורחב"),
-                    build_href5("", "", "הראה נתונים", $str));
-            }
-            echo "<ul>";
-            $i = 0;
-            if (array_key_exists($updateID, $subcategories)) {
-                while ($subcategories[$updateID]) {
-                    foreach ($subcategories[$updateID] as $catID) {
-                        $url = "../admin/find3.php?catID=$catID";
-                        $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 ';
-                        printf("<li style='font-weight :bold;'> %s (%s, %s, %s, %s, %s ) </li>\n",
-                            htmlspecial_utf8($forumNames[$catID]),
-                            build_href2("category_brand.php", "mode=insert", "&insertID=$catID", "הוסף"),
-                            build_href2("category_brand.php", "mode=delete", "&deleteID=$catID", "מחק", "OnClick='return verify();' class='href_modal1'"),
-                            build_href2("category_brand.php", "mode=update", "&updateID=$catID", "עדכן"),
-                            build_href2("category_brand.php", "mode=read_data", "&editID=$catID", "עידכון מורחב"),
-                            build_href5("", "", "הראה נתונים", $str));
-                    }
-                    echo "<ul>";
-                    $updateID = $catID;
-                    $i++;
-                }
-                // close hierarchical category list
-                echo str_repeat("</ul>", $i + 1), "\n";
-            } else {
-                echo "(עדיין אין תת-ברנדים.)";
-            }
-            echo "</ul>\n";
-            // close hierarchical category list
-            if (isset($parentList))
-                echo str_repeat("</ul>", sizeof($parentList) + 1), "\n";
-            if (($mode == 'update')) {
-                echo '<form method="post" action="category_brand.php?mode=update&updateID=',
-                $insertID, '">', "\n",
-                "<p>עדכן שם הפורום של ",
-                "<b>$forumNames[$insertID]</b>. <br /> ",
-                '<p><input name="subcategories" size="60" maxlength="80" />', "\n",
-                '<input type="submit" value="OK" name="submitbutton" /></p>', "\n",
-                "</form>\n";
-            }
-            echo '</div>';
-        }//end func///
 
         function read_form()
         {
@@ -2523,270 +1875,6 @@ $i--){
             }
         }
 //-----------------------------------------------------------------------------------------------
-        // read all data for a certain cat from database
-        // and save it in an array; return this array
-        function read_cat_data1($catID)
-        {
-            global $db;
-            $sql = "select b.* ,p.pdfName from categories b ,pdfs p 
-                        WHERE b.pdfID=p.pdfID
-                        AND catID=$catID";
-            if ($rows = $db->queryObjectArray($sql)) {
-                $rows[0]->cat_date = substr($rows[0]->cat_date, 0, 10);
-                list($year_date, $month_date, $day_date) = explode('-', $rows[0]->cat_date);
-                if (strlen($year_date > 3))
-                    $rows[0]->cat_date = "$day_date-$month_date-$year_date";
-
-                if (is_array($rows) && sizeof($rows) == 1) {
-                    $row1 = $rows[0];
-                    $result["forum_decision"] = $row1->catID;
-                    $result["catID"] = $row1->catID;
-                    $result["parentForumID"] = $row1->parentForumID;
-                    $result["insert_forum"] = $row1->parentForumID;
-                    $result["insertID"] = $row1->parentForumID;
-                    $result["forum_decName"] = $row1->forum_decName;
-                    $result["forum_status"] = $row1->active;
-                    $result["cat_allowed"] = $row1->cat_allowed;
-
-
-                    $result["cat_date"] = $row1->cat_date;
-                    $result['day_date'] = $day_date;
-                    $result['month_date'] = $month_date;
-                    $result['year_date'] = $year_date;
-
-
-                    $result["appoint_forum"] = $row1->appointID;
-                    $result["manager_forum"] = $row1->managerID;
-                    $result["managerName"] = $row1->managerName;
-
-                    $result["appoint_date"] = $row1->appoint_date;
-                    list($year_date, $month_date, $day_date) = explode('-', $result["appoint_date"]);
-                    if (strlen($year_date) > 3) {
-                        $result["appoint_date"] = "$day_date-$month_date-$year_date";
-                    }
-
-
-                    $result["manager_date"] = $row1->manager_date;
-                    list($year_date, $month_date, $day_date) = explode('-', $result["manager_date"]);
-                    if (strlen($year_date) > 3) {
-                        $result["manager_date"] = "$day_date-$month_date-$year_date";
-                    }
-
-
-                    $result["src_users"] = "";
-                    $result["src_usersID"] = "";
-                    $result["date_users"] = "";
-
-                    $result["src_managersType"] = "";
-                    $result["src_forumsType"] = "";
-                }
-                /********************************USER_FORUM_NAME*******************************************/
-
-                $sql = "SELECT u.userID, u.full_name,r.HireDate FROM users u, rel_user_forum r " .
-                    " WHERE u.userID = r.userID " .
-                    " AND r.catID = $catID " .
-                    " ORDER BY u.full_name ";
-                if ($rows = $db->queryObjectArray($sql))
-                    foreach ($rows as $row) {
-                        if (!$result["src_users"]) {
-                            $name1 = $row->full_name;
-                            $name = is_null($name1) ? 'NULL' : "$name1";
-                            $result["src_users"] = $name;
-
-                            $date1 = $row->HireDate;
-                            $date1 = substr($row->HireDate, 0, 10);
-                            $date = is_null($date1) ? 'NULL' : "'$date1'";
-                            $result["date_users"] = $date;
-                        } else {
-                            $name1 = $row->full_name;
-                            $name = is_null($name1) ? 'NULL' : "$name1";
-                            $result["src_users"] .= "," . $name;
-
-                            $date1 = $row->HireDate;
-                            $date1 = substr($row->HireDate, 0, 10);
-                            $date = is_null($date1) ? 'NULL' : "'$date1'";
-                            $result["date_users"] .= "," . $date;
-                        }
-                    }
-                /********************************USER_FORUM_ID*******************************************/
-
-                $sql = "SELECT u.userID  FROM users u, rel_user_forum r " .
-                    " WHERE u.userID = r.userID " .
-                    " AND r.catID = $catID " .
-                    " ORDER BY u.full_name ";
-                if ($rows = $db->queryObjectArray($sql))
-                    foreach ($rows as $row) {
-                        if (!$result["src_usersID"]) {
-                            $userID = $row->userID;
-                            $userID = is_null($userID) ? 'NULL' : $userID;
-                            $result["src_usersID"] = $userID;
-
-                        } else {
-                            $userID = $row->userID;
-                            $userID = is_null($userID) ? 'NULL' : $userID;
-                            $result["src_usersID"] .= "," . $userID;
-
-                        }
-                    }
-
-
-                /*******************************CATEGORY_FORUM********************************************/
-
-                $sql = "SELECT c.catID  FROM categories1 c, rel_cat_forum r
-WHERE c.catID = r.catID
-AND r.catID =$catID ORDER BY c.catName";
-                if ($rows = $db->queryObjectArray($sql)) {
-                    $i = 0;
-                    foreach ($rows as $row) {
-
-                        $result["dest_forumsType"][$i] = $row->catID;
-
-
-                        $i++;
-                    }
-
-                }
-                /*******************************TYPE_MANAGER***********************************************************/
-
-                $sql = "SELECT m.managerTypeID  FROM manager_type m, rel_managerType_forum r
-WHERE m.managerTypeID = r.managerTypeID
-AND r.catID =$catID ORDER BY m.managerTypeName";
-                if ($rows = $db->queryObjectArray($sql)) {
-                    $i = 0;
-                    foreach ($rows as $row) {
-
-                        $result["dest_managersType"][$i] = $row->managerTypeID;
-                        $i++;
-                    }
-
-                }
-
-                /******************************************************************************************/
-
-
-            }
-            $result = isset($result) ? $result : false;
-            return $result;
-        }
-        //--------------------------------------------------------------------------------------------------------------------------------
-
-        function read_forum_data2($catID)
-        {
-
-            global $db;
-
-            $sql = "select * from forum_dec WHERE catID=$catID  ";
-            $rows = $db->queryObjectArray($sql);
-            $rows[0]->cat_date = substr($rows[0]->cat_date, 0, 10);
-            list($year_date, $month_date, $day_date) = explode('-', $rows[0]->cat_date);
-            if (strlen($year_date > 3))
-                $rows[0]->cat_date = "$day_date-$month_date-$year_date";
-
-            if (is_array($rows) && sizeof($rows) == 1) {
-                $row1 = $rows[0];
-                $result["forum_decision"] = $row1->catID;
-                $result["catID"] = $row1->catID;
-                $result["parentForumID"] = $row1->parentForumID;
-                $result["forum_decName"] = $row1->forum_decName;
-                $result["forum_status"] = $row1->active;
-                $result["managerType"] = $row1->managerTypeID;
-//$result["cat_date"]  =substr(($row->cat_date) ,10,6);
-                $result["cat_date"] = $row1->cat_date;
-                $result['day_date'] = $day_date;
-                $result['month_date'] = $month_date;
-                $result['year_date'] = $year_date;
-
-
-                $result["appointID"] = $row1->appointID;
-                $result["managerID"] = $row1->managerID;
-
-                $result["appoint_date"] = $row1->appoint_date;
-                list($year_date, $month_date, $day_date) = explode('-', $result["appoint_date"]);
-                if (strlen($year_date) > 3) {
-                    $result["appoint_date"] = "$day_date-$month_date-$year_date";
-                }
-
-
-                $result["manager_date"] = $row1->manager_date;
-                list($year_date, $month_date, $day_date) = explode('-', $result["manager_date"]);
-                if (strlen($year_date) > 3) {
-                    $result["manager_date"] = "$day_date-$month_date-$year_date";
-                }
-
-                $result['multi_year'] = $_SESSION['multi_year'];
-                $result['multi_month'] = $_SESSION['multi_month'];
-                $result['multi_day'] = $_SESSION['multi_day'];
-
-
-//$result["user_forum"]   = "";
-                $result["usr_details"] = "";
-                $result["date_users"] = "";
-                $result["category"] = "";
-//$result["managerType"]="";
-                $result["add_user"] = "";
-                $result["del_user"] = "";
-
-                /********************************USER_FORUM*******************************************/
-                $sql = "SELECT u.full_name,u.userID,r.HireDate FROM users u, rel_user_forum r  
-WHERE u.userID = r.userID    
-AND r.catID = $catID 
-ORDER BY u.full_name";
-                $rows = $db->queryObjectArray($sql);
-                if ($rows) {
-                    $result["usr_details"] = $rows;
-                    foreach ($rows as $row) {
-                        if (!$result["usr_frm"])
-                            $result["usr_frm"] = $row->full_name;
-                        else
-                            $result["usr_frm"] .= ";" . $row->full_name;
-
-                    }
-                }
-
-
-                /*******************************CATEGORY_FORUM********************************************/
-
-                $sql = "SELECT c.catID  FROM categories1 c, rel_cat_forum r
-WHERE c.catID = r.catID
-AND r.catID =$catID ORDER BY c.catName";
-                if ($rows = $db->queryObjectArray($sql))
-                    foreach ($rows as $row) {
-                        if (!$result["category"])
-                            $result["category"] = $row->catID;
-                        else
-                            $result["category"] .= ";" . $row->catID;
-                    }
-                /*******************************CATEGORY_MANAGER***********************************************************/
-
-
-                return $result;
-            }
-        }
-        /*******************************************************************************************/
-
-        // read all data for a certain cat from database
-        // and save it in an array; return this array
-
-        function read_forum_data3($catID)
-        {
-
-            global $db;
-
-
-            $sql = "SELECT u.userID FROM users u, rel_user_forum r " .
-                " WHERE u.userID = r.userID " .
-                " AND r.catID = $catID " .
-                " ORDER BY u.full_name ";
-            if ($rows = $db->queryObjectArray($sql))
-                foreach ($rows as $row) {
-                    if (!$result["dest_users"])
-                        $result["dest_users"] = $row->userID;
-                    else
-                        $result["dest_users"] .= ";" . $row->userID;
-                }
-            return $result;
-        }
-        /*******************************************************************************************/
 
         // read all data for a certain cat from database
         // read all data for a certain cat from database
@@ -3057,133 +2145,6 @@ AND r.catID =$catID ORDER BY c.catName";
             }
         }
         //-----------------------------------------------------------------
-
-        function config_date(&$formdata)
-        {
-
-//            list( $day_date_today,$month_date_today,$year_date_today) = explode('-',$formdata['today']);
-//            if (strlen($year_date_today) > 3){
-//                $month_date_today = str_pad($month_date_today, 2, "0", STR_PAD_LEFT);
-//                $day_date_today= str_pad($day_date_today, 2, "0", STR_PAD_LEFT);
-//                $formdata['today']="$day_date_today-$month_date_today-$year_date_today";
-//            }else{
-//                $month_date_today = str_pad($month_date_today, 2, "0", STR_PAD_LEFT);
-//                $day_date_today= str_pad($day_date_today, 2, "0", STR_PAD_LEFT);
-//                //to check
-//                $formdata['today']="$year_date_today-$month_date_today-$day_date_today";
-//            }
-
-            /********************************************************************************************************/
-            if (isset($formdata['cat_date'])) {
-
-//                list( $day_date_forum,$month_date_forum,$year_date_forum) = explode('-',$formdata['cat_date']);
-//                if (strlen($year_date_forum) > 3){
-//                    $forum_date="$day_date_forum-$month_date_forum-$year_date_forum";
-//                    $formdata['cat_date']="$day_date_forum-$month_date_forum-$year_date_forum";
-//                }else{
-//                    $forum_date="$year_date_forum-$month_date_forum-$day_date_forum";
-//                    //to check
-//                    $formdata['cat_date']="$year_date_forum-$month_date_forum-$day_date_forum";
-//                }
-//            }
-//            if($formdata['multi_year'] && $formdata['multi_month'] &&  $formdata['multi_day'] )  {
-//                unset ($_SESSION['multi_year']) ;
-//                unset ($_SESSION['multi_month']) ;
-//                unset ($_SESSION['multi_day'])  ;
-//
-//                $i=0;
-//                foreach($formdata['multi_month'] as $dt){
-//                    $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                    $formdata['multi_month'][$i]=$dt;
-//                    $i++;
-//                }
-//                $i=0;
-//                foreach($formdata['multi_day'] as $dt){
-//                    $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                    $formdata['multi_day'][$i]=$dt;
-//                    $i++;
-//                }
-////store date in a session
-//                $_SESSION['multi_year']=$formdata['multi_year'];
-//                $_SESSION['multi_month']=$formdata['multi_month'];
-//                $_SESSION['multi_day'] =$formdata['multi_day'];
-//            }
-//            /***********************************************************************************************/
-//            /******************************************************************************************************/
-//            if(array_item($formdata,'dynamic_6') || array_item($formdata,'dynamic_6b')  ){
-//                if($formdata['multi_year'] && $formdata['multi_month'] &&  $formdata['multi_day'] )  {
-//                    unset ($_SESSION['multi_year']) ;
-//                    unset ($_SESSION['multi_month']) ;
-//                    unset ($_SESSION['multi_day'])  ;
-//
-//                    $i=0;
-//                    foreach($formdata['multi_month'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_month'][$i]=$dt;
-//                        $i++;
-//                    }
-//                    $i=0;
-//                    foreach($formdata['multi_day'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_day'][$i]=$dt;
-//                        $i++;
-//                    }
-////store date in a session
-//                    $_SESSION['multi_year']=$formdata['multi_year'];
-//                    $_SESSION['multi_month']=$formdata['multi_month'];
-//                    $_SESSION['multi_day'] =$formdata['multi_day'];
-//                }
-//
-//                /*************************************************************************************************************/
-//                if($formdata['multi_year_appoint'] && $formdata['multi_month_appoint'] &&  $formdata['multi_day_appoint'] )  {
-//                    unset ($_SESSION['multi_year_appoint']) ;
-//                    unset ($_SESSION['multi_month_appoint']) ;
-//                    unset ($_SESSION['multi_day_appoint'])  ;
-//
-//                    $i=0;
-//                    foreach($formdata['multi_month_appoint'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_month_appoint'][$i]=$dt;
-//                        $i++;
-//                    }
-//                    $i=0;
-//                    foreach($formdata['multi_day_appoint'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_day_appoint'][$i]=$dt;
-//                        $i++;
-//                    }
-////store date in a session
-//                    $_SESSION['multi_year_appoint']=$formdata['multi_year_appoint'];
-//                    $_SESSION['multi_month_appoint']=$formdata['multi_month_appoint'];
-//                    $_SESSION['multi_day_appoint'] =$formdata['multi_day_appoint'];
-//                }
-//                /******************************************************************************************************/
-//                if($formdata['multi_year_manager'] && $formdata['multi_month_manager'] &&  $formdata['multi_day_manager'] )  {
-//                    unset ($_SESSION['multi_year_manager']) ;
-//                    unset ($_SESSION['multi_month_manager']) ;
-//                    unset ($_SESSION['multi_day_manager'])  ;
-//
-//                    $i=0;
-//                    foreach($formdata['multi_month_manager'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_month_manager'][$i]=$dt;
-//                        $i++;
-//                    }
-//                    $i=0;
-//                    foreach($formdata['multi_day_manager'] as $dt){
-//                        $dt = str_pad($dt, 2, "0", STR_PAD_LEFT);
-//                        $formdata['multi_day_manager'][$i]=$dt;
-//                        $i++;
-//                    }
-////store date in a session
-//                    $_SESSION['multi_year_manager']=$formdata['multi_year_manager'];
-//                    $_SESSION['multi_month_manager']=$formdata['multi_month_manager'];
-//                    $_SESSION['multi_day_manager'] =$formdata['multi_day_manager'];
-                //               }
-            }
-        }
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------
-
         function update_cat1(&$formdata, $formselect)
         {
             global $db;
@@ -3294,62 +2255,62 @@ AND r.catID =$catID ORDER BY c.catName";
             return $this->catID;
         }
         //--------------------------------------------------------------------------------------------------
-        //        // delete a category
-        //        // return  1, if category and its subcategories could be deleted
-        //        // returns 0, if the category could not be deleted
-        //        // return -1 if an error happens
-        //        function delete_cat_sub($catID) {
-        //            // find subcategories to catID and delete them
-        //            // by calling delete_category recursively
-        //            global $db;
-        //            $sql = "SELECT catID FROM categories " .
-        //                "WHERE parentcatID='$catID'";
-        //            if($rows = $db->queryObjectArray($sql)) {
-        //                $deletedRows = 0;
-        //                foreach($rows as $row) {
-        //                    $result =$this->delete_cat_sub($row->catID);
-        //                    if($result==-1)
-        //                        return -1;
-        //                    else
-        //                        $deletedRows++;
-        //                }
-        //                // if any subcategories could not be deleted,
-        //                // don't delete this category as well
-        //                if($deletedRows != count($rows))
-        //                    return 0;
-        //            }
-        //            if($catID==11) {
-        //                //echo "<br />אי אפשר למחוק שורש הפורומים   .\n";
-        //                show_error_msg("<br />אי אפשר למחוק שורש הברנדים   .\n");
-        //                return 0;
-        //            }
-        ////--------------------------------------------------------------------------------------------------
-        //
-        //            $sql1 = "SELECT decID  FROM rel_forum_dec WHERE forum_decID=$forum_decID";
-        //            if($rows1=$db->queryObjectArray($sql1)  ){
-        //                foreach($rows1 as $row){
-        //                    $dec_arr[$row->decID]=$row->decID;
-        //                }
-        //
-        //                if($dec_arr && $dec_arr!=null){
-        //                    $this->del_decision($dec_arr);
-        //                }
-        //            }
-        //
-        //            // delete category
-        //            $sql =  "DELETE FROM forum_dec WHERE forum_decID='$forum_decID' LIMIT 1";
-        //            $sql1 = "DELETE FROM rel_cat_forum WHERE forum_decID='$forum_decID' LIMIT 1 ";
-        //            $sql2 = "DELETE FROM rel_forum_dec WHERE forum_decID='$forum_decID' LIMIT 1 ";
-        //            $sql3 = "DELETE FROM rel_user_forum WHERE forum_decID='$forum_decID' ";
-        //
-        //
-        //            //if( ($db->execute($sql) && $db->execute($sql1) && $db->execute($sql2) ) ||
-        //            if(   ($db->execute($sql) && $db->execute($sql1) && $db->execute($sql2)&& $db->execute($sql3) ) )
-        //                return 1;
-        //            else
-        //                return -1;
-        //
-        //        }
+//                // delete a category
+//                // return  1, if category and its subcategories could be deleted
+//                // returns 0, if the category could not be deleted
+//                // return -1 if an error happens
+//                function delete_cat_sub($catID) {
+//                    // find subcategories to catID and delete them
+//                    // by calling delete_category recursively
+//                    global $db;
+//                    $sql = "SELECT catID FROM categories " .
+//                        "WHERE parentcatID='$catID'";
+//                    if($rows = $db->queryObjectArray($sql)) {
+//                        $deletedRows = 0;
+//                        foreach($rows as $row) {
+//                            $result =$this->delete_cat_sub($row->catID);
+//                            if($result==-1)
+//                                return -1;
+//                            else
+//                                $deletedRows++;
+//                        }
+//                        // if any subcategories could not be deleted,
+//                        // don't delete this category as well
+//                        if($deletedRows != count($rows))
+//                            return 0;
+//                    }
+//                    if($catID==11) {
+//                        //echo "<br />אי אפשר למחוק שורש הפורומים   .\n";
+//                        show_error_msg("<br />אי אפשר למחוק שורש הברנדים   .\n");
+//                        return 0;
+//                    }
+//        //--------------------------------------------------------------------------------------------------
+//
+//                    $sql1 = "SELECT decID  FROM rel_forum_dec WHERE forum_decID=$forum_decID";
+//                    if($rows1=$db->queryObjectArray($sql1)  ){
+//                        foreach($rows1 as $row){
+//                            $dec_arr[$row->decID]=$row->decID;
+//                        }
+//
+//                        if($dec_arr && $dec_arr!=null){
+//                            $this->del_decision($dec_arr);
+//                        }
+//                    }
+//
+//                    // delete category
+//                    $sql =  "DELETE FROM forum_dec WHERE forum_decID='$forum_decID' LIMIT 1";
+//                    $sql1 = "DELETE FROM rel_cat_forum WHERE forum_decID='$forum_decID' LIMIT 1 ";
+//                    $sql2 = "DELETE FROM rel_forum_dec WHERE forum_decID='$forum_decID' LIMIT 1 ";
+//                    $sql3 = "DELETE FROM rel_user_forum WHERE forum_decID='$forum_decID' ";
+//
+//
+//                    //if( ($db->execute($sql) && $db->execute($sql1) && $db->execute($sql2) ) ||
+//                    if(   ($db->execute($sql) && $db->execute($sql1) && $db->execute($sql2)&& $db->execute($sql3) ) )
+//                        return 1;
+//                    else
+//                        return -1;
+//
+//                }
         //-----------------------------------------------------------------------------------------------------------------
         // delete a category
         // return  1, if category and its subcategories could be deleted
@@ -3423,12 +2384,9 @@ AND r.catID =$catID ORDER BY c.catName";
         //Requires : IMAGEMAGICK
         function convertPDF2JPG($pdf_file,$jpgloc)
         {
-
-
          //   $status=exec('convert "'.$pdf_file.'" -colorspace RGB -resize 800 "'.$jpgloc.'"');
           //  $status=exec('convert "'.$pdf_file.'" -colorspace RGB -resize 800 "'.$jpgloc.'"', $output, $return_var);
           //  $status=exec('convert "'.$pdf_file.'" -scale 300x300 "'.$jpgloc.'"');
-
             $cmd="convert ".$pdf_file." ".$jpgloc;
             $status=exec($cmd);
             $convert_status=$status;
@@ -3437,7 +2395,6 @@ AND r.catID =$catID ORDER BY c.catName";
         //Function to read directory
         function readFolderDirectory($dir)
         {
-
             $listDir = array();
             if($handler = opendir($dir)) {
                 while (($sub = readdir($handler)) !== FALSE) {
@@ -3452,11 +2409,8 @@ AND r.catID =$catID ORDER BY c.catName";
                 closedir($handler);
             }
             return $listDir;
-
         }
-
  //------------------------------------------------------------------
-
         function recurse_copy($src,$dst) {
             global  $dbc;
             $dir = opendir($src);
@@ -3468,9 +2422,6 @@ AND r.catID =$catID ORDER BY c.catName";
                     }
                     else {
                         copy($src . '/' . $file,$dst . '/' . $file);
- //--------------------------------------------------------------------
-
-
 //------------------------------------------------------------------
                     }
                 }
@@ -3478,30 +2429,11 @@ AND r.catID =$catID ORDER BY c.catName";
             closedir($dir);
         }
  //------------------------------------------------------
-//        function recurse_copy($src,$dst) {
-//            $dir = opendir($src);
-//            @mkdir($dst);
-//            while(false !== ( $file = readdir($dir)) ) {
-//                if (( $file != '.' ) && ( $file != '..' ) &&  !(file_exists(PDF_DIR.$file))  ){
-//                    if ( is_dir($src . '/' . $file) ) {
-//                        recurse_copy($src . '/' . $file,$dst . '/' . $file);
-//                    }
-//                    else {
-//                        copy($src . '/' . $file,$dst . '/' . $file);
-//                    }
-//                }
-//            }
-//            closedir($dir);
-//
-//        }
-//
-//        //------------------------------------------------------
         function loadContent( $url, $timeout = 5 )
         {
             $ctx = stream_context_create( array( 'http' => array( 'timeout' => $timeout ) ) );
             return file_get_contents( $url, 0, $ctx );
         }
 //-------------------------------------------------------------------------------------------
-
         }//end class cat
         ?>

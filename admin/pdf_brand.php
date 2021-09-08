@@ -438,7 +438,9 @@ switch ($_REQUEST['mode'] ) {
                 }
             }
 //------------------------------------------------------------------------------------
-            $brandID= isset($_POST['form']['brandID']) ? $_POST['form']['brandID']: '' ;
+           $brandID= isset($_POST['form']['brandID']) ? $_POST['form']['brandID']: '' ;
+//            if(!isset($brandID))
+//                $brandID= isset($_GET['editID']) ? $_GET['editID']: '' ;
 //-----------------------------------------------------------------------
 //
 

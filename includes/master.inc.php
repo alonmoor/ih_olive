@@ -26,10 +26,10 @@
 	// Object for tracking and displaying error messages
 	$Error = new Error();
 
-	// Fix magic quotes
-	if(get_magic_quotes_gpc())
-	{
-		$_POST    = fix_slashes($_POST);
-		$_GET     = fix_slashes($_GET);
-		$_REQUEST = fix_slashes($_REQUEST);
-	}
+//	// Fix magic quotes
+//	if(get_magic_quotes_gpc())
+//	{
+//		$_POST    = fix_slashes($_POST);
+//		$_GET     = fix_slashes($_GET);
+//		$_REQUEST = fix_slashes($_REQUEST);
+//	}

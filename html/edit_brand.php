@@ -117,12 +117,14 @@ if($minimal  && array_item($formdata, 'brandID')){
 
 
 
+
                       $brand_sql2 = "SELECT  * FROM brands          
                                         WHERE brandID = $brandID
                                         ORDER BY b.branName ASC";
-                      $rows4 = $db->queryObjectArray($brand_sql);
 
+                    if( $rows4 = $db->queryObjectArray($brand_sql) ){
                       $rows4 = array_shift($rows4);
+                      }
 
                       $brand_sql3 = "SELECT  * FROM brands          
                                         WHERE brandID = $brandID
@@ -146,9 +148,10 @@ if(!$minimal){
                       $brand_sql2 = "SELECT  * FROM brands          
                                         WHERE brandID = $brandID
                                         ORDER BY b.branName ASC";
-                      $rows4 = $db->queryObjectArray($brand_sql);
+                      if($rows4 = $db->queryObjectArray($brand_sql)){
 
                       $rows4 = array_shift($rows4);
+                     }
 
                       $brand_sql3 = "SELECT  * FROM brands          
                                         WHERE brandID = $brandID
@@ -358,6 +361,7 @@ $date_value =  array_item($formdata, "brand_date2");
                              <option value="none">(choose)</option>
                           <?PHP
                            $selected =  array_item($formdata, "brandID");
+                           echo '<option value="none">(choose)</option>';
                            foreach($rows1 as $row) {
                              echo '<option ', html_attribute("value", $row[1]);
                              if($selected==$row[1])
@@ -369,32 +373,6 @@ $date_value =  array_item($formdata, "brand_date2");
                            </select>
                         </div>
 
-
-
-
-
-
-                <div class="form-group">
-                          <label for="brand_pdf">תוכנית הברנד:</label>
-<!--                          <select class="form-control" id ="brand_pdf_type" name="form[brand_pdf]" style="width:160px;"-->
-
-                          <?PHP
-                           $selected =  array_item($formdata, "brandID");
-                           echo '<select class="form-control" id ="brand_pdf" name="form[brand_pdf]" style="width: 160px;" ',
-                           html_attribute("name", "form[brand_pdf]"), ' style="width:160px;">', "\n";
-                           echo '<option value="none">(choose)</option>';
-                           foreach($rows1 as $row) {
-                             echo '<option ', html_attribute("value", $row[1]);
-                            if( !($row[1] == '11')) {
-                             if($selected==$row[1])
-                               echo 'selected="selected" ';
-                             $listentry = str_replace(" ", "&nbsp;", htmlspecial_utf8($row[0]));
-                             echo ">$listentry</option>\n";
-                           }
-                           }
-                            ?>
-                           </select>
-                         </div>
                   <?PHP
 //------------------------------------------------------------------------------------------
                        $date_val = array_item($formdata, "brand_date2");
@@ -410,20 +388,25 @@ $date_value =  array_item($formdata, "brand_date2");
 if(!array_item($formdata,'brandID')){
            if ($level) {
 ?>
-<button class="btn btn-primary"  type="submit" OnClick="
+<div class="form-group"><button  class="btn btn-primary"  type="submit" OnClick="
                                             prepSelObject(document.getElementById('dest_brandsType'));
                                             prepSelObject(document.getElementById('dest_managersType'));
-                                            prepSelObject(document.getElementById('dest_pdfs'));
-                                            " >שמור</button>
+                                            prepSelObject(document.getElementById('dest_pdfs'));" >שמור</button></div>
 <?php
            }
+}else{
+    ?>
+    <div class="form-group"><button    type="submit" class="btn btn-primary">שמור </button><div>
+<?PHP
 }
 //for determine witch mode
-                $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
+
                 $formdata["brandID"] = isset($formdata["brandID"]) ? $formdata["brandID"] : '';
                 $formdata["insertID"] = isset($formdata["insertID"]) ? $formdata["insertID"] : '';
                 echo '<div>';
+                 $tmp = (array_item($formdata, "brandID")) ? "update" : "save";
                 form_hidden3("mode", $tmp, 0, "id=mode_" . $formdata["brandID"]);
+
                 form_hidden("brandID", $formdata["brandID"]);
                 form_hidden("insertID", $formdata["insertID"]);
            echo '</div>';
@@ -436,7 +419,7 @@ global $dbc,$db;
   $sql = "SELECT * FROM brands WHERE brandID=$brandID";
     if( $rows1 = $db->queryObjectArray($sql)) {
         $brandPrefix = $rows1[0]-> brandPrefix;
-
+         $brandName = $rows1[0]-> brandName;
      }
 
 $sql = "SELECT * FROM pdfs ORDER BY date_created DESC";
@@ -477,19 +460,37 @@ if( isset($formdata['brand_date2']) ){
             break;
     }
  if(!empty($dayOfWeek) && isset($formdata['brandPrefix']) ) {
-           $page_num =      isset($formdata['pages']) ? $formdata['pages'] : '';
+           $page_num =   isset($formdata['pages']) ? $formdata['pages'] : '';
            $brandPrefix =   $formdata['brandPrefix'];
-          if($rows3[0]->catName == "חדשות"){
-               $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
-           }
+
+//          if($rows3[0]->catName == "חדשות"){
+//               $brandPrefix =   str_replace("{{date}}", $dayOfWeek , $brandPrefix);
+//           }
 
            $brandPrefixArr = array();
            $html = '';
            $html .= '<div class="image_block row" id="display_div" >';
 
-            for($k = 0,$i = 0; $i< $page_num ; $i++){
-            $m = $i +1;
 
+            for($k = 0,$i = 0; $i< $page_num ; $i++){
+
+//---------------------------------------------------------
+  if(isset($brandName)){
+       $m = $i +1;
+
+               if($m<10){
+               $brandPrefixArr[$i] = $brandName."p00".$m.".pdf";
+               }elseif ($m<100 && $m>=10 ){
+                $brandPrefixArr[$i] = $brandName."p0".$m.".pdf";
+               }elseif ($m>=100){
+                $brandPrefixArr[$i] = $brandName."p".$m.".pdf";
+               }
+//template for new
+                $new_name = explode('.pdf',$brandPrefixArr[$i]);
+                $new_name =  $new_name[0];
+                $new_name = $new_name.'_new.pdf';
+  } else{
+               $m = $i +1;
                if($m<10){
                $brandPrefixArr[$i] = $brandPrefix."p00".$m.".pdf";
                }elseif ($m<100 && $m>=10 ){
@@ -501,9 +502,11 @@ if( isset($formdata['brand_date2']) ){
                 $new_name = explode('.pdf',$brandPrefixArr[$i]);
                 $new_name =  $new_name[0];
                 $new_name = $new_name.'_new.pdf';
+  }
 
-                if($formdata['brandPrefix'] == "ayom{{date}}"){
-//------------------------------------------------------------------------------
+//----------------------------------------------------------
+             //   if($formdata['brandPrefix'] == "ayom"){
+//----------------------------------------------------------
                if(empty($pdf_names) || ( !(in_array($brandPrefixArr[$i],$pdf_names)) &&  !(in_array($new_name,$pdf_names)) ) ){
                             $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
                                     $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
@@ -568,7 +571,6 @@ if( isset($formdata['brand_date2']) ){
                                                     </div>\n";
                                  $html .=   '<br/>
                                         </div>';
-
                           //change status will be highlighting
                               if( ($new_name == $row->pdfName  && !($row->isChange == 'unchange')) ||  ($brandPrefixArr[$i] == $row->pdfName  && !($row->isChange == 'unchange'))   )   {
                              ?>
@@ -583,90 +585,11 @@ if( isset($formdata['brand_date2']) ){
                                 <?PHP
                           }
                      break;
-                   // }
                   }
                 }//end foreach
              }
-         }
 //------------------------------------------------------------------------------
-          elseif ($brandPrefix == "ispo1" ||  $brandPrefix == "issh1") {
-           if(empty($pdf_names) || ( !(in_array($brandPrefixArr[$i],$pdf_names)) &&  !(in_array($new_name,$pdf_names)) ) ){
-                            $html .= '<div class="col-xs-3" id=""  style="margin-top: 50px;" >';
-                                    $html .=  "<div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;background: grey;\">
-                                                    <div id='my_pdfs_$i'>
-                                                        <h4>
-                                                             <a class='my_href_li' href=\"#\">
-                                                             </a>
-                                                         </h4>
-                                                      </div>
-                                                      
-                                                      </div>\n";
-                                    $html .=  '<br/></div>';
-               }
-//------------------------------------------------------------------------------ 0
-               else{
-               foreach($rows as $row){
-                    if($brandPrefixArr[$i] == $row->pdfName  || $new_name == $row->pdfName   ){
-                    $file_name = explode('.',$row->pdfName);
-                        $file_name =  $file_name[0];
-                        $tmp_name  =  $file_name;
-                        $file_name = $file_name.'.jpg';
-                         $html .=   '<div class="col-xs-3">';
-                         $html .=   "({$row->size}kb) <p  style='font-weight:bold;color:brown;'>{$row->pdfName}</p><div style=\"border-radius:3px;width:250px;height:300px; border:#cdcdcd solid 1px;\">";
-                                       if($level) {
-                                                 if($row->isChange == 'unchange') {
-                                                    $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled checked >
-                                                          </div>";
-                                                    $k++;
-                                                   }else{
-                                                      $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' disabled  >
-                                                          </div>";
-                                                   }
-                                                }else{
-                                                    if($row->isChange == 'unchange') {
-                                                      $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;' checked >
-                                                        </div>";
-                                                      $k++;
-                                                      }else{
-                                                            $html .=  "<div  style='margin-right: 224px;'>
-                                                            <input type='checkbox' name = 'checkbox[]' class='olive_cbx' id=$tmp_name style='zoom: 1.7;'  >
-                                                        </div>";
-                                                      }
-                                                }
-                                     $pdf_name= explode('.pdf',$row->pdfName)  ;
-                                     $pdf_name = $pdf_name[0];
-                                     $html .=  "<div >
-                                                <div   id='my_pdfs{$pdf_name}'>
-                                                <a class='my_href_li' href= '".PDF_WWW_DIR."{$row->pdfName}' >
-                                                    <img src ='".CONVERT_PDF_TO_IMG_WWW_DIR."/{$file_name}' style='box-sizing: border-box;widht:100%; height: 297px;margin-top:-28px;' >
-                                                </a>
-                                           </div>
-                                      </div>
-                                    </div>\n";
-                         $html .=   '<br/>
-                                   </div>';
-                         $pdf_name= explode('.pdf',$row->pdfName)  ;
-                         $pdf_name = $pdf_name[0];
-                          if(  $new_name == $row->pdfName && $row->isChange == 'change' ||  ($brandPrefixArr[$i] == $row->pdfName  && !($row->isChange == 'unchange') )  )  {
-                             ?>
-                             <input type="hidden" name="modify_elem" class="modify_elem" value="modify">
-                               <script type="text/javascript">
-                                 $(document).ready(function() {
-                                var brand_name = '<?php echo $pdf_name; ?>';
-                                $('#my_pdfs'+brand_name).addClass('my_task change_elem');
-                                    turn_red_task();
-                                  });
-                                </script>
-                                <?PHP
-                     }
-                     break;
-                  }
-                }//end foreach
-         }//end else
-        }//end ifelse
+
 //-------------------------------------------------------------------------------
        }//end for
        if($k==$page_num){
