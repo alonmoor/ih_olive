@@ -68,9 +68,11 @@
 			ini_set('error_reporting', E_ALL);
 
 			self::$dbserver = '127.0.0.1';
-			self::$dbname   = 'pdf';
-			self::$dbuser   = 'alon';
-			self::$dbpass   = 'qwerty';
+			self::$dbname   = 'olive';
+//			self::$dbuser   = 'alon';
+//			self::$dbpass   = 'qwerty';
+            self::$dbuser   = 'drupal';
+            self::$dbpass   = 'admin';
 			self::$dberror  = 'die';
 		}
 

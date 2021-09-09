@@ -6,8 +6,14 @@ require_once(LIB_DIR.'/model/class.handler.php');
 
 $showform=TRUE;
 global $db;
+$minimal = FALSE;
+
+if(isset($_GET['no_header']) &&  $_GET['no_header'] == TRUE){
+    $minimal = TRUE;
+}
+
 $_POST['form']['dynamic_ajx']=FALSE;
-if(  !(isAjax())){
+if(  !(isAjax()) && !($minimal)){
     html_header();
 }
 if( array_item($_POST, 'brandID') && count($_POST)==1 && !$_GET ){
@@ -89,7 +95,7 @@ switch ($_REQUEST['mode'] ) {
         global $db;
         $log ='';
         $pdf_file= PDF_DIR; //PDF FILE LOCATION
-        $jpgloc=PDF_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
+     //   $jpgloc=PDF_DIR."page.jpg";// LOCATION TO PLACE EXTRACTED JPG FILES
         $brand=new brand();
         $src = "/home/alon/Desktop/PROJECT/4.4.17";
         $dst = PDF_DIR;
@@ -104,7 +110,7 @@ switch ($_REQUEST['mode'] ) {
             if (file_exists($dst)) {
             if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf') {
                 $name = $file->getFilename();
-                if ($file->getFilename() == 'issh1p010_new.pdf' || $file->getFilename() == 'issh1p010.pdf') {
+                if ($file->getFilename() == 'ayom2p004.pdf' || $file->getFilename() == 'ayom2p001_new.pdf') {
                     $x = 1;
                 }
                 $file_name = explode('.', $name);
@@ -369,6 +375,8 @@ switch ($_REQUEST['mode'] ) {
         $result = true;
         if ($result = $brand->add_brand($formdata)) {
             $db->execute("COMMIT");
+            $formdata = false;
+            show_list($formdata);
             return true;
         }
         $db->execute("ROLLBACK");
@@ -430,7 +438,9 @@ switch ($_REQUEST['mode'] ) {
                 }
             }
 //------------------------------------------------------------------------------------
-            $brandID= isset($_POST['form']['brandID']) ? $_POST['form']['brandID']: '' ;
+           $brandID= isset($_POST['form']['brandID']) ? $_POST['form']['brandID']: '' ;
+//            if(!isset($brandID))
+//                $brandID= isset($_GET['editID']) ? $_GET['editID']: '' ;
 //-----------------------------------------------------------------------
 //
 
@@ -656,6 +666,12 @@ function  show_list_fail($formdata=""){
 }
 //---------------------------------------------------
 function read_brand($editID){
+
+    $minimal = FALSE;
+    if(isset($_GET['no_header']) &&  $_GET['no_header'] == TRUE){
+        $minimal = TRUE;
+    }
+
     global $db;
     $brand=new brand();
     if($_REQUEST['editID']){
@@ -670,6 +686,7 @@ function read_brand($editID){
     $brandID=$formdata['brandID'];
     //  $brand->message_update_b($formdata,$brandID);
     $formdata['brandID'] = $brandID;
+    if(!$minimal)
     $brand->print_brand_paging();
 //    build_form_ajx7($formdata);
     build_form($formdata);

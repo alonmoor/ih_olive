@@ -584,6 +584,7 @@ class Pdfs extends DBObject3
                             $d = mysqli_real_escape_string($dbc, strip_tags($_POST['description'][$i]));
                         }
 //-----------------------------------------------------------------------------
+                        define ('PDF_DIR',HTML_DIR . "/pdfs/");
                         // Check for a PDF:
                         if (is_uploaded_file($formdata['files']['tmp_name'][$i]) && ($formdata['files']['error'][$i] == UPLOAD_ERR_OK)) {
                             //if (is_uploaded_file($_FILES['pdf']['tmp_name'][$i]) && ($_FILES['pdf']['error'][$i] == UPLOAD_ERR_OK)) {

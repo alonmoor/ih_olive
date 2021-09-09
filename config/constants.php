@@ -127,7 +127,8 @@ define("FILEMAX", 1500000);                             // file size max
 define("PREFIX", "wrox");                              // database table prefix
 define("TIMEOUT", 3600);                               // timeout (seconds)
 define("ROWCOUNT", 5);                                // rows to show per page
-define("DSN", "mysql://alon:qwerty@127.0.0.1/olive"); // DSN for PEAR usage
+//define("DSN", "mysql://alon:qwerty@127.0.0.1/olive"); // DSN for PEAR usage
+define("DSN", "mysql://drupal:admin@127.0.0.1/olive"); // DSN for PEAR usage
 
 /* assign base mail constants */
 define("SMTP_HOST", "127.0.0.1");                      // SMTP hostname
@@ -167,14 +168,24 @@ define ('PDFS_DIR', ROOT_DIR . '/get_in_out2/pdfs/');
 
 //define('DB_HOST', '192.168.0.204');
 define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'alon');
- define('DB_PASSWORD','qwerty');
+
+//define('DB_USER', 'drupal');
+//define('DB_PASSWORD','admin');
+
+//define('DB_USER', 'alon');
+// define('DB_PASSWORD','qwerty');
+
+define('DB_USER', 'root');
+define('DB_PASSWORD','alon');
+
+
+
  define('DB_TBL_PREFIX', '');
 
 
 
- define('DB_DATABASE','pdf');
- define('DB_SCHEMA', 'pdf');
+ define('DB_DATABASE','olive');
+ define('DB_SCHEMA', 'olive');
 
 
 

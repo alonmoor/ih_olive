@@ -424,7 +424,7 @@ DBTreeView.TreeNode.prototype.displayChildren = function(xmlnodes){
 		     
 		     aElem.setAttribute('id',  treeID ); 
 		     
-			 aElem.setAttribute('onClick', 'openmypage2( \''+node.URL+'\' );return false;'); 
+			 aElem.setAttribute('onClick', 'openmypage2( \''+node.URL+'\' );return false;');
 		
 			if(node.URLTargetFrame !=null){
 				aElem.target = node.URLTargetFrame;

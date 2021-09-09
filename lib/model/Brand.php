@@ -817,13 +817,16 @@ function add_brand(&$formdata = "", &$publishersIDs = "", &$pdfIDS = "", &$imgNa
     $rows = $db->queryObjectArray($sql);
 
     $formdata['newbrandName'] = $rows[0]->catName;
-    if( trim($rows[0]->catName) == 'חדשות'){
-        if (!isset($formdata['brand_date2']) &&  array_item($formdata, 'brand_date2') || (!$brand->check_date($formdata['brand_date2']))) {
+    $formdata['brandPrefix'] = $rows[0]->catPrefix;
+    //if( trim($rows[0]->catName) == 'חדשות'){
+        if (!isset($formdata['brand_date2']) &&  !(array_item($formdata, 'brand_date2')) || (!$brand->check_date($formdata['brand_date2']))) {
             return false;
         }else{
-            $formdata['newbrandName'] = $formdata['newbrandName']."-".$formdata['brand_date2'];
+            $formdata['brand_date2'] = explode('-',$formdata['brand_date2']);
+            $formdata['brand_date2'] =  $formdata['brand_date2'][0].$formdata['brand_date2'][1].$formdata['brand_date2'][2]  ;
+            $formdata['newbrandName'] =  $formdata['brandPrefix'].$formdata['brand_date2'];//."-".$formdata['brand_date2'];
         }
-    }
+   // }
 
 
 
@@ -873,7 +876,7 @@ function insert_new_brand(&$formdata)
 
 
             $_SESSION['brandID'] = $brandID;
-            show_list($formdata);
+           // show_list($formdata);
             echo "<p class='error'>ברנד עודכן/נוסף.</p>\n";
         }
         return TRUE;
@@ -1584,7 +1587,11 @@ function print_brand_paging($brandID = "")
     foreach ($rows as $row) {
         $catID = $row->brandID;
         $catName = $row->brandName;
-        $url = "../admin/find3.php?brandID=$catID";
+        //$url = "../admin/find3.php?brandID=$catID";
+        //$url = "../admin/brand_plan.php?brandID=$catID";
+        $url = "../admin/pdf_brand.php?mode=read_data&editID=$catID&no_header=true";
+        //admin/pdf_brand.php?mode=read_data&editID=52
+
         $str = 'onclick=\'openmypage3("' . $url . '"); return false;\'   class=href_modal1 id="' . $catID . '"   ';
         printf("<li style='font-weight:bold;color:black;cursor:pointer;' id=li$catID onMouseOver=\"$('#li'+$catID).css('color','brown').css('font-size', '17px')\"  onMouseOut=\"$('#li'+$catID).css('color','black').css('font-size', '15px')\">%s (%s, %s, %s,%s)\n",
             htmlspecial_utf8($catName),
@@ -3682,8 +3689,8 @@ AND r.brandID =$brandID ORDER BY c.catName";
             }
             return $listDir;
 
-        }
 
+        }
  //------------------------------------------------------------------
 
         function recurse_copy($src,$dst) {

@@ -166,27 +166,27 @@ $(document).ready(function() {
 
 //------------------------------------------------------------------
 //     $(".wrapper_brand").css('border','3px sloid red');
-    $("#brand_org").find("#loading").css('border','3px sloid red');
-    $(".wrapper_brand").find("#loading img").ajaxStart(function(){
-        $(this).show();
-    }).ajaxStop(function(){
-        $(this).hide();
-    });
-
-
-    $('#loading').bind('ajaxStart', function(){
-        $(this).show();
-    }).bind('ajaxStop', function(){
-        $(this).hide();
-    });
-
-
-    // $(document).ajaxStart(function(){
-    //     $("#wait").css("display", "block");
+   // $("#brand_org").find("#loading").css('border','3px sloid red');
+    // $(".wrapper_brand").find("#loading img").ajaxStart(function(){
+    //     $(this).show();
+    // }).ajaxStop(function(){
+    //     $(this).hide();
     // });
-    // $(document).ajaxComplete(function(){
-    //     $("#wait").css("display", "none");
+
+
+    // $('#loading').bind('ajaxStart', function(){
+    //     $(this).show();
+    // }).bind('ajaxStop', function(){
+    //     $(this).hide();
     // });
+
+
+    $(document).ajaxStart(function(){
+        $("#loading").css("display", "block");
+    });
+    $(document).ajaxComplete(function(){
+        $("#loading").css("display", "none");
+    });
 
 });//end DCR
 

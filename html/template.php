@@ -89,7 +89,7 @@ ob_start();
 
 
 <?PHP
-    if($_SERVER['SCRIPT_NAME'] == "/admin/create_brand.php"){
+    if($_SERVER['SCRIPT_NAME'] == "/admin/create_brandType.php"){
     echo '<div id="create_brand">';
 }elseif($_SERVER['SCRIPT_NAME'] == "/admin/brand_plan.php"){
     echo '<div id="brand_plan">';
@@ -114,8 +114,9 @@ ob_start();
       <div class="collapse navbar-collapse" id="collapse">
         <ul class="nav navbar-nav navbar-right">
           <?php if($level) { ?>
+           <li><a href="pdf_plan.php">בניית pdf</a></li>
            <li><a href="brand_plan.php">בניית תוכנית עבודה</a></li>
-           <li><a href="create_brand.php">הקמה של ברנד</a></li>
+           <li><a href="create_brandType.php">הקמה של ברנד</a></li>
             <?php }else{ ?>
             <li class="active"><a href="brand_plan.php">צפייה ואישור תוכנית עבודה</a></li>
             <?php } ?>
@@ -171,7 +172,7 @@ ob_start();
                             context.font = 'italic 30px "sans-serif"';
                             context.textBaseline = 'top';
                             //context.fillText('החלטות', 60, 0);
-                            context.fillText('olive', 140, 0);
+                            context.fillText('PDF', 140, 0);
 
                             context.lineWidth = 3;
                             context.beginPath();

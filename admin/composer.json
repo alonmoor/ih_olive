@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mpdf/mpdf": "^8.0",
+        "pdfmyurl/pdfmyurl": "^1.61"
+    }
+}

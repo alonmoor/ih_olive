@@ -91,6 +91,7 @@ function build_form(&$formdata)
                 <select class="form-control" id="brand_connect" name="form[insert_forum]" style="width:160px;"
                 <option value="none">(choose)</option>
                 <?php
+                $selected = array_item($formdata, "parentCatID");
                 foreach ($rows as $row) {
                     echo '<option ', html_attribute("value", $row[1]);
                     if ($selected == $row[1])
@@ -105,13 +106,13 @@ function build_form(&$formdata)
             <?php
 
             $value = array_item($formdata, "catPrefix");
-            $url = htmlspecial_utf8('create_brand.php');
+            $url = htmlspecial_utf8('create_brandType.php');
             ?>
 
 
             <div class="form-group">
                 <label for="catPrefix"> קידומת: </label>
-                <input class="form-control input-group" style="width: 160px;" type="text" id="catPrefix" value=<?PHP echo $value; ?> >
+                <input class="form-control input-group" style="width: 160px;"  name="form[catPrefix]"  type="text" id="catPrefix" value=<?PHP echo $value; ?> >
                 <a href=<?PHP echo $url; ?>  class='form_href'> ערוך ברנדים: </a>
             </div>
             <?php
@@ -198,6 +199,7 @@ function build_form(&$formdata)
                                             prepSelObject(document.getElementById('dest_pdfs'));
                                             ">שמור
     </button>
+
     <?php
     $tmp = (array_item($formdata, "catID")) ? "update" : "save";
     $formdata["catID"] = isset($formdata["catID"]) ? $formdata["catID"] : '';

@@ -65,9 +65,9 @@ switch ($_REQUEST['mode'] ) {
             $_REQUEST['editID']= array_item($_POST, 'catID');
         }
         if($_REQUEST['editID']){
-            $formdata =read_cat($_GET['editID']);
+            $formdata = read_cat($_GET['editID']);
         }else{
-            $formdata =read_cat($_GET['catID']);
+            $formdata = read_cat($_GET['catID']);
         }
         break;
 
