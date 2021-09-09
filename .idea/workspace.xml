@@ -7,7 +7,9 @@
     <bookmark url="file://$PROJECT_DIR$/admin/pdf_brand.php" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="change the insert" />
+    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="change the insert">
+      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -132,16 +134,12 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="featurefeature_branch" />
-                    <option name="lastUsedInstant" value="1631154531" />
-                  </RecentBranch>
-                  <RecentBranch>
                     <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1631154501" />
+                    <option name="lastUsedInstant" value="1631220600" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="develop" />
-                    <option name="lastUsedInstant" value="1631153127" />
+                    <option name="lastUsedInstant" value="1631218448" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="test-09-09" />
@@ -363,11 +361,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.buildTools.grunt.grunt-cli.package" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../qiranew/hello_rented" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs.protractor.protractor_package" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php.debug" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -776,6 +775,17 @@
         <option value="3" />
         <option value="1" />
       </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
