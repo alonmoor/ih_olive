@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="54c0e22f-e678-40a2-a76d-a18e4f765e0c" name="olive" url="http://olive_prj">
+        <fileTransfer rootFolder="/var/www/alon_web/olive_prj" accessType="SFTP" sshConfigId="d4139f1a-2a0a-493e-8c64-a5d40a95eb94" sshConfig="olive">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="8b43f315-fedc-42ed-ab3c-992592afebc2" name="pdf" url="http://olive/">
+        <fileTransfer rootFolder="/var/www/alon-web/olive/" accessType="SFTP" sshConfigId="d608814b-6c63-486e-b42a-ce4827252e78" sshConfig="pdf">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
