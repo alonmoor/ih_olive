@@ -24,7 +24,7 @@ function openmypage3(link){
 lib/model/Brand.php
 function print_brand_paging($brandID = "") -. 1568
 
-
+testttt
 
 http://olive/admin/create_brandType.php -> lib/model/Categories.class.php 1541
 
