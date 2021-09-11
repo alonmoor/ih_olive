@@ -7,9 +7,7 @@
     <bookmark url="file://$PROJECT_DIR$/admin/pdf_brand.php" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="change the insert">
-      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
-    </list>
+    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="git tag bamp" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -484,11 +482,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="JavaScript Debug.pdf_brand.php" />
       <item itemvalue="JavaScript Debug.ajax.php" />
       <item itemvalue="JavaScript Debug.dynamic_5_demo.php" />
       <item itemvalue="JavaScript Debug.forum_demo12.php" />
       <item itemvalue="JavaScript Debug.index.php" />
-      <item itemvalue="JavaScript Debug.pdf_brand.php" />
       <item itemvalue="PHP Script.pdf_brand.php" />
     </list>
     <recent_temporary>
@@ -705,7 +703,14 @@
       <option name="project" value="LOCAL" />
       <updated>1497183361000</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="git tag bamp">
+      <created>1631396631239</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1631396631239</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -787,11 +792,13 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add argument" />
     <MESSAGE value="change the insert" />
-    <option name="LAST_COMMIT_MESSAGE" value="change the insert" />
+    <MESSAGE value="git tag bamp" />
+    <option name="LAST_COMMIT_MESSAGE" value="git tag bamp" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2177,6 +2184,10 @@
   <component name="XPathView.XPathProjectComponent">
     <history />
     <find-history />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/rouxconferenceapp/_/components/php/snippet-carousel.php" />
