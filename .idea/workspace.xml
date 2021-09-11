@@ -7,9 +7,7 @@
     <bookmark url="file://$PROJECT_DIR$/admin/pdf_brand.php" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="git tag bamp">
-      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
-    </list>
+    <list default="true" id="55a2d4ca-f61a-46aa-a2f0-37ae2d4763a0" name="Default" comment="git tag bamp3" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,12 +132,12 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1631220600" />
+                    <option name="branchName" value="develop" />
+                    <option name="lastUsedInstant" value="1631397547" />
                   </RecentBranch>
                   <RecentBranch>
-                    <option name="branchName" value="develop" />
-                    <option name="lastUsedInstant" value="1631218448" />
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1631397375" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="test-09-09" />
@@ -484,11 +482,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="JavaScript Debug.pdf_brand.php" />
       <item itemvalue="JavaScript Debug.ajax.php" />
       <item itemvalue="JavaScript Debug.dynamic_5_demo.php" />
       <item itemvalue="JavaScript Debug.forum_demo12.php" />
       <item itemvalue="JavaScript Debug.index.php" />
-      <item itemvalue="JavaScript Debug.pdf_brand.php" />
       <item itemvalue="PHP Script.pdf_brand.php" />
     </list>
     <recent_temporary>
@@ -712,7 +710,21 @@
       <option name="project" value="LOCAL" />
       <updated>1631396631239</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="git tag bamp2">
+      <created>1631397264907</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1631397264907</updated>
+    </task>
+    <task id="LOCAL-00011" summary="git tag bamp3">
+      <created>1631397501466</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1631397501466</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -800,7 +812,9 @@
     <MESSAGE value="add argument" />
     <MESSAGE value="change the insert" />
     <MESSAGE value="git tag bamp" />
-    <option name="LAST_COMMIT_MESSAGE" value="git tag bamp" />
+    <MESSAGE value="git tag bamp2" />
+    <MESSAGE value="git tag bamp3" />
+    <option name="LAST_COMMIT_MESSAGE" value="git tag bamp3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
